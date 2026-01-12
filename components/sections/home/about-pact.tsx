@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { History } from "lucide-react";
+
 
 export function AboutPact() {
   return (
@@ -29,43 +31,42 @@ export function AboutPact() {
             </div>
           </div>
           
-          <div className="relative aspect-square w-full">
-            <div className="absolute inset-0 bg-white shadow-2xl shadow-black/5 rounded-3xl overflow-hidden border border-black/5 group">
-              {/* This represents the PACT Milestones Timeline image */}
-              <div className="relative w-full h-full p-8 flex flex-col items-center justify-center text-center">
-                <div className="relative w-full h-full">
-                   <Image 
-                    src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80" 
-                    alt="PACT Milestones Timeline" 
-                    fill
-                    className="object-cover opacity-20"
-                  />
-                  <div className="absolute inset-0 flex flex-col p-8 overflow-y-auto custom-scrollbar">
-                    <h3 className="text-2xl font-medium mb-12 border-b border-black/10 pb-4">PACT Milestones</h3>
-                    <div className="space-y-12 text-left relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-black/5">
-                      {[
-                        { year: "2018", event: "Foundation of PACT with a vision for ADR transformation" },
-                        { year: "2019", event: "Launch of the first Mediation Championship India" },
-                        { year: "2020", event: "Global Academy accreditation and digital transition" },
-                        { year: "2021", event: "Introduction of the PACT Mediation Pledge" },
-                        { year: "2022", event: "Expansion to international collaborations in Singapore & UK" },
-                        { year: "2024", event: "Rebranding to Mediation Champions League" },
-                      ].map((item, i) => (
-                        <div key={i} className="pl-10 relative">
-                          <div className="absolute left-0 top-1.5 h-6 w-6 rounded-full bg-white border-2 border-primary z-10" />
-                          <span className="block text-sm font-bold text-primary mb-1">{item.year}</span>
-                          <p className="text-black/60 text-sm leading-relaxed">{item.event}</p>
-                        </div>
-                      ))}
+          <div className="lg:pl-16 relative">
+            <div className="space-y-10">
+              <div className="flex items-center gap-4">
+                <h3 className="font-medium text-black whitespace-nowrap uppercase tracking-widest text-sm">PACT Milestones</h3>
+                <div className="h-px w-full bg-black/5" />
+                <History className="w-4 h-4 text-black/20 shrink-0" />
+              </div>
+              
+              <div className="relative space-y-12">
+                {/* Timeline Line */}
+                <div className="absolute left-[7px] top-2 bottom-2 w-px bg-black/10" />
+                
+                {[
+                  { year: "2018", event: "Foundation of PACT with a vision for ADR transformation" },
+                  { year: "2019", event: "Launch of the first Mediation Championship India" },
+                  { year: "2020", event: "Global Academy accreditation and digital transition" },
+                  { year: "2021", event: "Introduction of the PACT Mediation Pledge" },
+                  { year: "2022", event: "Expansion to international collaborations in Singapore & UK" },
+                  { year: "2024", event: "Rebranding to Mediation Champions League" },
+                ].map((item, i) => (
+                  <div key={i} className="relative pl-10 group/item">
+                    {/* Dot */}
+                    <div className="absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full border border-black/10 bg-transparent group-hover/item:border-gold-500 group-hover/item:bg-gold-500 transition-all duration-300 z-10" />
+                    
+                    <div className="space-y-1">
+                      <span className="block text-xs font-mono font-bold tracking-widest uppercase text-black/30 group-hover/item:text-gold-500 transition-colors duration-300">
+                        {item.year}
+                      </span>
+                      <p className="text-xl text-black/60 leading-relaxed font-light group-hover/item:text-black transition-colors duration-300">
+                        {item.event}
+                      </p>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
-            
-            {/* Decorative Elements */}
-            <div className="absolute -bottom-6 -right-6 h-32 w-32 bg-primary/10 rounded-full blur-3xl -z-10" />
-            <div className="absolute -top-6 -left-6 h-32 w-32 bg-slate-200/50 rounded-full blur-3xl -z-10" />
           </div>
         </div>
       </div>
