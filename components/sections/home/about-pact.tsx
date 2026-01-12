@@ -1,32 +1,60 @@
 "use client";
 
 import Image from "next/image";
-import { History } from "lucide-react";
+import { History, ArrowRight, Shield, Target, Award } from "lucide-react";
 
 
 export function AboutPact() {
   return (
     <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#f8f9fa]">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8">
-            <div className="inline-block px-4 py-1.5 rounded-full border border-black/10 bg-black/5">
-              <span className="text-xs font-mono uppercase tracking-widest text-black/60">Our Legacy</span>
-            </div>
-            <h2 className="text-5xl md:text-7xl font-light tracking-tight text-black leading-tight">
-              About PACT
-            </h2>
-            <p className="text-xl text-black/70 leading-relaxed font-light">
-              Since its inception, PACT has been at the forefront of mediation excellence, bridging gaps and fostering understanding across diverse sectors. Our journey is marked by innovation in dispute resolution and a commitment to professional excellence.
-            </p>
-            <div className="grid grid-cols-2 gap-8 pt-4">
-              <div>
-                <span className="block text-4xl font-light text-black">2500+</span>
-                <span className="text-xs font-mono uppercase tracking-widest text-black/40">Cases Resolved</span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
+          <div className="flex flex-col h-full justify-between py-4">
+            <div className="space-y-8">
+              <div className="flex items-center gap-4 mb-2 opacity-20">
+                <span className="text-[10px] font-mono tracking-[0.3em] uppercase">Chapter One</span>
+                <div className="h-px w-12 bg-black" />
+                <span className="text-[10px] font-mono tracking-[0.3em] uppercase">Legacy</span>
               </div>
-              <div>
-                <span className="block text-4xl font-light text-black">98%</span>
-                <span className="text-xs font-mono uppercase tracking-widest text-black/40">Success Rate</span>
+              
+              <div className="inline-block px-4 py-1.5 rounded-full border border-black/10 bg-black/5">
+                <span className="text-xs font-mono uppercase tracking-widest text-black/60">Our Legacy</span>
+              </div>
+              <h2 className="text-5xl md:text-7xl font-light tracking-tight text-black leading-tight">
+                About PACT
+              </h2>
+              <p className="text-xl text-black/70 leading-relaxed font-light">
+                Since its inception, PACT has been at the forefront of mediation excellence, bridging gaps and fostering understanding across diverse sectors. Our journey is marked by innovation in dispute resolution and a commitment to professional excellence.
+              </p>
+              <div className="grid grid-cols-2 gap-8 pt-4">
+                <div>
+                  <span className="block text-4xl font-light text-black">2500+</span>
+                  <span className="text-xs font-mono uppercase tracking-widest text-black/40">Cases Resolved</span>
+                </div>
+                <div>
+                  <span className="block text-4xl font-light text-black">98%</span>
+                  <span className="text-xs font-mono uppercase tracking-widest text-black/40">Success Rate</span>
+                </div>
+              </div>
+
+              <button className="group flex items-center gap-2 text-sm font-medium text-black/60 hover:text-black transition-colors pt-4">
+                Explore our full story
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4 pt-12 border-t border-black/5 mt-12">
+              <div className="space-y-2">
+                <Shield className="w-5 h-5 text-black/20" />
+                <span className="text-[10px] font-mono uppercase tracking-widest text-black/40">Integrity</span>
+              </div>
+              <div className="space-y-2">
+                <Target className="w-5 h-5 text-black/20" />
+                <span className="text-[10px] font-mono uppercase tracking-widest text-black/40">Excellence</span>
+              </div>
+              <div className="space-y-2">
+                <Award className="w-5 h-5 text-black/20" />
+                <span className="text-[10px] font-mono uppercase tracking-widest text-black/40">Impact</span>
               </div>
             </div>
           </div>
