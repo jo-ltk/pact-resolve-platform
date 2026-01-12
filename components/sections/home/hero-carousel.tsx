@@ -15,8 +15,8 @@ import Autoplay from "embla-carousel-autoplay";
 const slides = [
   {
     title: "PACT Mediation",
-    description: "Bespoke case management and quality mediators ensuring excellence in global dispute resolution.",
-    buttonLabel: "Learn More",
+    description: "A trendsetter in Mediation Process Design, PACT relies on bespoke case management, quality mediators and best practices for client satisfaction",
+    buttonLabel: "Mediation Page",
     link: "/mediation",
     rightSlogan: "RESOLVE WITH PRECISION",
     accent: "text-emerald-400",
@@ -24,8 +24,8 @@ const slides = [
   },
   {
     title: "PACT Academy",
-    description: "Upskilling legal professionals with world-class mediation advocacy and conflict management training.",
-    buttonLabel: "Discover More",
+    description: "A pioneer in Mediation Advocacy Training, PACT is upskilling lawyers and training professionals who have a significant seat at the mediation table",
+    buttonLabel: "Academy Page",
     link: "/academy",
     rightSlogan: "MASTERY IN ADVOCACY",
     accent: "text-blue-400",
@@ -33,8 +33,8 @@ const slides = [
   },
   {
     title: "Mission Mediation",
-    description: "Driving global ADR trends through educational content, podcasts, and expert-led annual conclaves.",
-    buttonLabel: "View Sessions",
+    description: "Through podcasts, panels and the annual conclave, PACT is developing a market and generating case studies and educational content",
+    buttonLabel: "Podcast Page",
     link: "/podcast",
     rightSlogan: "LEADING THE DIALOGUE",
     accent: "text-cyan-400",
@@ -42,8 +42,8 @@ const slides = [
   },
   {
     title: "Mediation Champions League",
-    description: "Convening the next generation of professionals to define the future of international mediation.",
-    buttonLabel: "Join the League",
+    description: "Formerly known as Mediation Championship India, this event convenes a stellar group of next-gen professionals and current experts",
+    buttonLabel: "Competition Page",
     link: "/competition",
     rightSlogan: "THE FUTURE OF ADR",
     accent: "text-amber-400",
@@ -51,8 +51,8 @@ const slides = [
   },
   {
     title: "PACT Mediation Pledge",
-    description: "A commitment to confidential and constructive resolution, fostering ease of business globally.",
-    buttonLabel: "Take the Pledge",
+    description: "The Pledge encourages early, confidential and constructive resolution, signalling your commitment to relationship-preservation and ease-of-doing business",
+    buttonLabel: "PACT Pledge and Clauses",
     link: "/pledge",
     rightSlogan: "COMMIT TO EXCELLENCE",
     accent: "text-indigo-400",
@@ -89,7 +89,7 @@ export function HeroCarousel() {
   }, [api]);
 
   return (
-    <section className="relative h-[80vh] min-h-[600px] w-full overflow-hidden bg-navy-950">
+    <section className="relative h-[70vh] min-h-[500px] md:h-[80vh] md:min-h-[600px] w-full overflow-hidden bg-navy-950">
       <Carousel 
         setApi={setApi} 
         plugins={[autoplay]}
@@ -98,7 +98,7 @@ export function HeroCarousel() {
       >
         <CarouselContent className="h-full ml-0">
           {slides.map((slide, index) => (
-            <CarouselItem key={index} className="relative h-[80vh] min-h-[600px] w-full pl-0">
+            <CarouselItem key={index} className="relative h-[70vh] min-h-[500px] md:h-[80vh] md:min-h-[600px] w-full pl-0">
               {/* Background Image with Gradient Overlay */}
               <div className="absolute inset-0 z-0">
                 <Image
@@ -113,16 +113,20 @@ export function HeroCarousel() {
                 <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-transparent to-transparent z-10" />
               </div>
 
-              <div className="relative z-20 grid grid-cols-1 lg:grid-cols-2 h-full w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 items-start pt-8 md:pt-12 lg:pt-20 gap-12">
+              <div className="relative z-20 flex flex-col justify-center lg:grid lg:grid-cols-[3fr_2fr] h-full w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-28 md:pb-32 lg:items-start lg:pt-12 lg:pb-0 gap-8">
                 
                 {/* Left Content Block */}
-                <div className="space-y-8 animate-in fade-in slide-in-from-left-8 duration-1000">
-                  <div className="space-y-4">
-                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-white uppercase leading-tight">
-                      {slide.title}
+                <div className="space-y-5 lg:space-y-6 animate-in fade-in slide-in-from-left-8 duration-1000 lg:pr-6">
+                  <div className="space-y-3 lg:space-y-4">
+                    <h1 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white uppercase leading-tight">
+                      {slide.title.split(' ').map((word, i) => (
+                        <span key={i} className="block">
+                          {word}
+                        </span>
+                      ))}
                     </h1>
-                    <div className="w-20 h-1 bg-gold-500 mb-6" />
-                    <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-[90%] font-light text-wrap">
+                    <div className="w-20 h-1 bg-gold-500 mb-4" />
+                    <p className="text-base md:text-lg lg:text-lg text-white/90 leading-relaxed max-w-full lg:max-w-[75%] font-light">
                       {slide.description}
                     </p>
                   </div>
@@ -137,10 +141,10 @@ export function HeroCarousel() {
                 </div>
 
                 {/* Right Visual Emphasis (Slogan) */}
-                <div className="hidden lg:flex items-center justify-end">
+                <div className="hidden lg:flex items-center justify-end lg:pl-8">
                   <div className="relative">
                     <h2 className={cn(
-                      "text-6xl md:text-7xl lg:text-8xl font-black leading-none text-right opacity-30 transition-all duration-1000",
+                      "text-5xl lg:text-6xl xl:text-7xl font-black leading-none text-right opacity-30 transition-all duration-1000",
                       current === index ? "translate-x-0 opacity-30 scale-100" : "translate-x-20 opacity-0 scale-95"
                     )}>
                       {slide.rightSlogan.split(' ').map((word, i) => (
