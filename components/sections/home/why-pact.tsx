@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Globe, Shield, Users, BookOpen, ScrollText } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,7 @@ const sections = [
     label: "Mediation Practice Protocols",
     title: "Mediation Practice Protocols",
     icon: Shield,
-    image: "/images/why-pact/protocols.png",
+
     description: "PACT operates in alignment with internationally recognised mediation practice protocols and upholds the principles of voluntariness, neutrality, confidentiality, and party autonomy. All PACT mediations are conducted in strict adherence to The Mediation Act, 2023, ensuring legal validity, ethical integrity, and global best-practice standards.",
     cta: "Standards of Practice"
   },
@@ -21,7 +21,7 @@ const sections = [
     label: "IMI QAP Mediation Advocacy",
     title: "IMI QAP Mediation Advocacy",
     icon: ScrollText,
-    image: "/images/why-pact/advocacy.png",
+
     description: "PACT has been recognised by the International Mediation Institute (IMI) for its QAP-certified Mediation Advocacy, reflecting excellence in neutrality, ethical representation, and professional competence. This recognition affirms PACT’s commitment to international quality standards and mediation advocacy within the mediation ecosystem.",
     cta: "Our Certifications"
   },
@@ -30,7 +30,7 @@ const sections = [
     label: "International Collaborations",
     title: "International Collaborations",
     icon: Globe,
-    image: "/images/why-pact/collaborations.png",
+
     description: "PACT has actively collaborated with leading institutions – International Mediation Institute (Europe/Global), Maxwell Mediators (Asia Pacific), Mediate.com (USA) to advance mediation practice, capacity building, and cross-border dispute resolution. These collaborations reflect PACT’s global outlook, commitment to knowledge exchange and visibility within the mediation community.",
     cta: "Global Network"
   },
@@ -39,7 +39,7 @@ const sections = [
     label: "Mediation Simplified",
     title: "Mediation Simplified",
     icon: BookOpen,
-    image: "/images/why-pact/book.png",
+
     description: "Mediation Simplified has made mediation accessible and practical for professionals, students, and disputants alike. By demystifying concepts and offering clear frameworks, the book, authored and curated by Jonathan Rodrigues and Nisshant Laroia, has contributed to greater awareness, informed practice, and wider adoption of mediation as an effective dispute resolution mechanism.",
     cta: "Get the Book"
   },
@@ -48,7 +48,7 @@ const sections = [
     label: "Mediation Clauses",
     title: "Mediation Clauses",
     icon: ScrollText,
-    image: "/images/why-pact/clauses.png",
+
     description: "The mediation clauses endorsed by PACT, as an institutionalised mediation service provider, promote early, structured, and confidential dispute resolution. Designed to align with international best practices and the Mediation Act, 2023, these clauses provide parties with clarity, procedural certainty, and enforceable pathways to effective mediation.",
     cta: "View Clauses"
   }
@@ -132,7 +132,7 @@ export function WhyPact() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-12 items-center"
+                className="grid grid-cols-1 gap-12 items-center"
               >
                 <div className="space-y-8">
                   <div className="space-y-6">
@@ -150,15 +150,7 @@ export function WhyPact() {
                   </button>
                 </div>
 
-                <div className="relative aspect-4/3 rounded-2xl overflow-hidden border border-white/10 bg-white/5">
-                  <Image
-                    src={activeContent.image}
-                    alt={activeContent.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-navy-950/40 to-transparent" />
-                </div>
+
               </motion.div>
             </AnimatePresence>
           </div>
