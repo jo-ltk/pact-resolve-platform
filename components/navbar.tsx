@@ -1,27 +1,28 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import { Menu, X, MousePointer2 } from "lucide-react";
-import { MagneticButton } from "@/components/magnetic-button";
+import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     setIsLoaded(true);
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    // Prevent scrolling when mobile menu is open
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [mobileMenuOpen]);
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -40,109 +41,139 @@ export function Navbar() {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-6 transition-all duration-500 pointer-events-none ${
-        isLoaded ? "opacity-100" : "opacity-0"
-      }`}
-      style={{ paddingTop: `${isScrolled ? "0.75rem" : "1.5rem"}` }}
-      role="navigation"
-      aria-label="Main navigation"
-    >
-      <div
-        className={`pointer-events-auto flex w-full max-w-6xl items-center justify-between gap-8 rounded-full transition-all duration-500 ${
-          isScrolled
-            ? "border border-foreground/15 bg-white/50 backdrop-blur-xl px-6 py-3 shadow-xl"
-            : "border border-foreground/20 bg-white/60 backdrop-blur-md px-8 py-4 shadow-lg"
-        }`}
+    <>
+      <nav
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 flex items-center bg-navy-950 transition-opacity duration-500 border-b border-white/10",
+          isLoaded ? "opacity-100" : "opacity-0"
+        )}
+        style={{ height: "var(--nav-height, 72px)" }}
+        role="navigation"
+        aria-label="Main navigation"
       >
-        <Link
-          href="/"
-          onClick={() => handleNavClick("/")}
-          className="flex shrink-0 items-center gap-2 transition-transform hover:scale-105"
-          aria-label="PACT Home"
-        >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 transition-all duration-300 hover:scale-110 hover:bg-primary/25">
-            <span className="font-sans text-lg font-bold text-primary">
-              P
+        <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-6">
+          {/* Logo: Left aligned, flat, no container */}
+          <Link
+            href="/"
+            onClick={() => handleNavClick("/")}
+            className="flex shrink-0 items-center transition-opacity hover:opacity-90"
+            aria-label="PACT Home"
+          >
+            <span className="font-sans text-2xl font-black tracking-tighter text-white">
+              PACT
             </span>
-          </div>
-          <span className="hidden font-sans text-lg font-semibold tracking-tight text-foreground sm:inline">
-            PACT
-          </span>
-        </Link>
-
-        <div className="hidden items-center gap-8 md:flex">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => handleNavClick(item.href)}
-              className={`group relative font-sans text-sm font-medium transition-colors hover:text-primary ${
-                pathname === item.href ? "text-primary" : "text-foreground/70"
-              }`}
-            >
-              {item.label}
-              <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${
-                pathname === item.href ? "w-full" : "w-0 group-hover:w-full"
-              }`} />
-            </Link>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-4">
-          <Link href="/#contact">
-            <MagneticButton
-              variant="primary"
-              className="hidden sm:inline-flex items-center gap-2"
-            >
-              Try Mediation Now
-              <MousePointer2 className="h-4 w-4" />
-            </MagneticButton>
           </Link>
 
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 hover:bg-foreground/5 rounded-lg transition-colors"
-            aria-label="Toggle menu"
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? (
-              <X className="h-5 w-5 text-foreground" />
-            ) : (
-              <Menu className="h-5 w-5 text-foreground" />
-            )}
-          </button>
-        </div>
-      </div>
-
-      {mobileMenuOpen && (
-        <div className="absolute top-full left-6 right-6 mt-4 rounded-2xl border border-foreground/15 bg-white/90 backdrop-blur-xl shadow-xl overflow-hidden pointer-events-auto">
-          <div className="flex flex-col p-4 gap-2">
+          {/* Menu: Right aligned text links per design or center */}
+          <div className="hidden h-full items-center gap-8 md:flex ml-auto mr-12">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className={`px-4 py-2 rounded-lg transition-all text-left font-sans text-sm ${
+                className={cn(
+                  "relative flex h-full items-center font-sans text-[13px] font-bold uppercase tracking-widest transition-colors",
                   pathname === item.href 
-                    ? "text-primary bg-primary/5" 
-                    : "text-foreground/70 hover:text-primary hover:bg-primary/5"
-                }`}
+                    ? "text-gold-500" 
+                    : "text-white/70 hover:text-white"
+                )}
+              >
+                {item.label}
+                {/* Active State: bottom border */}
+                {pathname === item.href && (
+                  <span className="absolute bottom-0 left-0 h-[3px] w-full bg-gold-500" />
+                )}
+              </Link>
+            ))}
+          </div>
+
+          {/* CTA: Right aligned primary action */}
+          <div className="flex items-center gap-4">
+            <Link href="/#contact">
+              <button
+                className="hidden sm:inline-flex items-center rounded-full bg-gold-500 px-8 py-3 font-sans text-[14px] font-medium tracking-wide text-navy-950 shadow-sm transition-all duration-200 ease-in-out hover:scale-[1.02] hover:brightness-110"
+              >
+                Try Mediation Now
+              </button>
+            </Link>
+
+            {/* Mobile Toggle */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-white transition-colors"
+              aria-label="Toggle menu"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Spacing for fixed navbar */}
+      <div className="h-[56px] md:h-[72px]" />
+
+      {/* Mobile Menu: Slide-in panel from right */}
+      <div 
+        className={cn(
+          "fixed inset-0 z-[100] md:hidden transition-all duration-300",
+          mobileMenuOpen ? "visible" : "invisible"
+        )}
+      >
+        {/* Backdrop */}
+        <div 
+          className={cn(
+            "absolute inset-0 bg-navy-950/80 backdrop-blur-sm transition-opacity duration-300",
+            mobileMenuOpen ? "opacity-100" : "opacity-0"
+          )}
+          onClick={() => setMobileMenuOpen(false)}
+        />
+        
+        {/* Panel */}
+        <div 
+          className={cn(
+            "absolute top-0 right-0 h-full w-[300px] bg-navy-950 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out",
+            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          )}
+        >
+          <div className="flex items-center justify-between p-6 border-b border-white/10 h-[64px]">
+            <span className="font-sans text-xl font-black text-white tracking-widest uppercase">PACT</span>
+            <button 
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-white hover:text-gold-500 transition-colors"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+          
+          <div className="flex flex-col p-6 gap-0 overflow-y-auto">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => handleNavClick(item.href)}
+                className={cn(
+                  "py-5 font-sans text-sm font-bold uppercase tracking-widest border-b border-white/5 transition-colors",
+                  pathname === item.href 
+                    ? "text-gold-500" 
+                    : "text-white/70 hover:text-white"
+                )}
               >
                 {item.label}
               </Link>
             ))}
-            <Link href="/#contact" onClick={() => setMobileMenuOpen(false)}>
-              <button
-                className="w-full px-4 py-2 rounded-lg bg-primary text-primary-foreground font-sans text-sm font-medium transition-all hover:bg-primary/90 mt-2 flex items-center justify-center gap-2"
-              >
-                Try Mediation Now
-                <MousePointer2 className="h-4 w-4" />
-              </button>
-            </Link>
+            
+            <div className="mt-8">
+              <Link href="/#contact" onClick={() => setMobileMenuOpen(false)}>
+                <button
+                  className="w-full rounded-full bg-gold-500 py-4 font-sans text-sm font-medium tracking-wide text-navy-950 shadow-sm transition-all duration-200 ease-in-out hover:brightness-110 active:scale-95"
+                >
+                  Try Mediation Now
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
-      )}
-    </nav>
+      </div>
+    </>
   );
 }
