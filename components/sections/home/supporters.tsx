@@ -28,19 +28,26 @@ export function Supporters() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
           {testimonials.map((t, i) => (
-            <div key={i} className="relative p-12 rounded-4xl bg-slate-50 border border-slate-100 group hover:bg-navy-900 hover:text-white transition-all duration-500">
-              <Quote className="absolute top-10 right-10 h-12 w-12 text-black/5 group-hover:text-white/10 transition-colors" />
-              <p className="text-2xl font-light leading-relaxed mb-10 relative z-10">
+            <div key={i} className="relative p-10 rounded-4xl bg-slate-50 border border-slate-100 group hover:bg-navy-900 hover:text-white transition-all duration-500">
+              <Quote className="absolute top-8 right-8 h-8 w-8 text-black/5 group-hover:text-white/10 transition-colors" />
+              <p className="text-lg font-light leading-relaxed mb-8 relative z-10">
                 "{t.quote}"
               </p>
-              <div className="flex flex-col">
+              <div className="flex flex-col mt-auto">
                 <span className="font-bold text-sm uppercase tracking-widest">{t.author}</span>
                 <span className="text-xs font-mono opacity-60">{t.company}</span>
               </div>
             </div>
           ))}
+          
+          {/* Placeholders for 2 more testimonials */}
+           {[1, 2].map((_, i) => (
+            <div key={`ph-${i}`} className="flex flex-col items-center justify-center p-10 rounded-4xl border border-dashed border-black/10 text-black/20 min-h-[300px]">
+               <span className="text-sm">More testimonials coming soon</span>
+            </div>
+           ))}
         </div>
       </div>
     </section>

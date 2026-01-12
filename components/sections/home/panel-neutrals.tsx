@@ -20,9 +20,9 @@ const members = [
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80",
   },
   {
-    name: "J P Sengh",
-    role: "Senior Advocate & Mediator",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80",
+    name: "Ekta Bahl",
+    role: "Senior Mediator",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80",
   }
 ];
 

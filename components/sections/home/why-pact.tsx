@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Globe, Shield, Users, BookOpen, ScrollText } from "lucide-react";
+import { ArrowRight, Globe, Shield, BookOpen, ScrollText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const sections = [
@@ -12,7 +11,6 @@ const sections = [
     label: "Mediation Practice Protocols",
     title: "Mediation Practice Protocols",
     icon: Shield,
-
     description: "PACT operates in alignment with internationally recognised mediation practice protocols and upholds the principles of voluntariness, neutrality, confidentiality, and party autonomy. All PACT mediations are conducted in strict adherence to The Mediation Act, 2023, ensuring legal validity, ethical integrity, and global best-practice standards.",
     cta: "Standards of Practice"
   },
@@ -21,7 +19,6 @@ const sections = [
     label: "IMI QAP Mediation Advocacy",
     title: "IMI QAP Mediation Advocacy",
     icon: ScrollText,
-
     description: "PACT has been recognised by the International Mediation Institute (IMI) for its QAP-certified Mediation Advocacy, reflecting excellence in neutrality, ethical representation, and professional competence. This recognition affirms PACT’s commitment to international quality standards and mediation advocacy within the mediation ecosystem.",
     cta: "Our Certifications"
   },
@@ -30,7 +27,6 @@ const sections = [
     label: "International Collaborations",
     title: "International Collaborations",
     icon: Globe,
-
     description: "PACT has actively collaborated with leading institutions – International Mediation Institute (Europe/Global), Maxwell Mediators (Asia Pacific), Mediate.com (USA) to advance mediation practice, capacity building, and cross-border dispute resolution. These collaborations reflect PACT’s global outlook, commitment to knowledge exchange and visibility within the mediation community.",
     cta: "Global Network"
   },
@@ -39,7 +35,6 @@ const sections = [
     label: "Mediation Simplified",
     title: "Mediation Simplified",
     icon: BookOpen,
-
     description: "Mediation Simplified has made mediation accessible and practical for professionals, students, and disputants alike. By demystifying concepts and offering clear frameworks, the book, authored and curated by Jonathan Rodrigues and Nisshant Laroia, has contributed to greater awareness, informed practice, and wider adoption of mediation as an effective dispute resolution mechanism.",
     cta: "Get the Book"
   },
@@ -48,7 +43,6 @@ const sections = [
     label: "Mediation Clauses",
     title: "Mediation Clauses",
     icon: ScrollText,
-
     description: "The mediation clauses endorsed by PACT, as an institutionalised mediation service provider, promote early, structured, and confidential dispute resolution. Designed to align with international best practices and the Mediation Act, 2023, these clauses provide parties with clarity, procedural certainty, and enforceable pathways to effective mediation.",
     cta: "View Clauses"
   }
@@ -149,8 +143,6 @@ export function WhyPact() {
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
-
-
               </motion.div>
             </AnimatePresence>
           </div>

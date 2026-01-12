@@ -2,6 +2,30 @@
 
 const collaborators = [
   { 
+    name: "Maxwell Mediators", 
+    short: "MM",
+    style: "font-serif tracking-tight",
+    color: "group-hover:text-amber-900"
+  },
+  { 
+    name: "Mediate.com", 
+    short: "M.COM",
+    style: "font-sans font-bold tracking-tight",
+    color: "group-hover:text-blue-600"
+  },
+  { 
+    name: "Shardul Amarchand Mangaldas", 
+    short: "SAM",
+    style: "font-serif italic font-light",
+    color: "group-hover:text-emerald-900"
+  },
+  { 
+    name: "International Mediation Institute", 
+    short: "IMI",
+    style: "font-sans font-light uppercase tracking-widest",
+    color: "group-hover:text-blue-900"
+  },
+  { 
     name: "Khaitan & Co.", 
     short: "K&C",
     style: "font-serif italic tracking-tight",
