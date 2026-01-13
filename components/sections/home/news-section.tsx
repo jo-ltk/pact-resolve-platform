@@ -18,7 +18,7 @@ const newsItems = [
     type: "Podcast",
     title: "Mediation in India | Attorney General R. Venkataramani, with Jonathan Rodrigues & Soni Singh",
     date: "Aug 24, 2025",
-    image: "/news/mediation-india-podcast.png",
+    image: "/news/mediation-india-podcast.jpg",
     link: "https://www.youtube.com/watch?v=eJZeUtoIBpQ"
   },
   {
