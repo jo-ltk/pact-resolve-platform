@@ -37,7 +37,7 @@ export function WhatsAppButton({
         href={whatsappUrl} 
         target="_blank" 
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 text-[#25D366] hover:text-[#128C7E] transition-colors font-medium"
+        className="inline-flex items-center gap-2 text-gold-500 hover:text-gold-500/80 transition-colors font-medium"
       >
         <WhatsAppIcon className="h-5 w-5" />
         <span>Chat on WhatsApp</span>
@@ -62,7 +62,7 @@ export function WhatsAppButton({
                 exit={{ opacity: 0, x: 20 }}
                 className="bg-white text-navy-950 px-4 py-2 rounded-xl shadow-lg border border-gray-100 text-sm font-medium mr-2 mb-2 whitespace-nowrap"
               >
-                Chat with us! 👋
+                Try mediation with experts 👋
               </motion.div>
             )}
           </AnimatePresence>
@@ -71,7 +71,7 @@ export function WhatsAppButton({
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#25D366] hover:bg-[#128C7E] text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center relative group"
+            className="bg-gold-500 hover:bg-gold-500/90 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center relative group"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onMouseEnter={() => setIsHovered(true)}

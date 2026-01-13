@@ -62,12 +62,12 @@ function NewsCard({ item }: { item: typeof newsItems[0] }) {
   return (
     <a href={item.link} target="_blank" rel="noopener noreferrer" className="group block h-full">
       <div className="flex flex-col h-full bg-slate-50 border border-slate-100 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1">
-        <div className="relative aspect-16/10 overflow-hidden">
+        <div className="relative aspect-16/10 overflow-hidden bg-slate-100/50">
           <Image
             src={item.image}
             alt={item.title}
             fill
-            className="object-contain md:object-cover transition-transform duration-500 group-hover:scale-110"
+            className="object-contain transition-transform duration-500 group-hover:scale-110"
           />
           <div className="absolute top-4 left-4">
             <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm text-black border-none px-3 py-1">

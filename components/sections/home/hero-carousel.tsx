@@ -20,7 +20,6 @@ const slides = [
     buttonLabel: "Mediation Page",
     link: "/mediation",
     rightSlogan: "RESOLVE WITH PRECISION",
-    accent: "text-emerald-400",
     image: "/hero/hero_mediation.png",
   },
   {
@@ -29,7 +28,6 @@ const slides = [
     buttonLabel: "Academy Page",
     link: "/academy",
     rightSlogan: "MASTERY IN ADVOCACY",
-    accent: "text-blue-400",
     image: "/hero/hero_academy.png",
   },
   {
@@ -38,7 +36,6 @@ const slides = [
     buttonLabel: "Podcast Page",
     link: "/podcast",
     rightSlogan: "LEADING THE DIALOGUE",
-    accent: "text-cyan-400",
     image: "/hero/hero_mission.png",
   },
   {
@@ -47,7 +44,6 @@ const slides = [
     buttonLabel: "Competition Page",
     link: "/competition",
     rightSlogan: "THE FUTURE OF ADR",
-    accent: "text-amber-400",
     image: "/hero/hero_league.png",
   },
   {
@@ -56,7 +52,6 @@ const slides = [
     buttonLabel: "PACT Pledge and Clauses",
     link: "/pledge",
     rightSlogan: "COMMIT TO EXCELLENCE",
-    accent: "text-indigo-400",
     image: "/hero/hero_pledge.png",
   },
 ];
@@ -192,9 +187,9 @@ export function HeroCarousel() {
                         exit={{ opacity: 0, x: -20, scale: 0.98 }}
                         transition={{ duration: 1.5, ease: luxuryEasing }}
                       >
-                        <h2 className="text-5xl lg:text-6xl xl:text-8xl font-black leading-none text-right">
+                        <h2 className="text-4xl lg:text-5xl xl:text-7xl font-black leading-none text-right">
                           {slide.rightSlogan.split(' ').map((word, i) => (
-                            <div key={i} className={i === 1 ? slide.accent : "text-white"}>
+                            <div key={i} className={i === 1 ? "text-amber-400" : "text-white"}>
                               {word}
                             </div>
                           ))}
