@@ -1,63 +1,30 @@
 "use client";
 
-const collaborators = [
-  { 
-    name: "Maxwell Mediators", 
-    short: "MM",
-    style: "font-serif tracking-tight",
-    color: "group-hover:text-amber-900"
-  },
-  { 
-    name: "Mediate.com", 
-    short: "M.COM",
-    style: "font-sans font-bold tracking-tight",
-    color: "group-hover:text-blue-600"
-  },
-  { 
-    name: "Shardul Amarchand Mangaldas", 
-    short: "SAM",
-    style: "font-serif italic font-light",
-    color: "group-hover:text-emerald-900"
-  },
-  { 
-    name: "International Mediation Institute", 
-    short: "IMI",
-    style: "font-sans font-light uppercase tracking-widest",
-    color: "group-hover:text-blue-900"
-  },
-  { 
-    name: "Khaitan & Co.", 
-    short: "K&C",
-    style: "font-serif italic tracking-tight",
-    color: "group-hover:text-navy-900"
-  },
-  { 
-    name: "Adani Group", 
-    short: "ADANI",
-    style: "font-sans font-black tracking-tighter uppercase",
-    color: "group-hover:text-blue-900"
-  },
-  { 
-    name: "Cyril Amarchand Mangaldas", 
-    short: "CAM",
-    style: "font-serif font-medium tracking-wide",
-    color: "group-hover:text-stone-950"
-  },
-  { 
-    name: "Prem Tara Foundation", 
-    short: "PTF",
-    style: "font-serif italic font-light",
-    color: "group-hover:text-[#8b2d2d]"
-  }
+import Image from "next/image";
+import { motion } from "framer-motion";
+
+const partners = [
+  { name: "Maxwell Mediators", logo: "/partners/maxwell-mediators.png" },
+  { name: "Mediate.com", logo: "/partners/mediate-com.png" },
+  { name: "Shardul Amarchand Mangaldas", logo: "/partners/shardul-amarchand-mangaldas.png" },
+  { name: "International Mediation Institute", logo: "/partners/international-mediation-institute.png" },
+  { name: "Khaitan & Co.", logo: "/partners/khaitan-and-co.png" },
+  { name: "Adani Group", logo: "/partners/adani-group.png" },
+  { name: "Cyril Amarchand Mangaldas", logo: "/partners/cyril-amarchand-mangaldas.png" },
+  { name: "Prem Tara Foundation", logo: "/partners/prem-tara-foundation.png" },
 ];
 
 export function Collaborators() {
   return (
-    <section className="py-12 md:py-16 px-6 md:px-12 lg:px-24 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-white relative overflow-hidden">
       {/* Subtle grid background */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]" />
       
-      <div className="max-w-7xl mx-auto text-center relative z-10">
+      {/* Soft gradient overlays for seamless infinity effect */}
+      <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-linear-to-r from-white to-transparent z-20" />
+      <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-linear-to-l from-white to-transparent z-20" />
+
+      <div className="max-w-7xl mx-auto text-center relative z-10 mb-12">
         <div className="inline-block mb-3 md:mb-4">
           <h2 className="text-[10px] font-mono uppercase tracking-[0.5em] text-gold-600 mb-2">
             Strategic Partners
@@ -65,39 +32,45 @@ export function Collaborators() {
           <div className="h-[1px] w-full bg-linear-to-r from-transparent via-gold-400 to-transparent mx-auto" />
         </div>
         
-        <h3 className="text-2xl md:text-4xl font-extralight text-navy-950 mb-8 md:mb-10 tracking-tighter">
+        <h3 className="text-2xl md:text-4xl font-extralight text-navy-950 tracking-tighter">
           Collaborating with <span className="font-serif italic">Excellence</span>
         </h3>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-          {collaborators.map((item, i) => (
-            <div 
-              key={i} 
-              className="group relative flex flex-col items-center justify-center p-6 min-h-[120px] bg-white transition-all duration-700 hover:bg-slate-50/50"
-            >
-              {/* Ghost background text */}
-              <span className="absolute inset-0 flex items-center justify-center text-[80px] font-black text-black/2 pointer-events-none transition-all duration-700 group-hover:text-gold-500/5 group-hover:scale-110 select-none">
-                {item.short}
-              </span>
-              
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <span className={`text-lg md:text-xl ${item.style} ${item.color} text-black/50 transition-all duration-500 group-hover:scale-105 group-hover:tracking-normal`}>
-                  {item.name}
-                </span>
+      <div className="relative w-full overflow-hidden">
+        <div className="flex">
+          <motion.div
+            initial={{ x: 0 }}
+            animate={{ x: "-50%" }}
+            transition={{
+              duration: 50,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            className="flex shrink-0 items-center space-x-12 md:space-x-24 px-6 md:px-12"
+          >
+            {[...partners, ...partners, ...partners, ...partners].map((partner, i) => (
+              <div 
+                key={i} 
+                className="relative h-16 md:h-24 w-40 md:w-56 md:grayscale hover:grayscale-0 transition-all duration-500 md:opacity-60 hover:opacity-100 hover:scale-110 flex items-center justify-center group"
+              >
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 160px, 224px"
+                />
               </div>
-
-              {/* Minimal corner accents */}
-              <div className="absolute top-0 left-0 w-0 h-0 border-t border-l border-gold-500/0 transition-all duration-500 group-hover:w-4 group-hover:h-4 group-hover:border-gold-500/40" />
-              <div className="absolute bottom-0 right-0 w-0 h-0 border-b border-r border-gold-500/0 transition-all duration-500 group-hover:w-4 group-hover:h-4 group-hover:border-gold-500/40" />
-            </div>
-          ))}
+            ))}
+          </motion.div>
         </div>
+      </div>
 
-        <div className="mt-10 pt-6 border-t border-black/3">
-          <p className="text-black/20 font-mono text-[10px] uppercase tracking-[0.3em]">
-            Trusted by Industry Leaders Worldwide
-          </p>
-        </div>
+      <div className="max-w-7xl mx-auto text-center mt-12 pt-6 border-t border-black/5 relative z-10">
+        <p className="text-black/20 font-mono text-[10px] uppercase tracking-[0.3em]">
+          Trusted by Industry Leaders Worldwide
+        </p>
       </div>
     </section>
   );
