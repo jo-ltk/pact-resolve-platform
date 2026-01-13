@@ -100,7 +100,7 @@ export function HeroCarousel() {
     const increment = (100 / (autoplayDelay / 60)) * 1.1;
     const interval = setInterval(() => {
       if (api.canScrollNext()) {
-        setProgress((prev) => Math.min(prev + increment, 100)); 
+        setProgress((prev) => Math.min(prev + increment, 100));
       }
     }, 60);
 
@@ -108,11 +108,11 @@ export function HeroCarousel() {
   }, [api, autoplayDelay]);
 
   return (
-    <section className="relative h-[75vh] min-h-[550px] md:h-[85vh] md:min-h-[650px] w-full overflow-hidden bg-navy-950">
-      <Carousel 
-        setApi={setApi} 
+    <section className="relative h-[30vh] min-h-[450px] md:h-[calc(100vh-80px)] lg:h-[calc(100vh-88px)] w-full overflow-hidden bg-navy-950">
+      <Carousel
+        setApi={setApi}
         plugins={[autoplay]}
-        className="h-full w-full" 
+        className="h-full w-full"
         opts={{ loop: true }}
       >
         <CarouselContent className="h-full ml-0">
@@ -131,10 +131,10 @@ export function HeroCarousel() {
                 <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-transparent to-transparent z-10" />
               </div>
 
-              <div className="relative z-20 flex flex-col justify-start pt-8 md:pt-20 lg:pt-16 lg:grid lg:grid-cols-[3fr_2fr] lg:items-start h-full w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-32 md:pb-32 lg:pb-0 gap-8">
-                
+              <div className="relative z-20 flex flex-col justify-center lg:grid lg:grid-cols-[3fr_2fr] lg:items-center h-full w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-24 md:pb-40 gap-8">
+
                 {/* Left Content Block */}
-                <div className="space-y-4 lg:space-y-6 lg:pr-6">
+                <div className="space-y-4 lg:space-y-6 lg:pr-6 mt-4 md:mt-28">
                   <div className="space-y-4 lg:space-y-6">
                     <AnimatePresence mode="wait">
                       {current === index && (
@@ -153,16 +153,16 @@ export function HeroCarousel() {
                               </span>
                             ))}
                           </h1>
-                          <motion.div 
+                          <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: 80 }}
                             transition={{ duration: 0.8, delay: 0.5, ease: luxuryEasing }}
-                            className="h-1 bg-gold-500 mb-4" 
+                            className="h-1 bg-gold-500 mb-4"
                           />
                           <p className="text-base md:text-lg lg:text-xl text-white/90 leading-relaxed max-w-full lg:max-w-[90%] font-light">
                             {slide.description}
                           </p>
-                          
+
                           <div className="pt-4">
                             <Link href={slide.link}>
                               <button className="rounded-full bg-gold-500 px-10 py-4 font-sans text-base font-medium tracking-wide text-navy-950 shadow-lg transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.02] hover:brightness-110 active:scale-95">
@@ -217,7 +217,7 @@ export function HeroCarousel() {
                   {/* Progress Line */}
                   <div className="relative h-[2px] w-full bg-white/20 overflow-hidden mb-2 md:mb-4">
                     {current === index && (
-                      <motion.div 
+                      <motion.div
                         className="absolute inset-0 bg-gold-500 origin-left"
                         style={{ scaleX: progress / 100 }}
                       />
@@ -226,7 +226,7 @@ export function HeroCarousel() {
                       <div className="absolute inset-0 bg-white/40" />
                     )}
                   </div>
-                  
+
                   {/* Label */}
                   <span className={cn(
                     "text-[9px] md:text-[10px] lg:text-[11px] xl:text-xs font-medium tracking-normal lg:tracking-wider xl:tracking-widest uppercase transition-all duration-500 leading-tight",
