@@ -28,18 +28,18 @@ const members = [
 
 export function PanelNeutrals() {
   return (
-    <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+    <section className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-          <div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6 md:gap-8 text-center md:text-left">
+          <div className="items-center md:items-start flex flex-col md:block">
             <div className="inline-block px-4 py-1.5 rounded-full border border-black/10 bg-black/5 mb-6">
-              <span className="text-xs font-mono uppercase tracking-widest text-black/60">Expertise</span>
+              <span className="text-[10px] md:text-xs font-mono uppercase tracking-widest text-black/60">Expertise</span>
             </div>
-            <h2 className="text-5xl md:text-7xl font-light tracking-tight text-black">
+            <h2 className="text-4xl md:text-7xl font-light tracking-tight text-black leading-tight">
               Panel of Neutrals
             </h2>
           </div>
-          <p className="max-w-md text-black/60 font-light text-lg">
+          <p className="max-w-md text-black/60 font-light text-base md:text-lg mx-auto md:mx-0">
             Our panel comprises distinguished legal professionals and seasoned mediators dedicated to impartial resolution.
           </p>
         </div>
@@ -47,7 +47,7 @@ export function PanelNeutrals() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {members.map((member, i) => (
             <div key={i} className="group flex flex-col items-center text-center">
-              <div className="relative h-80 w-full rounded-2xl overflow-hidden mb-6 filter grayscale group-hover:grayscale-0 transition-all duration-500">
+              <div className="relative h-80 w-full rounded-2xl overflow-hidden mb-6 filter md:grayscale md:group-hover:grayscale-0 transition-all duration-500">
                 <Image
                   src={member.image}
                   alt={member.name}

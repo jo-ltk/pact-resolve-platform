@@ -6,61 +6,61 @@ import { History, ArrowRight } from "lucide-react";
 
 export function AboutPact() {
   return (
-    <section className="relative py-24 bg-navy-950 overflow-hidden">
+    <section className="relative py-16 md:py-24 bg-navy-950 overflow-hidden">
       {/* Background radial glow */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-500/10 blur-[120px] rounded-full -z-10" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-gold-500/5 blur-[120px] rounded-full -z-10" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
         {/* Header Section */}
-        <div className="text-center mb-20 space-y-6">
+        <div className="text-center mb-16 md:mb-20 space-y-6">
           <div className="inline-flex items-center gap-4 opacity-40">
             <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white">Chapter One</span>
-            <div className="h-px w-12 bg-white/30" />
+            <div className="h-px w-8 md:w-12 bg-white/30" />
             <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white">The Legacy</span>
           </div>
           
-          <h2 className="text-5xl md:text-7xl font-light tracking-tight text-white leading-tight">
+          <h2 className="text-4xl md:text-7xl font-light tracking-tight text-white leading-[1.1]">
             About <span className="text-gold-500 font-medium">PACT</span>
           </h2>
           
-          <p className="max-w-3xl mx-auto text-xl text-white/60 leading-relaxed font-light">
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-white/60 leading-relaxed font-light">
             Founded on the principles of excellence and innovation, PACT has transformed the landscape of mediation. 
             Our journey is a testament to the power of collaborative conflict resolution.
           </p>
         </div>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-24 pb-12 border-b border-white/5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-24 pb-12 border-b border-white/5">
           <div className="text-center space-y-2 group">
-            <span className="block text-4xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">2500+</span>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-white/40">Cases Resolved</span>
+            <span className="block text-3xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">2500+</span>
+            <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-white/40">Cases Resolved</span>
           </div>
           <div className="text-center space-y-2 group">
-            <span className="block text-4xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">98%</span>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-white/40">Success Rate</span>
+            <span className="block text-3xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">98%</span>
+            <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-white/40">Success Rate</span>
           </div>
           <div className="text-center space-y-2 group">
-            <span className="block text-4xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">15+</span>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-white/40">Global Chapters</span>
+            <span className="block text-3xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">15+</span>
+            <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-white/40">Global Chapters</span>
           </div>
           <div className="text-center space-y-2 group">
-            <span className="block text-4xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">5000+</span>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-white/40">Trained Neutrals</span>
+            <span className="block text-3xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">5000+</span>
+            <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-white/40">Trained Neutrals</span>
           </div>
         </div>
 
         {/* The Massive Journey Display */}
-        <div className="relative group">
-          <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 via-blue-500/20 to-gold-500/20 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-          <div className="relative bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+        <div className="relative group -mx-6 md:mx-0">
+          <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 via-blue-500/20 to-gold-500/20 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-500 hidden md:block"></div>
+          <div className="relative bg-black rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-y md:border border-white/10">
             <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-transparent via-transparent to-black/40 pointer-events-none" />
             <Image
               src="/images/pact-journey.png"
               alt="Journey with The PACT - Timeline from 2015 to 2026"
               width={1920}
               height={1080}
-              className="w-full h-auto object-cover transform transition duration-700 group-hover:scale-[1.01]"
+              className="w-full h-auto object-cover transform transition duration-700 md:group-hover:scale-[1.01]"
               priority
             />
           </div>

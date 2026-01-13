@@ -53,19 +53,19 @@ const collaborators = [
 
 export function Collaborators() {
   return (
-    <section className="py-16 px-6 md:px-12 lg:px-24 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-16 px-6 md:px-12 lg:px-24 bg-white relative overflow-hidden">
       {/* Subtle grid background */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]" />
       
       <div className="max-w-7xl mx-auto text-center relative z-10">
-        <div className="inline-block mb-4">
+        <div className="inline-block mb-3 md:mb-4">
           <h2 className="text-[10px] font-mono uppercase tracking-[0.5em] text-gold-600 mb-2">
             Strategic Partners
           </h2>
           <div className="h-[1px] w-full bg-linear-to-r from-transparent via-gold-400 to-transparent mx-auto" />
         </div>
         
-        <h3 className="text-3xl md:text-4xl font-extralight text-navy-950 mb-10 tracking-tighter">
+        <h3 className="text-2xl md:text-4xl font-extralight text-navy-950 mb-8 md:mb-10 tracking-tighter">
           Collaborating with <span className="font-serif italic">Excellence</span>
         </h3>
 

@@ -17,13 +17,13 @@ const testimonials = [
 
 export function Supporters() {
   return (
-    <section className="py-24 px-6 md:px-12 lg:px-24 bg-white overflow-hidden">
+    <section className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="text-5xl md:text-7xl font-light tracking-tight text-black mb-6">
+        <div className="text-center mb-16 md:mb-20">
+          <h2 className="text-4xl md:text-7xl font-light tracking-tight text-black mb-6 leading-tight">
             PACT Supporters
           </h2>
-          <p className="text-black/40 font-mono text-sm uppercase tracking-widest">
+          <p className="text-black/40 font-mono text-xs md:text-sm uppercase tracking-widest">
             Testimonials from our global network
           </p>
         </div>

@@ -58,57 +58,72 @@ const newsItems = [
   }
 ];
 
+// Reusable Card Component
+function NewsCard({ item }: { item: typeof newsItems[0] }) {
+  return (
+    <a href={item.link} target="_blank" rel="noopener noreferrer" className="group block h-full">
+      <div className="flex flex-col h-full bg-slate-50 border border-slate-100 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1">
+        <div className="relative aspect-16/10 overflow-hidden">
+          <Image
+            src={item.image}
+            alt={item.title}
+            fill
+            className="object-contain md:object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+          <div className="absolute top-4 left-4">
+            <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm text-black border-none px-3 py-1">
+              {item.type}
+            </Badge>
+          </div>
+        </div>
+        <div className="p-6 flex flex-col grow">
+          <span className="text-xs font-mono text-black/40 mb-3">{item.date}</span>
+          <h3 className="text-xl font-medium text-black leading-snug group-hover:text-primary transition-colors line-clamp-2">
+            {item.title}
+          </h3>
+          <div className="mt-auto pt-6 flex items-center text-xs font-medium tracking-wide text-black/40 group-hover:text-black transition-colors">
+            Read More <ChevronRight className="ml-2 h-3 w-3" />
+          </div>
+        </div>
+      </div>
+    </a>
+  );
+}
+
 export function NewsSection() {
   return (
-    <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+    <section className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-baseline justify-between mb-12 border-b border-black/5 pb-8">
+        <div className="flex items-baseline justify-between mb-10 md:mb-12 border-b border-black/5 pb-8">
           <div>
-            <h2 className="text-4xl md:text-5xl font-light tracking-tight text-black">
+            <h2 className="text-3xl md:text-5xl font-light tracking-tight text-black leading-tight">
               PACT NEWS – GET WITH IT
             </h2>
-            <p className="mt-4 text-black/60 font-mono text-sm uppercase tracking-widest">
+            <p className="mt-4 text-black/60 font-mono text-[10px] md:text-sm uppercase tracking-widest leading-relaxed">
               Focussed Articles • Events • Press Releases • Podcasts • Blogs
             </p>
           </div>
         </div>
 
+        {/* Mobile View: Vertical Stack */}
+        <div className="flex flex-col gap-8 md:hidden">
+          {newsItems.map((item, index) => (
+            <NewsCard key={index} item={item} />
+          ))}
+        </div>
+
+        {/* Desktop View: Carousel */}
         <Carousel
           opts={{
             align: "start",
             loop: true,
           }}
-          className="w-full"
+          className="hidden md:block w-full"
         >
           <CarouselContent className="-ml-4">
             {newsItems.map((item, index) => (
               <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                <a href={item.link} target="_blank" rel="noopener noreferrer" className="group">
-                  <div className="flex flex-col h-full bg-slate-50 border border-slate-100 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1">
-                    <div className="relative aspect-[16/10] overflow-hidden">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute top-4 left-4">
-                        <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm text-black border-none px-3 py-1">
-                          {item.type}
-                        </Badge>
-                      </div>
-                    </div>
-                    <div className="p-6 flex flex-col grow">
-                      <span className="text-xs font-mono text-black/40 mb-3">{item.date}</span>
-                      <h3 className="text-xl font-medium text-black leading-snug group-hover:text-primary transition-colors line-clamp-2">
-                        {item.title}
-                      </h3>
-                      <div className="mt-auto pt-6 flex items-center text-xs font-medium tracking-wide text-black/40 group-hover:text-black transition-colors">
-                        Read More <ChevronRight className="ml-2 h-3 w-3" />
-                      </div>
-                    </div>
-                  </div>
-                </a>
+                <NewsCard item={item} />
               </CarouselItem>
             ))}
           </CarouselContent>

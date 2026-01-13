@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MagneticButton } from "@/components/magnetic-button";
 import { Video, Phone, Mail, User, Clock, CheckCircle2, X, ArrowRight, MessageSquare, ShieldCheck } from "lucide-react";
 import Image from "next/image";
@@ -84,17 +84,29 @@ export function CTASection() {
     setActiveForm(null);
   }
 
+  useEffect(() => {
+    if (activeForm) {
+      const timer = setTimeout(() => {
+        const element = document.getElementById("cta-form-container");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [activeForm]);
+
   return (
-    <section className="bg-[#fcfdfd] py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
+    <section className="bg-[#fcfdfd] py-16 md:py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
         {/* Modern Header Section */}
-        <div className="text-center mb-20 relative">
+        <div className="text-center mb-12 md:mb-20 relative px-2">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 text-gold-600 text-sm font-semibold mb-6 border border-gold-500/20"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 text-gold-600 text-[10px] md:text-sm font-semibold mb-6 border border-gold-500/20"
           >
             <MessageSquare className="h-4 w-4" />
             <span>Connect With Us</span>
@@ -105,9 +117,9 @@ export function CTASection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-light text-navy-950 mb-6 tracking-tight leading-[1.1]"
+            className="text-3xl md:text-6xl font-light text-navy-950 mb-6 tracking-tight leading-[1.1]"
           >
-            Got a query or simply ready? <br />
+            Got a query or simply ready? <br className="hidden md:block" />
             <span className="font-semibold text-navy-900 italic">We’ll get help to you right away.</span>
           </motion.h2>
           
@@ -116,14 +128,14 @@ export function CTASection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-navy-600/80 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+            className="text-navy-600/80 text-base md:text-xl max-w-3xl mx-auto leading-relaxed"
           >
             Connect with our Mediation Convenor or Trainings Coordinator to learn more about initiating a mediation or registering for the academy.
           </motion.p>
         </div>
 
         {/* Support & Contact Bar - Sleek Floating Design */}
-        <div className="flex flex-wrap justify-center gap-4 mb-24">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16 md:mb-24">
           {[
             { time: "9am – 3pm IST", phone: "9765987280", label: "Mediation Convenor" },
             { time: "3pm – 9pm IST", phone: "9958488857", label: "Trainings Coordinator" }
@@ -134,7 +146,7 @@ export function CTASection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 + idx * 0.1 }}
-              className="flex items-center gap-5 bg-white border border-navy-950/5 p-4 pr-10 rounded-2xl shadow-sm hover:shadow-md transition-shadow group"
+              className="flex items-center gap-5 bg-white border border-navy-950/5 p-4 pr-10 rounded-2xl shadow-sm hover:shadow-md transition-shadow group w-full sm:w-auto"
             >
               <div className="h-12 w-12 rounded-xl bg-navy-950 flex items-center justify-center text-white shrink-0 group-hover:bg-gold-500 transition-colors">
                 <Phone className="h-5 w-5" />
@@ -148,39 +160,41 @@ export function CTASection() {
         </div>
 
         {/* Dual Actions - Premium Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch">
           
           {/* Mediation Card */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className={`group relative rounded-[2.5rem] p-10 lg:p-14 overflow-hidden border-2 transition-all duration-500 flex flex-col justify-between min-h-[500px] ${
+            className={`group relative rounded-4xl md:rounded-[2.5rem] p-8 md:p-14 overflow-hidden border-2 transition-all duration-500 flex flex-col justify-between min-h-[400px] md:min-h-[500px] ${
               activeForm === "mediation" 
                 ? "border-navy-950 bg-navy-950 text-white shadow-2xl scale-[1.02] z-10" 
-                : "border-black/5 bg-white hover:border-navy-950/20 shadow-sm hover:shadow-xl hover:-translate-y-1"
+                : activeForm === "training"
+                  ? "hidden md:flex bg-white border-black/5"
+                  : "border-black/5 bg-white hover:border-navy-950/20 shadow-sm hover:shadow-xl hover:-translate-y-1"
             }`}
           >
             <div className="relative z-10">
-              <div className={`h-16 w-16 rounded-2xl flex items-center justify-center mb-10 transition-colors ${
+              <div className={`h-14 w-14 md:h-16 md:w-16 rounded-2xl flex items-center justify-center mb-8 md:mb-10 transition-colors ${
                 activeForm === "mediation" ? "bg-gold-500 text-navy-950" : "bg-navy-950 text-white group-hover:bg-gold-500"
               }`}>
-                <Video className="h-8 w-8" />
+                <Video className="h-7 w-7 md:h-8 md:w-8" />
               </div>
-              <h3 className={`text-4xl lg:text-5xl font-light mb-6 leading-[1.15] ${activeForm === "mediation" ? "text-white" : "text-navy-950"}`}>
-                Initiate a <br /><span className="font-semibold italic">Mediation</span>
+              <h3 className={`text-3xl md:text-5xl font-light mb-6 leading-[1.15] ${activeForm === "mediation" ? "text-white" : "text-navy-950"}`}>
+                Initiate a <br className="hidden md:block" /><span className="font-semibold italic">Mediation</span>
               </h3>
-              <p className={`text-lg mb-8 max-w-sm ${activeForm === "mediation" ? "text-white/60" : "text-navy-600"}`}>
+              <p className={`text-base md:text-lg mb-8 max-w-sm ${activeForm === "mediation" ? "text-white/60" : "text-navy-600"}`}>
                 Get your queries answered on a complimentary zoom call with our team.
               </p>
             </div>
 
-            <div className="relative z-10 flex flex-wrap gap-4 items-center">
+            <div className="relative z-10 flex flex-wrap gap-4 items-center mt-auto">
               <MagneticButton
                 enableMotion
                 size="lg"
                 variant={activeForm === "mediation" ? "primary" : "ghost"}
-                className={`uppercase tracking-widest font-sans font-bold border-2 ${
+                className={`w-full sm:w-auto uppercase tracking-widest font-sans font-bold border-2 ${
                   activeForm === "mediation" 
                     ? "bg-white text-navy-950 border-white hover:bg-gold-500 hover:border-gold-500" 
                     : "border-navy-950/10 hover:border-navy-950"
@@ -196,7 +210,7 @@ export function CTASection() {
             <div className={`absolute bottom-[-10%] right-[-10%] opacity-5 rotate-12 transition-transform duration-1000 group-hover:scale-125 ${
               activeForm === "mediation" ? "text-white" : "text-navy-950"
             }`}>
-              <ShieldCheck size={400} />
+              <ShieldCheck size={300} className="md:w-[400px] md:h-[400px]" />
             </div>
           </motion.div>
 
@@ -205,30 +219,32 @@ export function CTASection() {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className={`group relative rounded-[2.5rem] p-10 lg:p-14 overflow-hidden border-2 transition-all duration-500 flex flex-col justify-between min-h-[500px] ${
+            className={`group relative rounded-4xl md:rounded-[2.5rem] p-8 md:p-14 overflow-hidden border-2 transition-all duration-500 flex flex-col justify-between min-h-[400px] md:min-h-[500px] ${
               activeForm === "training" 
                 ? "border-gold-600 bg-gold-50 shadow-2xl scale-[1.02] z-10" 
-                : "border-black/5 bg-white hover:border-gold-500/20 shadow-sm hover:shadow-xl hover:-translate-y-1"
+                : activeForm === "mediation"
+                  ? "hidden md:flex bg-white border-black/5"
+                  : "border-black/5 bg-white hover:border-gold-500/20 shadow-sm hover:shadow-xl hover:-translate-y-1"
             }`}
           >
             <div className="relative z-10">
-              <div className="h-16 w-16 rounded-2xl bg-gold-500 flex items-center justify-center text-navy-950 mb-10 transition-transform group-hover:rotate-12">
-                <Clock className="h-8 w-8" />
+              <div className="h-14 w-14 md:h-16 md:w-16 rounded-2xl bg-gold-500 flex items-center justify-center text-navy-950 mb-8 md:mb-10 transition-transform group-hover:rotate-12">
+                <Clock className="h-7 w-7 md:h-8 md:w-8" />
               </div>
-              <h3 className="text-4xl lg:text-5xl font-light text-navy-950 mb-6 leading-[1.15]">
-                Reserve a <br /><span className="font-semibold italic">Training</span>
+              <h3 className="text-3xl md:text-5xl font-light text-navy-950 mb-6 leading-[1.15]">
+                Reserve a <br className="hidden md:block" /><span className="font-semibold italic">Training</span>
               </h3>
-              <p className="text-navy-600 text-lg mb-8 max-w-sm">
+              <p className="text-navy-600 text-base md:text-lg mb-8 max-w-sm">
                 Get your queries answered on a brief phone call with our academy coordinator.
               </p>
             </div>
 
-            <div className="relative z-10 flex flex-wrap gap-4 items-center">
+            <div className="relative z-10 flex flex-wrap gap-4 items-center mt-auto">
               <MagneticButton
                 enableMotion
                 size="lg"
                 variant="primary"
-                className={`uppercase tracking-widest font-sans font-bold border-2 transition-all duration-500 ${
+                className={`w-full sm:w-auto uppercase tracking-widest font-sans font-bold border-2 transition-all duration-500 ${
                   activeForm === "training" 
                     ? "bg-navy-950 text-white border-navy-950 hover:bg-gold-600 hover:border-gold-600 shadow-lg" 
                     : "bg-gold-500 text-navy-950 border-gold-500 hover:bg-white hover:text-navy-950 hover:border-navy-950/10"
@@ -242,7 +258,7 @@ export function CTASection() {
             
             {/* Background Decorative Element */}
             <div className="absolute bottom-[-10%] right-[-10%] opacity-[0.03] rotate-[-15deg] transition-transform duration-1000 group-hover:scale-125 text-navy-950">
-              <User size={400} />
+              <User size={300} className="md:w-[400px] md:h-[400px]" />
             </div>
           </motion.div>
         </div>
@@ -251,28 +267,29 @@ export function CTASection() {
         <AnimatePresence mode="wait">
           {activeForm && (
             <motion.div
+              id="cta-form-container"
               initial={{ height: 0, opacity: 0, y: 30 }}
               animate={{ height: "auto", opacity: 1, y: 0 }}
               exit={{ height: 0, opacity: 0, y: 30 }}
-              className="mt-12 overflow-hidden"
+              className="mt-12 overflow-hidden scroll-mt-10"
             >
               <div className="py-12 lg:py-20 border-t border-navy-950/5">
                 <div className="flex items-start justify-between mb-16 px-2">
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className={`h-1.5 w-12 rounded-full ${activeForm === "mediation" ? "bg-navy-950" : "bg-gold-500"}`} />
-                      <span className="text-sm font-bold uppercase tracking-widest text-navy-600/60">Official Request Form</span>
+                      <span className="text-sm font-bold uppercase tracking-widest text-navy-600">Official Request Form</span>
                     </div>
                     <h2 className="text-4xl lg:text-5xl font-light text-navy-950 mb-3 tracking-tight">
                       {activeForm === "mediation" ? "Initiate A Mediation" : "Reserve A Training"}
                     </h2>
                     {activeForm === "mediation" ? (
-                      <p className="text-navy-500 flex items-center gap-2 text-lg">
+                      <p className="text-navy-600 flex items-center gap-2 text-lg">
                         <ShieldCheck className="h-5 w-5 text-green-500" />
                         All data is encrypted & strictly confidential
                       </p>
                     ) : (
-                       <p className="text-navy-500 text-lg">Professional training solutions for the academy staff & partners</p>
+                      <p className="text-navy-600 text-lg">Professional training solutions for the academy staff & partners</p>
                     )}
                   </div>
                   <button 

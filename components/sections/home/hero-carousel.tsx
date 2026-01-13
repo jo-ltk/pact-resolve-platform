@@ -61,32 +61,65 @@ const slides = [
 ];
 
 export function HeroCarousel() {
+  /* State for Carousel */
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [progress, setProgress] = React.useState(0);
 
+  /* State for mobile check */
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    // Initial check
+    checkMobile();
+    // Add listener
+    window.addEventListener('resize', checkMobile);
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const autoplayDelay = isMobile ? 3000 : 6000;
+
   // Autoplay plugin configuration
   const autoplay = React.useMemo(
-    () => Autoplay({ delay: 6000, stopOnInteraction: false }),
-    []
+    () => Autoplay({ delay: autoplayDelay, stopOnInteraction: false }),
+    [autoplayDelay]
   );
 
+  // Handle slide selection
   React.useEffect(() => {
     if (!api) return;
 
-    api.on("select", () => {
+    const onSelect = () => {
       setCurrent(api.selectedScrollSnap());
       setProgress(0); // Reset progress on slide change
-    });
+    };
+
+    api.on("select", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
+
+  // Handle progress bar interval
+  React.useEffect(() => {
+    if (!api) return;
+
+    // Calculate increment based on delay
+    // For 6000ms: 100 / (6000/60) = 1. Using 1.2 gives ~5s completion (buffer)
+    // Formula: (100 / (delay / 60)) * 1.2
+    const increment = (100 / (autoplayDelay / 60)) * 1.2;
 
     const interval = setInterval(() => {
       if (api.canScrollNext()) {
-        setProgress((prev) => Math.min(prev + 1.2, 100)); // Approx sync with 6s autoplay
+        setProgress((prev) => Math.min(prev + increment, 100)); 
       }
     }, 60);
 
     return () => clearInterval(interval);
-  }, [api]);
+  }, [api, autoplayDelay]);
 
   return (
     <section className="relative h-[70vh] min-h-[500px] md:h-[80vh] md:min-h-[600px] w-full overflow-hidden bg-navy-950">
