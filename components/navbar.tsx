@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -56,12 +57,27 @@ export function Navbar() {
           <Link
             href="/"
             onClick={() => handleNavClick("/")}
-            className="flex shrink-0 items-center transition-opacity hover:opacity-90"
+            className="flex shrink-0 items-center gap-3 transition-opacity hover:opacity-90"
             aria-label="PACT Home"
           >
-            <span className="font-sans text-2xl font-black tracking-tighter text-white">
-              PACT
-            </span>
+            <div className="relative h-10 w-auto">
+              <Image
+                src="/images/pact-logo.png"
+                alt="PACT"
+                width={120}
+                height={40}
+                className="h-full w-auto object-contain"
+                priority
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-sans text-xl font-black tracking-tighter text-white leading-none">
+                PACT
+              </span>
+              <span className="text-[9px] font-medium text-white/80 uppercase tracking-wide leading-tight block max-w-[200px] md:max-w-none">
+                The peacekeeping and conflict resolution team
+              </span>
+            </div>
           </Link>
 
           {/* Menu: Right aligned text links per design or center */}
@@ -136,7 +152,26 @@ export function Navbar() {
           )}
         >
           <div className="flex items-center justify-between p-6 border-b border-white/10 h-[64px]">
-            <span className="font-sans text-xl font-black text-white tracking-widest uppercase">PACT</span>
+            <div className="flex items-center gap-3 max-w-[80%]">
+              <div className="relative h-10 w-auto shrink-0">
+                <Image
+                  src="/images/pact-logo.png"
+                  alt="PACT"
+                  width={120}
+                  height={40}
+                  className="h-full w-auto object-contain"
+                  priority
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-sans text-xl font-black tracking-widest text-white uppercase leading-none">
+                  PACT
+                </span>
+                <span className="text-[8px] font-medium text-white/70 uppercase tracking-wide leading-tight mt-1">
+                  The peacekeeping and conflict resolution team
+                </span>
+              </div>
+            </div>
             <button 
               onClick={() => setMobileMenuOpen(false)}
               className="text-white hover:text-gold-500 transition-colors"
