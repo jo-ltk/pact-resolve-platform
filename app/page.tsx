@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { HeroCarousel } from "@/components/sections/home/hero-carousel";
 import { NewsSection } from "@/components/sections/home/news-section";
 import { AboutPact } from "@/components/sections/home/about-pact";
@@ -12,26 +11,14 @@ import { Supporters } from "@/components/sections/home/supporters";
 import { NetworkLogos } from "@/components/sections/home/network-logos";
 import { Footer } from "@/components/footer";
 import { GrainOverlay } from "@/components/grain-overlay";
+import { FadeIn } from "@/components/motion-wrapper";
 
 export default function Home() {
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-background">
       <GrainOverlay />
       
-      <div
-        className={`relative z-10 w-full transition-opacity duration-1000 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
-      >
+      <FadeIn className="relative z-10 w-full">
         <HeroCarousel />
         
         <div id="news">
@@ -67,7 +54,7 @@ export default function Home() {
         </div>
         
         <Footer />
-      </div>
+      </FadeIn>
     </main>
   );
 }

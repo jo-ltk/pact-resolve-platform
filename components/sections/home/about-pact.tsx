@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { History, ArrowRight } from "lucide-react";
-
+import { History } from "lucide-react";
+import { FadeIn, FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
 
 export function AboutPact() {
   return (
@@ -13,7 +13,7 @@ export function AboutPact() {
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
         {/* Header Section */}
-        <div className="text-center mb-16 md:mb-20 space-y-6">
+        <FadeInUp className="text-center mb-16 md:mb-20 space-y-6">
           <div className="inline-flex items-center gap-4 opacity-40">
             <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white">Chapter One</span>
             <div className="h-px w-8 md:w-12 bg-white/30" />
@@ -28,30 +28,30 @@ export function AboutPact() {
             Founded on the principles of excellence and innovation, PACT has transformed the landscape of mediation. 
             Our journey is a testament to the power of collaborative conflict resolution.
           </p>
-        </div>
+        </FadeInUp>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-24 pb-12 border-b border-white/5">
-          <div className="text-center space-y-2 group">
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-24 pb-12 border-b border-white/5">
+          <StaggerItem className="text-center space-y-2 group">
             <span className="block text-3xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">2500+</span>
             <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-white/40">Cases Resolved</span>
-          </div>
-          <div className="text-center space-y-2 group">
+          </StaggerItem>
+          <StaggerItem className="text-center space-y-2 group">
             <span className="block text-3xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">98%</span>
             <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-white/40">Success Rate</span>
-          </div>
-          <div className="text-center space-y-2 group">
+          </StaggerItem>
+          <StaggerItem className="text-center space-y-2 group">
             <span className="block text-3xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">15+</span>
             <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-white/40">Global Chapters</span>
-          </div>
-          <div className="text-center space-y-2 group">
+          </StaggerItem>
+          <StaggerItem className="text-center space-y-2 group">
             <span className="block text-3xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">5000+</span>
             <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-white/40">Trained Neutrals</span>
-          </div>
-        </div>
+          </StaggerItem>
+        </StaggerContainer>
 
         {/* The Massive Journey Display */}
-        <div className="relative group -mx-6 md:mx-0">
+        <FadeIn className="relative group -mx-6 md:mx-0" delay={0.2}>
           <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 via-blue-500/20 to-gold-500/20 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-500 hidden md:block"></div>
           <div className="relative bg-black rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-y md:border border-white/10">
             <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-transparent via-transparent to-black/40 pointer-events-none" />
@@ -72,7 +72,7 @@ export function AboutPact() {
               <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/80">Interactive Timeline 2015 - 2026</span>
             </div>
           </div>
-        </div>
+        </FadeIn>
 
       </div>
     </section>

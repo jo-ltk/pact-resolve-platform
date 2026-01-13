@@ -7,11 +7,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ChevronRight } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
+import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
 
 const newsItems = [
   {
@@ -94,44 +93,52 @@ export function NewsSection() {
   return (
     <section className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-baseline justify-between mb-10 md:mb-12 border-b border-black/5 pb-8">
+        <FadeInUp className="flex items-baseline justify-between mb-10 md:mb-12 border-b border-black/5 pb-8">
           <div>
-            <h2 className="text-3xl md:text-5xl font-light tracking-tight text-black leading-tight">
+            <h2 className="text-3xl md:text-5xl font-light tracking-tight text-black leading-tight uppercase">
               PACT NEWS – GET WITH IT
             </h2>
             <p className="mt-4 text-black/60 font-mono text-[10px] md:text-sm uppercase tracking-widest leading-relaxed">
               Focussed Articles • Events • Press Releases • Podcasts • Blogs
             </p>
           </div>
-        </div>
+        </FadeInUp>
 
         {/* Mobile View: Vertical Stack */}
-        <div className="flex flex-col gap-8 md:hidden">
+        <StaggerContainer className="flex flex-col gap-8 md:hidden">
           {newsItems.map((item, index) => (
-            <NewsCard key={index} item={item} />
+            <StaggerItem key={index}>
+              <NewsCard item={item} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
         {/* Desktop View: Carousel */}
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="hidden md:block w-full"
-        >
-          <CarouselContent className="-ml-4">
-            {newsItems.map((item, index) => (
-              <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                <NewsCard item={item} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <div className="flex justify-start gap-4 mt-12">
-            <CarouselPrevious className="static translate-y-0 h-12 w-12 border-black/10 hover:bg-black hover:text-white transition-all" />
-            <CarouselNext className="static translate-y-0 h-12 w-12 border-black/10 hover:bg-black hover:text-white transition-all" />
-          </div>
-        </Carousel>
+        <div className="hidden md:block">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <StaggerContainer>
+              <CarouselContent className="-ml-4">
+                {newsItems.map((item, index) => (
+                  <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                    <StaggerItem>
+                      <NewsCard item={item} />
+                    </StaggerItem>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </StaggerContainer>
+            <div className="flex justify-start gap-4 mt-12">
+              <CarouselPrevious className="static translate-y-0 h-12 w-12 border-black/10 hover:bg-black hover:text-white transition-all" />
+              <CarouselNext className="static translate-y-0 h-12 w-12 border-black/10 hover:bg-black hover:text-white transition-all" />
+            </div>
+          </Carousel>
+        </div>
       </div>
     </section>
   );

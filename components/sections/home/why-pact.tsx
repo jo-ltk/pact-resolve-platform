@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Globe, Shield, BookOpen, ScrollText } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FadeInUp } from "@/components/motion-wrapper";
 
 const sections = [
   {
@@ -48,6 +49,8 @@ const sections = [
   }
 ];
 
+const luxuryEasing = [0.22, 1, 0.36, 1] as any;
+
 export function WhyPact() {
   const [activeTab, setActiveTab] = useState(sections[0].id);
   const activeContent = sections.find((s) => s.id === activeTab) || sections[0];
@@ -60,7 +63,7 @@ export function WhyPact() {
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
         {/* Header Section */}
-        <div className="mb-12 md:mb-20">
+        <FadeInUp className="mb-12 md:mb-20">
           <div className="inline-flex items-center gap-4 mb-6 opacity-60">
             <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white">Why PACT</span>
             <div className="h-px w-8 md:w-12 bg-gold-500/50" />
@@ -69,7 +72,7 @@ export function WhyPact() {
             Committed to the highest <br className="hidden md:block" />
             <span className="text-gold-500 font-medium italic">standards</span> of training and services
           </h2>
-        </div>
+        </FadeInUp>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_2fr] gap-x-12 items-center">
           {/* Navigation Sidebar */}
@@ -101,6 +104,7 @@ export function WhyPact() {
                           layoutId="arrow"
                           initial={{ x: -10, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
+                          transition={{ ease: luxuryEasing, duration: 0.6 }}
                           className="absolute -right-2 md:-right-3 top-1/2 -translate-y-1/2 z-10 hidden md:block"
                         >
                           <div className="w-6 h-6 bg-navy-950 border-t border-r border-gold-500/50 rotate-45 transform" />
@@ -115,7 +119,7 @@ export function WhyPact() {
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          transition={{ duration: 0.5, ease: luxuryEasing }}
                           className="lg:hidden overflow-hidden"
                         >
                           <div className="px-4 pb-6 pt-2 pl-12 md:pl-20">
@@ -147,10 +151,10 @@ export function WhyPact() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.6, ease: luxuryEasing }}
                 className="grid grid-cols-1 gap-12 items-center"
               >
                 <div className="space-y-8">

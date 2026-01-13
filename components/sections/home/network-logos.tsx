@@ -1,5 +1,7 @@
 "use client";
 
+import { FadeIn, FadeInUp } from "@/components/motion-wrapper";
+
 const networks = [
   "GAADR",
   "MCI",
@@ -12,11 +14,13 @@ export function NetworkLogos() {
   return (
     <section className="py-12 md:py-20 bg-black text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <h3 className="text-center text-[10px] md:text-xs font-mono uppercase tracking-[0.5em] opacity-40 mb-10 md:mb-12">
-          PACT Network
-        </h3>
+        <FadeInUp>
+          <h3 className="text-center text-[10px] md:text-xs font-mono uppercase tracking-[0.5em] opacity-40 mb-10 md:mb-12">
+            PACT Network
+          </h3>
+        </FadeInUp>
         
-        <div className="relative w-full overflow-hidden">
+        <FadeIn className="relative w-full overflow-hidden" delay={0.2}>
           <div className="flex animate-marquee">
             {/* First set of items */}
             {networks.map((name, i) => (
@@ -60,7 +64,7 @@ export function NetworkLogos() {
               </div>
             ))}
           </div>
-        </div>
+        </FadeIn>
       </div>
       
       <style jsx>{`
