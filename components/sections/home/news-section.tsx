@@ -11,13 +11,14 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
+import Autoplay from "embla-carousel-autoplay";
 
 const newsItems = [
   {
     type: "Podcast",
     title: "Mediation in India | Attorney General R. Venkataramani, with Jonathan Rodrigues & Soni Singh",
     date: "Aug 24, 2025",
-    image: "/news/mission-mediation-podcast.png",
+    image: "/news/mediation-india-podcast.png",
     link: "https://www.youtube.com/watch?v=eJZeUtoIBpQ"
   },
   {
@@ -104,28 +105,24 @@ export function NewsSection() {
           </div>
         </FadeInUp>
 
-        {/* Mobile View: Vertical Stack */}
-        <StaggerContainer className="flex flex-col gap-8 md:hidden">
-          {newsItems.map((item, index) => (
-            <StaggerItem key={index}>
-              <NewsCard item={item} />
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-
-        {/* Desktop View: Carousel */}
-        <div className="hidden md:block">
+        <div className="w-full">
           <Carousel
             opts={{
               align: "start",
               loop: true,
             }}
+            plugins={[
+              Autoplay({
+                delay: 4000,
+                stopOnInteraction: false,
+              }),
+            ]}
             className="w-full"
           >
             <StaggerContainer>
               <CarouselContent className="-ml-4">
                 {newsItems.map((item, index) => (
-                  <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                  <CarouselItem key={index} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
                     <StaggerItem>
                       <NewsCard item={item} />
                     </StaggerItem>
@@ -133,9 +130,9 @@ export function NewsSection() {
                 ))}
               </CarouselContent>
             </StaggerContainer>
-            <div className="flex justify-start gap-4 mt-12">
-              <CarouselPrevious className="static translate-y-0 h-12 w-12 border-black/10 hover:bg-black hover:text-white transition-all" />
-              <CarouselNext className="static translate-y-0 h-12 w-12 border-black/10 hover:bg-black hover:text-white transition-all" />
+            <div className="flex justify-start gap-4 mt-8 md:mt-12">
+              <CarouselPrevious className="static translate-y-0 h-10 w-10 md:h-12 md:w-12 border-black/10 hover:bg-black hover:text-white transition-all" />
+              <CarouselNext className="static translate-y-0 h-10 w-10 md:h-12 md:w-12 border-black/10 hover:bg-black hover:text-white transition-all" />
             </div>
           </Carousel>
         </div>

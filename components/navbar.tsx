@@ -59,22 +59,22 @@ export function Navbar() {
             className="flex shrink-0 items-center gap-3 transition-opacity hover:opacity-90"
             aria-label="PACT Home"
           >
-            <div className="relative h-10 w-auto">
+            <div className="relative h-12 md:h-14 lg:h-16 w-auto transition-transform duration-300">
               <Image
                 src="/images/pact-logo.png"
                 alt="PACT"
-                width={120}
-                height={40}
+                width={150}
+                height={60}
                 className="h-full w-auto object-contain"
                 priority
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-sans text-base md:text-lg lg:text-xl font-black tracking-tighter text-white leading-none">
+              <span className="font-sans text-xl md:text-2xl lg:text-3xl font-black tracking-tighter text-white leading-none">
                 PACT
               </span>
-              <span className="text-[7px] md:text-[8px] lg:text-[9px] font-medium text-white/80 uppercase tracking-tighter md:tracking-tight lg:tracking-normal leading-[1.1] block max-w-[100px] md:max-w-[130px] lg:max-w-[160px] xl:max-w-none">
-                The peacekeeping and conflict resolution team
+              <span className="text-[8px] md:text-[9px] lg:text-[10px] font-medium text-white/80 uppercase tracking-tighter md:tracking-tight lg:tracking-normal leading-[1.2] block max-w-[140px] md:max-w-[160px] lg:max-w-[180px]">
+                The peacekeeping and<br />conflict resolution team
               </span>
             </div>
           </Link>
@@ -152,23 +152,23 @@ export function Navbar() {
           )}
         >
           <div className="flex items-center justify-between p-6 border-b border-white/10 h-[64px]">
-            <div className="flex items-center gap-3 max-w-[80%]">
-              <div className="relative h-10 w-auto shrink-0">
+            <div className="flex items-center gap-3 max-w-[85%]">
+              <div className="relative h-12 w-auto shrink-0 transition-transform duration-300">
                 <Image
                   src="/images/pact-logo.png"
                   alt="PACT"
-                  width={120}
-                  height={40}
+                  width={140}
+                  height={50}
                   className="h-full w-auto object-contain"
                   priority
                 />
               </div>
               <div className="flex flex-col">
-                <span className="font-sans text-xl font-black tracking-widest text-white uppercase leading-none">
+                <span className="font-sans text-2xl font-black tracking-widest text-white uppercase leading-none">
                   PACT
                 </span>
-                <span className="text-[8px] font-medium text-white/70 uppercase tracking-wide leading-tight mt-1">
-                  The peacekeeping and conflict resolution team
+                <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide leading-tight mt-1 block max-w-[140px]">
+                  The peacekeeping and<br />conflict resolution team
                 </span>
               </div>
             </div>
