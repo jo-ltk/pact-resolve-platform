@@ -108,7 +108,7 @@ export function HeroCarousel() {
   }, [api, autoplayDelay]);
 
   return (
-    <section className="relative h-[30vh] min-h-[450px] md:h-[calc(100vh-80px)] lg:h-[calc(100vh-88px)] w-full overflow-hidden bg-navy-950">
+    <section className="relative h-[75vh] min-h-[380px] md:h-[calc(100vh-80px)] lg:h-[calc(100vh-88px)] w-full overflow-hidden bg-navy-950">
       <Carousel
         setApi={setApi}
         plugins={[autoplay]}
@@ -131,10 +131,11 @@ export function HeroCarousel() {
                 <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-transparent to-transparent z-10" />
               </div>
 
-              <div className="relative z-20 flex flex-col justify-center lg:grid lg:grid-cols-[3fr_2fr] lg:items-center h-full w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-24 md:pb-40 gap-8">
+              {/* Main content container - vertically centered with balanced padding */}
+              <div className="relative z-20 flex flex-col justify-center lg:grid lg:grid-cols-[3fr_2fr] lg:items-center h-full w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pt-6 sm:pt-8 md:pt-12 lg:pt-16 pb-20 sm:pb-24 md:pb-28 lg:pb-32 gap-6 md:gap-8">
 
                 {/* Left Content Block */}
-                <div className="space-y-4 lg:space-y-6 lg:pr-6 mt-4 md:mt-28">
+                <div className="space-y-4 lg:space-y-6 lg:pr-6">
                   <div className="space-y-4 lg:space-y-6">
                     <AnimatePresence mode="wait">
                       {current === index && (
@@ -204,7 +205,7 @@ export function HeroCarousel() {
         </CarouselContent>
 
         {/* Custom Progress Navigation */}
-        <div className="absolute bottom-6 md:bottom-8 left-0 right-0 z-30">
+        <div className="absolute bottom-4 sm:bottom-5 md:bottom-6 lg:bottom-8 left-0 right-0 z-30">
           <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 xl:px-24">
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 lg:gap-6 xl:gap-8">
               {slides.map((slide, index) => (
