@@ -161,7 +161,7 @@ const PuzzlePieces = () => {
   ];
 
   return (
-    <section className="py-24 md:py-40 bg-white relative overflow-hidden">
+    <section className="pt-10 pb-24 md:pt-16 md:pb-40 bg-white relative overflow-hidden">
       {/* Dynamic Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-gold-500/5 blur-[120px] rounded-full" />
@@ -525,7 +525,7 @@ const RulesAndFees = () => {
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-white border-b border-navy-50">
+    <section className="pt-10 pb-20 md:pt-16 md:pb-32 bg-white border-b border-navy-50">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
         <SectionHeader 
           subtitle="Governance" 
