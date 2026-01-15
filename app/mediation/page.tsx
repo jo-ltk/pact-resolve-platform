@@ -311,10 +311,11 @@ const PactProvides = () => {
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-navy-950 text-white relative overflow-hidden">
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gold-500/5 blur-[150px] rounded-full translate-x-[-20%] translate-y-[20%]" />
+    <section className="py-24 bg-navy-950 text-white relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3 pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <SectionHeader 
           subtitle="PACT Provides" 
           title="The Resolution Roadmap"
@@ -322,61 +323,91 @@ const PactProvides = () => {
           light
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 md:gap-12 lg:gap-24 items-start md:items-center">
-          <div className="space-y-3">
-            {steps.map((step, i) => (
+        <div className="mt-12 sm:mt-16 space-y-3">
+          {steps.map((step, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className={cn(
+                "group relative overflow-hidden rounded-3xl md:rounded-[2rem] border transition-all duration-500",
+                activeStep === i 
+                  ? "bg-white/10 border-gold-500 shadow-[0_0_30px_-10px_rgba(191,154,102,0.1)]" 
+                  : "bg-white/[0.02] border-white/5 hover:bg-white/[0.04] hover:border-white/10"
+              )}
+            >
               <button
-                key={i}
                 onClick={() => setActiveStep(i)}
-                className={cn(
-                  "w-full text-left p-4 md:p-6 lg:p-8 rounded-[1.5rem] md:rounded-[2rem] transition-all duration-500 group flex items-center justify-between border-2",
-                  activeStep === i 
-                    ? "bg-white/5 border-gold-500 text-gold-500" 
-                    : "border-transparent text-white/40 hover:text-white/70 hover:bg-white/5"
-                )}
+                className="w-full flex items-center justify-between p-4 md:p-6 md:pr-8 text-left relative z-10"
               >
-                <div className="flex items-center gap-4 md:gap-8">
-                  <span className={cn("text-xs font-mono transition-opacity shrink-0", activeStep === i ? "opacity-100" : "opacity-30")}>0{i + 1}</span>
+                <div className="flex items-center gap-4 md:gap-8 shrink-0">
+                  <span className={cn(
+                    "font-mono text-lg md:text-2xl transition-colors duration-500",
+                    activeStep === i ? "text-gold-500 font-medium" : "text-white/20"
+                  )}>
+                    0{i + 1}
+                  </span>
+                  
                   <div>
-                    <h3 className="text-[10px] font-mono uppercase tracking-[0.3em] mb-1">{step.title}</h3>
-                    <p className="text-lg md:text-xl lg:text-2xl font-light">{step.label}</p>
+                    {/* Mobile Only Label */}
+                    <div className="md:hidden text-[9px] font-mono uppercase tracking-[0.3em] opacity-50 mb-1">{step.label}</div>
+                    <h3 className={cn(
+                      "text-xl md:text-3xl font-light transition-colors duration-500 tracking-tight",
+                      activeStep === i ? "text-white" : "text-white/60 group-hover:text-white/80"
+                    )}>
+                      {step.title}
+                    </h3>
                   </div>
                 </div>
-                <ArrowRight className={cn("w-5 h-5 md:w-6 md:h-6 transition-all duration-500 shrink-0", activeStep === i ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4")} />
-              </button>
-            ))}
-          </div>
 
-          <div className="relative h-full flex flex-col justify-center min-h-[400px] md:min-h-[500px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeStep}
-                initial={{ opacity: 0, x: 40, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -40, scale: 1.05 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-white/[0.03] backdrop-blur-xl rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 lg:p-20 border border-white/10 shadow-2xl relative overflow-hidden group"
-              >
-                <div className="absolute -top-24 -right-24 w-64 h-64 bg-gold-500/10 blur-[80px] rounded-full group-hover:bg-gold-500/20 transition-colors duration-1000" />
-                
-                <div className="relative z-10">
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl bg-gold-500 text-navy-950 flex items-center justify-center mb-8 md:mb-12 shadow-2xl">
-                    {React.createElement(steps[activeStep].icon, { className: "w-8 h-8 md:w-10 md:h-10" })}
-                  </div>
-                  <div className="inline-flex items-center gap-4 mb-4 md:mb-6">
-                    <span className="text-gold-500 font-mono text-xs tracking-widest">PHASE 0{activeStep + 1}</span>
-                    <div className="h-px w-10 bg-white/20" />
-                  </div>
-                  <h3 className="text-3xl md:text-5xl lg:text-6xl font-light mb-6 md:mb-8 tracking-tighter leading-none">
-                    {steps[activeStep].title}
-                  </h3>
-                  <p className="text-lg md:text-xl lg:text-2xl text-white/50 leading-relaxed font-light">
-                    {steps[activeStep].description}
-                  </p>
+                {/* Desktop Roadmap Line & Label */}
+                <div className="hidden md:flex items-center gap-6 px-8 grow opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                   <div className={cn("h-px grow transition-all duration-500", activeStep === i ? "bg-gold-500/50" : "bg-white/10")} />
+                   <span className={cn(
+                     "font-mono text-[10px] uppercase tracking-[0.2em] whitespace-nowrap transition-colors duration-300",
+                     activeStep === i ? "text-gold-500" : "text-white/30"
+                   )}>
+                     {step.label}
+                   </span>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+
+                <div className={cn(
+                  "w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 flex items-center justify-center transition-all duration-500 shrink-0 ml-4 relative z-20 bg-navy-950 shadow-lg",
+                  activeStep === i 
+                    ? "bg-gold-500 border-gold-500 text-navy-950 rotate-90 scale-110" 
+                    : "text-white/30 group-hover:border-white/30 group-hover:text-white group-hover:scale-105"
+                )}>
+                  {activeStep === i ? <ArrowRight className="w-4 h-4 md:w-5 md:h-5" /> : <Plus className="w-4 h-4 md:w-5 md:h-5" />}
+                </div>
+              </button>
+
+              <AnimatePresence>
+                {activeStep === i && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <div className="px-4 md:px-6 pb-6 md:pb-8 pl-[3.5rem] md:pl-[6rem]">
+                      <div className="h-px w-full bg-white/5 mb-4 md:mb-6" />
+                      <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-stretch">
+                        <p className="text-base md:text-lg text-white/60 font-light leading-relaxed max-w-3xl py-1">
+                          {step.description}
+                        </p>
+                        <div className="hidden md:flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-white/5 border border-white/10 min-w-[100px] h-full group-hover:bg-white/10 transition-colors">
+                          <step.icon className="w-6 h-6 text-gold-500" />
+                          <span className="text-[9px] font-mono uppercase tracking-widest text-white/40">Focus</span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
