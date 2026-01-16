@@ -137,7 +137,7 @@ export function Collaborations() {
                 </div>
               </FadeInUp>
               <FadeInUp delay={0.2} className="flex flex-col justify-center">
-                <p className="text-lg md:text-xl text-navy-950/60 font-light leading-relaxed border-l-2 border-navy-50 md:pl-10 relative">
+                <p className="text-lg md:text-xl text-navy-950/60 font-light leading-relaxed border-l-2 border-navy-50 pl-6 md:pl-10 relative">
                   <span className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-gold-500/30" />
                   From day one, every initiative at The PACT has grown out of a principled negotiation and a shared commitment to collaboration. 
                   <br /><br />
