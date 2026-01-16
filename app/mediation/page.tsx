@@ -493,7 +493,7 @@ const Checklist = () => (
         <div className="relative z-10 shrink-0">
            <a 
              href="mailto:mediation@thepact.in"
-             className="inline-flex items-center gap-4 bg-gold-500 text-navy-950 px-6 py-4 sm:px-8 sm:py-5 rounded-xl font-medium hover:bg-white transition-all duration-300 shadow-[0_0_30px_-5px_rgba(191,154,102,0.3)] hover:shadow-[0_0_40px_-5px_rgba(255,255,255,0.3)] group"
+             className="inline-flex items-center gap-4 bg-gold-500 text-navy-950 px-6 py-4 sm:px-8 sm:py-5 rounded-full font-medium hover:bg-white transition-all duration-300 shadow-[0_0_30px_-5px_rgba(191,154,102,0.3)] hover:shadow-[0_0_40px_-5px_rgba(255,255,255,0.3)] group"
            >
              <span>Speak to Convenor</span>
              <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
