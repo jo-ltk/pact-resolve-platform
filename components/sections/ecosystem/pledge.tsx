@@ -296,7 +296,7 @@ export function PledgeSection() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -50, scale: 0.95 }}
                 transition={{ duration: 0.5 }}
-                className="relative bg-white rounded-[3rem] border border-navy-100 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] overflow-hidden p-12 md:p-24 text-center group cursor-pointer"
+                className="relative bg-white rounded-[3rem] border border-navy-100 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] overflow-hidden p-6 sm:p-12 md:p-24 text-center group cursor-pointer"
                 onClick={() => setIsFormOpen(true)}
               >
                  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_50%_50%,#bf9a66,transparent_70%)]" />
@@ -323,7 +323,7 @@ export function PledgeSection() {
 
                     <div>
                       <button 
-                        className="group/btn relative inline-flex items-center gap-4 bg-navy-950 text-white px-12 py-6 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:bg-gold-500 hover:scale-105 shadow-xl"
+                        className="group/btn relative inline-flex items-center justify-center gap-3 md:gap-4 bg-navy-950 text-white px-6 py-4 md:px-12 md:py-6 w-full md:w-auto rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:bg-gold-500 hover:scale-105 shadow-xl"
                       >
                         Read & Sign The Pledge
                         <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center group-hover/btn:bg-white group-hover/btn:text-navy-950 transition-colors">
