@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -32,7 +32,16 @@ export function Navbar() {
     { label: "Academy", href: "/academy" },
     { label: "Resources", href: "/resources" },
     { label: "Events", href: "/events" },
-    { label: "Ecosystem", href: "/ecosystem" },
+    { 
+      label: "Ecosystem", 
+      href: "/ecosystem",
+      subItems: [
+        { label: "Pledge", href: "/ecosystem/pledge" },
+        { label: "About Us", href: "/ecosystem/about-us" },
+        { label: "Collaborators", href: "/ecosystem/collaborators" },
+        { label: "Team", href: "/ecosystem/team" },
+      ]
+    },
   ];
 
   const handleNavClick = (href: string) => {
@@ -84,27 +93,67 @@ export function Navbar() {
           {/* Menu: Evenly spaced alignment (removed ml-auto) */}
           <div className="hidden h-full items-center gap-6 lg:gap-8 xl:gap-10 md:flex">
             {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => handleNavClick(item.href)}
-                className="relative group py-2"
-              >
-                <span className={cn(
-                  "font-sans text-xs font-medium tracking-[0.2em] uppercase transition-colors duration-300",
-                  pathname === item.href 
-                    ? "text-gold-500" 
-                    : "text-white/70 group-hover:text-white"
-                )}>
-                  {item.label}
-                </span>
-                
-                {/* Hover/Active Indicator: New Animation */}
-                <span className={cn(
-                  "absolute -bottom-1 left-0 w-full h-px bg-gold-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left ease-out",
-                  pathname === item.href && "scale-x-100"
-                )} />
-              </Link>
+              <div key={item.href} className="relative group h-full flex items-center">
+                <Link
+                  href={item.href}
+                  onClick={() => handleNavClick(item.href)}
+                  className="relative py-2 flex items-center gap-1"
+                >
+                  <span className={cn(
+                    "font-sans text-xs font-medium tracking-[0.2em] uppercase transition-colors duration-300",
+                    pathname === item.href || (item.subItems && pathname.startsWith(item.href))
+                      ? "text-gold-500" 
+                      : "text-white/70 group-hover:text-white"
+                  )}>
+                    {item.label}
+                  </span>
+                  {item.subItems && (
+                     <ChevronDown className={cn(
+                       "w-3 h-3 transition-transform duration-300 group-hover:rotate-180",
+                        pathname.startsWith(item.href) ? "text-gold-500" : "text-white/70 group-hover:text-white"
+                     )} />
+                  )}
+                  
+                  {/* Hover/Active Indicator: New Animation */}
+                  <span className={cn(
+                    "absolute -bottom-1 left-0 w-full h-px bg-gold-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left ease-out",
+                    (pathname === item.href || (item.subItems && pathname.startsWith(item.href))) && "scale-x-100"
+                  )} />
+                </Link>
+
+                {/* Dropdown Menu */}
+                {item.subItems && (
+                  <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-64 pt-6 opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 ease-out z-50">
+                    <div className="bg-[#0b101b]/95 backdrop-blur-xl border border-white/10 p-2 shadow-2xl shadow-black/50 rounded-lg overflow-hidden">
+                      <div className="flex flex-col gap-1">
+                        {item.subItems.map((sub) => (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            onClick={() => handleNavClick(sub.href)}
+                            className={cn(
+                              "group/item relative flex items-center justify-between px-4 py-3 text-[11px] font-sans font-bold uppercase tracking-[0.15em] transition-all duration-200 rounded-md overflow-hidden",
+                              pathname === sub.href 
+                                ? "bg-white/5 text-gold-500" 
+                                : "text-white/60 hover:text-white hover:bg-white/5"
+                            )}
+                          >
+                            <span className="relative z-10">{sub.label}</span>
+                            
+                            {/* Hover Arrow */}
+                            <ChevronDown className={cn(
+                              "w-3 h-3 -rotate-90 transition-all duration-300 opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 relative z-10",
+                              pathname === sub.href && "opacity-100 translate-x-0"
+                            )} />
+                            
+
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -193,14 +242,36 @@ export function Navbar() {
                       href={item.href}
                       onClick={() => handleNavClick(item.href)}
                       className={cn(
-                        "block py-4 font-sans text-sm font-bold uppercase tracking-widest border-b border-white/5 transition-all duration-300",
-                        pathname === item.href 
+                        "flex items-center justify-between py-4 font-sans text-sm font-bold uppercase tracking-widest border-b border-white/5 transition-all duration-300",
+                        pathname === item.href || (item.subItems && pathname.startsWith(item.href))
                           ? "text-gold-500 border-l-2 border-gold-500 pl-4" 
                           : "text-white/70 hover:text-white hover:pl-4 hover:border-l-2 hover:border-white/20"
                       )}
                     >
                       {item.label}
+                      {item.subItems && <ChevronDown className="w-4 h-4 ml-2 opacity-50" />}
                     </Link>
+                    
+                    {/* Mobile Submenu */}
+                    {item.subItems && (
+                      <div className="bg-black/20">
+                        {item.subItems.map((sub) => (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            onClick={() => handleNavClick(sub.href)}
+                            className={cn(
+                              "block py-3 pl-8 pr-4 font-sans text-xs font-medium uppercase tracking-widest border-b border-white/5 transition-colors",
+                              pathname === sub.href
+                                ? "text-gold-500 bg-white/5"
+                                : "text-white/50 hover:text-white hover:bg-white/5"
+                            )}
+                          >
+                            {sub.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </motion.div>
                 ))}
 

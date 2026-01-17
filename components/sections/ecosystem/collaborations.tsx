@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Globe, Users, BookOpen, Scaling, Send, ArrowUpRight } from "lucide-react";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
+import { EcosystemSubPageHero } from "./ecosystem-subpage-hero";
 import { cn } from "@/lib/utils";
 
 const strategicPartners = [
@@ -99,55 +100,11 @@ export function Collaborations() {
   return (
     <section id="collaborations" className="bg-white">
       {/* Intro */}
-      <div className="pt-8 pb-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
-          <div className="relative p-8 md:p-16 lg:p-20 rounded-[3rem] md:rounded-[4rem] border border-navy-100/50 overflow-hidden bg-white shadow-[0_40px_100px_-20px_rgba(0,0,0,0.03)] group">
-            {/* Decorative Corner Accents */}
-            <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-gold-500/20 rounded-tl-[3rem] md:rounded-tl-[4rem] pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-gold-500/20 rounded-br-[3rem] md:rounded-br-[4rem] pointer-events-none" />
-            
-            {/* Background Glow - Optimized for mobile */}
-            <div className="hidden md:block absolute -top-24 -right-24 w-96 h-96 bg-gold-500/5 blur-[100px] rounded-full group-hover:bg-gold-500/10 transition-colors duration-1000" />
-            <div className="hidden md:block absolute -bottom-24 -left-24 w-96 h-96 bg-navy-950/2 blur-[100px] rounded-full" />
-
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
-              <FadeInUp>
-                <div className="inline-flex items-center gap-3 mb-6">
-                  <div className="h-px w-8 bg-gold-500" />
-                  <span className="text-gold-500 font-mono text-xs tracking-[0.4em] uppercase font-bold">Collaborations</span>
-                </div>
-                <h2 className="text-[12vw] sm:text-5xl md:text-7xl font-extralight text-navy-950 tracking-tighter leading-[1.1] mb-2 uppercase">
-                  Principled
-                </h2>
-                <h2 className="text-[12vw] sm:text-5xl md:text-7xl font-light text-gold-500 italic tracking-tighter leading-none mb-12">
-                  Partnerships
-                </h2>
-
-                <div className="flex flex-wrap gap-3">
-                  {[
-                    "Global Alliances",
-                    "Institutional Support",
-                    "Practice Networks",
-                    "Academic Tie-ups"
-                  ].map((tag, i) => (
-                    <div key={i} className="px-4 py-2 rounded-full bg-navy-50 border border-navy-100/50 text-[10px] font-mono font-bold uppercase tracking-widest text-navy-950/40">
-                      {tag}
-                    </div>
-                  ))}
-                </div>
-              </FadeInUp>
-              <FadeInUp delay={0.2} className="flex flex-col justify-center">
-                <p className="text-lg md:text-xl text-navy-950/60 font-light leading-relaxed border-l-2 border-navy-50 pl-6 md:pl-10 relative">
-                  <span className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-gold-500/30" />
-                  From day one, every initiative at The PACT has grown out of a principled negotiation and a shared commitment to collaboration. 
-                  <br /><br />
-                  Our alliances reflect years of open-minded conversations, intense brainstorming, and carefully chosen partnerships with people and institutions who believe that mediation deserves a central place in how India resolves conflict.
-                </p>
-              </FadeInUp>
-            </div>
-          </div>
-        </div>
-      </div>
+      <EcosystemSubPageHero 
+        tag="Collaborations"
+        title={<>Principled <br /><span className="text-gold-500 italic font-medium">Partnerships</span></>}
+        description="From day one, every initiative at The PACT has grown out of a principled negotiation and a shared commitment to collaboration."
+      />
 
       {/* Strategic Partners */}
       <div className="pt-8 pb-24 md:py-24 bg-navy-50/50 relative overflow-hidden">

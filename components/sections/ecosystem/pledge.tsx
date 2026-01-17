@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
 import { cn } from "@/lib/utils";
+import { EcosystemSubPageHero } from "./ecosystem-subpage-hero";
 
 const benefits = [
   {
@@ -70,61 +71,11 @@ export function PledgeSection() {
   return (
     <section id="pledge" className="bg-white overflow-hidden pb-32">
       {/* Hero / Intro */}
-      <div className="py-24 md:py-32 bg-navy-950 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(191,154,102,0.1),transparent_60%)]" />
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-16 items-center">
-            <FadeInUp>
-              <div className="inline-flex items-center gap-3 mb-6">
-                <div className="h-px w-8 bg-gold-500" />
-                <span className="text-gold-500 font-mono text-xs tracking-[0.4em] uppercase font-bold">The PACT Pledge</span>
-              </div>
-              <h2 className="text-[12vw] md:text-7xl font-light tracking-tight mb-8">Commit to <br /><span className="text-gold-500 italic font-medium">Resolution</span></h2>
-              <p className="text-lg md:text-xl text-white/70 font-light leading-relaxed mb-10">
-                By voluntarily undertaking this pledge, organisations publicly affirm their commitment to fostering a culture of early, good-faith dispute resolution and responsible conflict management. Without binding signatories to mediate by obligation, the PACT Mediation Pledge serves as a steady reminder to consider mediation as a go-to process to resolve disputes via innovation and interest-based interactions.
-              </p>
-              
-              <div className="flex flex-wrap gap-4">
-                <a 
-                  href="/mediation"
-                  className="rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 font-sans text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-white/10 flex items-center gap-2"
-                >
-                  Why Mediation?
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              </div>
-            </FadeInUp>
-            
-            <FadeInUp delay={0.2} className="relative hidden lg:flex h-full min-h-[500px] items-center justify-center perspective-1000">
-               <div className="relative w-full max-w-xl aspect-[4/5] mx-auto">
-                  {/* Abstract Background Elements */}
-                  <div className="absolute top-8 -right-8 w-full h-full border border-gold-500/30 rounded-[3rem] z-0" />
-                  <div className="absolute -top-8 -left-8 w-full h-full bg-navy-800/20 rounded-[3rem] z-0 backdrop-blur-sm" />
-                  
-                  {/* Main Image Container */}
-                  <div className="relative h-full w-full rounded-[3rem] overflow-hidden border border-white/10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] z-10 group">
-                    <Image 
-                      src="/images/pledge-hero.jpg" 
-                      alt="Commit to Resolution" 
-                      fill
-                      className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      priority
-                    />
-                    <div className="absolute inset-0 bg-linear-to-t from-navy-950/90 via-navy-950/20 to-transparent opacity-80" />
-                    
-                    {/* Interior Overlay Text */}
-                    <div className="absolute bottom-10 left-10 right-10 text-white translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 delay-100">
-                        <div className="w-12 h-1 bg-gold-500 mb-4" />
-                        <p className="text-gold-500 font-mono text-xs uppercase tracking-widest mb-2 font-bold">The Promise</p>
-                        <p className="text-sm font-light leading-relaxed text-white/90">Building a future where conflict is an opportunity for connection and growth.</p>
-                    </div>
-                  </div>
-               </div>
-            </FadeInUp>
-          </div>
-        </div>
-      </div>
+      <EcosystemSubPageHero 
+        tag="The PACT Pledge"
+        title={<>Commit to <br /><span className="text-gold-500 italic font-medium">Resolution</span></>}
+        description="By voluntarily undertaking this pledge, organisations publicly affirm their commitment to fostering a culture of early, good-faith dispute resolution and responsible conflict management."
+      />
 
       {/* Why the Pledge - Puzzle Pieces Theme */}
       <div className="py-24 md:py-32 bg-white relative overflow-hidden">

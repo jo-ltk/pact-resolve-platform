@@ -19,6 +19,7 @@ import {
   ArrowRight
 } from "lucide-react";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
+import { EcosystemSubPageHero } from "./ecosystem-subpage-hero";
 
 const whatWeDoItems = [
   { title: "Private Mediation Services", icon: ShieldCheck },
@@ -64,19 +65,14 @@ export function AboutUs() {
   return (
     <div className="bg-white">
       {/* Who We Are */}
-      <section className="pt-24 pb-16 md:pt-32 md:pb-24 bg-white overflow-hidden">
+      <EcosystemSubPageHero 
+        tag="About Us"
+        title={<>Transforming the <br /> <span className="text-gold-500 italic font-medium">culture of dialogue</span></>}
+        description="The PACT is a leading mediation institute and service provider committed to transforming how conflicts are addressed in India and beyond."
+      />
+      
+      <section className="pt-16 pb-16 md:pt-24 md:pb-24 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
-          <FadeInUp className="mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-4 mb-4 opacity-70">
-              <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-navy-950">Who We Are</span>
-              <div className="h-px w-8 bg-gold-500" />
-            </div>
-            <h2 className="text-[10vw] sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter leading-[1.1] text-navy-950 mb-8">
-              Transforming the <br />
-              <span className="text-gold-500 italic font-medium">culture of dialogue</span>
-            </h2>
-          </FadeInUp>
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20">
             <FadeInUp delay={0.2}>
               <p className="text-xl md:text-2xl font-light text-navy-950/70 leading-relaxed tracking-tight">
