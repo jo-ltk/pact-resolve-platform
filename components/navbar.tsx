@@ -30,7 +30,17 @@ export function Navbar() {
     { label: "Home", href: "/" },
     { label: "Mediation", href: "/mediation" },
     { label: "Academy", href: "/academy" },
-    { label: "Resources", href: "/resources" },
+    { 
+      label: "Resources", 
+      href: "/resources",
+      subItems: [
+        { label: "Mediation Simplified", href: "/resources/mediation-simplified" },
+        { label: "Mediation Review", href: "/resources/national-mediation-review" },
+        { label: "Mission Mediation Podcast", href: "/resources/podcast" },
+        { label: "Mediation Blog & Articles", href: "/resources/blog" },
+        { label: "Mediation Clauses & Toolkits", href: "/resources/clauses-toolkits" },
+      ]
+    },
     { label: "Events", href: "/events" },
     { 
       label: "Ecosystem", 
