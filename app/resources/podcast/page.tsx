@@ -262,12 +262,63 @@ export default function PodcastPage() {
               </h2>
             </FadeInUp>
             
-            <div className="relative p-8 md:p-12 rounded-3xl bg-white/5 border border-white/10 text-center">
-              <Calendar className="w-16 h-16 text-gold-500/30 mx-auto mb-6" />
-              <h3 className="text-2xl md:text-3xl font-light mb-4">Coming Soon</h3>
-              <p className="text-white/60 font-light max-w-xl mx-auto">
-                Season 2 is coming soon, with sharper case studies, bigger questions, and deeper conversations on what actually makes mediation work in India.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Episode 1 */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group relative rounded-3xl overflow-hidden border border-white/10 hover:border-gold-500/50 transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-gold-500/20"
+              >
+                <div className="relative aspect-square">
+                  <Image
+                    src="/podcast/season2-ep1.png"
+                    alt="The Mediator's Mind: Finding the Joy of Mediation - Jonathan & Sriram"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Episode 2 */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group relative rounded-3xl overflow-hidden border border-white/10 hover:border-gold-500/50 transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-gold-500/20"
+              >
+                <div className="relative aspect-square">
+                  <Image
+                    src="/podcast/season2-ep2.png"
+                    alt="The Mediator's Mind: Becoming Relatable to Parties - Jonathan & Gita"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Episode 3 */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group relative rounded-3xl overflow-hidden border border-white/10 hover:border-gold-500/50 transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-gold-500/20"
+              >
+                <div className="relative aspect-square">
+                  <Image
+                    src="/podcast/season2-ep3.png"
+                    alt="Negotiation Knights: Disarming Power Dynamics - Jonathan & Charlie"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>

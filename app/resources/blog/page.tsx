@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { 
@@ -108,43 +109,51 @@ const recommendedWatching = [
 
 const recommendedBooks = [
   {
-    title: "Commercial Mediation",
+    title: "The Commercial Mediation Monograph",
     author: "Sriram Panchu",
+    image: "/books/commercial-mediation.jpg",
     url: "https://www.amazon.in/Commercial-Mediation-Monograph-Sriram-Panchu/dp/8193966937",
   },
   {
-    title: "Conciliation & Mediation in Global Dispute Resolution",
-    author: "Gracious Timothy et al.",
+    title: "Conciliation and Mediation in India",
+    author: "Gracious Timothy Dunna",
+    image: "/books/conciliation-mediation-india.jpg",
     url: "https://www.amazon.in/Conciliation-Mediation-Global-Dispute-Resolution/dp/9403520159",
   },
   {
     title: "Mediation Policy and Practice",
     author: "Chitra Narayan",
+    image: "/books/mediation-policy-practice.jpg",
     url: "https://www.amazon.in/Mediation-Policy-Practice-Chitra-Narayan-ebook/dp/B092W17JHH",
   },
   {
     title: "The Mediation Process",
-    author: "Christopher Moore",
+    author: "Christopher W. Moore",
+    image: "/books/mediation-process.jpg",
     url: "https://www.amazon.in/Mediation-Process-Practical-Strategies-Resolving-ebook/dp/B00H7JE6U2",
   },
   {
     title: "The Promise of Mediation",
-    author: "Robert Bush & Joseph Folger",
+    author: "Robert A. Baruch Bush & Joseph P. Folger",
+    image: "/books/promise-of-mediation.jpg",
     url: "https://www.amazon.in/Promise-Mediation-Transformative-Approach-Conflict-ebook/dp/B000PY4A16",
   },
   {
     title: "Mediating Dangerously",
-    author: "Ken Cloke",
+    author: "Kenneth Cloke",
+    image: "/books/mediating-dangerously.jpg",
     url: "https://www.amazon.in/Mediating-Dangerously-Frontiers-Conflict-Resolution-ebook/dp/B000QF5EWS",
   },
   {
     title: "The Mediator's Handbook",
-    author: "Jennifer Beer",
+    author: "Jennifer E. Beer & Caroline C. Packard",
+    image: "/books/mediators-handbook.jpg",
     url: "https://www.amazon.in/Mediators-Handbook-Revised-Expanded-fourth/dp/0865717222",
   },
   {
     title: "The Mediator's Toolkit",
     author: "Gerry O'Sullivan",
+    image: "/books/mediators-toolkit.jpg",
     url: "https://www.amazon.in/Mediators-Toolkit-Formulating-Questions-Successful/dp/1774060248",
   },
 ];
@@ -354,7 +363,7 @@ export default function BlogPage() {
               </h2>
             </FadeInUp>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
               {recommendedBooks.map((book, i) => (
                 <motion.a
                   key={i}
@@ -364,16 +373,25 @@ export default function BlogPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: (i % 4) * 0.05 }}
-                  whileHover={{ y: -4 }}
-                  className="group p-6 rounded-2xl bg-navy-50 border border-navy-100 hover:bg-white hover:border-gold-500/30 hover:shadow-lg transition-all duration-300"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  className="group flex flex-col rounded-2xl overflow-hidden bg-white border border-navy-100 hover:border-gold-500/50 hover:shadow-xl transition-all duration-500"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gold-500/10 flex items-center justify-center mb-4 group-hover:bg-gold-500 transition-colors">
-                    <BookOpen className="w-5 h-5 text-gold-500 group-hover:text-navy-950" />
+                  {/* Book Cover */}
+                  <div className="relative aspect-3/4 bg-navy-50 overflow-hidden">
+                    <Image
+                      src={book.image}
+                      alt={book.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
                   </div>
-                  <h3 className="text-base font-medium text-navy-950 mb-1 group-hover:text-gold-500 transition-colors line-clamp-2">
-                    {book.title}
-                  </h3>
-                  <p className="text-navy-950/60 text-sm font-light">{book.author}</p>
+                  {/* Book Info */}
+                  <div className="p-4 bg-white">
+                    <h3 className="text-sm font-medium text-navy-950 mb-1 group-hover:text-gold-500 transition-colors line-clamp-2">
+                      {book.title}
+                    </h3>
+                    <p className="text-navy-950/50 text-xs font-light line-clamp-1">{book.author}</p>
+                  </div>
                 </motion.a>
               ))}
             </div>
