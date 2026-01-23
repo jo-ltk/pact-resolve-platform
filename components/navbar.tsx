@@ -29,7 +29,15 @@ export function Navbar() {
   const navItems = [
     { label: "Home", href: "/" },
     { label: "Mediation", href: "/mediation" },
-    { label: "Academy", href: "/academy" },
+    { 
+      label: "Academy", 
+      href: "/academy",
+      subItems: [
+        { label: "Mediation", href: "/academy/mediation" },
+        { label: "Arbitration", href: "/academy/arbitration" },
+        { label: "Negotiation", href: "/academy/negotiation" },
+      ]
+    },
     { 
       label: "Resources", 
       href: "/resources",
