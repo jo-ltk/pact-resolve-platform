@@ -147,7 +147,7 @@ const CurriculumRoadmap = ({ modules, type, dark = false }: { modules: any[], ty
 
 // --- Hero Section ---
 const MediationHero = () => (
-  <section className="relative min-h-[70vh] flex items-center pt-24 pb-16 md:pt-32 md:pb-20 bg-navy-950 overflow-hidden">
+  <section className="relative min-h-[70vh] flex items-center pt-24 pb-16 md:pt-32 md:pb-20 bg-navy-950 overflow-hidden dark">
     <div className="absolute inset-0 z-0">
       <Image
         src="https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?auto=format&fit=crop&q=80" 
@@ -428,7 +428,7 @@ export default function MediationPage() {
       <div className="w-full h-px bg-navy-100/50" />
 
       {/* Section: Advanced Curriculum */}
-      <section className="py-24 md:py-40 bg-navy-950 relative overflow-hidden">
+      <section className="py-24 md:py-40 bg-navy-950 relative overflow-hidden dark">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3 pointer-events-none" />
         

@@ -146,7 +146,7 @@ const CurriculumRoadmap = ({ modules, type, dark = false }: { modules: { title: 
 
 // --- Hero Section ---
 const ArbitrationHero = () => (
-  <section className="relative min-h-[70vh] flex items-center pt-24 pb-16 md:pt-32 md:pb-20 bg-navy-950 overflow-hidden">
+  <section className="relative min-h-[70vh] flex items-center pt-24 pb-16 md:pt-32 md:pb-20 bg-navy-950 overflow-hidden dark">
     <div className="absolute inset-0 z-0">
       <Image
         src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80" 
@@ -220,7 +220,7 @@ export default function ArbitrationPage() {
     },
     {
       title: "Module 3: Case Theory and Strategy – From Facts to Theory",
-      content: "Building Your 'Case Story'; Claims, Defences, Counterclaims: Simple Structure; Burden and Standard of Proof (Advocacy Implications); Issue Spotting: What Really Needs Proving; Strategy Map: Win Themes & Risk Themes"
+      content: `Building Your "Case Story"; Claims, Defences, Counterclaims: Simple Structure; Burden and Standard of Proof (Advocacy Implications); Issue Spotting: What Really Needs Proving; Strategy Map: Win Themes & Risk Themes`
     },
     {
       title: "Module 4: Written Advocacy Fundamentals",
@@ -236,7 +236,7 @@ export default function ArbitrationPage() {
     },
     {
       title: "Module 7: Procedure, Professionalism, and Ethics",
-      content: "Civility and Credibility: 'Arbitration Courtroom' Norms; Conflicts and Disclosure: Basic Red Flags; Ex-Parte, Communications, and Boundaries; Dealing With Delays and Non-Cooperation; Confidentiality: What It Covers (and What It Doesn't)"
+      content: `Civility and Credibility: "Arbitration Courtroom" Norms; Conflicts and Disclosure: Basic Red Flags; Ex-Parte, Communications, and Boundaries; Dealing With Delays and Non-Cooperation; Confidentiality: What It Covers (and What It Doesn't)`
     },
     {
       title: "Module 8: Capstone (Basic)",
@@ -248,7 +248,7 @@ export default function ArbitrationPage() {
   const advancedModules = [
     {
       title: "Module 1: Advanced Case Strategy and Persuasion",
-      content: "Tribunal Psychology: How Arbitrators Process Cases; Theme Engineering: Building 'Sticky' Case Narratives; Concession Strategy: What to Give Up to Win More; Risk Register: Quantifying Weak Spots Early; Sequencing: When to Push, When to Hold"
+      content: `Tribunal Psychology: How Arbitrators Process Cases; Theme Engineering: Building "Sticky" Case Narratives; Concession Strategy: What to Give Up to Win More; Risk Register: Quantifying Weak Spots Early; Sequencing: When to Push, When to Hold`
     },
     {
       title: "Module 2: Arbitration-Specific Motion Practice",
@@ -256,7 +256,7 @@ export default function ArbitrationPage() {
     },
     {
       title: "Module 3: High-Impact Written Advocacy",
-      content: "The 'Issue-First' Method for Complex Arbitrations; Using Demonstratives in Written Submissions; Authority Strategy: Fewer, Better, Deadlier Citations; Damages Submissions: Logic Trees & Proof; Reply/Rejoinder: Controlled Aggression Without Noise"
+      content: `The "Issue-First" Method for Complex Arbitrations; Using Demonstratives in Written Submissions; Authority Strategy: Fewer, Better, Deadlier Citations; Damages Submissions: Logic Trees & Proof; Reply/Rejoinder: Controlled Aggression Without Noise`
     },
     {
       title: "Module 4: Witness Advocacy Mastery",
@@ -268,7 +268,7 @@ export default function ArbitrationPage() {
     },
     {
       title: "Module 6: Hearing Advocacy at Full Speed",
-      content: "Elite Openings: The 'Roadmap & Proof Promise' Model; Real-Time Adaptation: Reading the Tribunal Live: Objections in Arbitration: Rare but High-Leverage; Demonstratives: Slides, Chronologies, and Hearing Bundles; Elite Closings: Findings, Law, and Relief That Fits"
+      content: `Elite Openings: The "Roadmap & Proof Promise" Model; Real-Time Adaptation: Reading the Tribunal Live: Objections in Arbitration: Rare but High-Leverage; Demonstratives: Slides, Chronologies, and Hearing Bundles; Elite Closings: Findings, Law, and Relief That Fits`
     },
     {
       title: "Module 7: Multiparty, Multi-Contract, and Complex Procedure",
@@ -309,17 +309,18 @@ export default function ArbitrationPage() {
 
             <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
               {[
-                { title: "Customised Modules", icon: FileText },
-                { title: "Relatable Roleplays", icon: Users },
-                { title: "Skilled Trainers", icon: Award },
-                { title: "Relevant Case Studies", icon: CheckCircle2 }
+                { title: "Customised Modules", icon: FileText, desc: "Bespoke content" },
+                { title: "Relatable Roleplays", icon: Users, desc: "Practical scenarios" },
+                { title: "Skilled Trainers", icon: Award, desc: "Global experts" },
+                { title: "Relevant Case Studies", icon: CheckCircle2, desc: "Real-world context" }
               ].map((item, i) => (
                 <StaggerItem key={i}>
-                  <div className="flex items-center gap-4 p-4 rounded-2xl bg-navy-50/50 border border-navy-100/50 group hover:bg-white hover:shadow-lg transition-all">
-                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-gold-500 shadow-sm group-hover:bg-gold-500 group-hover:text-white transition-all">
-                      <item.icon className="w-5 h-5" />
+                  <div className="relative h-full px-6 py-8 rounded-5xl bg-navy-50/20 border border-navy-100/30 hover:bg-white hover:border-gold-500/20 transition-all duration-700 hover:shadow-xl flex flex-col items-center text-center group">
+                    <div className="w-14 h-14 rounded-2xl bg-white text-navy-950 flex items-center justify-center group-hover:bg-gold-500 group-hover:text-white transition-all duration-500 group-hover:rotate-12 shadow-sm border border-navy-100/50 mb-6">
+                      <item.icon className="w-6 h-6" />
                     </div>
-                    <span className="font-medium text-navy-950">{item.title}</span>
+                    <h4 className="text-xl font-light text-navy-950 mb-2 group-hover:text-gold-500 transition-colors uppercase italic">{item.title}</h4>
+                    <p className="text-xs text-navy-950/40 font-light">{item.desc}</p>
                   </div>
                 </StaggerItem>
               ))}
@@ -386,19 +387,31 @@ export default function ArbitrationPage() {
                </div>
             </div>
 
-            <div className="p-8 rounded-[2.5rem] bg-navy-50/50 border border-navy-100 backdrop-blur-xl relative group">
-                <div className="absolute -inset-1 bg-linear-to-r from-gold-500/10 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-8">
-                    <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-navy-950/40">Fee</h5>
-                    <Sparkles className="w-5 h-5 text-gold-500" />
-                  </div>
-                  <div className="mb-8">
-                    <p className="text-5xl font-light text-navy-950 mb-2 tracking-tighter">INR 5,000 <span className="text-sm font-mono text-navy-950/20">+ GST</span></p>
-                  </div>
-                  <MagneticButton variant="primary" size="lg" className="w-full">
-                    <Link href="#" className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">Sign Up</Link>
-                  </MagneticButton>
+            <div className="space-y-6">
+                <div className="relative aspect-[1.4/1] w-full rounded-[2.5rem] overflow-hidden border border-navy-100 bg-white shadow-sm flex items-center justify-center group/cert">
+                    <div className="absolute inset-0 bg-[linear-gradient(45deg,#f8f9fa_25%,transparent_25%,transparent_75%,#f8f9fa_75%,#f8f9fa),linear-gradient(45deg,#f8f9fa_25%,transparent_25%,transparent_75%,#f8f9fa_75%,#f8f9fa)] bg-[size:20px_20px] bg-[position:0_0,10px_10px] opacity-50" />
+                    <div className="text-center z-10 p-8">
+                         <div className="w-16 h-16 rounded-full bg-navy-50 flex items-center justify-center mx-auto mb-4 group-hover/cert:scale-110 transition-transform duration-500">
+                             <Award className="w-8 h-8 text-gold-500" />
+                         </div>
+                         <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-navy-950/40 font-bold">Certificate</p>
+                    </div>
+                </div>
+
+                <div className="p-8 rounded-[2.5rem] bg-navy-50/50 border border-navy-100 backdrop-blur-xl relative group">
+                    <div className="absolute -inset-1 bg-linear-to-r from-gold-500/10 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                    <div className="relative">
+                      <div className="flex items-center justify-between mb-8">
+                        <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-navy-950/40">Fee</h5>
+                        <Sparkles className="w-5 h-5 text-gold-500" />
+                      </div>
+                      <div className="mb-8">
+                        <p className="text-5xl font-light text-navy-950 mb-2 tracking-tighter">INR 5,000 <span className="text-sm font-mono text-navy-950/20">+ GST</span></p>
+                      </div>
+                      <MagneticButton variant="primary" size="lg" className="w-full">
+                        <Link href="#" className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">Sign Up</Link>
+                      </MagneticButton>
+                    </div>
                 </div>
             </div>
           </div>
@@ -418,7 +431,7 @@ export default function ArbitrationPage() {
       <div className="w-full h-px bg-navy-100/50" />
 
       {/* Section: Certificate Course in Arbitration Advocacy */}
-      <section className="py-24 md:py-40 bg-navy-950 relative overflow-hidden">
+      <section className="py-24 md:py-40 bg-navy-950 relative overflow-hidden dark">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3 pointer-events-none" />
         
@@ -458,19 +471,30 @@ export default function ArbitrationPage() {
                </div>
             </div>
 
-            <div className="p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl relative group">
-                <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-8">
-                    <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-gold-500/60">Fee</h5>
-                    <Award className="w-5 h-5 text-gold-500" />
-                  </div>
-                  <div className="mb-8">
-                    <p className="text-5xl font-light text-white mb-2 tracking-tighter">INR 10,000 <span className="text-sm font-mono text-white/20">+ GST</span></p>
-                  </div>
-                  <MagneticButton variant="primary" size="lg" className="w-full">
-                    <Link href="#" className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">Sign Up</Link>
-                  </MagneticButton>
+            <div className="space-y-6">
+                <div className="relative aspect-[1.4/1] w-full rounded-[2.5rem] overflow-hidden border border-white/10 bg-white/5 flex items-center justify-center group/cert">
+                    <div className="text-center z-10 p-8">
+                         <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 group-hover/cert:scale-110 transition-transform duration-500">
+                             <Award className="w-8 h-8 text-gold-500" />
+                         </div>
+                         <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/40 font-bold">Advanced Certificate</p>
+                    </div>
+                </div>
+
+                <div className="p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl relative group">
+                    <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                    <div className="relative">
+                      <div className="flex items-center justify-between mb-8">
+                        <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-gold-500/60">Fee</h5>
+                        <Award className="w-5 h-5 text-gold-500" />
+                      </div>
+                      <div className="mb-8">
+                        <p className="text-5xl font-light text-white mb-2 tracking-tighter">INR 10,000 <span className="text-sm font-mono text-white/20">+ GST</span></p>
+                      </div>
+                      <MagneticButton variant="primary" size="lg" className="w-full">
+                        <Link href="#" className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">Sign Up</Link>
+                      </MagneticButton>
+                    </div>
                 </div>
             </div>
           </div>

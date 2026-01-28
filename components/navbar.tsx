@@ -49,7 +49,17 @@ export function Navbar() {
         { label: "Mediation Clauses & Toolkits", href: "/resources/clauses-toolkits" },
       ]
     },
-    { label: "Events", href: "/events" },
+    { 
+      label: "Events", 
+      href: "/events",
+      subItems: [
+        { label: "Mediation Champions League", href: "/events/mci" },
+        { label: "Mission Mediation Conclave", href: "/events/mmc" },
+        { label: "National ImPACT Awards", href: "/events/niaam" },
+        { label: "Advocate Maximus", href: "/events/advocate-maximus" },
+        { label: "Events & Projects", href: "/events/projects" },
+      ]
+    },
     { 
       label: "Ecosystem", 
       href: "/ecosystem",

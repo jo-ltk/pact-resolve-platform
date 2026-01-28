@@ -54,7 +54,7 @@ export default function MediationSimplifiedPage() {
       <GrainOverlay />
       
       <FadeIn className="relative z-10 w-full">
-      <section className="relative w-full h-[90vh] flex items-end overflow-hidden bg-navy-950">
+      <section className="relative w-full h-[90vh] flex items-end overflow-hidden bg-navy-950 dark">
         {/* Background Layer */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -250,7 +250,7 @@ export default function MediationSimplifiedPage() {
         </section>
 
         {/* Reviews Section */}
-        <section className="py-20 md:py-32 bg-navy-950 text-white">
+        <section className="py-20 md:py-32 bg-navy-950 text-white dark">
           <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
             <FadeInUp className="text-center mb-16">
               <div className="inline-flex items-center gap-3 mb-6 justify-center">
