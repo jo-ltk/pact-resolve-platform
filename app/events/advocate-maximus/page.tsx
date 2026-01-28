@@ -192,30 +192,19 @@ export default function AdvocateMaximusPage() {
                   subtitle="The Legacy" 
                   title="Globally Renowned, Locally Rooted" 
                 />
-                
-                {/* Decorative Stats to fill whitespace */}
-                <FadeInUp delay={0.2} className="hidden lg:flex items-center gap-12 pt-12 border-t border-navy-100/50">
-                  <div className="flex flex-col">
-                    <span className="text-5xl font-black italic text-gold-500 tracking-tighter">2017</span>
-                    <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-navy-950/40 font-bold mt-1">Founding Year</span>
-                  </div>
-                  <div className="w-px h-12 bg-navy-100" />
-                  <div className="flex flex-col">
-                    <span className="text-5xl font-black italic text-gold-500 tracking-tighter">1st</span>
-                    <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-navy-950/40 font-bold mt-1">In the Region</span>
-                  </div>
-                </FadeInUp>
               </div>
 
-              <div className="space-y-8 text-xl md:text-2xl font-light text-navy-500 leading-relaxed pt-4 md:pt-0">
-                <p>
-                  Advocate Maximus was born out of a vision to bridge the gap between academic learning and professional practice in the field of <span className="text-navy-950 font-medium">International Commercial Arbitration and Mediation.</span>
-                </p>
-                <p className="text-navy-950">
-                  Since its inception in New Delhi (2017), the competition has attracted the brightest minds from top law schools, offering a rigorous platform for testing skills in both adversarial and collaborative settings.
-                </p>
+              <div className="space-y-12 pt-4 md:pt-0">
+                <div className="space-y-8 text-xl md:text-2xl font-light text-navy-500 leading-relaxed">
+                  <p>
+                    Advocate Maximus was born out of a vision to bridge the gap between academic learning and professional practice in the field of <span className="text-navy-950 font-medium">International Commercial Arbitration and Mediation.</span>
+                  </p>
+                  <p className="text-navy-950">
+                    Since its inception in New Delhi (2017), the competition has attracted the brightest minds from top law schools, offering a rigorous platform for testing skills in both adversarial and collaborative settings.
+                  </p>
+                </div>
                 
-                <div className="pt-8">
+                <div className="pt-4">
                   <a href="https://superlawyer.in/advocate-maximus-sign-up-for-the-global-arb-med-competition/" target="_blank" className="group inline-flex items-center gap-6 text-gold-600 hover:text-navy-950 transition-all font-bold uppercase tracking-[0.3em] text-sm md:text-base">
                     Read the Original Announcement 
                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gold-50 group-hover:bg-navy-950 group-hover:text-white flex items-center justify-center transition-all shadow-lg">
@@ -225,6 +214,61 @@ export default function AdvocateMaximusPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Footprint Section */}
+      <section className="py-24 md:py-40 bg-navy-50 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+          <SectionHeader 
+            subtitle="The Scale" 
+            title="Our Footprint" 
+            center 
+            description="A growing ecosystem of practitioners, academics, and future leaders across the globe."
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-20">
+            {[
+              { 
+                label: "Years of Legacy", 
+                value: "7+", 
+                icon: Star, 
+                desc: "Defined by innovation and relentless pursuit of excellence since 2017."
+              },
+              { 
+                label: "Institutions", 
+                value: "50+", 
+                icon: Globe, 
+                desc: "Global participation from top-tier law schools and universities."
+              },
+              { 
+                label: "Alumni", 
+                value: "500+", 
+                icon: Users, 
+                desc: "A powerful network of professionals excelling in dispute resolution."
+              }
+            ].map((stat, i) => (
+              <FadeInUp key={i} delay={i * 0.1}>
+                <div className="group relative p-12 rounded-[3.5rem] bg-white border border-navy-100 shadow-sm hover:shadow-2xl hover:border-gold-500/20 transition-all duration-700">
+                  <div className="w-16 h-16 rounded-2xl bg-navy-50 flex items-center justify-center text-gold-500 mb-8 group-hover:scale-110 group-hover:rotate-6 transition-transform">
+                    <stat.icon className="w-8 h-8" />
+                  </div>
+                  <div className="mb-4">
+                    <span className="text-6xl md:text-7xl font-black italic text-navy-950 tracking-tighter block group-hover:text-gold-500 transition-colors">
+                      {stat.value}
+                    </span>
+                    <span className="text-xs font-mono uppercase tracking-[0.4em] text-gold-500 font-bold">
+                      {stat.label}
+                    </span>
+                  </div>
+                  <p className="text-navy-950/40 font-light leading-relaxed mt-6">
+                    {stat.desc}
+                  </p>
+                </div>
+              </FadeInUp>
+            ))}
           </div>
         </div>
       </section>
@@ -297,23 +341,6 @@ export default function AdvocateMaximusPage() {
                         Alumni Network <Rocket className="w-5 h-5" />
                       </a>
                     </MagneticButton>
-                 </div>
-                 
-                 <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-40">
-                    <div className="flex flex-col items-center">
-                       <span className="text-4xl font-black italic">7+</span>
-                       <span className="text-[8px] font-mono tracking-widest uppercase font-bold">Years of Legacy</span>
-                    </div>
-                    <div className="w-px h-12 bg-white/20" />
-                    <div className="flex flex-col items-center">
-                       <span className="text-4xl font-black italic">50+</span>
-                       <span className="text-[8px] font-mono tracking-widest uppercase font-bold">Institutions</span>
-                    </div>
-                    <div className="w-px h-12 bg-white/20" />
-                    <div className="flex flex-col items-center">
-                       <span className="text-4xl font-black italic">500+</span>
-                       <span className="text-[8px] font-mono tracking-widest uppercase font-bold">Alumni</span>
-                    </div>
                  </div>
               </div>
            </FadeInUp>

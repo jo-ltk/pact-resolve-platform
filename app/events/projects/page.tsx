@@ -234,76 +234,145 @@ export default function ProjectsPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
           <SectionHeader subtitle="Upcoming" title="Watch Out For" light center />
            
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-20">
               {[
                 { 
                   title: "Workshop on Mediation", 
                   date: "March 2026", 
                   location: "SRM Law School, Haryana",
-                  icon: FlaskConical 
+                  icon: FlaskConical,
+                  category: "Workshop"
                 },
                 { 
                   title: "ODRC Negotiation Contest", 
                   date: "June 2026", 
                   location: "Online Event",
-                  icon: Target 
+                  icon: Target,
+                  category: "Competition"
                 },
                 { 
                   title: "Lecture on Mediation", 
                   date: "April 2026", 
                   location: "IIULER Law School, Goa",
-                  icon: Award 
+                  icon: Award,
+                  category: "Lecture"
                 }
               ].map((item, i) => (
-                <FadeInUp key={i} className="p-10 rounded-[3rem] bg-white/5 backdrop-blur-xl border border-white/10 relative group overflow-hidden shadow-2xl">
-                   <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <Calendar className="w-24 h-24 text-white" />
-                   </div>
-                   <div className="relative z-10 flex flex-col h-full">
-                      <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-gold-500 border border-white/10 mb-8">
-                         <item.icon className="w-6 h-6" />
-                      </div>
-                      <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-gold-500 font-bold block mb-4">{item.date}</span>
-                      <h3 className="text-3xl font-bold text-white mb-8 leading-tight italic tracking-tighter uppercase group-hover:text-gold-500 transition-colors">{item.title}</h3>
-                      <div className="mt-auto flex items-center gap-3 text-white/40 group-hover:text-white transition-colors">
-                         <MapPin className="w-4 h-4 text-gold-500" />
-                         <span className="text-xs font-bold tracking-widest uppercase">{item.location}</span>
-                      </div>
-                   </div>
+                <FadeInUp key={i} delay={i * 0.1}>
+                  <div className="group relative h-full p-12 rounded-[3.5rem] bg-white/5 backdrop-blur-xl border border-white/10 hover:border-gold-500/40 hover:bg-white/[0.08] transition-all duration-700 shadow-2xl flex flex-col">
+                    <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-gold-500 mb-10 group-hover:scale-110 group-hover:rotate-6 transition-transform border border-white/5">
+                      <item.icon className="w-8 h-8" />
+                    </div>
+                    
+                    <div className="flex flex-col gap-2 mb-8">
+                       <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-gold-500 font-bold">
+                         {item.category} • {item.date}
+                       </span>
+                       <h3 className="text-3xl font-bold text-white leading-tight italic tracking-tighter uppercase group-hover:text-gold-500 transition-colors">
+                         {item.title}
+                       </h3>
+                    </div>
+
+                    <div className="mt-auto pt-8 border-t border-white/5 flex items-center gap-4">
+                       <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gold-500">
+                          <MapPin className="w-4 h-4" />
+                       </div>
+                       <div className="flex flex-col">
+                          <span className="text-[9px] font-mono uppercase tracking-widest text-white/30 font-bold">Location</span>
+                          <span className="text-xs font-bold tracking-widest uppercase text-white/70">{item.location}</span>
+                       </div>
+                    </div>
+                  </div>
                 </FadeInUp>
               ))}
           </div>
         </div>
       </section>
 
-      {/* Archives Section */}
-      <section id="archives" className="py-16 md:py-24 bg-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
-           <SectionHeader subtitle="Legacy" title="Our Footprint" center />
-           
-           <div className="space-y-4 max-w-5xl mx-auto">
-              {archives.map((item, i) => (
-                 <FadeInUp key={i} className="group grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center p-6 md:p-10 rounded-4xl bg-navy-50/50 border border-transparent hover:border-gold-500/30 hover:bg-white hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)] transition-all duration-500 overflow-hidden">
-                    <div className="md:col-span-1 flex flex-col items-center">
-                       <History className="w-8 h-8 text-navy-950/10 group-hover:text-gold-500/30 transition-colors" />
+      {/* Our Footprint & Legacy Section */}
+      <section id="archives" className="py-24 md:py-40 bg-navy-50 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_70%_30%,rgba(191,154,102,0.05),transparent_60%)] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+          <SectionHeader 
+            subtitle="The Impact" 
+            title="Our Footprint" 
+            center 
+            description="Across a decade of advocacy, PACT has built a diverse ecosystem of practitioners and institutions."
+          />
+          
+          {/* Global Impact Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-32">
+            {[
+              { label: "Workshop Hours", value: "2500+", icon: PlayCircle, desc: "Dedicated training sessions across 20+ cities and online platforms." },
+              { label: "Global Partners", value: "80+", icon: Globe, desc: "Universities, law firms, and international ADR bodies in collaboration." },
+              { label: "Professionals Trained", value: "5000+", icon: Users, desc: "Empowering the next generation of dispute resolution leaders." }
+            ].map((stat, i) => (
+              <FadeInUp key={i} delay={i * 0.1}>
+                <div className="group relative p-10 rounded-[3rem] bg-white border border-navy-100 shadow-sm hover:shadow-2xl transition-all duration-700">
+                  <div className="w-14 h-14 rounded-2xl bg-navy-50 flex items-center justify-center text-gold-500 mb-8 group-hover:bg-navy-950 group-hover:text-white group-hover:rotate-6 transition-all duration-500">
+                    <stat.icon className="w-6 h-6" />
+                  </div>
+                  <div className="mb-4">
+                    <span className="text-5xl font-black italic text-navy-950 tracking-tighter block group-hover:text-gold-500 transition-colors">{stat.value}</span>
+                    <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-gold-500 font-bold">{stat.label}</span>
+                  </div>
+                  <p className="text-navy-950/40 text-xs font-light leading-relaxed">{stat.desc}</p>
+                </div>
+              </FadeInUp>
+            ))}
+          </div>
+
+          <div className="pt-24 border-t border-navy-100/50">
+            <SectionHeader subtitle="Legacy" title="Archived Projects" center />
+            
+            <div className="space-y-6 max-w-5xl mx-auto">
+                {archives.map((item, i) => (
+                  <FadeInUp key={i} delay={i * 0.05}>
+                    <div className="group relative grid grid-cols-1 md:grid-cols-12 gap-6 items-center p-8 md:p-12 rounded-[2.5rem] bg-white border border-navy-100 shadow-sm hover:border-gold-500/30 hover:shadow-xl transition-all duration-700">
+                        <div className="md:col-span-1 hidden md:flex flex-col items-center">
+                          <div className="w-12 h-12 rounded-full bg-navy-50 flex items-center justify-center text-navy-950/20 group-hover:text-gold-500 transition-colors">
+                            <History className="w-5 h-5" />
+                          </div>
+                        </div>
+                        
+                        <div className="md:col-span-8 space-y-4">
+                          <div className="flex flex-wrap items-center gap-3">
+                            <span className="px-3 py-1 rounded-full bg-navy-50 text-[10px] font-mono text-navy-950/40 uppercase tracking-widest font-bold">
+                              {item.category}
+                            </span>
+                            <span className="text-[10px] font-mono text-gold-600 uppercase tracking-widest font-bold flex items-center gap-2">
+                              <MapPin className="w-3 h-3" /> {item.location}
+                            </span>
+                          </div>
+                          <h3 className="text-2xl md:text-3xl font-light text-navy-950 group-hover:text-gold-500 transition-colors uppercase italic tracking-tight leading-tight">
+                            {item.title}
+                          </h3>
+                          <p className="text-sm text-navy-950/50 font-light leading-relaxed max-w-2xl">
+                            {item.description}
+                          </p>
+                        </div>
+
+                        <div className="md:col-span-3 flex justify-end">
+                          <a 
+                            href={item.link} 
+                            target="_blank" 
+                            className="group/link inline-flex items-center gap-4 px-8 py-4 rounded-full bg-navy-50 group-hover:bg-navy-950 text-navy-950 group-hover:text-white transition-all duration-500"
+                          >
+                            <span className="text-[10px] font-bold uppercase tracking-widest">View Project</span>
+                            <div className="w-8 h-8 rounded-full bg-white text-navy-950 flex items-center justify-center shadow-sm group-hover/link:scale-110 group-hover/link:rotate-45 transition-all">
+                              <ExternalLink className="w-4 h-4" />
+                            </div>
+                          </a>
+                        </div>
+
+                        {/* Decor Line */}
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-gold-500 group-hover:h-1/2 transition-all duration-700" />
                     </div>
-                    <div className="md:col-span-7">
-                       <div className="flex flex-col">
-                          <span className="text-[10px] font-mono text-gold-600 uppercase tracking-widest font-bold mb-1 opacity-100 transition-opacity">{item.category} • {item.location}</span>
-                          <h3 className="text-xl md:text-2xl font-light text-navy-950 group-hover:text-gold-500 transition-colors uppercase tracking-tight italic leading-tight">{item.title}</h3>
-                       </div>
-                    </div>
-                    <div className="md:col-span-3">
-                       <p className="text-xs text-navy-950/50 font-light leading-relaxed group-hover:text-navy-950 transition-colors line-clamp-2">{item.description}</p>
-                    </div>
-                    <div className="md:col-span-1 text-right">
-                       <a href={item.link} target="_blank" className="w-12 h-12 rounded-full bg-navy-100 flex items-center justify-center text-navy-950 hover:bg-gold-500 hover:text-navy-950 transition-all duration-300 ml-auto group-hover:scale-110">
-                          <ExternalLink className="w-5 h-5" />
-                       </a>
-                    </div>
-                 </FadeInUp>
-              ))}
-           </div>
+                  </FadeInUp>
+                ))}
+            </div>
+          </div>
         </div>
       </section>
 
