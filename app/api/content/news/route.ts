@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type NewsItem } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
+import { revalidatePath } from "next/cache";
 
 /**
  * GET /api/content/news
@@ -14,12 +15,18 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const featured = searchParams.get("featured") === "true";
+    const showAll = searchParams.get("all") === "true";
     const limit = parseInt(searchParams.get("limit") || "0", 10);
     
     const db = await getDb();
     const collection = db.collection<NewsItem>(COLLECTIONS.NEWS);
     
-    const query: Record<string, unknown> = { isActive: true };
+    const query: Record<string, unknown> = {};
+    
+    if (!showAll) {
+      query.isActive = true;
+    }
+    
     if (featured) {
       query.isFeatured = true;
     }
@@ -65,6 +72,9 @@ export async function POST(request: NextRequest) {
     
     const result = await collection.insertOne(newItem as NewsItem);
     
+    revalidatePath("/");
+    revalidatePath("/admin/news");
+    
     return NextResponse.json({ 
       success: true, 
       data: { _id: result.insertedId, ...newItem }
@@ -108,6 +118,9 @@ export async function PUT(request: NextRequest) {
       }
     );
     
+    revalidatePath("/");
+    revalidatePath("/admin/news");
+    
     if (result.matchedCount === 0) {
       return NextResponse.json(
         { success: false, error: "News item not found" },
@@ -149,6 +162,9 @@ export async function DELETE(request: NextRequest) {
     const collection = db.collection<NewsItem>(COLLECTIONS.NEWS);
     
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
+    
+    revalidatePath("/");
+    revalidatePath("/admin/news");
     
     if (result.deletedCount === 0) {
       return NextResponse.json(

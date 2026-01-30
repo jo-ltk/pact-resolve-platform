@@ -36,9 +36,9 @@ export default function DashboardOverview() {
     async function fetchStats() {
       try {
         const [newsRes, slidesRes, eventsRes] = await Promise.all([
-          fetch("/api/content/news"),
-          fetch("/api/content/hero-slides"),
-          fetch("/api/content/mci-event")
+          fetch("/api/content/news?all=true"),
+          fetch("/api/content/hero-slides?all=true"),
+          fetch("/api/content/mci-event?all=true")
         ]);
 
         const [newsData, slidesData, eventsData] = await Promise.all([

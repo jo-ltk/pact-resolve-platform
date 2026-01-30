@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Handshake, Loader2, Filter } from "lucide-react";
 import { toast } from "sonner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -29,7 +31,7 @@ export default function PartnersAdminPage() {
   async function fetchItems() {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/content/partners");
+      const res = await fetch("/api/content/partners?all=true");
       const result = await res.json();
       if (result.success) setData(result.data || []);
     } catch (e) { toast.error("Fetch failed"); }
@@ -94,6 +96,7 @@ export default function PartnersAdminPage() {
         <CardContent className="p-6">
           <Table>
             <TableHeader><TableRow>
+              <TableHead className="w-[80px]">Order</TableHead>
               <TableHead>Logo</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Category</TableHead>
@@ -105,7 +108,17 @@ export default function PartnersAdminPage() {
                 <TableRow><TableCell colSpan={5} className="text-center py-10"><Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" /></TableCell></TableRow>
               ) : data.map((item) => (
                 <TableRow key={item._id?.toString()}>
-                  <TableCell><img src={item.logo.url} className="w-12 h-8 object-contain bg-muted p-1 rounded" /></TableCell>
+                  <TableCell className="font-mono text-xs">{item.order}</TableCell>
+                  <TableCell>
+                    <div className="relative w-12 h-8 bg-muted p-1 rounded">
+                      <Image 
+                        src={item.logo.url} 
+                        alt={item.logo.alt || item.name} 
+                        fill
+                        className="object-contain" 
+                      />
+                    </div>
+                  </TableCell>
                   <TableCell className="font-bold">{item.name}</TableCell>
                   <TableCell><Badge variant="outline">{item.category}</Badge></TableCell>
                   <TableCell>{item.isActive ? <Badge className="bg-emerald-500">Active</Badge> : <Badge variant="secondary">Hidden</Badge>}</TableCell>
@@ -141,6 +154,20 @@ export default function PartnersAdminPage() {
                     {["strategic", "collaborator", "supporter", "sponsor"].map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Display Order</Label>
+                <Input type="number" value={editingItem?.order} onChange={e => setEditingItem({...editingItem!, order: parseInt(e.target.value)})} className="rounded-xl h-11 w-32" />
+              </div>
+              <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border border-dashed">
+                <div className="space-y-0.5">
+                  <Label>Active Status</Label>
+                  <p className="text-xs text-muted-foreground">Show this partner on the website</p>
+                </div>
+                <Switch 
+                  checked={editingItem?.isActive || false} 
+                  onCheckedChange={checked => setEditingItem({...editingItem!, isActive: checked})} 
+                />
               </div>
               <ImageUpload label="Partner Logo" value={editingItem?.logo?.url} onChange={url => setEditingItem({...editingItem!, logo: {url, alt: editingItem?.name || "Logo"}})} />
             </div>

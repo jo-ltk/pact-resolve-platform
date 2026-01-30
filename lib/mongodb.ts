@@ -1,8 +1,13 @@
-import { MongoClient, Db } from "mongodb";
+import { MongoClient, Db, ServerApiVersion } from "mongodb";
 
-// Cache the MongoDB client connection
-let cachedClient: MongoClient | null = null;
-let cachedDb: Db | null = null;
+// Cache the MongoDB client connection globally for HMR (Development)
+// This prevents multiple connections during development hot reloads
+interface GlobalWithMongo {
+  _mongoClient?: MongoClient;
+  _mongoDb?: Db;
+}
+
+const globalWithMongo = global as typeof globalThis & GlobalWithMongo;
 
 /**
  * Get the MongoDB URI - validates at runtime, not build time
@@ -27,34 +32,59 @@ function getDbName(): string {
  * Uses connection pooling for efficient reuse
  */
 export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db }> {
-  // If we have a cached connection, return it
-  if (cachedClient && cachedDb) {
-    return { client: cachedClient, db: cachedDb };
-  }
-
-  // Get connection details at runtime
   const uri = getMongoUri();
   const dbName = getDbName();
 
-  // Create a new MongoClient
-  const client = new MongoClient(uri, {
-    maxPoolSize: 10, // Connection pool size
-    serverSelectionTimeoutMS: 5000, // Timeout after 5s
-    socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
-  });
+  // If we have a cached connection in global space, return it
+  if (globalWithMongo._mongoClient && globalWithMongo._mongoDb) {
+    return { client: globalWithMongo._mongoClient, db: globalWithMongo._mongoDb };
+  }
 
-  // Connect the client
-  console.log(`Connecting to MongoDB: ${uri.substring(0, 20)}... DB: ${dbName}`);
-  await client.connect();
+  try {
+    // Create a new MongoClient
+    const client = new MongoClient(uri, {
+      maxPoolSize: 10,
+      minPoolSize: 1,
+      serverSelectionTimeoutMS: 15000,
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 15000,
+      tls: true,
+      tlsAllowInvalidCertificates: true,
+      family: 4,
+      retryWrites: true,
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      }
+    });
 
-  // Get the database
-  const db = client.db(dbName);
+    console.log(`[MongoDB] CONNECTING... URI: ${uri.substring(0, 40)}...`);
+    const startTime = Date.now();
+    await client.connect();
+    console.log(`[MongoDB] CONNECTED in ${Date.now() - startTime}ms`);
 
-  // Cache the connection
-  cachedClient = client;
-  cachedDb = db;
+    const db = client.db(dbName);
 
-  return { client, db };
+    // Cache the connection in global space
+    globalWithMongo._mongoClient = client;
+    globalWithMongo._mongoDb = db;
+
+    return { client, db };
+  } catch (error: any) {
+    console.error("[MongoDB] FULL ERROR OBJECT:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    
+    if (error.message?.includes('alert number 80') || error.code === 'ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR' || error.message?.includes('timeout')) {
+      console.error("\n[HELP] DATABASE ACCESS BLOCKED:");
+      console.error(" - Reason:", error.message?.includes('timeout') ? "Connection Timeout" : "Access Denied");
+      try {
+        const ipRes = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipRes.json();
+        console.error(` - Your Public IP: ${ipData.ip}`);
+      } catch (e) {}
+    }
+    throw error;
+  }
 }
 
 /**
@@ -71,29 +101,34 @@ export async function getDb(): Promise<Db> {
 export async function initDatabase(): Promise<void> {
   const db = await getDb();
   
-  // Users collection indexes
-  await db.collection("users").createIndex({ email: 1 }, { unique: true });
-  await db.collection("users").createIndex({ role: 1 });
+  try {
+    // Users collection indexes
+    await db.collection("users").createIndex({ email: 1 }, { unique: true });
+    await db.collection("users").createIndex({ role: 1 });
 
-  // News collection indexes
-  await db.collection("news").createIndex({ type: 1, isActive: 1 });
-  await db.collection("news").createIndex({ order: 1 });
-  
-  // Audit logs indexes for performance
-  await db.collection("audit_logs").createIndex({ userId: 1, timestamp: -1 });
-  await db.collection("audit_logs").createIndex({ action: 1 });
-  await db.collection("audit_logs").createIndex({ resource: 1, resourceId: 1 });
+    // News collection indexes
+    await db.collection("news").createIndex({ type: 1, isActive: 1 });
+    await db.collection("news").createIndex({ order: 1 });
+    
+    // Audit logs indexes for performance
+    await db.collection("audit_logs").createIndex({ userId: 1, timestamp: -1 });
+    await db.collection("audit_logs").createIndex({ action: 1 });
+    await db.collection("audit_logs").createIndex({ resource: 1, resourceId: 1 });
 
-  console.log("Database indexes initialized successfully");
+    console.log("[MongoDB] Database indexes initialized successfully");
+  } catch (error) {
+    console.error("[MongoDB] Index initialization failed:", error);
+  }
 }
 
 /**
  * Close the MongoDB connection (useful for testing/cleanup)
  */
 export async function closeConnection(): Promise<void> {
-  if (cachedClient) {
-    await cachedClient.close();
-    cachedClient = null;
-    cachedDb = null;
+  if (globalWithMongo._mongoClient) {
+    await globalWithMongo._mongoClient.close();
+    delete globalWithMongo._mongoClient;
+    delete globalWithMongo._mongoDb;
+    console.log("[MongoDB] Connection closed.");
   }
 }

@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { ConclaveEvent } from "@/lib/db/schemas";
 import { 
   Users, 
   Mail, 
@@ -83,6 +84,58 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
 );
 
 export default function MMCPage() {
+  const [eventData, setEventData] = useState<ConclaveEvent | null>(null);
+
+  useEffect(() => {
+    async function fetchEvent() {
+      try {
+        const res = await fetch("/api/content/conclave-event");
+        const result = await res.json();
+        if (result.success && result.data && !Array.isArray(result.data)) {
+          setEventData(result.data);
+        }
+      } catch (e) {
+        console.error("Failed to fetch conclave data", e);
+      }
+    }
+    fetchEvent();
+  }, []);
+
+  // --- Fallback Data ---
+  const guests = eventData?.guestsOfHonour?.length ? eventData.guestsOfHonour : [
+    { name: "Justice S.K. Kaul", title: "Former Judge, Supreme Court of India", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" },
+    { name: "R. Venkataramani", title: "Attorney General for India", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80" },
+    { name: "Sriram Panchu", title: "Senior Advocate & Mediator", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80" },
+    { name: "Hon'ble Guests", title: "Distinguished Panelists", image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80" }
+  ];
+
+  const highlights = eventData?.highlights?.length ? eventData.highlights : [
+    { url: "https://images.unsplash.com/photo-1523287562758-66c7fc58967f?auto=format&fit=crop&q=80" },
+    { url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80" },
+    { url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80" },
+    { url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80" },
+    { url: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80" },
+    { url: "https://images.unsplash.com/photo-1475721027187-4024733923f9?auto=format&fit=crop&q=80" }
+  ];
+
+  const coverage = eventData?.coverage?.length ? eventData.coverage : [
+    {
+      source: "ET LEGAL WORLD",
+      headline: "India urged to lead global mediation with international headquarters",
+      link: "https://legal.economictimes.indiatimes.com/news/web-stories/india-urged-to-lead-global-mediation-with-international-headquarters/125224193"
+    },
+    {
+      source: "BW WORLD",
+      headline: "Attorney General R Venkataramani to grace the Mediation Championship India 2025",
+      link: "https://www.bwlegalworld.com/article/attorney-general-r-venkataramani-to-grace-the-mediation-championship-india-2025-hosted-by-the-pact-577838"
+    },
+    {
+      source: "BAR AND BENCH",
+      headline: "I am more gladiator than mediator - AG Venkataramani calls for mediation push",
+      link: "https://www.barandbench.com/news/i-am-more-gladiator-than-mediator-ag-venkataramani-calls-for-mediation-push"
+    }
+  ];
+
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-navy-950 text-white">
       <GrainOverlay />
@@ -278,12 +331,7 @@ export default function MMCPage() {
             className="w-full relative group/carousel"
           >
             <CarouselContent className="-ml-4">
-              {[
-                { name: "Justice S.K. Kaul", title: "Former Judge, Supreme Court of India", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" },
-                { name: "R. Venkataramani", title: "Attorney General for India", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80" },
-                { name: "Sriram Panchu", title: "Senior Advocate & Mediator", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80" },
-                { name: "Hon'ble Guests", title: "Distinguished Panelists", image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80" }
-              ].map((item, i) => (
+              {guests.map((item, i) => (
                 <CarouselItem key={i} className="pl-4 basis-full md:basis-1/3">
                   <FadeInUp className="group relative aspect-video rounded-[2.5rem] overflow-hidden bg-white shadow-sm hover:shadow-2xl transition-all duration-700">
                     <Image
@@ -452,19 +500,12 @@ export default function MMCPage() {
                 className="w-full relative"
               >
                 <CarouselContent className="-ml-4">
-                  {[
-                    "https://images.unsplash.com/photo-1523287562758-66c7fc58967f?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1475721027187-4024733923f9?auto=format&fit=crop&q=80"
-                  ].map((url, i) => (
+                  {highlights.map((item, i) => (
                     <CarouselItem key={i} className="pl-4 basis-3/4 md:basis-1/4">
                        <div className="aspect-square relative rounded-3xl overflow-hidden opacity-50 hover:opacity-100 transition-opacity cursor-pointer group">
                          <Image 
-                           src={url}
-                           alt={`MMC 2025 Archive ${i + 1}`}
+                           src={item.url}
+                           alt={`MMC ${eventData?.year || 2025} Archive ${i + 1}`}
                            fill
                            className="object-cover transition-transform group-hover:scale-110"
                          />
@@ -485,23 +526,7 @@ export default function MMCPage() {
           <SectionHeader subtitle="Coverage" title="Media & Press" center />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-             {[
-               {
-                 source: "ET LEGAL WORLD",
-                 headline: "India urged to lead global mediation with international headquarters",
-                 link: "https://legal.economictimes.indiatimes.com/news/web-stories/india-urged-to-lead-global-mediation-with-international-headquarters/125224193"
-               },
-               {
-                 source: "BW WORLD",
-                 headline: "Attorney General R Venkataramani to grace the Mediation Championship India 2025",
-                 link: "https://www.bwlegalworld.com/article/attorney-general-r-venkataramani-to-grace-the-mediation-championship-india-2025-hosted-by-the-pact-577838"
-               },
-               {
-                 source: "BAR AND BENCH",
-                 headline: "I am more gladiator than mediator - AG Venkataramani calls for mediation push",
-                 link: "https://www.barandbench.com/news/i-am-more-gladiator-than-mediator-ag-venkataramani-calls-for-mediation-push"
-               }
-             ].map((item, i) => (
+             {coverage.map((item, i) => (
                 <FadeInUp key={i} className="group">
                   <a href={item.link} target="_blank" rel="noopener noreferrer" className="block h-full">
                     <div className="relative h-full p-10 rounded-[2.5rem] bg-navy-50 border border-navy-100 hover:border-gold-500/50 transition-all duration-500 hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] flex flex-col items-start overflow-hidden">

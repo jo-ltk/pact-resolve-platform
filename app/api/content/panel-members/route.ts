@@ -2,18 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type PanelMember } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
+import { revalidatePath } from "next/cache";
 
 /**
  * GET /api/content/panel-members
- * Fetch all active panel members, ordered by display order
+ * Fetch panel members. Admin can fetch all, public gets only active.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const isAdmin = searchParams.get("admin") === "true";
+    
     const db = await getDb();
     const collection = db.collection<PanelMember>(COLLECTIONS.PANEL_MEMBERS);
     
+    const query = isAdmin ? {} : { isActive: true };
+    
     const members = await collection
-      .find({ isActive: true })
+      .find(query)
       .sort({ order: 1 })
       .toArray();
     
@@ -49,6 +55,9 @@ export async function POST(request: NextRequest) {
     };
     
     const result = await collection.insertOne(newMember as PanelMember);
+    
+    revalidatePath("/");
+    revalidatePath("/admin/panel-members");
     
     return NextResponse.json({ 
       success: true, 
@@ -93,6 +102,9 @@ export async function PUT(request: NextRequest) {
       }
     );
     
+    revalidatePath("/");
+    revalidatePath("/admin/panel-members");
+    
     if (result.matchedCount === 0) {
       return NextResponse.json(
         { success: false, error: "Member not found" },
@@ -134,6 +146,9 @@ export async function DELETE(request: NextRequest) {
     const collection = db.collection<PanelMember>(COLLECTIONS.PANEL_MEMBERS);
     
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
+    
+    revalidatePath("/");
+    revalidatePath("/admin/panel-members");
     
     if (result.deletedCount === 0) {
       return NextResponse.json(

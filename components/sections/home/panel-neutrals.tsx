@@ -11,7 +11,7 @@ export function PanelNeutrals() {
   useEffect(() => {
     async function fetchMembers() {
       try {
-        const res = await fetch("/api/content/panel-members");
+        const res = await fetch("/api/content/panel-members", { cache: 'no-store' });
         const data = await res.json();
         if (data.success) {
           setMembers(data.data);

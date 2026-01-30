@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { 
   Upload, 
   Search, 
@@ -183,10 +184,11 @@ export default function MediaLibraryPage() {
                       <Card key={item.publicId} className="group border-none shadow-sm hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden bg-white">
                         <div className="relative aspect-square bg-muted flex items-center justify-center overflow-hidden">
                           {item.mimeType.startsWith("image/") ? (
-                            <img 
+                            <Image 
                               src={item.url} 
                               alt={item.filename} 
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                              fill
+                              className="object-cover transition-transform duration-500 group-hover:scale-110" 
                             />
                           ) : (
                             <FileText className="w-12 h-12 text-muted-foreground" />
@@ -227,11 +229,11 @@ export default function MediaLibraryPage() {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {filteredMedia.map((item) => (
-                      <div key={item.publicId} className="flex items-center gap-4 p-3 rounded-2xl hover:bg-muted/50 transition-colors border border-transparent hover:border-muted group">
-                        <div className="w-12 h-12 rounded-lg bg-muted shrink-0 overflow-hidden border">
+                     {filteredMedia.map((item) => (
+                       <div key={item.publicId} className="flex items-center gap-4 p-3 rounded-2xl hover:bg-muted/50 transition-colors border border-transparent hover:border-muted group">
+                         <div className="relative w-12 h-12 rounded-lg bg-muted shrink-0 overflow-hidden border">
                           {item.mimeType.startsWith("image/") ? (
-                            <img src={item.url} className="w-full h-full object-cover" />
+                            <Image src={item.url} alt={item.filename} fill className="object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
                               <FileText className="w-6 h-6 text-muted-foreground" />

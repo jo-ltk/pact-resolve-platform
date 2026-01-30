@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { Plus, Users, Loader2, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -26,7 +29,7 @@ export default function PanelMembersAdminPage() {
   async function fetchItems() {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/content/panel-members");
+      const res = await fetch("/api/content/panel-members?admin=true");
       const result = await res.json();
       if (result.success) setData(result.data || []);
     } catch (e) { toast.error("Fetch failed"); }
@@ -39,7 +42,10 @@ export default function PanelMembersAdminPage() {
       const res = await fetch("/api/content/panel-members", {
         method: editingItem?._id ? "PUT" : "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-        body: JSON.stringify(editingItem)
+        body: JSON.stringify({
+          ...editingItem,
+          order: Number(editingItem?.order) || 0
+        })
       });
       const result = await res.json();
       if (result.success) {
@@ -99,7 +105,16 @@ export default function PanelMembersAdminPage() {
                 <TableRow><TableCell colSpan={5} className="text-center py-10 text-muted-foreground">No members found.</TableCell></TableRow>
               ) : data.map((item) => (
                 <TableRow key={item._id?.toString()} className="group">
-                  <TableCell><img src={item.image.url} className="w-10 h-10 object-cover rounded-full bg-muted" /></TableCell>
+                  <TableCell>
+                    <div className="relative w-10 h-10 bg-muted rounded-full overflow-hidden">
+                      <Image 
+                        src={item.image.url} 
+                        alt={item.image.alt || item.name} 
+                        fill
+                        className="object-cover" 
+                      />
+                    </div>
+                  </TableCell>
                   <TableCell className="font-bold">{item.name}</TableCell>
                   <TableCell className="text-sm">{item.role}</TableCell>
                   <TableCell>{item.isActive ? <Badge className="bg-emerald-500">Active</Badge> : <Badge variant="secondary">Hidden</Badge>}</TableCell>
@@ -123,9 +138,19 @@ export default function PanelMembersAdminPage() {
               <DialogTitle>{editingItem?._id ? "Edit Member" : "Add Member"}</DialogTitle>
             </DialogHeader>
             <div className="p-6 space-y-4">
-              <div className="space-y-2"><Label>Full Name</Label><Input value={editingItem?.name || ""} onChange={e => setEditingItem({...editingItem!, name: e.target.value})} required className="rounded-xl h-11" /></div>
-              <div className="space-y-2"><Label>Professional Role</Label><Input value={editingItem?.role || ""} onChange={e => setEditingItem({...editingItem!, role: e.target.value})} required className="rounded-xl h-11" /></div>
-              <div className="space-y-2"><Label>Bio (Optional)</Label><Input value={editingItem?.bio || ""} onChange={e => setEditingItem({...editingItem!, bio: e.target.value})} className="rounded-xl h-11" /></div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2"><Label>Full Name</Label><Input value={editingItem?.name || ""} onChange={e => setEditingItem({...editingItem!, name: e.target.value})} required className="rounded-xl h-11" /></div>
+                <div className="space-y-2"><Label>Professional Role</Label><Input value={editingItem?.role || ""} onChange={e => setEditingItem({...editingItem!, role: e.target.value})} required className="rounded-xl h-11" /></div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2"><Label>Display Order</Label><Input type="number" value={editingItem?.order || 0} onChange={e => setEditingItem({...editingItem!, order: parseInt(e.target.value)})} required className="rounded-xl h-11" /></div>
+                <div className="flex items-center space-x-2 pt-8">
+                  <Switch checked={editingItem?.isActive || false} onCheckedChange={checked => setEditingItem({...editingItem!, isActive: checked})} />
+                  <Label>Active Status</Label>
+                </div>
+              </div>
+              <div className="space-y-2"><Label>Profile URL (Optional)</Label><Input value={editingItem?.profileUrl || ""} onChange={e => setEditingItem({...editingItem!, profileUrl: e.target.value})} placeholder="https://linkedin.com/in/..." className="rounded-xl h-11" /></div>
+              <div className="space-y-2"><Label>Bio (Optional)</Label><Textarea value={editingItem?.bio || ""} onChange={e => setEditingItem({...editingItem!, bio: e.target.value})} className="rounded-xl min-h-[100px] resize-none" /></div>
               <ImageUpload label="Profile Photo" value={editingItem?.image?.url} onChange={url => setEditingItem({...editingItem!, image: {url, alt: editingItem?.name || "Member Photo"}})} />
             </div>
             <DialogFooter className="p-6 border-t bg-muted/10">

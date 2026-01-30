@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { 
   Plus, 
   Search, 
@@ -70,7 +71,7 @@ export default function NewsAdminPage() {
   async function fetchNews() {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/content/news");
+      const response = await fetch("/api/content/news?all=true");
       const result = await response.json();
       if (result.success) {
         setNews(result.data || []);
@@ -259,7 +260,14 @@ export default function NewsAdminPage() {
                       <TableCell>
                         <div className="w-16 h-10 rounded-lg overflow-hidden border bg-muted shrink-0">
                           {item.image?.url ? (
-                            <img src={item.image.url} alt={item.image.alt} className="w-full h-full object-cover" />
+                            <div className="relative w-full h-full">
+                              <Image 
+                                src={item.image.url} 
+                                alt={item.image.alt || item.title} 
+                                fill
+                                className="object-cover" 
+                              />
+                            </div>
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
                               <Newspaper className="w-4 h-4 text-muted-foreground" />

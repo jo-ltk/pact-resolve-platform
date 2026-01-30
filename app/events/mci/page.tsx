@@ -31,6 +31,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { MCIEvent } from "@/lib/db/schemas";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -74,6 +76,72 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
 );
 
 export default function MCIPage() {
+  const [eventData, setEventData] = useState<MCIEvent | null>(null);
+
+  useEffect(() => {
+    async function fetchEvent() {
+      try {
+        console.log("Fetching MCI event data...");
+        const res = await fetch("/api/content/mci-event");
+        const result = await res.json();
+        console.log("MCI API Result:", result);
+        
+        if (result.success && result.data) {
+          // Handle both single object or array return
+          const activeEvent = Array.isArray(result.data) 
+            ? result.data.find((e: any) => e.isActive) || result.data[0] 
+            : result.data;
+          
+          console.log("Selected Active Event:", activeEvent);
+          console.log("Gallery Data:", activeEvent?.gallery);
+          
+          setEventData(activeEvent);
+        } else {
+          console.warn("MCI API returned success:false or no data");
+        }
+      } catch (error) {
+        console.error("Failed to fetch MCI event", error);
+      }
+    }
+    fetchEvent();
+  }, []);
+
+  // Use dynamic gallery if available, otherwise fallback to static images
+  const galleryImages = (eventData && eventData.gallery && eventData.gallery.length > 0) 
+    ? eventData.gallery 
+    : [
+    {
+      url: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80",
+      title: "Inaugural Ceremony",
+      description: "Setting the stage for a weekend of elite mediation."
+    },
+    {
+      url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80",
+      title: "Mentorship Sessions",
+      description: "Connecting next-gen talent with industry veterans."
+    },
+    {
+      url: "https://images.unsplash.com/photo-1523287562758-66c7fc58967f?auto=format&fit=crop&q=80",
+      title: "Final Rounds",
+      description: "High-stakes mediation challenges in front of the grand jury."
+    },
+    {
+      url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80",
+      title: "Gala Dinner",
+      description: "An evening of celebration and strategic networking."
+    },
+    {
+      url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
+      title: "Winners Circle",
+      description: "Celebrating excellence in dispute resolution."
+    },
+    {
+      url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80",
+      title: "Collaborations",
+      description: "Building lasting partnerships within the legal community."
+    }
+  ];
+
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-navy-950 text-white">
       <GrainOverlay />
@@ -82,7 +150,7 @@ export default function MCIPage() {
       <section className="relative min-h-screen flex items-center pt-24 pb-16 sm:pt-28 sm:pb-20 md:pt-40 md:pb-32 bg-navy-950 overflow-hidden dark">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80"
+            src={eventData?.heroImage?.url || "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80"}
             alt="MCI Header"
             fill
             className="object-cover opacity-30 scale-105"
@@ -101,7 +169,7 @@ export default function MCIPage() {
             <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
               <div className="h-px w-8 sm:w-12 bg-gold-500" />
               <span className="text-gold-500 font-mono text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.4em] uppercase font-bold">
-                India's Premier Mediation Event
+                {eventData?.subtitle || "India's Premier Mediation Event"}
               </span>
             </div>
             <h1 className="text-[14vw] sm:text-[12vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-8 sm:mb-12 md:mb-16 select-none italic uppercase">
@@ -121,8 +189,8 @@ export default function MCIPage() {
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12 pt-6 sm:pt-8 md:pt-12 border-t border-white/10">
                    {[
-                     { label: "Dates", icon: Calendar, value: "September 2026", color: "text-gold-500" },
-                     { label: "Venue", icon: MapPin, value: "New Delhi", color: "text-gold-500" },
+                     { label: "Dates", icon: Calendar, value: eventData?.eventDetails?.dates || "September 2026", color: "text-gold-500" },
+                     { label: "Venue", icon: MapPin, value: eventData?.eventDetails?.venue || "New Delhi", color: "text-gold-500" },
                      { label: "Hosts", icon: Users2, value: "Coming Soon", color: "text-white/40" },
                      { label: "Sponsors", icon: Briefcase, value: "Coming Soon", color: "text-white/40" }
                    ].map((item, i) => (
@@ -274,7 +342,7 @@ export default function MCIPage() {
               <div className="absolute -inset-6 sm:-inset-10 bg-gold-500/5 blur-3xl rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
               <div className="relative aspect-video md:aspect-21/9 rounded-2xl sm:rounded-3xl md:rounded-[3rem] lg:rounded-[4rem] overflow-hidden bg-navy-50 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] sm:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] ring-1 ring-navy-950/5">
                 <Image 
-                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80"
+                  src={eventData?.visionImage?.url || "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80"}
                   alt="MCI Mentoring"
                   fill
                   className="object-cover transition-transform duration-2000 group-hover:scale-105"
@@ -646,38 +714,7 @@ export default function MCIPage() {
             className="w-full relative group/carousel"
           >
             <CarouselContent className="-ml-4 md:ml-0">
-              {[
-                {
-                  url: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80",
-                  title: "Inaugural Ceremony",
-                  description: "Setting the stage for a weekend of elite mediation."
-                },
-                {
-                  url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80",
-                  title: "Mentorship Sessions",
-                  description: "Connecting next-gen talent with industry veterans."
-                },
-                {
-                  url: "https://images.unsplash.com/photo-1523287562758-66c7fc58967f?auto=format&fit=crop&q=80",
-                  title: "Final Rounds",
-                  description: "High-stakes mediation challenges in front of the grand jury."
-                },
-                {
-                  url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80",
-                  title: "Gala Dinner",
-                  description: "An evening of celebration and strategic networking."
-                },
-                {
-                  url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
-                  title: "Winners Circle",
-                  description: "Celebrating excellence in dispute resolution."
-                },
-                {
-                  url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80",
-                  title: "Collaborations",
-                  description: "Building lasting partnerships within the legal community."
-                }
-              ].map((image, i) => (
+              {galleryImages.map((image, i) => ( // Updated to use dynamic variable
                 <CarouselItem key={i} className="pl-2 sm:pl-4 md:pl-0 basis-[92%] sm:basis-[85%] md:basis-[70%] lg:basis-[60%] px-1 sm:px-2 md:px-4">
                   <Dialog>
                     <DialogTrigger asChild>

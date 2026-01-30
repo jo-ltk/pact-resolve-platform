@@ -273,6 +273,36 @@ export interface MCIEvent extends BaseDocument {
 }
 
 // ============================================================================
+// 8. CONCLAVE EVENT (MMC - Mission Mediation Conclave)
+// ============================================================================
+
+export interface ConclaveGuest {
+  name: string;
+  title: string;
+  image: string;
+}
+
+export interface ConclaveHighlight {
+  url: string;
+  title?: string;
+  description?: string;
+}
+
+export interface ConclaveCoverage {
+  source: string;
+  headline: string;
+  link: string;
+}
+
+export interface ConclaveEvent extends BaseDocument {
+  year: number;
+  isActive: boolean;
+  guestsOfHonour: ConclaveGuest[];
+  highlights: ConclaveHighlight[];
+  coverage: ConclaveCoverage[];
+}
+
+// ============================================================================
 // COLLECTION NAMES
 // ============================================================================
 
@@ -284,6 +314,10 @@ export const COLLECTIONS = {
   FOOTER_SETTINGS: "footerSettings",
   GLOBAL_SETTINGS: "globalSettings",
   MCI_EVENTS: "mciEvents",
+  NATIONAL_IMPACT_AWARDS: "nationalImpactAwards",
+  CONCLAVE_EVENTS: "conclaveEvents",
+  ADVOCATE_MAXIMUS_EVENTS: "advocateMaximusEvents",
+  GENERAL_EVENTS: "generalEvents",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];

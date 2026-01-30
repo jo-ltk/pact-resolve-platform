@@ -13,11 +13,17 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
+    const showAll = searchParams.get("all") === "true";
     
     const db = await getDb();
     const collection = db.collection<Partner>(COLLECTIONS.PARTNERS);
     
-    const query: Record<string, unknown> = { isActive: true };
+    const query: Record<string, unknown> = {};
+    
+    if (!showAll) {
+      query.isActive = true;
+    }
+    
     if (category) {
       query.category = category;
     }

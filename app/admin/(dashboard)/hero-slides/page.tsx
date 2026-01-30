@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { 
   Plus, 
   Search, 
@@ -282,10 +283,11 @@ export default function HeroSlidesAdminPage() {
                   {/* Thumbnail Section */}
                   <div className="relative w-full md:w-56 aspect-16/10 rounded-2xl overflow-hidden shrink-0 bg-navy-50">
                     {slide.image?.url ? (
-                      <img 
+                      <Image 
                         src={slide.image.url} 
-                        alt={slide.image.alt} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        alt={slide.image.alt || (Array.isArray(slide.title) ? slide.title.join(" ") : slide.title)} 
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110" 
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
