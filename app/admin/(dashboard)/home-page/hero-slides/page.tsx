@@ -12,8 +12,10 @@ import {
   Loader2,
   MoveUp,
   MoveDown,
-  Layout
+  Layout,
+  ArrowLeft
 } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import {
@@ -230,7 +232,10 @@ export default function HeroSlidesAdminPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
+        <div className="space-y-4">
+          <Link href="/admin/home-page" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-accent hover:text-accent/80 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
+          </Link>
           <h1 className="text-3xl font-bold text-navy-950 flex items-center gap-3">
             <Layout className="w-8 h-8 text-accent" />
             Hero Slides

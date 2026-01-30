@@ -1,27 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { Calendar, Trophy, Image as ImageIcon, Edit } from "lucide-react";
-import { toast } from "sonner";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { 
+  Calendar, 
+  Trophy, 
+  Image as ImageIcon, 
+  ArrowLeft,
+  Sparkles,
+  ArrowRight
+} from "lucide-react";
+import { DashboardSectionCard } from "@/components/admin/DashboardSectionCard";
+import { FadeInUp, StaggerContainer } from "@/components/motion-wrapper";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { ImageUpload } from "@/components/admin/ImageUpload";
-import { useAuth } from "@/lib/context/AuthContext";
-import { MCIEvent } from "@/lib/db/schemas";
 
 export default function EventsDashboard() {
-  const [isLoading, setIsLoading] = useState(false);
-
   const eventCategories = [
     {
       title: "Mediation Champions League",
-      description: "Manage seasons, gallery, and details for the league.",
+      description: "Manage seasons, visual galleries, and championship details for the league.",
       icon: Trophy,
       link: "/admin/events/mci",
       color: "text-amber-500",
@@ -29,7 +26,7 @@ export default function EventsDashboard() {
     },
     {
       title: "Mission Mediation Conclave",
-      description: "Manage conclave editions and details.",
+      description: "Manage conclave editions, highlights, and guest speakers for the flagship event.",
       icon: ImageIcon,
       link: "/admin/events/conclave",
       color: "text-blue-500",
@@ -37,7 +34,7 @@ export default function EventsDashboard() {
     },
     {
       title: "National Impact Awards",
-      description: "Manage award ceremonies and winners.",
+      description: "Manage award ceremonies, honorary recipients, and winner spotlights.",
       icon: Trophy,
       link: "/admin/events/awards",
       color: "text-purple-500",
@@ -45,7 +42,7 @@ export default function EventsDashboard() {
     },
     {
       title: "Advocate Maximus",
-      description: "Manage Advocate Maximus events.",
+      description: "Manage details, memories, and strategic partners for Advocate Maximus events.",
       icon: Calendar,
       link: "/admin/events/advocate-maximus",
       color: "text-emerald-500",
@@ -53,7 +50,7 @@ export default function EventsDashboard() {
     },
     {
       title: "Events & Projects",
-      description: "General events and special projects.",
+      description: "Manage miscellaneous general events and special institutional projects.",
       icon: Calendar,
       link: "/admin/events/general",
       color: "text-rose-500",
@@ -62,32 +59,63 @@ export default function EventsDashboard() {
   ];
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold flex items-center gap-3"><Calendar className="w-8 h-8 text-accent" /> Events Management</h1>
-        <p className="text-muted-foreground">Select an event category to manage.</p>
-      </div>
+    <div className="flex flex-col gap-10 pb-16">
+      {/* Header Section */}
+      <FadeInUp className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between px-1">
+        <div className="space-y-2">
+          
+          <div className="flex items-center gap-2 text-primary font-bold mb-1">
+            <div className="p-1.5 rounded-lg bg-primary/10">
+              <Calendar className="w-4 h-4" />
+            </div>
+            <span className="text-xs uppercase tracking-[0.2em]">Institutional Events</span>
+          </div>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            Events Management
+          </h1>
+          <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
+            Select a specialized event category to manage its specific timeline, content, and visual assets.
+          </p>
+        </div>
+      </FadeInUp>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Sections Grid */}
+      <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {eventCategories.map((cat, i) => (
-          <Link key={i} href={cat.link} className="group">
-             <Card className="h-full border-none shadow-md rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-               <CardContent className="p-8 flex flex-col items-center text-center gap-4 h-full">
-                 <div className={`w-20 h-20 rounded-full ${cat.bg} flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-500`}>
-                   <cat.icon className={`w-10 h-10 ${cat.color}`} />
-                 </div>
-                 <h3 className="text-xl font-bold text-navy-950">{cat.title}</h3>
-                 <p className="text-muted-foreground text-sm">{cat.description}</p>
-                 <div className="mt-auto pt-4">
-                    <span className="text-xs font-bold uppercase tracking-widest text-accent flex items-center gap-2">
-                       Manage Event <Edit className="w-3 h-3" />
-                    </span>
-                 </div>
-               </CardContent>
-             </Card>
-          </Link>
+          <DashboardSectionCard 
+            key={i}
+            title={cat.title}
+            description={cat.description}
+            icon={cat.icon}
+            link={cat.link}
+            color={cat.color}
+            bg={cat.bg}
+          />
         ))}
-      </div>
+      </StaggerContainer>
+
+      {/* Bottom Footer Section */}
+      <FadeInUp delay={0.4} className="mt-6 p-10 bg-navy-950 rounded-[3rem] border border-white/5 shadow-2xl overflow-hidden relative group">
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-3">
+             <div className="flex items-center gap-3">
+                <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_15px_rgba(52,211,153,0.8)]" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/90">Event Engine V2.1</span>
+             </div>
+             <h3 className="text-2xl font-bold text-white tracking-tight">Planning a New Event Series?</h3>
+             <p className="text-white/60 text-sm max-w-xl leading-relaxed">
+                New event types require database schema initialization and dedicated UI modules. Contact the system administrator to register a new flagship event category.
+             </p>
+          </div>
+          <Link href="/contact">
+            <Button size="lg" className="rounded-full px-8 bg-white text-navy-950 hover:bg-white/90 font-bold transition-all hover:scale-105 active:scale-95 group/btn">
+              Technical Support
+              <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
+        </div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[100px] -mr-32 -mt-32 group-hover:bg-primary/20 transition-all pointer-events-none" />
+      </FadeInUp>
     </div>
   );
 }

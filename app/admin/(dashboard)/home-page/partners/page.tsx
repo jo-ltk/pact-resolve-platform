@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Plus, Search, MoreHorizontal, Edit, Trash2, Handshake, Loader2, Filter } from "lucide-react";
+import Link from "next/link";
+import { Plus, Search, MoreHorizontal, Edit, Trash2, Handshake, Loader2, Filter, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -84,8 +85,11 @@ export default function PartnersAdminPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="space-y-4">
+          <Link href="/admin/home-page" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-accent hover:text-accent/80 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
+          </Link>
           <h1 className="text-3xl font-bold flex items-center gap-3"><Handshake className="w-8 h-8 text-accent" /> Partners</h1>
           <p className="text-muted-foreground">Manage strategic partners and collaborators.</p>
         </div>

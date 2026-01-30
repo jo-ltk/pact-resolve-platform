@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
   LayoutDashboard, 
+  Home,
   Image as ImageIcon, 
   Newspaper, 
   Users, 
@@ -23,10 +24,7 @@ import { Button } from "@/components/ui/button";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard Overview", href: "/admin", adminOnly: false },
-  { icon: ImageIcon, label: "Hero Slides", href: "/admin/hero-slides", adminOnly: false },
-  { icon: Newspaper, label: "News", href: "/admin/news", adminOnly: false },
-  { icon: Users, label: "Panel Members", href: "/admin/panel-members", adminOnly: false },
-  { icon: Handshake, label: "Partners", href: "/admin/partners", adminOnly: false },
+  { icon: Home, label: "Homepage", href: "/admin/home-page", adminOnly: false },
   { icon: Calendar, label: "Events", href: "/admin/events", adminOnly: false },
   { icon: Library, label: "Media Library", href: "/admin/media-library", adminOnly: false },
   { icon: Settings, label: "Global Settings", href: "/admin/global-settings", adminOnly: true },

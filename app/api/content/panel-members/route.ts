@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     const result = await collection.insertOne(newMember as PanelMember);
     
     revalidatePath("/");
-    revalidatePath("/admin/panel-members");
+    revalidatePath("/admin/home-page/panel-members");
     
     return NextResponse.json({ 
       success: true, 
@@ -103,7 +103,7 @@ export async function PUT(request: NextRequest) {
     );
     
     revalidatePath("/");
-    revalidatePath("/admin/panel-members");
+    revalidatePath("/admin/home-page/panel-members");
     
     if (result.matchedCount === 0) {
       return NextResponse.json(

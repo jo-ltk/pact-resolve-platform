@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Plus, Users, Loader2, Edit, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { Plus, Users, Loader2, Edit, Trash2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -80,8 +81,11 @@ export default function PanelMembersAdminPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="space-y-4">
+          <Link href="/admin/home-page" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-accent hover:text-accent/80 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
+          </Link>
           <h1 className="text-3xl font-bold flex items-center gap-3"><Users className="w-8 h-8 text-accent" /> Panel Members</h1>
           <p className="text-muted-foreground">Manage lead mediators and neutral panel members.</p>
         </div>

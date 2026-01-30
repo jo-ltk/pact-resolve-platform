@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     const result = await collection.insertOne(newItem as NewsItem);
     
     revalidatePath("/");
-    revalidatePath("/admin/news");
+    revalidatePath("/admin/home-page/news");
     
     return NextResponse.json({ 
       success: true, 
@@ -119,7 +119,7 @@ export async function PUT(request: NextRequest) {
     );
     
     revalidatePath("/");
-    revalidatePath("/admin/news");
+    revalidatePath("/admin/home-page/news");
     
     if (result.matchedCount === 0) {
       return NextResponse.json(

@@ -132,7 +132,7 @@ export default function DashboardOverview() {
             </Link>
           </Button>
           <Button size="lg" className="rounded-full px-8 shadow-md font-bold transition-all hover:scale-105 active:scale-95 bg-navy-950 hover:bg-navy-900" asChild>
-            <Link href="/admin/news">
+            <Link href="/admin/home-page/news">
               <Plus className="mr-2 h-4 w-4" /> Add News
             </Link>
           </Button>
@@ -230,8 +230,8 @@ export default function DashboardOverview() {
             <CardContent className="p-4 pt-6">
               <div className="flex flex-col gap-2">
                 {[
-                  { icon: ImageIcon, label: "Manage Hero Slides", href: "/admin/hero-slides" },
-                  { icon: Plus, label: "Add New Partner", href: "/admin/partners" },
+                  { icon: ImageIcon, label: "Manage Hero Slides", href: "/admin/home-page/hero-slides" },
+                  { icon: Plus, label: "Add New Partner", href: "/admin/home-page/partners" },
                   { icon: Library, label: "View Media Library", href: "/admin/media-library" },
                   { icon: Settings, label: "Platform Settings", href: "/admin/global-settings" },
                 ].map((action, i) => (
