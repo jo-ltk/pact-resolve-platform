@@ -60,7 +60,13 @@ export async function GET(request: NextRequest) {
     if (!event) {
       // Find the most recent one if no specifically active one is found
       const latest = await collection.find({}).sort({ year: -1 }).limit(1).toArray();
-      return NextResponse.json({ success: true, data: latest[0] || null });
+      
+      // If absolutely no events exist, return null data so frontend can handle initialization
+      if (latest.length === 0) {
+         return NextResponse.json({ success: true, data: null });
+      }
+      
+      return NextResponse.json({ success: true, data: latest[0] });
     }
     
     return NextResponse.json({ success: true, data: event });
