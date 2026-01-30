@@ -55,6 +55,23 @@ export default function PartnersAdminPage() {
     finally { setIsSaving(false); }
   };
 
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this partner?")) return;
+    try {
+      const res = await fetch(`/api/content/partners?id=${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const result = await res.json();
+      if (result.success) {
+        toast.success("Deleted");
+        fetchItems();
+      } else {
+        toast.error(result.error || "Delete failed");
+      }
+    } catch (e) { toast.error("Delete failed"); }
+  };
+
   const openDialog = (item: Partial<Partner> = {}) => {
     setEditingItem({ 
       name: "", category: "strategic", order: data.length + 1, isActive: true, 
@@ -93,7 +110,10 @@ export default function PartnersAdminPage() {
                   <TableCell><Badge variant="outline">{item.category}</Badge></TableCell>
                   <TableCell>{item.isActive ? <Badge className="bg-emerald-500">Active</Badge> : <Badge variant="secondary">Hidden</Badge>}</TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="icon" onClick={() => openDialog(item)}><Edit className="w-4 h-4" /></Button>
+                    <div className="flex justify-end gap-2">
+                        <Button variant="ghost" size="icon" onClick={() => openDialog(item)}><Edit className="w-4 h-4" /></Button>
+                        <Button variant="ghost" size="icon" className="text-red-500 hover:text-red-600 hover:bg-red-50" onClick={() => handleDelete(item._id!.toString())}><Trash2 className="w-4 h-4" /></Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -103,7 +123,7 @@ export default function PartnersAdminPage() {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-md rounded-3xl p-0">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&>button]:text-white [&>button]:top-6 [&>button]:right-6 [&>button]:opacity-100 [&>button]:hover:opacity-80">
           <form onSubmit={handleSave}>
             <DialogHeader className="p-6 bg-navy-950 text-white rounded-t-3xl">
               <DialogTitle>{editingItem?._id ? "Edit Partner" : "Add Partner"}</DialogTitle>

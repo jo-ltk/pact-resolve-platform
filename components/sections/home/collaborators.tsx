@@ -1,20 +1,30 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-
-const partners = [
-  { name: "Maxwell Mediators", logo: "/partners/maxwell-mediators.png" },
-  { name: "Mediate.com", logo: "/partners/mediate-com.png" },
-  { name: "Shardul Amarchand Mangaldas", logo: "/partners/shardul-amarchand-mangaldas.png" },
-  { name: "International Mediation Institute", logo: "/partners/international-mediation-institute.png" },
-  { name: "Khaitan & Co.", logo: "/partners/khaitan-and-co.png" },
-  { name: "Adani Group", logo: "/partners/adani-group.png" },
-  { name: "Cyril Amarchand Mangaldas", logo: "/partners/cyril-amarchand-mangaldas.png" },
-  { name: "Prem Tara Foundation", logo: "/partners/prem-tara-foundation.png" },
-];
+import { Partner } from "@/lib/db/schemas";
 
 export function Collaborators() {
+  const [partners, setPartners] = useState<Partner[]>([]);
+
+  useEffect(() => {
+    async function fetchPartners() {
+      try {
+        const res = await fetch("/api/content/partners");
+        const data = await res.json();
+        if (data.success) {
+          setPartners(data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch partners", error);
+      }
+    }
+    fetchPartners();
+  }, []);
+
+  if (partners.length === 0) return null;
+
   return (
     <section className="pt-12 md:pt-20 pb-4 md:pb-6 bg-white relative overflow-hidden">
       {/* Subtle grid background */}
@@ -51,12 +61,12 @@ export function Collaborators() {
           >
             {[...partners, ...partners, ...partners, ...partners].map((partner, i) => (
               <div 
-                key={i} 
+                key={partner._id ? `${partner._id}-${i}` : i} 
                 className="relative h-16 md:h-24 w-40 md:w-56 md:grayscale hover:grayscale-0 transition-all duration-500 md:opacity-60 hover:opacity-100 hover:scale-110 flex items-center justify-center group"
               >
                 <Image
-                  src={partner.logo}
-                  alt={partner.name}
+                  src={partner.logo.url}
+                  alt={partner.logo.alt || partner.name}
                   fill
                   className="object-contain"
                   sizes="(max-width: 768px) 160px, 224px"
