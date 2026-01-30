@@ -64,6 +64,11 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // ALLOW GET requests for content APIs without token
+  if (!token && isContentRoute && method === "GET") {
+    return NextResponse.next();
+  }
+
   if (!token) {
     return NextResponse.json(
       { error: "Authentication required" },

@@ -7,13 +7,18 @@ import { ObjectId } from "mongodb";
  * GET /api/content/hero-slides
  * Fetch all active hero slides, ordered by display order
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const showAll = searchParams.get("all") === "true";
+    
     const db = await getDb();
     const collection = db.collection<HeroSlide>(COLLECTIONS.HERO_SLIDES);
     
+    const query = showAll ? {} : { isActive: true };
+    
     const slides = await collection
-      .find({ isActive: true })
+      .find(query)
       .sort({ order: 1 })
       .toArray();
     

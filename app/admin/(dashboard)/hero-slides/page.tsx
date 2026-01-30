@@ -65,10 +65,14 @@ export default function HeroSlidesAdminPage() {
   async function fetchSlides() {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/content/hero-slides");
+      const response = await fetch("/api/content/hero-slides?all=true");
       const result = await response.json();
       if (result.success) {
-        setSlides(result.data || []);
+        const normalized = (result.data || []).map((slide: any) => ({
+          ...slide,
+          title: Array.isArray(slide.title) ? slide.title : [slide.title]
+        }));
+        setSlides(normalized);
       } else {
         toast.error(result.error || "Failed to fetch slides");
       }
@@ -124,6 +128,54 @@ export default function HeroSlidesAdminPage() {
     }
   };
 
+  const handleMove = async (slide: HeroSlide, direction: "up" | "down") => {
+    const currentIndex = slides.findIndex(s => s._id === slide._id);
+    const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+
+    if (targetIndex < 0 || targetIndex >= slides.length) return;
+
+    const targetSlide = slides[targetIndex];
+    
+    // Swap orders
+    const updatedSlide = { ...slide, order: targetSlide.order };
+    const updatedTargetSlide = { ...targetSlide, order: slide.order };
+
+    try {
+      // Update both slides
+      const updatePromises = [
+        fetch("/api/content/hero-slides", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(updatedSlide)
+        }),
+        fetch("/api/content/hero-slides", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(updatedTargetSlide)
+        })
+      ];
+
+      const results = await Promise.all(updatePromises);
+      const jsonResults = await Promise.all(results.map(res => res.json()));
+      const allSuccess = jsonResults.every(res => res.success);
+
+      if (allSuccess) {
+        toast.success("Order updated");
+        fetchSlides();
+      } else {
+        toast.error("Failed to update order");
+      }
+    } catch (error) {
+      toast.error("An error occurred while reordering");
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
@@ -157,7 +209,7 @@ export default function HeroSlidesAdminPage() {
   const openCreateDialog = () => {
     setEditingItem({
       order: slides.length + 1,
-      title: "",
+      title: [],
       description: "",
       buttonLabel: "Learn More",
       link: "/",
@@ -259,10 +311,22 @@ export default function HeroSlidesAdminPage() {
                     {slide.buttonLabel}
                   </Button>
                   <div className="flex gap-1">
-                    <Button variant="outline" size="icon" className="w-8 h-8 rounded-lg" disabled={slide.order <= 1}>
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      className="w-8 h-8 rounded-lg" 
+                      disabled={slide.order <= 1}
+                      onClick={() => handleMove(slide, "up")}
+                    >
                       <MoveUp className="w-3 h-3" />
                     </Button>
-                    <Button variant="outline" size="icon" className="w-8 h-8 rounded-lg" disabled={slide.order >= slides.length}>
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      className="w-8 h-8 rounded-lg" 
+                      disabled={slide.order >= slides.length}
+                      onClick={() => handleMove(slide, "down")}
+                    >
                       <MoveDown className="w-3 h-3" />
                     </Button>
                   </div>
@@ -290,8 +354,11 @@ export default function HeroSlidesAdminPage() {
                 <Label htmlFor="title">Main Title</Label>
                 <Input 
                   id="title"
-                  value={editingItem?.title}
-                  onChange={(e) => setEditingItem(prev => ({ ...prev!, title: e.target.value }))}
+                  value={Array.isArray(editingItem?.title) ? editingItem.title.join(", ") : ""}
+                  onChange={(e) => {
+                    const titles = e.target.value.split(",").map(s => s.trim()).filter(s => s !== "");
+                    setEditingItem(prev => prev ? { ...prev, title: titles } : null);
+                  }}
                   placeholder="Enter slide title"
                   className="rounded-xl h-11"
                   required
@@ -304,7 +371,7 @@ export default function HeroSlidesAdminPage() {
                 <Textarea 
                   id="description"
                   value={editingItem?.description}
-                  onChange={(e) => setEditingItem(prev => ({ ...prev!, description: e.target.value }))}
+                  onChange={(e) => setEditingItem(prev => prev ? { ...prev, description: e.target.value } : null)}
                   placeholder="Enter a brief description for the slide"
                   className="rounded-xl min-h-[100px] resize-none"
                   required
@@ -317,7 +384,7 @@ export default function HeroSlidesAdminPage() {
                   <Input 
                     id="buttonLabel"
                     value={editingItem?.buttonLabel}
-                    onChange={(e) => setEditingItem(prev => ({ ...prev!, buttonLabel: e.target.value }))}
+                    onChange={(e) => setEditingItem(prev => prev ? { ...prev, buttonLabel: e.target.value } : null)}
                     placeholder="e.g., Get Started"
                     className="rounded-xl h-11"
                   />
@@ -327,7 +394,7 @@ export default function HeroSlidesAdminPage() {
                   <Input 
                     id="link"
                     value={editingItem?.link}
-                    onChange={(e) => setEditingItem(prev => ({ ...prev!, link: e.target.value }))}
+                    onChange={(e) => setEditingItem(prev => prev ? { ...prev, link: e.target.value } : null)}
                     placeholder="e.g., /contact"
                     className="rounded-xl h-11"
                   />
@@ -339,7 +406,7 @@ export default function HeroSlidesAdminPage() {
                 <Input 
                   id="rightSlogan"
                   value={editingItem?.rightSlogan}
-                  onChange={(e) => setEditingItem(prev => ({ ...prev!, rightSlogan: e.target.value }))}
+                  onChange={(e) => setEditingItem(prev => prev ? { ...prev, rightSlogan: e.target.value } : null)}
                   placeholder="Vertical text on the right side"
                   className="rounded-xl h-11"
                 />
@@ -349,7 +416,18 @@ export default function HeroSlidesAdminPage() {
                 label="Background Image"
                 description="Large cinematic image recommended (Min 1920x1080)"
                 value={editingItem?.image?.url}
-                onChange={(url) => setEditingItem(prev => ({ ...prev!, image: { ...prev!.image, url, alt: editingItem?.title || "Hero Image" } }))}
+                onChange={(url) => setEditingItem(prev => {
+                  if (!prev) return null;
+                  const titleStr = Array.isArray(prev.title) ? prev.title.join(" ") : "";
+                  return { 
+                    ...prev, 
+                    image: { 
+                      ...prev.image, 
+                      url, 
+                      alt: titleStr || "Hero Image" 
+                    } 
+                  };
+                })}
               />
 
               <div className="flex items-center justify-between py-4 border-t border-b bg-muted/20 px-6 rounded-2xl">
@@ -364,13 +442,16 @@ export default function HeroSlidesAdminPage() {
                       id="order"
                       type="number"
                       value={editingItem?.order}
-                      onChange={(e) => setEditingItem(prev => ({ ...prev!, order: parseInt(e.target.value) }))}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value);
+                        setEditingItem(prev => prev ? { ...prev, order: isNaN(val) ? (prev.order || 0) : val } : null);
+                      }}
                       className="rounded-xl h-9 w-16"
                     />
                   </div>
                   <Switch 
                     checked={editingItem?.isActive}
-                    onCheckedChange={(val) => setEditingItem(prev => ({ ...prev!, isActive: val }))}
+                    onCheckedChange={(val) => setEditingItem(prev => prev ? { ...prev, isActive: val } : null)}
                     className="data-[state=checked]:bg-emerald-500"
                   />
                 </div>

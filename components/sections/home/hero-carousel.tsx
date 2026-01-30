@@ -13,14 +13,16 @@ import { cn } from "@/lib/utils";
 import Autoplay from "embla-carousel-autoplay";
 import { motion, AnimatePresence } from "framer-motion";
 
-const slides = [
+import { HeroSlide } from "@/lib/db/schemas";
+
+const fallbackSlides = [
   {
     title: ["PACT", "Mediation"],
     description: "A trendsetter in Mediation Process Design, PACT relies on bespoke case management, quality mediators and best practices for client satisfaction",
     buttonLabel: "Mediation Page",
     link: "/mediation",
     rightSlogan: "RESOLVE WITH PRECISION",
-    image: "/hero/hero_mediation.png",
+    image: { url: "/hero/hero_mediation.png", alt: "PACT Mediation" },
   },
   {
     title: ["PACT", "Academy"],
@@ -28,7 +30,7 @@ const slides = [
     buttonLabel: "Academy Page",
     link: "/academy",
     rightSlogan: "MASTERY IN ADVOCACY",
-    image: "/hero/hero_academy.png",
+    image: { url: "/hero/hero_academy.png", alt: "PACT Academy" },
   },
   {
     title: ["Mission", "Mediation"],
@@ -36,7 +38,7 @@ const slides = [
     buttonLabel: "Podcast Page",
     link: "/podcast",
     rightSlogan: "LEADING THE DIALOGUE",
-    image: "/hero/hero_mission.png",
+    image: { url: "/hero/hero_mission.png", alt: "Mission Mediation" },
   },
   {
     title: ["Mediation Champions", "League"],
@@ -44,7 +46,7 @@ const slides = [
     buttonLabel: "Competition Page",
     link: "/competition",
     rightSlogan: "THE FUTURE OF ADR",
-    image: "/hero/hero_league.png",
+    image: { url: "/hero/hero_league.png", alt: "Mediation Champions League" },
   },
   {
     title: ["PACT Mediation", "Pledge"],
@@ -52,13 +54,16 @@ const slides = [
     buttonLabel: "PACT Pledge and Clauses",
     link: "/pledge",
     rightSlogan: "COMMIT TO EXCELLENCE",
-    image: "/hero/hero_pledge.png",
+    image: { url: "/hero/hero_pledge.png", alt: "PACT Mediation Pledge" },
   },
 ];
 
 const luxuryEasing = [0.22, 1, 0.36, 1] as any;
 
 export function HeroCarousel() {
+  const [slides, setSlides] = React.useState<any[]>(fallbackSlides);
+  const [isLoading, setIsLoading] = React.useState(true);
+
   /* State for Carousel */
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
@@ -72,6 +77,28 @@ export function HeroCarousel() {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  React.useEffect(() => {
+    async function fetchHeroSlides() {
+      try {
+        const response = await fetch("/api/content/hero-slides");
+        const result = await response.json();
+        if (result.success && result.data && result.data.length > 0) {
+          // Normalize titles if they come as strings
+          const normalized = result.data.map((slide: any) => ({
+            ...slide,
+            title: Array.isArray(slide.title) ? slide.title : [slide.title]
+          }));
+          setSlides(normalized);
+        }
+      } catch (error) {
+        console.error("Failed to fetch hero slides:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchHeroSlides();
   }, []);
 
   const autoplayDelay = isMobile ? 3000 : 7000;
@@ -121,8 +148,8 @@ export function HeroCarousel() {
               {/* Background Image with Gradient Overlay */}
               <div className="absolute inset-0 z-0">
                 <Image
-                  src={slide.image}
-                  alt={slide.title.join(' ')}
+                  src={slide.image.url}
+                  alt={slide.image.alt || (slide.title.join(' '))}
                   fill
                   className="object-cover object-right lg:object-center opacity-60"
                   priority={index === 0}
@@ -148,7 +175,7 @@ export function HeroCarousel() {
                           className="space-y-4 lg:space-y-6"
                         >
                           <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-white uppercase leading-[1.2]">
-                            {slide.title.map((line, i) => (
+                            {slide.title.map((line: string, i: number) => (
                               <span key={i} className="block whitespace-nowrap">
                                 {line}
                               </span>
@@ -189,7 +216,7 @@ export function HeroCarousel() {
                         transition={{ duration: 1.5, ease: luxuryEasing }}
                       >
                         <h2 className="text-4xl lg:text-5xl xl:text-7xl font-black leading-none text-right">
-                          {slide.rightSlogan.split(' ').map((word, i) => (
+                          {slide.rightSlogan.split(' ').map((word: string, i: number) => (
                             <div key={i} className={i === 1 ? "text-gold-500" : "text-white"}>
                               {word}
                             </div>
