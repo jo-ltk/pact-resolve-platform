@@ -71,8 +71,10 @@ export default function AdminLoginPage() {
       // Store token and user in context
       login(result.token, result.user);
       
-      // Redirect to admin dashboard
-      router.push("/admin");
+      // Redirect to admin dashboard with a hard refresh to ensure state is applied
+      setTimeout(() => {
+        window.location.href = "/admin";
+      }, 500);
     } catch (error: any) {
       toast.error(error.message);
       console.error("Login error:", error);
