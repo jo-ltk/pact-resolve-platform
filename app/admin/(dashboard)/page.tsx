@@ -6,19 +6,22 @@ import {
   Image as ImageIcon, 
   Calendar, 
   Clock, 
-  ArrowUpRight, 
-  ArrowDownRight,
   Plus,
-  MoreVertical,
-  ChevronRight,
   Library,
-  Settings
+  Settings,
+  ArrowRight,
+  LayoutDashboard,
+  ExternalLink,
+  Sparkles
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { useAuth } from "@/lib/context/AuthContext";
+import { cn } from "@/lib/utils";
+import { FadeInUp, StaggerContainer, StaggerItem, SubtleHover } from "@/components/motion-wrapper";
+import { motion } from "framer-motion";
 
 export default function DashboardOverview() {
   const { user } = useAuth();
@@ -32,7 +35,6 @@ export default function DashboardOverview() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        // Fetch real counts from APIs
         const [newsRes, slidesRes, eventsRes] = await Promise.all([
           fetch("/api/content/news"),
           fetch("/api/content/hero-slides"),
@@ -62,163 +64,201 @@ export default function DashboardOverview() {
 
   const metrics = [
     {
-      title: "Total News Items",
+      title: "News Items",
       value: stats.loading ? "..." : stats.news.toString(),
-      description: "Active news items",
+      description: "Active platform news",
       icon: Newspaper,
       color: "text-blue-600",
-      bg: "bg-blue-50",
+      bg: "bg-blue-50/50",
       trend: "+12%",
       trendUp: true
     },
     {
       title: "Hero Slides",
       value: stats.loading ? "..." : stats.slides.toString(),
-      description: "Homepage carousel items",
+      description: "Carousel content items",
       icon: ImageIcon,
       color: "text-purple-600",
-      bg: "bg-purple-50",
-      trend: "Stable",
+      bg: "bg-purple-50/50",
+      trend: "Steady",
       trendUp: true
     },
     {
-      title: "Upcoming Events",
+      title: "MCI Events",
       value: stats.loading ? "..." : stats.events.toString(),
-      description: "Scheduled championships",
+      description: "Upcoming championships",
       icon: Calendar,
       color: "text-amber-600",
-      bg: "bg-amber-50",
+      bg: "bg-amber-50/50",
       trend: "+2",
       trendUp: true
     },
     {
-      title: "Active Users",
+      title: "Staff Members",
       value: "4",
-      description: "Admin & Staff members",
+      description: "Active admin users",
       icon: Clock,
       color: "text-emerald-600",
-      bg: "bg-emerald-50",
+      bg: "bg-emerald-50/50",
       trend: "Online",
       trendUp: true
     }
   ];
 
   return (
-    <div className="space-y-8 pb-10">
-      {/* Welcome Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-navy-950 p-8 rounded-3xl text-white shadow-xl relative overflow-hidden">
-        <div className="z-10">
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Welcome back, {user?.name || "Admin"}!</h1>
-          <p className="text-blue-200 max-w-lg">
-            Here's what's happening with the PACT Resolve platform today. You have full control over the website's content and settings.
+    <div className="flex flex-col gap-10 pb-16">
+      {/* Header Section */}
+      <FadeInUp className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between px-1">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-primary font-bold mb-1">
+            <div className="p-1.5 rounded-lg bg-primary/10">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <span className="text-xs uppercase tracking-[0.2em]">Management Console</span>
+          </div>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            Overview
+          </h1>
+          <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
+            Welcome back, <span className="text-foreground font-semibold">{user?.name || "Admin"}</span>. 
+            Here's a snapshot of your platform's current standing and recent performance.
           </p>
         </div>
-        <div className="flex gap-3 z-10">
-          <Button variant="secondary" className="bg-white/10 hover:bg-white/20 border-white/20 text-white rounded-xl">
-            View Public Site
+        <div className="flex items-center gap-3">
+          <Button variant="outline" size="lg" className="rounded-full px-6 bg-white shadow-sm border-border/60 hover:bg-muted/30 transition-all hover:scale-105 active:scale-95" asChild>
+            <Link href="/" target="_blank">
+              <ExternalLink className="mr-2 h-4 w-4" />
+              Public Site
+            </Link>
           </Button>
-          <Link href="/admin/news">
-            <Button className="bg-accent hover:bg-accent/90 text-navy-950 font-bold rounded-xl shadow-lg border-none shadow-accent/20">
-              <Plus className="w-4 h-4 mr-2" />
-              Add News Item
-            </Button>
-          </Link>
+          <Button size="lg" className="rounded-full px-8 shadow-md font-bold transition-all hover:scale-105 active:scale-95 bg-navy-950 hover:bg-navy-900" asChild>
+            <Link href="/admin/news">
+              <Plus className="mr-2 h-4 w-4" /> Add News
+            </Link>
+          </Button>
         </div>
-        
-        {/* Decorative elements */}
-        <div className="absolute right-0 top-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
-        <div className="absolute left-1/4 bottom-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl -mb-10 pointer-events-none" />
-      </div>
+      </FadeInUp>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {metrics.map((metric, i) => (
-          <Card key={i} className="border-none shadow-sm hover:shadow-md transition-all duration-300 rounded-2xl overflow-hidden group">
-            <CardContent className="p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div className={`${metric.bg} ${metric.color} p-3 rounded-xl group-hover:scale-110 transition-transform duration-300`}>
-                  <metric.icon className="w-6 h-6" />
+          <StaggerItem key={i}>
+            <SubtleHover>
+              <Card className="border-border/40 shadow-sm bg-white/50 backdrop-blur-sm hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all flex flex-col group rounded-3xl overflow-hidden min-h-[160px]">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-6">
+                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em]">
+                    {metric.title}
+                  </span>
+                  <div className={cn("p-2.5 rounded-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300", metric.bg)}>
+                    <metric.icon className={cn("h-5 w-5", metric.color)} />
+                  </div>
+                </CardHeader>
+                <CardContent className="flex-1 flex flex-col justify-end pb-7">
+                  <div className="text-3xl font-bold tracking-tighter text-navy-950">{metric.value}</div>
+                  <div className="flex items-center mt-2 gap-2">
+                    <p className="text-xs text-muted-foreground/80 font-medium truncate">
+                      {metric.description}
+                    </p>
+                    <Badge variant="secondary" className={cn(
+                      "px-2 py-0.5 text-[10px] font-bold border-none h-5 rounded-full",
+                      metric.trendUp ? "bg-emerald-100/50 text-emerald-700" : "bg-muted text-muted-foreground"
+                    )}>
+                      {metric.trend}
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </SubtleHover>
+          </StaggerItem>
+        ))}
+      </StaggerContainer>
+
+      <div className="grid gap-8 lg:grid-cols-12 items-start">
+        {/* Content Distribution */}
+        <FadeInUp className="lg:col-span-8 h-full" delay={0.2}>
+          <Card className="border-border/40 shadow-sm bg-white flex flex-col overflow-hidden rounded-4xl h-full">
+            <CardHeader className="pb-10 pt-8 px-8 border-b border-border/20">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <CardTitle className="text-2xl font-bold tracking-tight">Content Distribution</CardTitle>
+                  <CardDescription className="text-sm">
+                    Platform structural health and data density monitoring
+                  </CardDescription>
                 </div>
-                <Badge variant="secondary" className={`${metric.trendUp ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'} border-none font-semibold`}>
-                  {metric.trendUp ? <ArrowUpRight className="w-3 h-3 mr-1" /> : <ArrowDownRight className="w-3 h-3 mr-1" />}
-                  {metric.trend}
-                </Badge>
+                <Badge variant="outline" className="text-[10px] font-black px-3 py-1 bg-primary/5 text-primary border-primary/10 rounded-full tracking-widest">LIVE STATUS</Badge>
               </div>
-              <div className="space-y-1">
-                <h3 className="text-sm font-medium text-muted-foreground">{metric.title}</h3>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-2xl font-bold text-navy-950 dark:text-white">{metric.value}</span>
-                  <span className="text-xs text-muted-foreground line-clamp-1">{metric.description}</span>
-                </div>
+            </CardHeader>
+            <CardContent className="p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                {[
+                  { label: "MCI Events", count: stats.events, total: 5, color: "bg-blue-600 shadow-md shadow-blue-200" },
+                  { label: "News & Blogs", count: stats.news, total: 50, color: "bg-primary shadow-md shadow-primary/20" },
+                  { label: "Partner Logos", count: 12, total: 20, color: "bg-emerald-500 shadow-md shadow-emerald-200" },
+                  { label: "Team Members", count: 8, total: 15, color: "bg-purple-500 shadow-md shadow-purple-200" },
+                ].map((item, i) => (
+                  <div key={i} className="space-y-4">
+                    <div className="flex justify-between items-end px-1">
+                      <span className="text-sm font-bold text-navy-950 uppercase tracking-tight">{item.label}</span>
+                      <span className="text-xs font-mono font-bold text-muted-foreground bg-muted/30 px-2 py-0.5 rounded-md">
+                        {Math.round((item.count / item.total) * 100)}%
+                      </span>
+                    </div>
+                    <div className="h-2.5 w-full bg-muted/30 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${Math.min(100, (item.count / item.total) * 100)}%` }}
+                        transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 + i * 0.1 }}
+                        className={cn("h-full rounded-full transition-all duration-1000", item.color)} 
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
-        ))}
-      </div>
+        </FadeInUp>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Recent Activity / Content Status */}
-        <Card className="lg:col-span-2 border-none shadow-sm rounded-3xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-muted/30">
-            <div>
-              <CardTitle className="text-lg font-bold text-navy-950">Content Distribution</CardTitle>
-              <CardDescription>Overview of your website sections</CardDescription>
-            </div>
-            <Button variant="ghost" size="icon">
-              <MoreVertical className="w-4 h-4" />
-            </Button>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="space-y-6">
-              {[
-                { label: "MCI Events", count: stats.events, total: 5, color: "bg-blue-600" },
-                { label: "News & Blogs", count: stats.news, total: 50, color: "bg-accent" },
-                { label: "Partner Logos", count: 12, total: 20, color: "bg-emerald-500" },
-                { label: "Team Members", count: 8, total: 15, color: "bg-purple-500" },
-              ].map((item, i) => (
-                <div key={i} className="space-y-2">
-                  <div className="flex justify-between text-sm font-medium">
-                    <span>{item.label}</span>
-                    <span className="text-muted-foreground">{Math.round((item.count / item.total) * 100)}% Capacity</span>
-                  </div>
-                  <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                    <div 
-                      className={`h-full ${item.color} rounded-full transition-all duration-1000`} 
-                      style={{ width: `${Math.min(100, (item.count / item.total) * 100)}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Quick Actions / System Health */}
-        <Card className="border-none shadow-sm rounded-3xl bg-white">
-          <CardHeader className="border-b border-muted/30">
-            <CardTitle className="text-lg font-bold text-navy-950">Quick Actions</CardTitle>
-            <CardDescription>Commonly used tasks</CardDescription>
-          </CardHeader>
-          <CardContent className="pt-6 space-y-3">
-             {[
-               { icon: ImageIcon, label: "Add Hero Slide", href: "/admin/hero-slides" },
-               { icon: Plus, label: "Register New Partner", href: "/admin/partners" },
-               { icon: Library, label: "Upload Images", href: "/admin/media-library" },
-               { icon: Settings, label: "Audit Logs", href: "/admin/audit-logs" },
-             ].map((action, i) => (
-               <Link key={i} href={action.href} className="flex items-center justify-between p-4 rounded-2xl border border-muted/50 hover:border-accent hover:bg-accent/5 transition-all group">
-                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-muted group-hover:bg-accent/20 flex items-center justify-center transition-colors">
-                      <action.icon className="w-5 h-5 text-navy-950 group-hover:text-accent" />
+        {/* Quick Actions */}
+        <FadeInUp className="lg:col-span-4 h-full" delay={0.4}>
+          <Card className="border-border/40 shadow-sm bg-white flex flex-col overflow-hidden rounded-4xl h-full">
+            <CardHeader className="pb-8 pt-8 px-8 border-b border-border/20">
+              <CardTitle className="text-2xl font-bold tracking-tight">Quick Actions</CardTitle>
+              <CardDescription className="text-sm">
+                Instant access to management modules
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-4 pt-6">
+              <div className="flex flex-col gap-2">
+                {[
+                  { icon: ImageIcon, label: "Manage Hero Slides", href: "/admin/hero-slides" },
+                  { icon: Plus, label: "Add New Partner", href: "/admin/partners" },
+                  { icon: Library, label: "View Media Library", href: "/admin/media-library" },
+                  { icon: Settings, label: "Platform Settings", href: "/admin/global-settings" },
+                ].map((action, i) => (
+                  <Link key={i} href={action.href}>
+                    <div className="flex items-center p-4 rounded-2xl border border-transparent hover:border-primary/10 hover:bg-primary/5 transition-all group">
+                      <div className="mr-4 p-2.5 rounded-xl bg-muted/40 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all text-navy-950">
+                        <action.icon className="h-4 w-4" />
+                      </div>
+                      <span className="flex-1 text-sm font-bold text-navy-950">{action.label}</span>
+                      <ArrowRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-1.5 transition-all" />
                     </div>
-                    <span className="text-sm font-semibold">{action.label}</span>
-                 </div>
-                 <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all" />
-               </Link>
-             ))}
-          </CardContent>
-        </Card>
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-6 p-6 mx-2 mb-2 bg-navy-950 rounded-3xl border border-white/5 shadow-2xl overflow-hidden relative group">
+                <div className="flex items-center gap-3 relative z-10">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/90">System Integrity 100%</span>
+                </div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/20 transition-all pointer-events-none" />
+              </div>
+            </CardContent>
+          </Card>
+        </FadeInUp>
       </div>
     </div>
   );
 }
+
+

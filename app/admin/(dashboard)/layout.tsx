@@ -38,7 +38,7 @@ export default function AdminDashboardLayout({
   return (
     <div className="flex min-h-[calc(100vh-5rem)] bg-muted/30">
       <Sidebar />
-      <main className="flex-1 ml-72 flex flex-col min-h-full relative">
+      <main className="flex-1 ml-80 flex flex-col min-h-full relative px-6 md:px-10 scrollbar-none">
         <div className="flex-1 p-8">
           <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
             {children}

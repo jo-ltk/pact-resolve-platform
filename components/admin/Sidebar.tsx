@@ -38,18 +38,8 @@ export function Sidebar() {
   const { user, logout, isAdmin } = useAuth();
 
   return (
-    <aside className="w-72 bg-navy-950 text-white h-[calc(100vh-5rem)] fixed left-0 top-20 z-40 flex flex-col shadow-2xl overflow-y-auto border-r border-white/5">
-      <div className="p-6 flex items-center gap-3">
-        <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg transform -rotate-6">
-          <ShieldCheck className="w-6 h-6 text-navy-950" />
-        </div>
-        <div>
-          <h2 className="text-xl font-bold tracking-tight">PACT Admin</h2>
-          <p className="text-[10px] uppercase tracking-widest text-accent/80 font-semibold">Management Suite</p>
-        </div>
-      </div>
-
-      <nav className="flex-1 px-4 py-6 space-y-1">
+    <aside className="w-80 bg-navy-950 text-white h-[calc(100vh-5rem)] fixed left-0 top-20 z-40 flex flex-col shadow-2xl overflow-y-auto border-r border-white/5 scrollbar-none">
+      <nav className="flex-1 px-4 py-6 space-y-1.5 pt-10">
         {menuItems.map((item) => {
           if (item.adminOnly && !isAdmin) return null;
           
@@ -60,52 +50,62 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative",
+                "flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 group relative",
                 isActive 
-                  ? "bg-accent/10 text-accent font-semibold" 
+                  ? "bg-accent/10 text-accent font-bold" 
                   : "text-slate-400 hover:text-white hover:bg-white/5"
               )}
             >
-              <item.icon className={cn(
-                "w-5 h-5 transition-transform duration-200 group-hover:scale-110",
-                isActive ? "text-accent" : "text-slate-500 group-hover:text-white"
-              )} />
-              <span className="flex-1">{item.label}</span>
+              <div className={cn(
+                "w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300",
+                isActive ? "bg-accent/20" : "bg-white/5 group-hover:bg-white/10"
+              )}>
+                <item.icon className={cn(
+                  "w-4.5 h-4.5 transition-transform duration-300 group-hover:scale-110",
+                  isActive ? "text-accent" : "text-slate-500 group-hover:text-white"
+                )} />
+              </div>
+              <span className="flex-1 text-sm tracking-tight">{item.label}</span>
               {isActive && (
-                <div className="absolute right-2 w-1 h-5 bg-accent rounded-full animate-in fade-in zoom-in duration-300" />
+                <div className="absolute left-0 w-1 h-5 bg-accent rounded-r-full animate-in fade-in slide-in-from-left-4 duration-500" />
               )}
               {!isActive && (
-                <ChevronRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+                <ChevronRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
               )}
             </Link>
           );
         })}
       </nav>
 
-      <div className="p-4 mt-auto">
-        <div className="bg-white/5 rounded-2xl p-4 mb-4 backdrop-blur-md border border-white/10">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-linear-to-br from-accent to-accent/60 flex items-center justify-center text-navy-950 font-bold">
+      <div className="p-6 mt-auto">
+        <div className="bg-white/5 backdrop-blur-3xl rounded-4xl p-5 mb-4 border border-white/5 overflow-hidden relative group">
+          <div className="flex items-center gap-4 mb-6 relative z-10">
+            <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-accent to-accent/60 flex items-center justify-center text-navy-950 font-black shadow-lg shadow-accent/10 border border-white/20">
               {user?.name?.charAt(0) || "A"}
             </div>
             <div className="flex-1 overflow-hidden">
-              <p className="text-sm font-semibold truncate">{user?.name || "Admin"}</p>
-              <p className="text-[10px] text-slate-400 uppercase tracking-tighter">{user?.role || "Administrator"}</p>
+              <p className="text-sm font-bold truncate text-white">{user?.name || "Admin"}</p>
+              <p className="text-[10px] text-accent uppercase tracking-widest font-black mt-1 opacity-70">
+                {user?.role || "Administrator"}
+              </p>
             </div>
           </div>
           <Button 
             variant="ghost" 
-            className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-400/10 gap-3 px-3 h-10"
+            className="w-full justify-start text-red-400 hover:text-white hover:bg-red-500 gap-3 px-4 h-12 rounded-xl transition-all font-bold group/btn"
             onClick={logout}
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-4 h-4 group-hover/btn:-translate-x-1 transition-transform" />
             <span>Sign Out</span>
           </Button>
+          
+          <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-accent/5 rounded-full blur-2xl group-hover:bg-accent/10 transition-all" />
         </div>
-        <p className="text-[10px] text-center text-slate-500">
-          PACT v1.0.0 &bull; &copy; {new Date().getFullYear()}
+        <p className="text-[10px] text-center text-slate-500 font-bold tracking-widest uppercase opacity-40">
+          PACT Management &bull; v1.0.0
         </p>
       </div>
     </aside>
   );
 }
+

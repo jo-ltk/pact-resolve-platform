@@ -15,9 +15,8 @@ export function Navbar() {
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith("/admin");
 
-  if (isAdminPage) return null;
-
   useEffect(() => {
+    if (isAdminPage) return;
     setIsLoaded(true);
     // Prevent scrolling when mobile menu is open
     if (mobileMenuOpen) {
@@ -28,7 +27,9 @@ export function Navbar() {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, isAdminPage]);
+
+  if (isAdminPage) return null;
 
   const navItems = [
     { 
