@@ -70,13 +70,17 @@ export default function ConclaveHighlightsPage() {
   const fallbackHighlights: ConclaveHighlight[] = [
     { url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80", title: "Event Poster 2025", description: "Original Campaign Poster for the 2025 Mission Mediation Conclave." },
     { url: "https://images.unsplash.com/photo-1515168816513-4896b9f0d1a9?auto=format&fit=crop&q=80", title: "Audience Engagement", description: "Mission Mediation Conclave 2025 was held on 9 November at India International Centre." }, 
-    { url: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&q=80", title: "Keynote Address", description: "Headline sponsors Samvād: Partners and Dua Associates." }
+    { url: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&q=80", title: "Keynote Address", description: "Headline sponsors Samvād: Partners and Dua Associates." },
+    { url: "https://images.unsplash.com/photo-1523287562758-66c7fc58967f?auto=format&fit=crop&q=80", title: "Interactive Session", description: "Engaging discussions between stakeholders and the audience." },
+    { url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80", title: "Panel Discussion", description: "Expert insights on the future of mediation in India." },
+    { url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80", title: "Networking Break", description: "Stakeholders connecting during the afternoon session." }
   ];
 
   const fallbackGuests: ConclaveGuest[] = [
     { name: "R. Venkataramani", title: "Attorney General for India", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" },
     { name: "Hon. Justice A.K. Sikri", title: "Former Judge, Supreme Court of India", image: "https://images.unsplash.com/photo-1560250097-9b93dbd19728?auto=format&fit=crop&q=80" },
-    { name: "Sriram Panchu", title: "Senior Advocate & Mediator", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80" }
+    { name: "Sriram Panchu", title: "Senior Advocate & Mediator", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80" },
+    { name: "Hon'ble Guests", title: "Distinguished Panelists", image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80" }
   ];
 
   const fallbackCoverage: ConclaveCoverage[] = [

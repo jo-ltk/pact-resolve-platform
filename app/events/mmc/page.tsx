@@ -103,19 +103,19 @@ export default function MMCPage() {
 
   // --- Fallback Data ---
   const guests = eventData?.guestsOfHonour?.length ? eventData.guestsOfHonour : [
-    { name: "Justice S.K. Kaul", title: "Former Judge, Supreme Court of India", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" },
-    { name: "R. Venkataramani", title: "Attorney General for India", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80" },
+    { name: "R. Venkataramani", title: "Attorney General for India", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" },
+    { name: "Hon. Justice A.K. Sikri", title: "Former Judge, Supreme Court of India", image: "https://images.unsplash.com/photo-1560250097-9b93dbd19728?auto=format&fit=crop&q=80" },
     { name: "Sriram Panchu", title: "Senior Advocate & Mediator", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80" },
     { name: "Hon'ble Guests", title: "Distinguished Panelists", image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80" }
   ];
 
   const highlights = eventData?.highlights?.length ? eventData.highlights : [
-    { url: "https://images.unsplash.com/photo-1523287562758-66c7fc58967f?auto=format&fit=crop&q=80" },
-    { url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80" },
-    { url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80" },
-    { url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80" },
-    { url: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80" },
-    { url: "https://images.unsplash.com/photo-1475721027187-4024733923f9?auto=format&fit=crop&q=80" }
+    { url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80", title: "Event Poster 2025", description: "Original Campaign Poster for the 2025 Mission Mediation Conclave." },
+    { url: "https://images.unsplash.com/photo-1515168816513-4896b9f0d1a9?auto=format&fit=crop&q=80", title: "Audience Engagement", description: "Mission Mediation Conclave 2025 was held on 9 November at India International Centre." }, 
+    { url: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&q=80", title: "Keynote Address", description: "Headline sponsors Samvād: Partners and Dua Associates." },
+    { url: "https://images.unsplash.com/photo-1523287562758-66c7fc58967f?auto=format&fit=crop&q=80", title: "Interactive Session", description: "Engaging discussions between stakeholders and the audience." },
+    { url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80", title: "Panel Discussion", description: "Expert insights on the future of mediation in India." },
+    { url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80", title: "Networking Break", description: "Stakeholders connecting during the afternoon session." }
   ];
 
   const coverage = eventData?.coverage?.length ? eventData.coverage : [
@@ -460,32 +460,32 @@ export default function MMCPage() {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
               <FadeInUp className="lg:col-span-3 aspect-video relative rounded-4xl overflow-hidden border border-white/10 shadow-2xl group">
                 <Image 
-                  src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&q=80"
-                  alt="Poster of Speakers and Sponsors"
+                  src={highlights[0]?.url || "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&q=80"}
+                  alt={highlights[0]?.title || "Poster of Speakers and Sponsors"}
                   fill
                   className="object-cover transition-transform duration-2000 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-transparent to-transparent opacity-60" />
                 <div className="absolute bottom-10 left-10">
                    <p className="text-gold-500 font-mono text-xs tracking-[0.4em] uppercase font-bold mb-2">Original Campaign</p>
-                   <h3 className="text-4xl font-bold italic tracking-tighter">Event Poster 2025</h3>
+                   <h3 className="text-4xl font-bold italic tracking-tighter">{highlights[0]?.title || "Event Poster 2025"}</h3>
                 </div>
               </FadeInUp>
               
               <div className="lg:col-span-2 grid grid-cols-1 gap-8">
                 {[
-                  "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80",
-                  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80"
-                ].map((url, i) => (
+                  highlights[1] || { url: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80", title: "Frame 2025 - 01" },
+                  highlights[2] || { url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80", title: "Frame 2025 - 02" }
+                ].map((item, i) => (
                    <FadeInUp key={i} className="aspect-square lg:aspect-auto relative rounded-4xl overflow-hidden border border-white/5 shadow-2xl group">
                       <Image 
-                        src={url}
-                        alt={`MMC Gallery Image ${i + 1}`}
+                        src={item.url}
+                        alt={item.title || `MMC Gallery Image ${i + 1}`}
                         fill
                         className="object-cover transition-transform duration-1000 group-hover:scale-110"
                       />
                       <div className="absolute inset-x-0 bottom-0 p-6 bg-linear-to-t from-navy-950/80 to-transparent">
-                        <span className="text-xs font-mono text-gold-500 uppercase tracking-widest font-bold">Frame 2025 - 0{i + 1}</span>
+                        <span className="text-xs font-mono text-gold-500 uppercase tracking-widest font-bold">{item.title || `Frame 2025 - 0${i + 1}`}</span>
                       </div>
                    </FadeInUp>
                 ))}
