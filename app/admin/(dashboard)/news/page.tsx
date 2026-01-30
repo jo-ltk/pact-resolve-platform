@@ -220,17 +220,17 @@ export default function NewsAdminPage() {
             </Button>
           </div>
 
-          <div className="rounded-2xl border overflow-hidden">
-            <Table>
+          <div className="rounded-2xl border overflow-hidden overflow-x-auto">
+            <Table className="min-w-[800px]">
               <TableHeader className="bg-muted/50">
                 <TableRow>
                   <TableHead className="w-[80px]">Order</TableHead>
-                  <TableHead>Thumbnail</TableHead>
-                  <TableHead className="min-w-[200px]">Title</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="w-[100px]">Thumbnail</TableHead>
+                  <TableHead>Title</TableHead>
+                  <TableHead className="w-[100px]">Type</TableHead>
+                  <TableHead className="w-[120px]">Date</TableHead>
+                  <TableHead className="w-[120px]">Status</TableHead>
+                  <TableHead className="text-right w-[80px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -238,8 +238,8 @@ export default function NewsAdminPage() {
                   Array.from({ length: 5 }).map((_, i) => (
                     <TableRow key={i}>
                       <TableCell><Skeleton className="h-4 w-4" /></TableCell>
-                      <TableCell><Skeleton className="h-12 w-20 rounded-md" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-48" /></TableCell>
+                      <TableCell><Skeleton className="h-12 w-16 rounded-md" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-full" /></TableCell>
                       <TableCell><Skeleton className="h-6 w-16" /></TableCell>
                       <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                       <TableCell><Skeleton className="h-4 w-20" /></TableCell>
@@ -257,7 +257,7 @@ export default function NewsAdminPage() {
                     <TableRow key={(item._id as any).toString()} className="hover:bg-muted/30 transition-colors group">
                       <TableCell className="font-mono text-xs">{item.order}</TableCell>
                       <TableCell>
-                        <div className="w-16 h-10 rounded-lg overflow-hidden border bg-muted">
+                        <div className="w-16 h-10 rounded-lg overflow-hidden border bg-muted shrink-0">
                           {item.image?.url ? (
                             <img src={item.image.url} alt={item.image.alt} className="w-full h-full object-cover" />
                           ) : (
@@ -268,28 +268,30 @@ export default function NewsAdminPage() {
                         </div>
                       </TableCell>
                       <TableCell className="font-semibold text-navy-950">
-                        <div className="flex items-center gap-2">
-                          {item.title}
+                        <div className="max-w-[200px] sm:max-w-[300px] md:max-w-[400px]">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="line-clamp-2" title={item.title}>{item.title}</span>
+                          </div>
                           {item.isFeatured && (
-                            <Badge variant="secondary" className="bg-amber-100 text-amber-700 border-amber-200 text-[10px] h-4">
-                              <Star className="w-2 h-2 mr-1 fill-amber-500" />
+                            <Badge variant="secondary" className="bg-amber-100 text-amber-700 border-amber-200 text-[10px] h-5 px-2 inline-flex">
+                              <Star className="w-3 h-3 mr-1 fill-amber-500" />
                               Featured
                             </Badge>
                           )}
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="font-medium">
+                        <Badge variant="outline" className="font-medium whitespace-nowrap">
                           {item.type}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-muted-foreground text-sm">{item.date}</TableCell>
+                      <TableCell className="text-muted-foreground text-sm whitespace-nowrap">{item.date}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                            <Switch 
                              checked={item.isActive} 
                              onCheckedChange={() => handleToggleStatus(item, 'isActive')}
-                             className="data-[state=checked]:bg-emerald-500"
+                             className="data-[state=checked]:bg-emerald-500 scale-90"
                            />
                            <span className="text-xs font-medium">
                              {item.isActive ? "Active" : "Hidden"}
@@ -299,7 +301,7 @@ export default function NewsAdminPage() {
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="group-hover:bg-background">
+                            <Button variant="ghost" size="icon" className="group-hover:bg-background h-8 w-8">
                               <MoreHorizontal className="w-4 h-4" />
                             </Button>
                           </DropdownMenuTrigger>
@@ -337,9 +339,9 @@ export default function NewsAdminPage() {
 
       {/* Editor Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-0 border-none shadow-2xl">
-          <form onSubmit={handleSave}>
-            <DialogHeader className="p-8 bg-navy-950 text-white rounded-t-3xl">
+        <DialogContent className="max-w-2xl max-h-[90vh] p-0 border-none shadow-2xl rounded-4xl overflow-hidden bg-white flex flex-col">
+          <form onSubmit={handleSave} className="flex flex-col h-full max-h-[90vh]">
+            <DialogHeader className="p-8 bg-navy-950 text-white shrink-0">
               <DialogTitle className="text-2xl font-bold">
                 {editingItem?._id ? "Edit News Item" : "Create News Item"}
               </DialogTitle>
@@ -348,7 +350,7 @@ export default function NewsAdminPage() {
               </DialogDescription>
             </DialogHeader>
 
-            <div className="p-8 space-y-6">
+            <div className="flex-1 overflow-y-auto p-8 space-y-6 scrollbar-none">
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="type">Content Type</Label>
@@ -449,7 +451,7 @@ export default function NewsAdminPage() {
               </div>
             </div>
 
-            <DialogFooter className="p-8 border-t bg-muted/10 rounded-b-3xl">
+            <DialogFooter className="p-8 border-t bg-gray-50/80 backdrop-blur-sm shrink-0">
               <Button 
                 type="button" 
                 variant="outline" 
@@ -460,7 +462,7 @@ export default function NewsAdminPage() {
               </Button>
               <Button 
                 type="submit" 
-                className="rounded-xl h-11 px-8 bg-primary hover:bg-primary/90 font-bold shadow-lg shadow-primary/20"
+                className="rounded-xl h-11 px-8 bg-navy-950 hover:bg-navy-900 text-white font-bold shadow-lg shadow-navy-950/10 transition-all active:scale-95"
                 disabled={isSaving}
               >
                 {isSaving ? (
