@@ -526,9 +526,18 @@ export default function MMCPage() {
           <SectionHeader subtitle="Coverage" title="Media & Press" center />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-             {coverage.map((item, i) => (
+              {coverage.map((item, i) => (
                 <FadeInUp key={i} className="group">
-                  <a href={item.link} target="_blank" rel="noopener noreferrer" className="block h-full">
+                  <a 
+                    href={(() => {
+                      const link = item.link?.trim() || '#';
+                      if (link === '#' || link.startsWith('http')) return link;
+                      return `https://${link}`;
+                    })()} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="block h-full"
+                  >
                     <div className="relative h-full p-10 rounded-[2.5rem] bg-navy-50 border border-navy-100 hover:border-gold-500/50 transition-all duration-500 hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] flex flex-col items-start overflow-hidden">
                       <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
                       

@@ -15,7 +15,9 @@ import {
   ChevronDown,
   LayoutGrid,
   Sparkles,
-  Trophy
+  Trophy,
+  Newspaper,
+  ExternalLink
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -37,7 +39,7 @@ import {
 } from "@/components/ui/card";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 import { useAuth } from "@/lib/context/AuthContext";
-import { ConclaveEvent, ConclaveHighlight, ConclaveGuest } from "@/lib/db/schemas";
+import { ConclaveEvent, ConclaveHighlight, ConclaveGuest, ConclaveCoverage } from "@/lib/db/schemas";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ConclaveHighlightsPage() {
@@ -58,23 +60,17 @@ export default function ConclaveHighlightsPage() {
   const [editingGuestIndex, setEditingGuestIndex] = useState<number | null>(null);
   const [tempGuest, setTempGuest] = useState<ConclaveGuest>({ name: "", title: "", image: "" });
 
+  // Coverage State
+  const [coverage, setCoverage] = useState<ConclaveCoverage[]>([]);
+  const [isCoverageDialogOpen, setIsCoverageDialogOpen] = useState(false);
+  const [editingCoverageIndex, setEditingCoverageIndex] = useState<number | null>(null);
+  const [tempCoverage, setTempCoverage] = useState<ConclaveCoverage>({ source: "", headline: "", link: "" });
+
   // Fallback data matching the public website
   const fallbackHighlights: ConclaveHighlight[] = [
-    {
-      url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80",
-      title: "Event Poster 2025",
-      description: "Original Campaign Poster for the 2025 Mission Mediation Conclave."
-    },
-    {
-      url: "https://images.unsplash.com/photo-1515168816513-4896b9f0d1a9?auto=format&fit=crop&q=80",
-      title: "Audience Engagement",
-      description: "Mission Mediation Conclave 2025 was held on 9 November at India International Centre."
-    }, 
-    {
-      url: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&q=80",
-      title: "Keynote Address",
-      description: "Headline sponsors Samvād: Partners and Dua Associates."
-    }
+    { url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80", title: "Event Poster 2025", description: "Original Campaign Poster for the 2025 Mission Mediation Conclave." },
+    { url: "https://images.unsplash.com/photo-1515168816513-4896b9f0d1a9?auto=format&fit=crop&q=80", title: "Audience Engagement", description: "Mission Mediation Conclave 2025 was held on 9 November at India International Centre." }, 
+    { url: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&q=80", title: "Keynote Address", description: "Headline sponsors Samvād: Partners and Dua Associates." }
   ];
 
   const fallbackGuests: ConclaveGuest[] = [
@@ -82,6 +78,20 @@ export default function ConclaveHighlightsPage() {
     { name: "Hon. Justice A.K. Sikri", title: "Former Judge, Supreme Court of India", image: "https://images.unsplash.com/photo-1560250097-9b93dbd19728?auto=format&fit=crop&q=80" },
     { name: "Sriram Panchu", title: "Senior Advocate & Mediator", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80" }
   ];
+
+  const fallbackCoverage: ConclaveCoverage[] = [
+    { source: "ET LEGAL WORLD", headline: "India urged to lead global mediation with international headquarters", link: "https://example.com" },
+    { source: "BW WORLD", headline: "Attorney General R Venkataramani to grace the Mediation Championship India 2025", link: "https://example.com" },
+    { source: "BAR AND BENCH", headline: "I am more gladiator than mediator - AG Venkataramani calls for mediation push", link: "https://example.com" }
+  ];
+
+  // Helper to ensure URLs have https:// prefix
+  const formatExternalUrl = (url: string) => {
+    const trimmed = url?.trim();
+    if (!trimmed || trimmed === '#') return '#';
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+    return `https://${trimmed}`;
+  };
 
   useEffect(() => { fetchEvent(); }, []);
 
@@ -91,42 +101,38 @@ export default function ConclaveHighlightsPage() {
       const res = await fetch("/api/content/conclave-event?admin=true", { cache: 'no-store' });
       const result = await res.json();
       
-      if (result.success) {
-        if (result.data) {
-          const items = Array.isArray(result.data) ? result.data : [result.data];
-          const activeEvent = items.find((e: ConclaveEvent) => e.isActive) || items[0];
-          
-          if (!activeEvent) {
-             setHighlights(fallbackHighlights);
-             setGuests(fallbackGuests);
-             setEventData(null);
-             // Let finally block handle loading state
-             return;
-          }
-
-          setEventData(activeEvent);
-          setHighlights((activeEvent.highlights && activeEvent.highlights.length > 0) ? activeEvent.highlights : fallbackHighlights);
-          setGuests((activeEvent.guestsOfHonour && activeEvent.guestsOfHonour.length > 0) ? activeEvent.guestsOfHonour : fallbackGuests);
-        } else {
-             // No data found -> Load fallback
-             setHighlights(fallbackHighlights);
-             setGuests(fallbackGuests);
+      if (result.success && result.data) {
+        const items = Array.isArray(result.data) ? result.data : [result.data];
+        const activeEvent = items.find((e: ConclaveEvent) => e.isActive) || items[0];
+        
+        if (!activeEvent) {
+          setHighlights(fallbackHighlights);
+          setGuests(fallbackGuests);
+          setCoverage(fallbackCoverage);
+          setEventData(null);
+          return;
         }
+
+        setEventData(activeEvent);
+        setHighlights(activeEvent.highlights?.length > 0 ? activeEvent.highlights : fallbackHighlights);
+        setGuests(activeEvent.guestsOfHonour?.length > 0 ? activeEvent.guestsOfHonour : fallbackGuests);
+        setCoverage(activeEvent.coverage?.length > 0 ? activeEvent.coverage : fallbackCoverage);
       } else {
-         setHighlights(fallbackHighlights);
-         setGuests(fallbackGuests);
+        setHighlights(fallbackHighlights);
+        setGuests(fallbackGuests);
+        setCoverage(fallbackCoverage);
       }
-    } catch (e) { 
-      // Error -> Load fallback
+    } catch { 
       setHighlights(fallbackHighlights);
       setGuests(fallbackGuests);
-      toast.error("Failed to sync with database. Showing local cache."); 
+      setCoverage(fallbackCoverage);
+      toast.error("Failed to sync with database."); 
     } finally { 
       setIsLoading(false); 
     }
   }
 
-  const handleSave = async (data?: { newGuests?: ConclaveGuest[], newHighlights?: ConclaveHighlight[] }) => {
+  const handleSave = async (data?: { newGuests?: ConclaveGuest[], newHighlights?: ConclaveHighlight[], newCoverage?: ConclaveCoverage[] }) => {
     setIsSaving(true);
     try {
       const isNew = !eventData?._id;
@@ -134,16 +140,11 @@ export default function ConclaveHighlightsPage() {
       
       const guestsToSave = data?.newGuests || guests;
       const highlightsToSave = data?.newHighlights || highlights;
+      const coverageToSave = data?.newCoverage || coverage;
       
       const payload = isNew 
-        ? {
-            year: new Date().getFullYear(),
-            isActive: true,
-            guestsOfHonour: guestsToSave,
-            highlights: highlightsToSave,
-            coverage: []
-          }
-        : { ...eventData, highlights: highlightsToSave, guestsOfHonour: guestsToSave };
+        ? { year: new Date().getFullYear(), isActive: true, guestsOfHonour: guestsToSave, highlights: highlightsToSave, coverage: coverageToSave }
+        : { ...eventData, highlights: highlightsToSave, guestsOfHonour: guestsToSave, coverage: coverageToSave };
 
       const res = await fetch("/api/content/conclave-event", {
         method,
@@ -159,7 +160,7 @@ export default function ConclaveHighlightsPage() {
       } else {
         toast.error(result.error || "Save failed");
       }
-    } catch (e) { 
+    } catch { 
       toast.error("Save failed"); 
     } finally { 
       setIsSaving(false); 
@@ -240,8 +241,44 @@ export default function ConclaveHighlightsPage() {
   const removeGuestItem = (index: number) => {
     const newGuests = guests.filter((_, i) => i !== index);
     setGuests(newGuests);
-    toast.success("Guest removed from view. Saving...");
+    toast.success("Guest removed. Saving...");
     handleSave({ newGuests });
+  };
+
+  // --- COVERAGE LOGIC ---
+  const addCoverageItem = () => {
+    setEditingCoverageIndex(null);
+    setTempCoverage({ source: "", headline: "", link: "" });
+    setIsCoverageDialogOpen(true);
+  };
+
+  const openCoverageEditDialog = (index: number) => {
+    setEditingCoverageIndex(index);
+    setTempCoverage({ ...coverage[index] });
+    setIsCoverageDialogOpen(true);
+  };
+
+  const saveTempCoverage = () => {
+    // Sanitize the link before saving
+    const sanitizedLink = formatExternalUrl(tempCoverage.link);
+    const coverageWithSanitizedLink = { ...tempCoverage, link: sanitizedLink };
+
+    const newCoverage = [...coverage];
+    if (editingCoverageIndex !== null) {
+      newCoverage[editingCoverageIndex] = coverageWithSanitizedLink;
+    } else {
+      newCoverage.push(coverageWithSanitizedLink);
+    }
+    setCoverage(newCoverage);
+    setIsCoverageDialogOpen(false);
+    handleSave({ newCoverage });
+  };
+
+  const removeCoverageItem = (index: number) => {
+    const newCoverage = coverage.filter((_, i) => i !== index);
+    setCoverage(newCoverage);
+    toast.success("Coverage removed. Saving...");
+    handleSave({ newCoverage });
   };
 
   if (isLoading) {
@@ -494,10 +531,66 @@ export default function ConclaveHighlightsPage() {
                 onClick={addGuestItem} 
                 className="flex flex-col items-center justify-center w-full aspect-video bg-navy-50/50 border-2 border-dashed border-navy-200 rounded-[2.5rem] hover:bg-amber-50/50 hover:border-amber-500/30 transition-all group"
               >
-                 <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                   <Plus className="w-8 h-8 text-amber-500" />
-                 </div>
-                 <span className="text-sm font-bold text-navy-950 uppercase tracking-widest">Add Guest</span>
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Plus className="w-8 h-8 text-amber-500" />
+                </div>
+                <span className="text-sm font-bold text-navy-950 uppercase tracking-widest">Add Guest</span>
+              </button>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* SECTION 3: COVERAGE */}
+      <div className="space-y-6">
+        <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-white border rounded-4xl p-6 shadow-sm">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 px-4 py-2 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
+              <Newspaper className="w-5 h-5 text-emerald-600" />
+              <span className="font-bold text-emerald-900">{coverage.length} <span className="font-medium opacity-60">Articles</span></span>
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-xl font-black text-navy-950 italic uppercase leading-none">Coverage</h3>
+              <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest mt-1">Media & Press – {eventData?.year || 2025}</p>
+            </div>
+          </div>
+          <Button onClick={addCoverageItem} variant="outline" className="rounded-2xl h-12 px-6 border-2 border-dashed border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/5 hover:border-emerald-500 transition-all font-bold">
+            <Plus className="w-5 h-5 mr-2" /> Add Article
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <AnimatePresence mode="popLayout">
+            {coverage.map((item, idx) => (
+              <motion.div layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} key={`coverage-${idx}`}>
+                <Card className="group relative h-full flex flex-col bg-linear-to-br from-gray-50 to-gray-100 border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 rounded-3xl overflow-hidden">
+                  <CardContent className="p-8 flex-1 space-y-4">
+                    <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-[0.2em]">{item.source || "Source"}</p>
+                    <h4 className="font-bold text-xl text-navy-950 leading-snug line-clamp-3">{item.headline || "Headline"}</h4>
+                  </CardContent>
+                  <CardFooter className="p-6 pt-0 flex justify-between items-center">
+                    <a 
+                      href={formatExternalUrl(item.link)} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-xs font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 flex items-center gap-2"
+                    >
+                      View Article <ExternalLink className="w-3 h-3" />
+                    </a>
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button size="icon" variant="ghost" className="w-8 h-8 rounded-xl hover:bg-emerald-50" onClick={() => openCoverageEditDialog(idx)}><Edit className="w-4 h-4 text-emerald-600" /></Button>
+                      <Button size="icon" variant="ghost" className="w-8 h-8 rounded-xl hover:bg-red-50 text-red-500" onClick={() => removeCoverageItem(idx)}><Trash2 className="w-4 h-4" /></Button>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))}
+            <motion.div layout>
+              <button onClick={addCoverageItem} className="flex flex-col items-center justify-center w-full h-full min-h-[200px] bg-gray-50/50 border-2 border-dashed border-gray-200 rounded-3xl hover:bg-emerald-50/50 hover:border-emerald-500/30 transition-all group">
+                <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Plus className="w-7 h-7 text-emerald-500" />
+                </div>
+                <span className="text-sm font-bold text-navy-950 uppercase tracking-widest">Add Article</span>
               </button>
             </motion.div>
           </AnimatePresence>
@@ -594,6 +687,38 @@ export default function ConclaveHighlightsPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      
+      {/* COVERAGE DIALOG */}
+      <Dialog open={isCoverageDialogOpen} onOpenChange={setIsCoverageDialogOpen}>
+        <DialogContent className="max-w-lg p-0 overflow-hidden rounded-4xl border-none bg-white">
+          <div className="bg-emerald-600 p-8 text-white">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold italic uppercase tracking-tighter flex items-center gap-3">
+                <Newspaper className="w-6 h-6" /> Media Coverage
+              </DialogTitle>
+            </DialogHeader>
+          </div>
+          <div className="p-8 space-y-6">
+            <div className="space-y-2">
+              <Label className="text-sm font-bold text-navy-950 ml-1">Publication / Source</Label>
+              <Input value={tempCoverage.source} onChange={e => setTempCoverage({...tempCoverage, source: e.target.value })} className="rounded-2xl h-12" placeholder="e.g. ET Legal World" />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm font-bold text-navy-950 ml-1">Headline</Label>
+              <Textarea value={tempCoverage.headline} onChange={e => setTempCoverage({...tempCoverage, headline: e.target.value })} className="rounded-2xl min-h-[100px] resize-none" placeholder="Article headline or title" />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm font-bold text-navy-950 ml-1">Article Link</Label>
+              <Input value={tempCoverage.link} onChange={e => setTempCoverage({...tempCoverage, link: e.target.value })} className="rounded-2xl h-12" placeholder="https://..." />
+            </div>
+          </div>
+          <DialogFooter className="p-8 bg-gray-50 border-t">
+            <Button variant="ghost" onClick={() => setIsCoverageDialogOpen(false)}>Cancel</Button>
+            <Button onClick={saveTempCoverage} className="bg-emerald-600 hover:bg-emerald-500 px-8 rounded-xl font-bold italic text-white">Save Article</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Visual Strategy Guide */}
       <div className="bg-amber-50 rounded-4xl p-10 border border-amber-200 flex flex-col md:flex-row items-center gap-8">
         <div className="w-20 h-20 shrink-0 bg-amber-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-amber-500/30 rotate-3">
