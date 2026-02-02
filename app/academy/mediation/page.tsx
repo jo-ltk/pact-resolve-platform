@@ -60,10 +60,10 @@ const CurriculumRoadmap = ({ modules, type, dark = false }: { modules: any[], ty
            viewport={{ once: true }}
            transition={{ delay: i * 0.05 }}
            className={cn(
-             "group relative overflow-hidden rounded-3xl md:rounded-[2rem] border transition-all duration-500",
+             "group relative overflow-hidden rounded-3xl md:rounded-4xl border transition-all duration-500",
              activeStep === i 
                ? (dark ? "bg-white/10 border-gold-500 shadow-[0_0_30px_-10px_rgba(191,154,102,0.1)]" : "bg-navy-950 border-gold-500 shadow-2xl") 
-               : (dark ? "bg-white/[0.02] border-white/5 hover:bg-white/[0.04] hover:border-white/10" : "bg-white border-navy-100 hover:border-gold-500/30 hover:bg-navy-50/50 shadow-xs")
+               : (dark ? "bg-white/2 border-white/5 hover:bg-white/4 hover:border-white/10" : "bg-white border-navy-100 hover:border-gold-500/30 hover:bg-navy-50/50 shadow-xs")
            )}
         >
            <button
@@ -117,7 +117,7 @@ const CurriculumRoadmap = ({ modules, type, dark = false }: { modules: any[], ty
                  exit={{ height: 0, opacity: 0 }}
                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                >
-                 <div className="px-4 md:px-6 pb-6 md:pb-10 pl-4 sm:pl-[3.5rem] md:pl-[6rem]">
+                 <div className="px-4 md:px-6 pb-6 md:pb-10 pl-4 sm:pl-14 md:pl-24">
                    <div className={cn("h-px w-full mb-6 md:mb-8", dark ? "bg-white/5" : "bg-navy-950/5")} />
                    <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-12 items-start">
                      <p className={cn(
@@ -190,7 +190,7 @@ const MediationHero = () => (
           </div>
           <div className="relative group hidden lg:block">
             <div className="absolute -inset-4 bg-white/5 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-            <div className="relative p-10 rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm">
+            <div className="relative p-10 rounded-3xl border border-white/10 bg-white/2 backdrop-blur-sm">
               <p className="text-xl text-white/70 font-light italic leading-relaxed">
                 Got a query? Email – academy@thepact.in
               </p>
@@ -306,11 +306,27 @@ export default function MediationPage() {
               ))}
             </StaggerContainer>
 
-            <FadeInUp delay={0.4} className="pt-8">
-              <p className="text-sm font-mono uppercase tracking-widest text-navy-950/40 mb-4">Contact Us</p>
-              <a href="mailto:academy@thepact.in" className="text-2xl md:text-3xl font-light text-navy-950 hover:text-gold-500 transition-colors">
-                Write to us at – <span className="underline decoration-gold-500/30">academy@thepact.in</span>
-              </a>
+            <FadeInUp delay={0.4} className="pt-12">
+              <div className="group relative inline-block">
+                <div className="absolute -inset-4 bg-gold-500/5 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative flex flex-col gap-6">
+                  <div className="flex items-center gap-3 text-navy-950/30">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.4em]">Inquiry</span>
+                    <div className="h-px w-8 bg-navy-100" />
+                  </div>
+                  <a href="mailto:academy@thepact.in" className="flex items-center gap-6 group/link">
+                    <div className="w-14 h-14 rounded-2xl bg-navy-950 flex items-center justify-center text-white group-hover/link:bg-gold-500 group-hover/link:text-navy-950 transition-all duration-500 shadow-xl">
+                      <Mail className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-2xl md:text-3xl font-light text-navy-950 group-hover/link:text-gold-500 transition-colors">
+                        academy<span className="text-gold-500 font-medium group-hover/link:text-navy-950">@</span>thepact.in
+                      </h4>
+                      <p className="text-[10px] font-mono uppercase tracking-widest text-navy-950/40 mt-1">Connect for Custom Modules</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </FadeInUp>
           </div>
           
@@ -340,13 +356,13 @@ export default function MediationPage() {
             center
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-20 items-start mb-32">
+          <div className="flex flex-col gap-12 mb-24">
             <div className="space-y-10">
                <div className="flex items-baseline gap-6 border-b border-navy-100 pb-8">
                  <p className="text-2xl md:text-4xl text-navy-950 font-light tracking-tight">Foundational Course in <span className="text-gold-500 italic font-medium">Mediation Advocacy</span></p>
                </div>
                
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                  <div className="space-y-2">
                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Mode</span>
                    <p className="text-lg text-navy-950/70 font-light">Online (20 Videos)</p>
@@ -366,20 +382,53 @@ export default function MediationPage() {
                </div>
             </div>
 
-            <div className="p-8 rounded-[2.5rem] bg-navy-50/50 border border-navy-100 backdrop-blur-xl relative group">
-                <div className="absolute -inset-1 bg-linear-to-r from-gold-500/10 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-8">
-                    <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-navy-950/40">Fee</h5>
-                    <Sparkles className="w-5 h-5 text-gold-500" />
+            {/* Wide Horizontal Enrollment Banner */}
+            <div className="relative group w-full">
+              <div className="absolute -inset-0.5 bg-linear-to-r from-gold-500/20 via-transparent to-gold-500/10 rounded-4xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+              <div className="relative overflow-hidden rounded-4xl border border-navy-100 bg-white shadow-2xl flex flex-col lg:flex-row items-stretch lg:items-center w-full">
+                {/* Left: Pricing */}
+                <div className="p-8 lg:p-12 lg:border-r border-navy-50 shrink-0 bg-slate-50/50">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
+                    <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/40 font-bold">Enrollment Open</span>
                   </div>
-                  <div className="mb-8">
-                    <p className="text-5xl font-light text-navy-950 mb-2 tracking-tighter">INR 5,000 <span className="text-sm font-mono text-navy-950/20">+ GST</span></p>
+                  <div className="flex items-baseline gap-3">
+                    <p className="text-5xl md:text-6xl font-light text-navy-950 tracking-tighter">5,000</p>
+                    <div className="flex flex-col">
+                      <p className="text-sm font-bold text-gold-600 font-mono tracking-widest leading-none">INR</p>
+                      <p className="text-[10px] font-mono text-navy-950/20 uppercase tracking-widest mt-1">+ GST</p>
+                    </div>
                   </div>
-                  <MagneticButton variant="primary" size="lg" className="w-full">
-                    <Link href="#" className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">Sign Up</Link>
+                </div>
+
+                {/* Middle: Key Benefits (Visible on Desktop) */}
+                <div className="hidden xl:flex flex-1 px-8 2xl:px-12 gap-6 2xl:gap-12 items-center overflow-hidden">
+                  {[
+                    { icon: Video, label: "20+ HD Modules" },
+                    { icon: Users, label: "Live Q&A Sessions" },
+                    { icon: Award, label: "Global Certification" }
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-4 group/item shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-navy-50 flex items-center justify-center text-gold-500 group-hover/item:bg-gold-500 group-hover/item:text-white transition-colors">
+                        <item.icon className="w-4 h-4" />
+                      </div>
+                      <span className="text-[11px] font-mono uppercase tracking-widest text-navy-950/60 font-medium whitespace-nowrap">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Right: CTA */}
+                <div className="p-8 lg:p-10 2xl:p-12 lg:ml-auto lg:shrink-0">
+                  <MagneticButton variant="primary" size="lg" className="w-full lg:w-auto px-10 md:px-12 2xl:px-16 py-6 md:py-8 text-sm md:text-base font-bold uppercase tracking-[0.2em] shadow-xl shadow-gold-500/10 transition-all">
+                    <Link href="#" className="flex items-center justify-center gap-4 whitespace-nowrap">
+                      Enroll Today <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
                   </MagneticButton>
                 </div>
+
+                {/* Decorative background element */}
+                <div className="absolute top-0 right-0 w-64 h-full bg-gold-500/5 -skew-x-12 translate-x-32 pointer-events-none hidden lg:block" />
+              </div>
             </div>
           </div>
 
@@ -441,13 +490,13 @@ export default function MediationPage() {
             center
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-20 items-start mb-20">
+          <div className="flex flex-col gap-12 mb-20">
             <div className="space-y-10">
                <div className="flex items-baseline gap-6 border-b border-white/5 pb-8">
                  <p className="text-2xl md:text-4xl text-white font-light tracking-tight">Advanced <span className="text-gold-500 italic font-medium">Curriculum</span></p>
                </div>
                
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                  <div className="space-y-2">
                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Mode</span>
                    <p className="text-lg text-white/80 font-light">Online (40 Videos)</p>
@@ -467,20 +516,50 @@ export default function MediationPage() {
                </div>
             </div>
 
-            <div className="p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl relative group">
-                <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-8">
-                    <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-gold-500/60">Fee</h5>
-                    <Award className="w-5 h-5 text-gold-500" />
+            {/* Wide Horizontal Dark Banner */}
+            <div className="relative group w-full">
+              <div className="absolute -inset-0.5 bg-linear-to-r from-gold-500/30 via-transparent to-gold-500/10 rounded-4xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+              <div className="relative overflow-hidden rounded-4xl border border-white/10 bg-white/2 backdrop-blur-xl flex flex-col lg:flex-row items-stretch lg:items-center w-full">
+                {/* Left: Pricing */}
+                <div className="p-8 lg:p-12 lg:border-r border-white/5 shrink-0 bg-white/2">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
+                    <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/40 font-bold">Certification Status: Active</span>
                   </div>
-                  <div className="mb-8">
-                    <p className="text-5xl font-light text-white mb-2 tracking-tighter">INR 10,000 <span className="text-sm font-mono text-white/20">+ GST</span></p>
+                  <div className="flex items-baseline gap-3">
+                    <p className="text-5xl md:text-6xl font-light text-white tracking-tighter">10,000</p>
+                    <div className="flex flex-col">
+                      <p className="text-sm font-bold text-gold-500 font-mono tracking-widest leading-none">INR</p>
+                      <p className="text-[10px] font-mono text-white/20 uppercase tracking-widest mt-1">+ GST</p>
+                    </div>
                   </div>
-                  <MagneticButton variant="primary" size="lg" className="w-full">
-                    <Link href="#" className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">Sign Up</Link>
+                </div>
+
+                {/* Middle: Key Benefits */}
+                <div className="hidden xl:flex flex-1 px-8 2xl:px-12 gap-6 2xl:gap-12 items-center overflow-hidden">
+                  {[
+                    { icon: Video, label: "40+ Advanced Lessons" },
+                    { icon: Globe, label: "Global Accreditation" },
+                    { icon: Award, label: "Master Certification" }
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-4 group/item shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gold-500 group-hover/item:bg-gold-500 group-hover/item:text-navy-950 transition-colors">
+                        <item.icon className="w-4 h-4" />
+                      </div>
+                      <span className="text-[11px] font-mono uppercase tracking-widest text-white/50 font-medium whitespace-nowrap">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Right: CTA */}
+                <div className="p-8 lg:p-10 2xl:p-12 lg:ml-auto lg:shrink-0">
+                  <MagneticButton variant="primary" size="lg" className="w-full lg:w-auto px-10 md:px-12 2xl:px-16 py-6 md:py-8 text-sm md:text-base font-bold uppercase tracking-[0.2em] shadow-xl shadow-gold-500/20 hover:scale-[1.02] transition-all">
+                    <Link href="#" className="flex items-center justify-center gap-4 whitespace-nowrap">
+                      Begin Certification <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
                   </MagneticButton>
                 </div>
+              </div>
             </div>
           </div>
 
@@ -525,23 +604,65 @@ export default function MediationPage() {
         </div>
       </section>
 
-      {/* Section: Collaborator */}
-      <div className="border-t border-navy-100/50">
-        <div className="py-16 px-6 md:px-12 lg:px-24">
-          <div className="max-w-7xl mx-auto">
-            <FadeInUp className="mb-12">
-              <div className="inline-flex items-center gap-4 mb-6 opacity-80">
-                <div className="h-px w-12 bg-gold-500/50" />
-                <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase font-bold text-navy-950/60">Partners</span>
+      {/* Section: Final CTA / Inquiry */}
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <FadeInUp>
+            <div className="relative overflow-hidden rounded-[3rem] p-8 md:p-16 lg:p-20 bg-navy-950 text-white group shadow-2xl">
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-96 h-96 bg-gold-500/10 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 group-hover:bg-gold-500/20 transition-all duration-1000" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 blur-[100px] rounded-full -translate-x-1/2 translate-y-1/2" />
+              <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+              
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div className="space-y-8">
+                  <div className="inline-flex items-center gap-4">
+                    <div className="h-px w-12 bg-gold-500" />
+                    <span className="text-[10px] font-mono tracking-[0.4em] uppercase font-bold text-gold-500">Global Academy</span>
+                  </div>
+                  
+                  <h2 className="text-5xl md:text-7xl font-light leading-[0.95] tracking-tighter">
+                    Crafting the <span className="text-gold-500 italic font-medium">Future</span> of Resolution.
+                  </h2>
+                  
+                  <p className="text-xl text-white/50 font-light leading-relaxed max-w-lg">
+                    Have specific requirements or seeking a long-term partnership? Our team is ready to help you navigate the world of Mediation and ADR.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col gap-6">
+                  <a 
+                    href="mailto:academy@thepact.in" 
+                    className="flex items-center justify-between p-8 rounded-4xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-gold-500 hover:border-gold-500 transition-all duration-500 group/btn"
+                  >
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/40 group-hover/btn:text-navy-950/50 font-bold">Direct Email</span>
+                      <p className="text-2xl md:text-3xl font-light text-white group-hover/btn:text-navy-950 transition-colors font-mono tracking-tight">academy@thepact.in</p>
+                    </div>
+                    <div className="w-14 h-14 rounded-2xl bg-gold-500/10 flex items-center justify-center group-hover/btn:bg-navy-950 group-hover/btn:text-white transition-all">
+                      <Mail className="w-6 h-6 text-gold-500" />
+                    </div>
+                  </a>
+                  
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="p-6 rounded-2xl bg-white/2 border border-white/5">
+                      <p className="text-[10px] font-mono uppercase tracking-widest text-white/30 mb-2">Response Time</p>
+                      <p className="text-lg font-light text-white/80">Within 24 Hours</p>
+                    </div>
+                    <div className="p-6 rounded-2xl bg-white/2 border border-white/5 flex flex-col justify-between">
+                      <p className="text-[10px] font-mono uppercase tracking-widest text-white/30 mb-2">Status</p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                        <span className="text-lg font-light text-white/80">Active</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h2 className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight mb-8 leading-[0.95] text-navy-950">
-                Collaborator
-              </h2>
-            </FadeInUp>
-            <p className="text-navy-950/40 italic">Collaborator details coming soon.</p>
-          </div>
+            </div>
+          </FadeInUp>
         </div>
-      </div>
+      </section>
 
       <Footer />
     </main>
