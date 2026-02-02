@@ -26,6 +26,7 @@ const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard Overview", href: "/admin", adminOnly: false },
   { icon: Home, label: "Homepage", href: "/admin/home-page", adminOnly: false },
   { icon: Calendar, label: "Events", href: "/admin/events", adminOnly: false },
+  { icon: Handshake, label: "Mediation", href: "/admin/mediation", adminOnly: false },
   { icon: Library, label: "Media Library", href: "/admin/media-library", adminOnly: false },
   { icon: Settings, label: "Global Settings", href: "/admin/global-settings", adminOnly: true },
   { icon: History, label: "Audit Logs", href: "/admin/audit-logs", adminOnly: true },

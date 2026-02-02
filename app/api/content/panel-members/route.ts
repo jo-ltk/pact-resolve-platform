@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
     
     revalidatePath("/");
     revalidatePath("/admin/home-page/panel-members");
+    revalidatePath("/mediation/mediator-panel");
     
     return NextResponse.json({ 
       success: true, 
@@ -104,6 +105,7 @@ export async function PUT(request: NextRequest) {
     
     revalidatePath("/");
     revalidatePath("/admin/home-page/panel-members");
+    revalidatePath("/mediation/mediator-panel");
     
     if (result.matchedCount === 0) {
       return NextResponse.json(
@@ -148,7 +150,8 @@ export async function DELETE(request: NextRequest) {
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
     
     revalidatePath("/");
-    revalidatePath("/admin/panel-members");
+    revalidatePath("/admin/home-page/panel-members");
+    revalidatePath("/mediation/mediator-panel");
     
     if (result.deletedCount === 0) {
       return NextResponse.json(

@@ -323,6 +323,59 @@ export interface NationalImpactAward extends BaseDocument {
 }
 
 // ============================================================================
+// 10. MEDIATION CONTENT
+// ============================================================================
+
+export interface MediationCaseStudy extends BaseDocument {
+  title: string;
+  image: string;
+  summary: string;
+  challenge: string[];
+  solution: string;
+  costs: {
+    hours: number;
+    weeks: number;
+    fees: string;
+    value: string;
+  };
+  iconName: string;
+  order: number;
+  isActive: boolean;
+}
+
+export interface MediationWhyPoint extends BaseDocument {
+  title: string;
+  description: string;
+  iconName: string;
+  order: number;
+  isActive: boolean;
+}
+
+export interface MediationResolutionStep extends BaseDocument {
+  title: string;
+  label: string;
+  description: string;
+  iconName: string;
+  order: number;
+  isActive: boolean;
+}
+
+export interface MediationRule extends BaseDocument {
+  title: string;
+  description: string;
+  order: number;
+  isActive: boolean;
+}
+
+export interface MediationFee extends BaseDocument {
+  title: string;
+  price: string;
+  description: string;
+  order: number;
+  isActive: boolean;
+}
+
+// ============================================================================
 // COLLECTION NAMES
 // ============================================================================
 
@@ -338,6 +391,11 @@ export const COLLECTIONS = {
   CONCLAVE_EVENTS: "conclaveEvents",
   ADVOCATE_MAXIMUS_EVENTS: "advocateMaximusEvents",
   GENERAL_EVENTS: "generalEvents",
+  MEDIATION_CASE_STUDIES: "mediationCaseStudies",
+  MEDIATION_WHY_POINTS: "mediationWhyPoints",
+  MEDIATION_RESOLUTION_STEPS: "mediationResolutionSteps",
+  MEDIATION_RULES: "mediationRules",
+  MEDIATION_FEES: "mediationFees",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];

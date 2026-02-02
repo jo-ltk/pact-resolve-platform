@@ -3,8 +3,8 @@ import { MongoClient, Db, ServerApiVersion } from "mongodb";
 // Cache the MongoDB client connection globally for HMR (Development)
 // This prevents multiple connections during development hot reloads
 interface GlobalWithMongo {
-  _mongoClient?: MongoClient;
-  _mongoDb?: Db;
+  _mongoClientRetry?: MongoClient; // Changed key to force refresh
+  _mongoDbRetry?: Db;
 }
 
 const globalWithMongo = global as typeof globalThis & GlobalWithMongo;
@@ -36,8 +36,8 @@ export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db
   const dbName = getDbName();
 
   // If we have a cached connection in global space, return it
-  if (globalWithMongo._mongoClient && globalWithMongo._mongoDb) {
-    return { client: globalWithMongo._mongoClient, db: globalWithMongo._mongoDb };
+  if (globalWithMongo._mongoClientRetry && globalWithMongo._mongoDbRetry) {
+    return { client: globalWithMongo._mongoClientRetry, db: globalWithMongo._mongoDbRetry };
   }
 
   try {
@@ -50,7 +50,6 @@ export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db
       connectTimeoutMS: 15000,
       tls: true,
       tlsAllowInvalidCertificates: true,
-      family: 4,
       retryWrites: true,
       serverApi: {
         version: ServerApiVersion.v1,
@@ -61,14 +60,36 @@ export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db
 
     console.log(`[MongoDB] CONNECTING... URI: ${uri.substring(0, 40)}...`);
     const startTime = Date.now();
-    await client.connect();
+    
+    // Retry logic for connection
+    let attempt = 0;
+    const maxRetries = 3;
+    
+    while (true) {
+      try {
+        attempt++;
+        await client.connect();
+        break;
+      } catch (err: any) {
+        if (attempt >= maxRetries) throw err;
+        
+        const isAuthError = err.message?.includes('Authentication failed');
+        const isNetworkError = err.message?.includes('alert number 80') || err.message?.includes('timeout') || err.message?.includes('connection');
+        
+        if (isAuthError) throw err; // Don't retry auth errors
+        
+        console.warn(`[MongoDB] Connection attempt ${attempt} failed. Retrying in 1s... Error: ${err.message}`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
     console.log(`[MongoDB] CONNECTED in ${Date.now() - startTime}ms`);
 
     const db = client.db(dbName);
 
     // Cache the connection in global space
-    globalWithMongo._mongoClient = client;
-    globalWithMongo._mongoDb = db;
+    globalWithMongo._mongoClientRetry = client;
+    globalWithMongo._mongoDbRetry = db;
 
     return { client, db };
   } catch (error: any) {
@@ -125,10 +146,10 @@ export async function initDatabase(): Promise<void> {
  * Close the MongoDB connection (useful for testing/cleanup)
  */
 export async function closeConnection(): Promise<void> {
-  if (globalWithMongo._mongoClient) {
-    await globalWithMongo._mongoClient.close();
-    delete globalWithMongo._mongoClient;
-    delete globalWithMongo._mongoDb;
+  if (globalWithMongo._mongoClientRetry) {
+    await globalWithMongo._mongoClientRetry.close();
+    delete globalWithMongo._mongoClientRetry;
+    delete globalWithMongo._mongoDbRetry;
     console.log("[MongoDB] Connection closed.");
   }
 }
