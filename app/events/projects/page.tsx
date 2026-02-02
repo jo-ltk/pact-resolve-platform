@@ -51,7 +51,7 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
   <FadeInUp className={cn("mb-12 md:mb-20", center ? "flex flex-col items-center text-center" : "")}>
     <div className="inline-flex items-center gap-4 mb-6 opacity-80">
       <div className={cn("h-px w-12 bg-gold-500", light ? "bg-gold-500" : "bg-gold-500/50")} />
-      <span className={cn("text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase font-bold", light ? "text-gold-500" : "text-navy-950/60")}>{subtitle}</span>
+      <span className={cn("text-[10px] md:text-xs tracking-[0.3em] uppercase font-semibold", light ? "text-gold-500" : "text-navy-950/40")}>{subtitle}</span>
     </div>
     <h2 className={cn("text-4xl sm:text-5xl md:text-7xl lg:text-[5rem] font-light tracking-tight mb-8 leading-[0.95]", light ? "text-white" : "text-navy-950")}>
       {title.split(' ').map((word, i) => (
@@ -206,8 +206,8 @@ export default function ProjectsPage() {
                     <item.icon className="w-8 h-8" />
                   </div>
                   <div className="space-y-4">
-                    <h4 className="text-xl font-bold text-navy-950 tracking-tight leading-tight group-hover:text-gold-500 transition-colors uppercase italic">{item.text}</h4>
-                    <p className="text-[10px] font-mono text-navy-950/30 uppercase tracking-[0.3em] font-bold">{item.sub}</p>
+                    <h4 className="text-xl font-bold text-navy-950 tracking-tight leading-tight group-hover:text-gold-500 transition-colors uppercase">{item.text}</h4>
+                    <p className="text-[10px] font-semibold text-navy-950/40 uppercase tracking-[0.2em]">{item.sub}</p>
                   </div>
                   <div className="mt-8">
                      <a href="mailto:official@thepact.in" className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-navy-300 group-hover:text-gold-600 transition-colors">
@@ -259,16 +259,16 @@ export default function ProjectsPage() {
                 }
               ].map((item, i) => (
                 <FadeInUp key={i} delay={i * 0.1}>
-                  <div className="group relative h-full p-12 rounded-[3.5rem] bg-white/5 backdrop-blur-xl border border-white/10 hover:border-gold-500/40 hover:bg-white/[0.08] transition-all duration-700 shadow-2xl flex flex-col">
-                    <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-gold-500 mb-10 group-hover:scale-110 group-hover:rotate-6 transition-transform border border-white/5">
+                  <div className="group relative h-full p-12 rounded-[3.5rem] bg-white/5 backdrop-blur-xl border border-white/10 hover:border-gold-500/40 hover:bg-white/10 transition-all duration-700 shadow-2xl flex flex-col">
+                    <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-gold-500 mb-10 group-hover:scale-110 group-hover:rotate-6 transition-all border border-white/5">
                       <item.icon className="w-8 h-8" />
                     </div>
                     
                     <div className="flex flex-col gap-2 mb-8">
-                       <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-gold-500 font-bold">
+                       <span className="text-[10px] tracking-[0.3em] text-gold-500 font-semibold uppercase">
                          {item.category} • {item.date}
                        </span>
-                       <h3 className="text-3xl font-bold text-white leading-tight italic tracking-tighter uppercase group-hover:text-gold-500 transition-colors">
+                       <h3 className="text-3xl font-bold text-white leading-tight tracking-tighter uppercase group-hover:text-gold-500 transition-colors">
                          {item.title}
                        </h3>
                     </div>
@@ -277,10 +277,10 @@ export default function ProjectsPage() {
                        <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gold-500">
                           <MapPin className="w-4 h-4" />
                        </div>
-                       <div className="flex flex-col">
-                          <span className="text-[9px] font-mono uppercase tracking-widest text-white/30 font-bold">Location</span>
-                          <span className="text-xs font-bold tracking-widest uppercase text-white/70">{item.location}</span>
-                       </div>
+                        <div className="flex flex-col">
+                           <span className="text-[9px] tracking-widest text-white/30 font-semibold">Location</span>
+                           <span className="text-xs font-bold tracking-widest text-white/70">{item.location}</span>
+                        </div>
                     </div>
                   </div>
                 </FadeInUp>
@@ -315,7 +315,7 @@ export default function ProjectsPage() {
                   </div>
                   <div className="mb-4">
                     <span className="text-5xl font-black italic text-navy-950 tracking-tighter block group-hover:text-gold-500 transition-colors">{stat.value}</span>
-                    <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-gold-500 font-bold">{stat.label}</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-gold-500 font-semibold">{stat.label}</span>
                   </div>
                   <p className="text-navy-950/40 text-xs font-light leading-relaxed">{stat.desc}</p>
                 </div>
@@ -338,10 +338,10 @@ export default function ProjectsPage() {
                         
                         <div className="md:col-span-8 space-y-4">
                           <div className="flex flex-wrap items-center gap-3">
-                            <span className="px-3 py-1 rounded-full bg-navy-50 text-[10px] font-mono text-navy-950/40 uppercase tracking-widest font-bold">
+                            <span className="px-3 py-1 rounded-full bg-navy-50 text-[10px] text-navy-950/40 uppercase tracking-widest font-semibold">
                               {item.category}
                             </span>
-                            <span className="text-[10px] font-mono text-gold-600 uppercase tracking-widest font-bold flex items-center gap-2">
+                            <span className="text-[10px] text-gold-600 uppercase tracking-widest font-semibold flex items-center gap-2">
                               <MapPin className="w-3 h-3" /> {item.location}
                             </span>
                           </div>
@@ -406,7 +406,7 @@ export default function ProjectsPage() {
                               src={url}
                               alt={`Pact Moment ${i + 1}`}
                               fill
-                              className="object-cover transition-transform duration-2000 group-hover/image:scale-105 transition-all grayscale group-hover/image:grayscale-0"
+                              className="object-cover transition-all duration-2000 group-hover/image:scale-105 grayscale group-hover/image:grayscale-0"
                             />
                             <div className="absolute inset-0 bg-navy-950/20 group-hover/image:bg-navy-950/10 transition-colors duration-700" />
                             <div className="absolute inset-x-0 bottom-0 p-8 md:p-14 bg-linear-to-t from-black/80 to-transparent translate-y-6 group-hover/image:translate-y-0 opacity-0 group-hover/image:opacity-100 transition-all duration-700">

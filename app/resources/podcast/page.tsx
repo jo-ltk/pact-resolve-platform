@@ -401,40 +401,66 @@ export default function PodcastPage() {
               </h2>
             </FadeInUp>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
               {season1Episodes.map((episode, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: (i % 4) * 0.05 }}
+                  transition={{ delay: (i % 6) * 0.05, duration: 0.6 }}
+                  className={cn(
+                    i === season1Episodes.length - 1 && "lg:col-start-2"
+                  )}
                 >
                   <Link
                     href={episode.youtubeUrl}
                     target="_blank"
-                    className="group flex items-start gap-4 p-5 rounded-2xl bg-navy-50 border border-navy-100 hover:bg-white hover:border-gold-500/30 hover:shadow-lg transition-all duration-300"
+                    className="group flex flex-col h-full rounded-4xl bg-navy-50 border border-navy-100 overflow-hidden hover:border-gold-500/30 hover:shadow-2xl transition-all duration-500"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-navy-950 flex items-center justify-center shrink-0 group-hover:bg-gold-500 transition-colors">
-                      <span className="text-gold-500 font-mono font-bold group-hover:text-navy-950">
-                        {String(episode.number).padStart(2, '0')}
-                      </span>
+                    {/* Image Area - 100% Visible */}
+                    <div className="relative aspect-video w-full overflow-hidden">
+                      <Image
+                        src="/assets/img/podcast-thumb-dummy.png"
+                        alt={episode.title}
+                        fill
+                        className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-navy-950/20 group-hover:bg-transparent transition-colors duration-500" />
+                      
+                      {/* Floating Identity */}
+                      <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                        <div className="px-3 py-1 rounded-full bg-navy-950/90 text-[10px] font-mono font-bold text-gold-500 border border-gold-500/20 backdrop-blur-md">
+                          S1 EP{String(episode.number).padStart(2, '0')}
+                        </div>
+                      </div>
+
+                      {/* Play Button Overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-full bg-gold-500 text-navy-950 flex items-center justify-center shadow-xl translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                          <Play className="w-6 h-6 fill-navy-950 ml-1" />
+                        </div>
+                      </div>
                     </div>
-                    <div className="grow min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-mono uppercase tracking-widest text-navy-950/40 bg-navy-100/50 px-2 py-0.5 rounded-full">
+
+                    {/* Content Area - Clean and Stable */}
+                    <div className="p-6 md:p-8 flex flex-col flex-1 bg-white">
+                      <div className="mb-4">
+                        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-gold-600 font-bold">
                           {episode.theme}
                         </span>
                       </div>
-                      <h3 className="text-lg font-medium text-navy-950 mb-1 group-hover:text-gold-500 transition-colors truncate">
+                      
+                      <h3 className="text-xl font-medium text-navy-950 mb-3 group-hover:text-gold-500 transition-colors leading-snug">
                         {episode.title}
                       </h3>
-                      <p className="text-navy-950/60 text-sm font-light truncate">
-                        {episode.guests}
-                      </p>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-navy-100 flex items-center justify-center shrink-0 group-hover:bg-gold-500 transition-colors opacity-0 group-hover:opacity-100">
-                      <Play className="w-4 h-4 text-navy-950" />
+                      
+                      <div className="mt-auto pt-4 border-t border-navy-100 flex items-center justify-between">
+                        <p className="text-navy-950/50 text-xs font-light truncate max-w-[80%] italic">
+                          {episode.guests}
+                        </p>
+                        <ArrowUpRight className="w-4 h-4 text-navy-950/20 group-hover:text-gold-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                      </div>
                     </div>
                   </Link>
                 </motion.div>

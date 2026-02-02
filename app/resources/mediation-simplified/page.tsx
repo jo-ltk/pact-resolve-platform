@@ -33,18 +33,21 @@ const reviews = [
     role: "Former Judge, Supreme Court of India",
     quote: "An exceptional resource that bridges theory and practice in mediation. Highly recommended for anyone seeking to understand the nuances of conflict resolution.",
     rating: 5,
+    image: "/assets/img/testimonials/justice-kurian.png",
   },
   {
     name: "Dr. Sriram Panchu",
     role: "Senior Advocate & Mediator",
     quote: "Jonathan Rodrigues has created a masterpiece that demystifies mediation for the Indian context. The workbook format is innovative and engaging.",
     rating: 5,
+    image: "/assets/img/testimonials/sriram-panchu.png",
   },
   {
     name: "Prof. Nadja Alexander",
     role: "Singapore Management University",
     quote: "A groundbreaking contribution to mediation literature in Asia. The interactive elements make learning accessible and practical.",
     rating: 5,
+    image: "/assets/img/testimonials/nadja-alexander.png",
   },
 ];
 
@@ -157,14 +160,14 @@ export default function MediationSimplifiedPage() {
               {/* Book Images */}
               <FadeInUp delay={0.2}>
                 <div className="relative">
-                  <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-navy-50 border border-navy-100 shadow-2xl">
+                  <div className="relative aspect-4/3 rounded-3xl overflow-hidden bg-navy-50 border border-navy-100 shadow-2xl">
                     <Image
                       src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80"
                       alt="Mediation Simplified Book"
                       fill
                       className="object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-navy-950/60 to-transparent" />
                     <div className="absolute bottom-6 left-6 right-6">
                       <div className="bg-white/90 backdrop-blur-md rounded-2xl p-4 flex items-center gap-4">
                         <div className="w-12 h-12 rounded-xl bg-gold-500 flex items-center justify-center">
@@ -272,21 +275,46 @@ export default function MediationSimplifiedPage() {
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="group p-8 md:p-10 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-500"
+                  transition={{ delay: i * 0.1, duration: 0.8 }}
+                  className="group relative flex flex-col min-h-[520px] rounded-4xl bg-navy-900 border border-white/10 overflow-hidden hover:border-gold-500/30 transition-all duration-500"
                 >
-                  <Quote className="w-10 h-10 text-gold-500/30 mb-6" />
-                  <p className="text-white/70 font-light leading-relaxed mb-8 italic">
-                    "{review.quote}"
-                  </p>
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(review.rating)].map((_, j) => (
-                      <Star key={j} className="w-4 h-4 text-gold-500 fill-gold-500" />
-                    ))}
+                  {/* High Visibility Place Image */}
+                  <div className="relative h-64 w-full overflow-hidden">
+                    <Image
+                      src={review.image}
+                      alt={review.name}
+                      fill
+                      className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                      priority={i === 0}
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-navy-900 via-transparent to-transparent" />
+                    
+                    {/* Floating Quote Badge */}
+                    <div className="absolute top-4 left-4">
+                      <div className="w-10 h-10 rounded-xl bg-gold-500 flex items-center justify-center shadow-2xl">
+                        <Quote className="w-5 h-5 text-navy-950" />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-white font-medium">{review.name}</p>
-                    <p className="text-white/50 text-sm">{review.role}</p>
+
+                  {/* Content Area - Fixed structure to prevent jitter */}
+                  <div className="p-8 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-1 mb-6">
+                        {[...Array(review.rating)].map((_, j) => (
+                          <Star key={j} className="w-3.5 h-3.5 text-gold-500 fill-gold-500" />
+                        ))}
+                      </div>
+
+                      <p className="text-white/90 font-light leading-relaxed italic text-lg lg:text-xl">
+                        "{review.quote}"
+                      </p>
+                    </div>
+
+                    <div className="mt-8 pt-6 border-t border-white/5">
+                      <p className="text-white font-semibold tracking-tight text-lg">{review.name}</p>
+                      <p className="text-gold-500/70 text-xs font-mono uppercase tracking-[0.2em] mt-1.5">{review.role}</p>
+                    </div>
                   </div>
                 </motion.div>
               ))}
