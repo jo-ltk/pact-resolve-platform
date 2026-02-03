@@ -20,10 +20,11 @@ export function WhatsAppButton({
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Hide on admin pages
-  if (pathname?.startsWith("/admin")) return null;
+  const isAdmin = pathname?.startsWith("/admin");
 
   useEffect(() => {
+    if (isAdmin) return;
+
     if (floating) {
       const timer = setTimeout(() => {
         setIsVisible(true);
@@ -32,7 +33,9 @@ export function WhatsAppButton({
     } else {
       setIsVisible(true);
     }
-  }, [floating]);
+  }, [floating, isAdmin]);
+
+  if (isAdmin) return null;
 
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
