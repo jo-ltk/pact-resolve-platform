@@ -6,57 +6,56 @@ import {
   Calendar, 
   Trophy, 
   Image as ImageIcon, 
-  ArrowLeft,
-  Sparkles,
   ArrowRight
 } from "lucide-react";
 import { DashboardSectionCard } from "@/components/admin/DashboardSectionCard";
 import { FadeInUp, StaggerContainer } from "@/components/motion-wrapper";
 import { Button } from "@/components/ui/button";
 
+const eventCategories = [
+  {
+    title: "Mediation Champions League",
+    description: "Manage seasons, visual galleries, and championship details for the league.",
+    icon: Trophy,
+    link: "/admin/events/mci",
+    color: "text-amber-500",
+    bg: "bg-amber-500/10"
+  },
+  {
+    title: "Mission Mediation Conclave",
+    description: "Manage conclave editions, highlights, and guest speakers for the flagship event.",
+    icon: ImageIcon,
+    link: "/admin/events/conclave",
+    color: "text-blue-500",
+    bg: "bg-blue-500/10"
+  },
+  {
+    title: "National Impact Awards",
+    description: "Manage award ceremonies, honorary recipients, and winner spotlights.",
+    icon: Trophy,
+    link: "/admin/events/awards",
+    color: "text-purple-500",
+    bg: "bg-purple-500/10"
+  },
+  {
+    title: "Advocate Maximus",
+    description: "Manage details, memories, and strategic partners for Advocate Maximus events.",
+    icon: Calendar,
+    link: "/admin/events/advocate-maximus",
+    color: "text-emerald-500",
+    bg: "bg-emerald-500/10"
+  },
+  {
+    title: "Events & Projects",
+    description: "Manage miscellaneous general events and special institutional projects.",
+    icon: Calendar,
+    link: "/admin/events/general",
+    color: "text-rose-500",
+    bg: "bg-rose-500/10"
+  }
+];
+
 export default function EventsDashboard() {
-  const eventCategories = [
-    {
-      title: "Mediation Champions League",
-      description: "Manage seasons, visual galleries, and championship details for the league.",
-      icon: Trophy,
-      link: "/admin/events/mci",
-      color: "text-amber-500",
-      bg: "bg-amber-500/10"
-    },
-    {
-      title: "Mission Mediation Conclave",
-      description: "Manage conclave editions, highlights, and guest speakers for the flagship event.",
-      icon: ImageIcon,
-      link: "/admin/events/conclave",
-      color: "text-blue-500",
-      bg: "bg-blue-500/10"
-    },
-    {
-      title: "National Impact Awards",
-      description: "Manage award ceremonies, honorary recipients, and winner spotlights.",
-      icon: Trophy,
-      link: "/admin/events/awards",
-      color: "text-purple-500",
-      bg: "bg-purple-500/10"
-    },
-    {
-      title: "Advocate Maximus",
-      description: "Manage details, memories, and strategic partners for Advocate Maximus events.",
-      icon: Calendar,
-      link: "/admin/events/advocate-maximus",
-      color: "text-emerald-500",
-      bg: "bg-emerald-500/10"
-    },
-    {
-      title: "Events & Projects",
-      description: "Manage miscellaneous general events and special institutional projects.",
-      icon: Calendar,
-      link: "/admin/events/general",
-      color: "text-rose-500",
-      bg: "bg-rose-500/10"
-    }
-  ];
 
   return (
     <div className="flex flex-col gap-10 pb-16">
