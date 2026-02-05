@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 interface DashboardSectionCardProps {
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: React.ReactNode;
   link: string;
   color: string;
   bg: string;
@@ -19,7 +19,7 @@ interface DashboardSectionCardProps {
 export function DashboardSectionCard({
   title,
   description,
-  icon: Icon,
+  icon,
   link,
   color,
   bg
@@ -32,7 +32,7 @@ export function DashboardSectionCard({
             <CardContent className="p-6 md:p-8 flex flex-col h-full">
               <div className="flex justify-between items-start mb-6">
                 <div className={cn("p-4 rounded-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-sm", bg)}>
-                  <Icon className={cn("h-8 w-8", color)} />
+                  {icon}
                 </div>
                 <div className="p-2 rounded-full bg-muted/30 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-4 group-hover:translate-x-0">
                   <ArrowRight className="w-5 h-5 text-primary" />

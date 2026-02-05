@@ -6,6 +6,8 @@ import { ArrowUpRight, Linkedin, Mail, Plus } from "lucide-react";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
 import { EcosystemSubPageHero } from "./ecosystem-subpage-hero";
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
+import { type EcosystemTeamMember } from "@/lib/db/schemas";
 
 const teamData = {
   managingPartners: [
@@ -53,6 +55,32 @@ const teamData = {
 };
 
 export function TeamSection() {
+  const [team, setTeam] = useState<EcosystemTeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const response = await fetch("/api/content/ecosystem/team?all=true");
+        const result = await response.json();
+        if (result.success && result.data && result.data.length > 0) {
+          setTeam(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching team:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTeam();
+  }, []);
+
+  const managingPartners = team.length > 0 ? team.filter(m => m.category === "managing-partner") : teamData.managingPartners;
+  const mentors = team.length > 0 ? team.filter(m => m.category === "mentor") : teamData.mentors;
+  const mediators = team.length > 0 ? team.filter(m => m.category === "expert") : teamData.mediators;
+  const members = team.length > 0 ? team.filter(m => m.category === "staff") : teamData.members;
+  const externs = team.length > 0 ? team.filter(m => m.category === "extern") : teamData.externs;
+
   return (
     <section id="team" className="bg-white overflow-hidden">
       <EcosystemSubPageHero 
@@ -71,10 +99,10 @@ export function TeamSection() {
           </div>
           
           {/* Featured Managing Partner */}
-          {teamData.managingPartners.length > 0 && (
+          {managingPartners.length > 0 && (
             <div className="mb-32">
               {(() => {
-                const partner = teamData.managingPartners[0];
+                const partner = managingPartners[0];
                 return (
                   <FadeInUp>
                     <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
@@ -134,9 +162,9 @@ export function TeamSection() {
           )}
 
           {/* Secondary Managing Partners Grid */}
-          {teamData.managingPartners.length > 1 && (
+          {managingPartners.length > 1 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 pt-16 border-t border-navy-50">
-              {teamData.managingPartners.slice(1).map((partner, i) => (
+              {managingPartners.slice(1).map((partner, i) => (
                 <FadeInUp key={i} delay={i * 0.1}>
                   <div className="group relative p-8 md:p-10 rounded-4xl bg-white border border-navy-100 hover:border-gold-500/30 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] transition-all duration-700 h-full flex flex-col sm:flex-row gap-10 items-center">
                     {/* Compact Image - Circular/Soft Square */}
@@ -193,9 +221,9 @@ export function TeamSection() {
         {/* Mentors & Neutrals */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 pb-24 border-b border-navy-50">
           <div>
-            <h3 className="text-xl font-mono uppercase tracking-[0.3em] text-navy-950/30 mb-10 text-center md:text-left">Strategic Mentors</h3>
+             <h3 className="text-xl font-mono uppercase tracking-[0.3em] text-navy-950/30 mb-10 text-center md:text-left">Strategic Mentors</h3>
             <div className="space-y-2">
-              {teamData.mentors.map((m, i) => (
+              {mentors.map((m: any, i: number) => (
                 <div key={i} className="group flex items-center gap-6 py-5 border-b border-navy-50/50 hover:border-gold-500/30 transition-all duration-500 cursor-pointer">
                   {/* Subtle Avatar */}
                   <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm group-hover:scale-105 transition-transform duration-500">
@@ -221,7 +249,7 @@ export function TeamSection() {
           <div>
              <h3 className="text-xl font-mono uppercase tracking-[0.3em] text-navy-950/30 mb-10 text-center md:text-left">Featured Mediators</h3>
              <div className="space-y-2">
-               {teamData.mediators.map((m, i) => (
+               {mediators.map((m: any, i: number) => (
                  <div key={i} className="group flex items-center gap-6 py-5 border-b border-navy-50/50 hover:border-gold-500/30 transition-all duration-500 cursor-pointer">
                    {/* Subtle Avatar */}
                    <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm group-hover:scale-105 transition-transform duration-500">
@@ -250,7 +278,7 @@ export function TeamSection() {
           <div>
              <h3 className="text-xl font-mono uppercase tracking-[0.3em] text-navy-950/30 mb-10 text-center md:text-left">Team Members</h3>
              <div className="space-y-2">
-               {teamData.members.map((m, i) => (
+               {members.map((m: any, i: number) => (
                  <div key={i} className="group flex items-center gap-5 py-4 border-b border-navy-50 hover:border-gold-500/20 transition-all duration-300 cursor-pointer">
                    {/* Smaller Avatar for Members */}
                    <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm group-hover:scale-110 transition-transform duration-300">
@@ -271,7 +299,7 @@ export function TeamSection() {
           <div>
              <h3 className="text-xl font-mono uppercase tracking-[0.3em] text-navy-950/30 mb-10 text-center md:text-left">Mediation Externs</h3>
              <div className="space-y-2">
-                {teamData.externs.map((m, i) => (
+                {externs.map((m: any, i: number) => (
                   <div key={i} className="group flex items-center gap-5 py-4 border-b border-navy-50 hover:border-gold-500/20 transition-all duration-300 cursor-pointer">
                     {/* Smaller Avatar for Externs */}
                    <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm group-hover:scale-110 transition-transform duration-300">

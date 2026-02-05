@@ -6,6 +6,8 @@ import { Globe, Users, BookOpen, Scaling, Send, ArrowUpRight } from "lucide-reac
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
 import { EcosystemSubPageHero } from "./ecosystem-subpage-hero";
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
+import { type EcosystemPartner } from "@/lib/db/schemas";
 
 const strategicPartners = [
   {
@@ -97,6 +99,32 @@ const mentoringPartners = [
 ];
 
 export function Collaborations() {
+  const [partners, setPartners] = useState<EcosystemPartner[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const response = await fetch("/api/content/ecosystem/partners");
+        const result = await response.json();
+        if (result.success) {
+          setPartners(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching partners:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPartners();
+  }, []);
+
+  const displayStrategic = partners.length > 0 ? partners.filter(p => p.category === "strategic") : strategicPartners;
+  const displayPractice = partners.length > 0 ? partners.filter(p => p.category === "practice") : practiceCollaborators;
+  const displayAcademic = partners.length > 0 ? partners.filter(p => p.category === "academic").map(p => p.name) : academicPartners;
+  const displayMentoring = partners.length > 0 ? partners.filter(p => p.category === "legal" || p.category === "mission") : mentoringPartners;
+  const displaySupporters = partners.length > 0 ? partners.filter(p => p.category === "supporter") : supporters;
+
   return (
     <section id="collaborations" className="bg-white">
       {/* Intro */}
@@ -115,9 +143,9 @@ export function Collaborations() {
           </FadeInUp>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            { strategicPartners.map((partner, i) => (
+            { displayStrategic.map((partner, i) => (
               <FadeInUp key={i} delay={i * 0.1}>
-                <div className="group h-full bg-white p-6 md:p-8 rounded-[2rem] border border-navy-100 hover:border-gold-500/20 transition-all duration-500 hover:shadow-2xl flex flex-col">
+                <div className="group h-full bg-white p-6 md:p-8 rounded-4xl border border-navy-100 hover:border-gold-500/20 transition-all duration-500 hover:shadow-2xl flex flex-col">
                   <div className="h-12 w-full relative mb-8 md:grayscale group-hover:grayscale-0 transition-all duration-500">
                      <Image 
                        src={partner.logo} 
@@ -127,7 +155,7 @@ export function Collaborations() {
                        sizes="(max-width: 768px) 50vw, 25vw"
                      />
                   </div>
-                  <div className="space-y-4 flex-grow">
+                  <div className="space-y-4 grow">
                     <span className="text-[10px] font-mono text-gold-500 uppercase tracking-widest font-bold">{partner.region}</span>
                     <h4 className="text-xl font-light text-navy-950 leading-tight group-hover:text-gold-500 transition-colors uppercase tracking-tight">{partner.name}</h4>
                     <p className="text-sm text-navy-950/60 font-light leading-relaxed">{partner.description}</p>
@@ -167,7 +195,7 @@ export function Collaborations() {
              </FadeInUp>
              
              <FadeInUp delay={0.2} className="relative">
-                <div className="p-10 rounded-[3rem] bg-white/[0.02] border border-white/10 backdrop-blur-sm">
+                <div className="p-10 rounded-[3rem] bg-white/2 border border-white/10 backdrop-blur-sm">
                   <Scaling className="w-12 h-12 text-gold-500 mb-8" />
                   <h4 className="text-3xl font-light mb-6 uppercase tracking-tight">Collaborate With Us</h4>
                   <p className="text-white/40 font-light leading-relaxed mb-10">
@@ -193,7 +221,7 @@ export function Collaborations() {
           </FadeInUp>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            { practiceCollaborators.map((pc, i) => (
+            { displayPractice.map((pc, i) => (
               <FadeInUp key={i} delay={i * 0.1} className="flex flex-col items-center text-center group">
                 <div className="w-24 h-24 relative mb-6 md:grayscale group-hover:grayscale-0 transition-all duration-500 flex items-center justify-center">
                    <Image 
@@ -221,9 +249,9 @@ export function Collaborations() {
                <p className="text-lg text-navy-950/60 font-light leading-relaxed mb-12">
                  Together, we run boot camps, guest lectures, competitions, and certificate programs that introduce thousands of students to the skills and values of collaborative dispute resolution.
                </p>
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 {academicPartners.map((school, i) => (
-                   <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-navy-100/50">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {displayAcademic.map((school, i) => (
+                    <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-navy-100/50">
                      <BookOpen className="w-5 h-5 text-gold-500 shrink-0" />
                      <span className="text-sm font-light text-navy-950 leading-snug">{school}</span>
                    </div>
@@ -231,7 +259,7 @@ export function Collaborations() {
                </div>
              </FadeInUp>
              
-             <div className="relative aspect-square md:aspect-[4/5] rounded-[3rem] overflow-hidden bg-navy-50 border-4 border-white shadow-2xl group">
+             <div className="relative aspect-square md:aspect-4/5 rounded-[3rem] overflow-hidden bg-navy-50 border-4 border-white shadow-2xl group">
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-navy-950/10 font-black text-4xl uppercase p-12 text-center italic group-hover:text-navy-950/20 transition-colors duration-700">
                    Current Associations
                 </div>
@@ -274,7 +302,7 @@ export function Collaborations() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-            {mentoringPartners.map((partner, i) => (
+            {displayMentoring.map((partner, i) => (
               <FadeInUp key={i} delay={i * 0.05}>
                 <div className="group relative aspect-[3/1.5] bg-white border border-navy-100/50 rounded-2xl flex items-center justify-center p-4 md:p-6 hover:border-gold-500/30 hover:shadow-xl transition-all duration-500">
                   <div className="relative w-full h-full md:grayscale md:opacity-30 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
@@ -320,7 +348,7 @@ export function Collaborations() {
           </div>
 
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10">
-            {supporters.map((s, i) => (
+            {displaySupporters.map((s: any, i: number) => (
               <FadeInUp key={i} delay={i * 0.05}>
                 {s.logo ? (
                   <div className="group relative w-32 h-16 md:w-48 md:h-24 bg-white/50 backdrop-blur-sm border border-white rounded-2xl flex items-center justify-center p-4 hover:border-gold-500/30 hover:shadow-xl transition-all duration-500 hover:bg-white">

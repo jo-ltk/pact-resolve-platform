@@ -503,7 +503,87 @@ export interface AcademyPageSettings extends BaseDocument {
   trainingImage: string;
   /** Training features list */
   trainingFeatures: { title: string; description?: string }[];
-  /** Whether this page is active */
+  isActive: boolean;
+}
+
+// ============================================================================
+// 12. ECOSYSTEM CONTENT
+// ============================================================================
+
+/** Ecosystem content categories for partners */
+export type EcosystemPartnerCategory = 
+  | "strategic" 
+  | "practice" 
+  | "academic" 
+  | "legal" 
+  | "mission" 
+  | "supporter";
+
+/** Ecosystem content categories for team members */
+export type EcosystemTeamCategory = 
+  | "managing-partner" 
+  | "mentor" 
+  | "expert" 
+  | "staff" 
+  | "extern";
+
+/** Ecosystem Award (Recognition, Accolades & Awards) */
+export interface EcosystemAward extends BaseDocument {
+  /** Name of the person or entity awarded */
+  recipientName: string;
+  /** Title of the award */
+  awardTitle: string;
+  /** Detailed description/citation */
+  description: string;
+  /** Featured image */
+  image: string;
+  /** Display order */
+  order: number;
+  /** Whether this award is visible */
+  isActive: boolean;
+}
+
+/** Ecosystem Partner (Collaborations) */
+export interface EcosystemPartner extends BaseDocument {
+  /** Partner name */
+  name: string;
+  /** Partner category for grouping */
+  category: EcosystemPartnerCategory;
+  /** Logo image URL */
+  logo: string;
+  /** Region or location (optional) */
+  region?: string;
+  /** Description or partnership details */
+  description?: string;
+  /** Website URL (optional) */
+  websiteUrl?: string;
+  /** Display order */
+  order: number;
+  /** Whether this partner is visible */
+  isActive: boolean;
+}
+
+/** Ecosystem Team Member */
+export interface EcosystemTeamMember extends BaseDocument {
+  /** Full name */
+  name: string;
+  /** Job title/role */
+  role: string;
+  /** Category for grouping */
+  category: EcosystemTeamCategory;
+  /** Profile photo URL */
+  image: string;
+  /** Detailed bio/description */
+  bio?: string;
+  /** Niche/Expertise (for Featured Experts) */
+  niche?: string;
+  /** LinkedIn or profile URL */
+  profileUrl?: string;
+  /** Email (optional) */
+  email?: string;
+  /** Display order */
+  order: number;
+  /** Whether this member is visible */
   isActive: boolean;
 }
 
@@ -534,6 +614,10 @@ export const COLLECTIONS = {
   ACADEMY_FACULTY: "academyFaculty",
   ACADEMY_PARTNERS: "academyPartners",
   ACADEMY_PAGE_SETTINGS: "academyPageSettings",
+  // Ecosystem collections
+  ECOSYSTEM_AWARDS: "ecosystemAwards",
+  ECOSYSTEM_PARTNERS: "ecosystemPartners",
+  ECOSYSTEM_TEAM: "ecosystemTeam",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];

@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
 import { EcosystemSubPageHero } from "./ecosystem-subpage-hero";
+import { useState, useEffect } from "react";
+import { type EcosystemAward } from "@/lib/db/schemas";
 
 const whatWeDoItems = [
   { title: "Private Mediation Services", icon: ShieldCheck },
@@ -62,6 +64,26 @@ const values = [
 ];
 
 export function AboutUs() {
+  const [awards, setAwards] = useState<EcosystemAward[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAwards = async () => {
+      try {
+        const response = await fetch("/api/content/ecosystem/awards");
+        const result = await response.json();
+        if (result.success) {
+          setAwards(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching awards:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAwards();
+  }, []);
+
   return (
     <div className="bg-white">
       {/* Who We Are */}
@@ -221,31 +243,63 @@ export function AboutUs() {
           </FadeInUp>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-            <FadeInUp className="group">
-              <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden mb-8 bg-navy-50 border border-navy-100 shadow-sm transition-all duration-500 group-hover:shadow-2xl">
-                {/* Placeholder for real picture */}
-                <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl italic uppercase">
-                  Jonathan Rodrigues Award
-                </div>
-                <div className="absolute inset-0 bg-linear-to-t from-navy-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </div>
-              <p className="text-lg md:text-xl font-light text-navy-950 leading-snug">
-                <span className="font-semibold text-gold-500">Jonathan Rodrigues</span> was felicitated by Justice Vijay Bishnoi, Judge, Supreme Court of India, and Justice Rajendra Menon with the <span className="italic">Mediation Path-breaker Award</span> by AIIMAS in 2025
-              </p>
-            </FadeInUp>
+            {awards.length > 0 ? (
+              awards.map((award, i) => (
+                <FadeInUp key={i} delay={i * 0.1} className="group">
+                  <div className="relative aspect-4/3 rounded-4xl overflow-hidden mb-8 bg-navy-50 border border-navy-100 shadow-sm transition-all duration-500 group-hover:shadow-2xl">
+                    {award.image ? (
+                      <Image 
+                        src={award.image} 
+                        alt={award.recipientName} 
+                        fill 
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl italic uppercase p-8 text-center">
+                        {award.recipientName} Award
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-linear-to-t from-navy-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                  <p className="text-lg md:text-xl font-light text-navy-950 leading-snug">
+                    <span className="font-semibold text-gold-500">{award.recipientName}</span> {award.description}
+                  </p>
+                </FadeInUp>
+              ))
+            ) : !loading ? (
+              // Original hardcoded content as fallback if DB is empty
+              <>
+                <FadeInUp className="group">
+                  <div className="relative aspect-4/3 rounded-4xl overflow-hidden mb-8 bg-navy-50 border border-navy-100 shadow-sm transition-all duration-500 group-hover:shadow-2xl">
+                    <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl italic uppercase">
+                      Jonathan Rodrigues Award
+                    </div>
+                    <div className="absolute inset-0 bg-linear-to-t from-navy-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                  <p className="text-lg md:text-xl font-light text-navy-950 leading-snug">
+                    <span className="font-semibold text-gold-500">Jonathan Rodrigues</span> was felicitated by Justice Vijay Bishnoi, Judge, Supreme Court of India, and Justice Rajendra Menon with the <span className="italic">Mediation Path-breaker Award</span> by AIIMAS in 2025
+                  </p>
+                </FadeInUp>
 
-            <FadeInUp delay={0.2} className="group">
-              <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden mb-8 bg-navy-50 border border-navy-100 shadow-sm transition-all duration-500 group-hover:shadow-2xl">
-                {/* Placeholder for real picture */}
-                <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl italic uppercase">
-                  Nisshant Laroia Award
-                </div>
-                <div className="absolute inset-0 bg-linear-to-t from-navy-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </div>
-              <p className="text-lg md:text-xl font-light text-navy-950 leading-snug">
-                <span className="font-semibold text-gold-500">Nisshant Laroia</span> was felicitated by Law Minister Kiren Rijiju, with the <span className="italic">Certificate of Appreciation</span> for his Work in Mediation, hosted by GNLU in 2021
-              </p>
-            </FadeInUp>
+                <FadeInUp delay={0.2} className="group">
+                  <div className="relative aspect-4/3 rounded-4xl overflow-hidden mb-8 bg-navy-50 border border-navy-100 shadow-sm transition-all duration-500 group-hover:shadow-2xl">
+                    <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl italic uppercase">
+                      Nisshant Laroia Award
+                    </div>
+                    <div className="absolute inset-0 bg-linear-to-t from-navy-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                  <p className="text-lg md:text-xl font-light text-navy-950 leading-snug">
+                    <span className="font-semibold text-gold-500">Nisshant Laroia</span> was felicitated by Law Minister Kiren Rijiju, with the <span className="italic">Certificate of Appreciation</span> for his Work in Mediation, hosted by GNLU in 2021
+                  </p>
+                </FadeInUp>
+              </>
+            ) : (
+              // Loading skeletons
+              <>
+                <div className="aspect-4/3 rounded-4xl bg-navy-50 animate-pulse" />
+                <div className="aspect-4/3 rounded-4xl bg-navy-50 animate-pulse" />
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -258,7 +312,7 @@ export function AboutUs() {
              <h2 className="text-4xl md:text-6xl font-light text-white tracking-tight">A Decade of <span className="text-gold-500 italic">Impact</span></h2>
           </FadeInUp>
           
-          <div className="relative rounded-[2rem] overflow-hidden border border-white/10 shadow-3xl">
+          <div className="relative rounded-4xl overflow-hidden border border-white/10 shadow-3xl">
             <Image
               src="/images/Web Pic 5.png"
               alt="Rocket ship timeline 2015-2026"
