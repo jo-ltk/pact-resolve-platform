@@ -587,6 +587,51 @@ export interface EcosystemTeamMember extends BaseDocument {
   isActive: boolean;
 }
 
+
+// ============================================================================
+// 13. RESOURCES CONTENT
+// ============================================================================
+
+export type ResourceType = 
+  | "blog" 
+  | "publication" 
+  | "video" 
+  | "book" 
+  | "news" 
+  | "podcast" 
+  | "journal" 
+  | "toolkit"
+  | "simplified"; // For Mediation Simplified workbook
+
+export interface ResourceItem extends BaseDocument {
+  /** Type of resource */
+  type: ResourceType;
+  /** Main title */
+  title: string;
+  /** Subtitle (author, speaker, publication name, etc.) */
+  subtitle?: string;
+  /** Description or summary */
+  description?: string;
+  /** Cover image or thumbnail */
+  image?: string;
+  /** URL to the content (PDF, Link, Video) */
+  url?: string;
+  /** Specific author name (if separate from subtitle) */
+  author?: string;
+  /** Publication Name */
+  publication?: string;
+  /** Publication date */
+  date?: string; // string for display flexibility
+  /** Category or niche (optional) */
+  category?: string;
+  /** Display order */
+  order: number;
+  /** Whether this item is visible */
+  isActive: boolean;
+  /** Whether highlighted/featured */
+  isFeatured?: boolean;
+}
+
 // ============================================================================
 // COLLECTION NAMES
 // ============================================================================
@@ -618,6 +663,8 @@ export const COLLECTIONS = {
   ECOSYSTEM_AWARDS: "ecosystemAwards",
   ECOSYSTEM_PARTNERS: "ecosystemPartners",
   ECOSYSTEM_TEAM: "ecosystemTeam",
+  // Resources collections
+  RESOURCES: "resources",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];

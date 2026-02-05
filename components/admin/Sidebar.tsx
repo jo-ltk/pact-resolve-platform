@@ -18,7 +18,8 @@ import {
   ChevronRight,
   ShieldCheck,
   GraduationCap,
-  Globe
+  Globe,
+  BookOpen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/context/AuthContext";
@@ -32,6 +33,7 @@ const menuItems = [
   { icon: Handshake, label: "Mediation", href: "/admin/mediation", adminOnly: false },
   { icon: GraduationCap, label: "Academy", href: "/admin/academy", adminOnly: false },
   { icon: Globe, label: "Ecosystem", href: "/admin/ecosystem", adminOnly: false },
+  { icon: BookOpen, label: "Resources", href: "/admin/resources", adminOnly: false },
   { icon: Library, label: "Media Library", href: "/admin/media-library", adminOnly: false },
   { icon: Settings, label: "Global Settings", href: "/admin/global-settings", adminOnly: true },
   { icon: History, label: "Audit Logs", href: "/admin/audit-logs", adminOnly: true },
