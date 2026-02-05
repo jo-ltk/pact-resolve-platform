@@ -234,75 +234,90 @@ export function HeroCarousel() {
             {/* 1. Puzzle Shapes Grid (Always visible, clean row) */}
             <div className="grid grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
               {slides.map((slide, index) => {
-                const isActive = current === index;
-                const isPast = current > index;
-                
-                return (
-                  <button
-                    key={index}
-                    onClick={() => api?.scrollTo(index)}
-                    className="group relative flex flex-col items-center transition-all"
-                    aria-label={`Go to slide ${index + 1}`}
-                  >
-                    <div className="relative h-4 w-full overflow-visible">
-                      <svg
-                        viewBox="0 0 100 16"
-                        preserveAspectRatio="none"
-                        className="w-full h-full overflow-visible"
-                      >
-                        <path
-                          d="M 0 8 H 40 C 40 8 40 14 50 14 C 60 14 60 8 60 8 H 100"
-                          stroke="white"
-                          strokeOpacity="0.1"
-                          strokeWidth="2"
-                          fill="none"
-                        />
-                        {isActive && (
-                          <motion.path
-                            key={`fill-${current}`}
-                            d="M 0 8 H 40 C 40 8 40 2 50 2 C 60 2 60 8 60 8 H 100"
-                            stroke="#bf9a66"
-                            strokeWidth="2"
-                            fill="none"
-                            strokeLinecap="round"
-                            initial={{ pathLength: 0 }}
-                            animate={{ pathLength: 1 }}
-                            transition={{ 
-                              duration: autoplayDelay / 1000, 
-                              ease: "linear" 
-                            }}
-                            className="will-change-transform"
-                          />
-                        )}
-                        {isPast && (
+                  const isActive = current === index;
+                  const isPast = current > index;
+                  const isEven = index % 2 === 0;
+                  // Puzzle Tab Shape (Necked)
+                  // Mobile: Pronounced/Deep (Your "super" look)
+                  const mobilePathUp = "M 0 8 H 32 C 32 8 26 -4 50 -4 C 74 -4 68 8 68 8 H 100";
+                  const mobilePathDown = "M 0 8 H 32 C 32 8 26 20 50 20 C 74 20 68 8 68 8 H 100";
+
+                  // Web/Desktop: "Cute and little" (Smaller amplitude, gentler curves)
+                  const desktopPathUp = "M 0 8 H 40 C 40 8 38 4 50 4 C 62 4 60 8 60 8 H 100";
+                  const desktopPathDown = "M 0 8 H 40 C 40 8 38 12 50 12 C 62 12 60 8 60 8 H 100";
+
+                  const pathUp = isMobile ? mobilePathUp : desktopPathUp;
+                  const pathDown = isMobile ? mobilePathDown : desktopPathDown;
+
+                  // Strategy:
+                  // Background is always the "recess" or "track"
+                  // If we want them to look like they fit, maybe distinct shapes?
+                  // Let's make them ALL uniform puzzle tabs that "fill up".
+                  // To look cool, let's alternate the orientation of the piece.
+                  
+                  const activePath = isEven ? pathUp : pathDown;
+                  const inactivePath = isEven ? pathDown : pathUp; // Or just same path dimmed?
+
+                  // Actually, to look like a continuous puzzle line:
+                  // 1 -> Up, 2 -> Down, 3 -> Up...
+                  // And we illuminate the path.
+                  // So background and active path should MATCH for a given item to look like a wireframe being filled.
+                  const shapePath = isEven ? pathUp : pathDown;
+
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => api?.scrollTo(index)}
+                      className="group relative flex flex-col items-center transition-all"
+                      aria-label={`Go to slide ${index + 1}`}
+                    >
+                      <div className="relative h-4 w-full overflow-visible">
+                        <svg
+                          viewBox="0 0 100 16"
+                          preserveAspectRatio="none"
+                          className="w-full h-full overflow-visible"
+                        >
+                          {/* Background Track */}
                           <path
-                            d="M 0 8 H 40 C 40 8 40 2 50 2 C 60 2 60 8 60 8 H 100"
-                            stroke="#bf9a66"
+                            d={shapePath}
+                            stroke="white"
+                            strokeOpacity="0.1"
                             strokeWidth="2"
                             fill="none"
-                            strokeLinecap="round"
-                            opacity="0.5"
                           />
-                        )}
-                      </svg>
-                      {isActive && (
-                        <motion.div 
-                          key={`pulse-${current}`}
-                          className="absolute bg-gold-400 w-1.5 h-1.5 rounded-full shadow-[0_0_10px_#bf9a66] will-change-transform z-10"
-                          initial={{ left: "0%", translateY: "-50%" }}
-                          animate={{ left: "100%" }}
-                          transition={{ 
-                            duration: autoplayDelay / 1000, 
-                            ease: "linear" 
-                          }}
-                          style={{ 
-                            top: '50%',
-                          }}
-                        />
-                      )}
-                    </div>
-                  </button>
-                );
+                          {/* Active Animation */}
+                          {isActive && (
+                            <motion.path
+                              key={`fill-${current}`}
+                              d={shapePath}
+                              stroke="#bf9a66"
+                              strokeWidth="2"
+                              fill="none"
+                              strokeLinecap="round"
+                              initial={{ pathLength: 0 }}
+                              animate={{ pathLength: 1 }}
+                              transition={{ 
+                                duration: autoplayDelay / 1000, 
+                                ease: "linear" 
+                              }}
+                              className="will-change-transform"
+                            />
+                          )}
+                          {/* Completed State */}
+                          {isPast && (
+                            <path
+                              d={shapePath}
+                              stroke="#bf9a66"
+                              strokeWidth="2"
+                              fill="none"
+                              strokeLinecap="round"
+                              opacity="0.5"
+                            />
+                          )}
+                        </svg>
+                      </div>
+                    </button>
+                  );
               })}
             </div>
 
