@@ -16,7 +16,8 @@ import {
   History, 
   LogOut,
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  GraduationCap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/context/AuthContext";
@@ -28,6 +29,7 @@ const menuItems = [
   { icon: Home, label: "Homepage", href: "/admin/home-page", adminOnly: false },
   { icon: Calendar, label: "Events", href: "/admin/events", adminOnly: false },
   { icon: Handshake, label: "Mediation", href: "/admin/mediation", adminOnly: false },
+  { icon: GraduationCap, label: "Academy", href: "/admin/academy", adminOnly: false },
   { icon: Library, label: "Media Library", href: "/admin/media-library", adminOnly: false },
   { icon: Settings, label: "Global Settings", href: "/admin/global-settings", adminOnly: true },
   { icon: History, label: "Audit Logs", href: "/admin/audit-logs", adminOnly: true },

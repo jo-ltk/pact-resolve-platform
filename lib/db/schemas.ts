@@ -376,6 +376,138 @@ export interface MediationFee extends BaseDocument {
 }
 
 // ============================================================================
+// 11. ACADEMY CONTENT
+// ============================================================================
+
+/** Academy program types */
+export type AcademyProgram = "mediation" | "arbitration" | "negotiation";
+
+/** Academy course type (foundational or advanced) */
+export type AcademyCourseType = "foundational" | "advanced";
+
+/** Academy course metadata */
+export interface AcademyCourse extends BaseDocument {
+  /** Which program this course belongs to */
+  program: AcademyProgram;
+  /** Course type */
+  courseType: AcademyCourseType;
+  /** Course title */
+  title: string;
+  /** Course subtitle/short description */
+  subtitle: string;
+  /** Course mode (e.g., "Online (20 Videos)") */
+  mode: string;
+  /** Live session info */
+  liveSession: string;
+  /** Assessment type */
+  assessment: string;
+  /** Certification info */
+  certification: string;
+  /** Course fee amount (number) */
+  feeAmount: number;
+  /** Fee currency (e.g., "INR") */
+  feeCurrency: string;
+  /** Additional fee note (e.g., "+ GST") */
+  feeNote: string;
+  /** CTA button text */
+  ctaText: string;
+  /** CTA button link */
+  ctaLink: string;
+  /** Key benefits list (for display) */
+  benefits: string[];
+  /** Enrollment status text */
+  enrollmentStatus: string;
+  /** Display order */
+  order: number;
+  /** Whether this course is visible */
+  isActive: boolean;
+}
+
+/** Academy training module (curriculum item) */
+export interface AcademyModule extends BaseDocument {
+  /** Which program this module belongs to */
+  program: AcademyProgram;
+  /** Which course type this module belongs to */
+  courseType: AcademyCourseType;
+  /** Module number (for display, e.g., 1, 2, 3) */
+  moduleNumber: number;
+  /** Module title */
+  title: string;
+  /** Module content/description */
+  content: string;
+  /** Display order */
+  order: number;
+  /** Whether this module is visible */
+  isActive: boolean;
+}
+
+/** Academy faculty member */
+export interface AcademyFaculty extends BaseDocument {
+  /** Which program(s) this faculty belongs to */
+  programs: AcademyProgram[];
+  /** Which course type(s) this faculty teaches */
+  courseTypes: AcademyCourseType[];
+  /** Faculty name */
+  name: string;
+  /** Role/title */
+  role: string;
+  /** Profile image URL */
+  image: string;
+  /** Bio/description */
+  bio?: string;
+  /** LinkedIn or profile URL */
+  profileUrl?: string;
+  /** Display order */
+  order: number;
+  /** Whether this faculty is visible */
+  isActive: boolean;
+}
+
+/** Academy strategic partner/collaborator */
+export interface AcademyPartner extends BaseDocument {
+  /** Which program(s) this partner belongs to */
+  programs: AcademyProgram[];
+  /** Partner name */
+  name: string;
+  /** Logo URL */
+  logo: string;
+  /** Description/tagline */
+  description?: string;
+  /** Website URL */
+  websiteUrl?: string;
+  /** Display order */
+  order: number;
+  /** Whether this partner is visible */
+  isActive: boolean;
+}
+
+/** Academy page hero/intro settings */
+export interface AcademyPageSettings extends BaseDocument {
+  /** Which program this settings is for */
+  program: AcademyProgram;
+  /** Hero title */
+  heroTitle: string;
+  /** Hero subtitle/breadcrumb text */
+  heroSubtitle: string;
+  /** Hero description */
+  heroDescription: string;
+  /** Hero background image URL */
+  heroImage: string;
+  /** Contact email */
+  contactEmail: string;
+  /** Corporate training section title */
+  trainingTitle: string;
+  /** Corporate training description */
+  trainingDescription: string;
+  /** Corporate training image URL */
+  trainingImage: string;
+  /** Training features list */
+  trainingFeatures: { title: string; description?: string }[];
+  /** Whether this page is active */
+  isActive: boolean;
+}
+
+// ============================================================================
 // COLLECTION NAMES
 // ============================================================================
 
@@ -396,6 +528,12 @@ export const COLLECTIONS = {
   MEDIATION_RESOLUTION_STEPS: "mediationResolutionSteps",
   MEDIATION_RULES: "mediationRules",
   MEDIATION_FEES: "mediationFees",
+  // Academy collections
+  ACADEMY_COURSES: "academyCourses",
+  ACADEMY_MODULES: "academyModules",
+  ACADEMY_FACULTY: "academyFaculty",
+  ACADEMY_PARTNERS: "academyPartners",
+  ACADEMY_PAGE_SETTINGS: "academyPageSettings",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];

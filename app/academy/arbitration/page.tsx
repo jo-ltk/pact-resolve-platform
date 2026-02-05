@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -60,10 +60,10 @@ const CurriculumRoadmap = ({ modules, type, dark = false }: { modules: { title: 
            viewport={{ once: true }}
            transition={{ delay: i * 0.05 }}
            className={cn(
-             "group relative overflow-hidden rounded-3xl md:rounded-[2rem] border transition-all duration-500",
+             "group relative overflow-hidden rounded-3xl md:rounded-4xl border transition-all duration-500",
              activeStep === i 
                ? (dark ? "bg-white/10 border-gold-500 shadow-[0_0_30px_-10px_rgba(191,154,102,0.1)]" : "bg-navy-950 border-gold-500 shadow-2xl") 
-               : (dark ? "bg-white/[0.02] border-white/5 hover:bg-white/[0.04] hover:border-white/10" : "bg-white border-navy-100 hover:border-gold-500/30 hover:bg-navy-50/50 shadow-xs")
+               : (dark ? "bg-white/2 border-white/5 hover:bg-white/4 hover:border-white/10" : "bg-white border-navy-100 hover:border-gold-500/30 hover:bg-navy-50/50 shadow-xs")
            )}
         >
            <button
@@ -189,7 +189,7 @@ const ArbitrationHero = () => (
           </div>
           <div className="relative group hidden lg:block">
             <div className="absolute -inset-4 bg-white/5 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-            <div className="relative p-10 rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm">
+            <div className="relative p-10 rounded-3xl border border-white/10 bg-white/2 backdrop-blur-sm">
               <p className="text-xl text-white/70 font-light italic leading-relaxed">
                 Got a query? Email – academy@thepact.in
               </p>
@@ -208,85 +208,59 @@ const ArbitrationHero = () => (
 );
 
 export default function ArbitrationPage() {
-  // Foundation Course Modules - EXACT CONTENT
-  const foundationModules = [
-    {
-      title: "Module 1: Arbitration Advocacy Essentials",
-      content: "A comprehensive overview of Arbitration Lifecycle in 8 Steps; Who Does What: Tribunal, Counsel, Parties, Institution; Key Documents; Core Skills: Clarity, Strategy, Credibility"
-    },
-    {
-      title: "Module 2: Understanding the Forum and Rules",
-      content: "Ad Hoc v. Institutional Arbitration (Why It Matters); Seat, Venue, Governing Law: The Practical Meaning; Rules 101: Timelines, Powers, Discretion; Procedural Orders: What They Are and How They Are Used; Soft Law Basics: IBA Guidelines (Evidence, Conflicts)"
-    },
-    {
-      title: "Module 3: Case Theory and Strategy – From Facts to Theory",
-      content: `Building Your "Case Story"; Claims, Defences, Counterclaims: Simple Structure; Burden and Standard of Proof (Advocacy Implications); Issue Spotting: What Really Needs Proving; Strategy Map: Win Themes & Risk Themes`
-    },
-    {
-      title: "Module 4: Written Advocacy Fundamentals",
-      content: "Pleadings v. Submissions: What's the Difference? Writing for Arbitrators: Style That Works; Organizing Submissions: Issues → Law → Facts → Proof; Using Authorities & Exhibits Without Overloading; Drafting Relief: Precision in What You Ask For"
-    },
-    {
-      title: "Module 5: Evidence Basics in Arbitration",
-      content: "Document-Heavy Reality: How Arbitrations Are Proven; Document Requests; Witness Statements: Purpose, Structure, Pitfalls; Experts: When You Need Them and How They Persuade; Admissibility v. Weight: How Tribunals Think"
-    },
-    {
-      title: "Module 6: Hearing Advocacy (Your First Hearing Toolkit)",
-      content: "Hearing Formats: In-Person, Virtual, Hybrid; Opening Statement: Structure That Lands; Direct/Chief Examination in Arbitration; Cross-Examination: Control Without Drama; Closing Submissions: The 5-Part Persuasion Model"
-    },
-    {
-      title: "Module 7: Procedure, Professionalism, and Ethics",
-      content: `Civility and Credibility: "Arbitration Courtroom" Norms; Conflicts and Disclosure: Basic Red Flags; Ex-Parte, Communications, and Boundaries; Dealing With Delays and Non-Cooperation; Confidentiality: What It Covers (and What It Doesn't)`
-    },
-    {
-      title: "Module 8: Capstone (Basic)",
-      content: "Mini-Case Walkthrough: Facts → Issues → Proof Plan; Draft a One-Page Case Theory & Relief; Mini-Opening: 2 Minutes That Persuade; Mini-Cross: 10 Questions with a Goal; Mini-Closing: Bringing It Home"
-    }
-  ];
+  const [courses, setCourses] = useState<any[]>([]);
+  const [modules, setModules] = useState<any[]>([]);
+  const [faculty, setFaculty] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Certificate Course Modules - EXACT CONTENT
-  const advancedModules = [
-    {
-      title: "Module 1: Advanced Case Strategy and Persuasion",
-      content: `Tribunal Psychology: How Arbitrators Process Cases; Theme Engineering: Building "Sticky" Case Narratives; Concession Strategy: What to Give Up to Win More; Risk Register: Quantifying Weak Spots Early; Sequencing: When to Push, When to Hold`
-    },
-    {
-      title: "Module 2: Arbitration-Specific Motion Practice",
-      content: "Jurisdictional Objections: Timing and Framing; Interim Measures: Tests, Evidence, and Urgency; Security for Costs: Practical Playbook; Bifurcation: Winning the Structure Fight; E-Discovery & Adverse Inference: Tactical Use"
-    },
-    {
-      title: "Module 3: High-Impact Written Advocacy",
-      content: `The "Issue-First" Method for Complex Arbitrations; Using Demonstratives in Written Submissions; Authority Strategy: Fewer, Better, Deadlier Citations; Damages Submissions: Logic Trees & Proof; Reply/Rejoinder: Controlled Aggression Without Noise`
-    },
-    {
-      title: "Module 4: Witness Advocacy Mastery",
-      content: "Witness Preparation: Ethical Boundaries & Best Practice; Statement Architecture: Fact, Context, Corroboration; Cross-Examination Systems: Control, Contradiction, Concession; Impeachment with Documents: Timing and Technique; Re-Direct: Repair Without Repeating"
-    },
-    {
-      title: "Module 5: Expert Evidence and Quantification",
-      content: "Choosing Experts: Independence, Communication, Persuasion; Hot-Tubbing / Concurrent Evidence: How to Win It; Attacking Methodology: Reliability Without Jargon; Valuation & Damages: Presenting Numbers Clearly; Expert Cross: Simple Questions That Collapse Complexity"
-    },
-    {
-      title: "Module 6: Hearing Advocacy at Full Speed",
-      content: `Elite Openings: The "Roadmap & Proof Promise" Model; Real-Time Adaptation: Reading the Tribunal Live: Objections in Arbitration: Rare but High-Leverage; Demonstratives: Slides, Chronologies, and Hearing Bundles; Elite Closings: Findings, Law, and Relief That Fits`
-    },
-    {
-      title: "Module 7: Multiparty, Multi-Contract, and Complex Procedure",
-      content: "Joinder and Consolidation: Strategy and Risk; Parallel Proceedings: Courts, Regulators, Other Arbitrations; Third-Party Funding: Disclosure and Tactics; Privilege Across Borders: Handling Conflicts; Language, Translation, and Cultural Advocacy"
-    },
-    {
-      title: "Module 8: Award Strategy, Challenges, and Enforcement",
-      content: "Drafting the Record: Helping the Tribunal Write a Strong Award; Post-Hearing Briefs: When They Help (and When They Hurt); Correction, Interpretation, Additional Awards; Set-Aside/Annulment: How Challenges Are Actually Won/Lost Enforcement Strategy: Assets, Timing, Resistance"
-    },
-    {
-      title: "Module 9: Specialised Advocacy Tracks",
-      content: "Commercial Contracts Advocacy; Construction Arbitration Advocacy; Shareholder & JV Disputes; Investor-State Style Advocacy Skills; Emergency Arbitration Advocacy"
-    },
-    {
-      title: "Module 10: Capstone (Advanced)",
-      content: "Full Case Blueprint; Procedural Fight Simulation; Witness & Expert Sequence Plan; Hearing Script; Post-Hearing Strategy"
-    }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [coursesRes, modulesRes, facultyRes] = await Promise.all([
+          fetch('/api/content/academy/courses?program=arbitration'),
+          fetch('/api/content/academy/modules?program=arbitration'),
+          fetch('/api/content/academy/faculty?program=arbitration')
+        ]);
+
+        if (!coursesRes.ok || !modulesRes.ok || !facultyRes.ok) {
+          throw new Error("Failed to fetch arbitration data");
+        }
+
+        const [coursesData, modulesData, facultyData] = await Promise.all([
+          coursesRes.json(),
+          modulesRes.json(),
+          facultyRes.json()
+        ]);
+
+        if (coursesData.success) setCourses(coursesData.data);
+        if (modulesData.success) setModules(modulesData.data);
+        if (facultyData.success) setFaculty(facultyData.data);
+      } catch (error) {
+        console.error("Error fetching arbitration data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const foundationalCourse = courses.find(c => c.courseType === 'foundational');
+  const advancedCourse = courses.find(c => c.courseType === 'advanced');
+  
+  const foundationModulesArr = modules.filter(m => m.courseType === 'foundational');
+  const advancedModulesArr = modules.filter(m => m.courseType === 'advanced');
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-navy-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-gold-500/20 border-t-gold-500 rounded-full animate-spin" />
+          <p className="text-white/40 font-mono text-xs uppercase tracking-widest">Loading Academy...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-white">
@@ -349,196 +323,205 @@ export default function ArbitrationPage() {
       </section>
 
       {/* Section: Foundation Course in Arbitration */}
-      <section id="courses" className="py-24 md:py-40 bg-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <SectionHeader 
-            subtitle="Online Courses" 
-            title="Foundation Course in Arbitration"
-            description=""
-            center
-          />
+      {foundationalCourse && (
+        <section id="courses" className="py-24 md:py-40 bg-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+          
+          <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <SectionHeader 
+              subtitle="Online Courses" 
+              title={foundationalCourse.title}
+              description={foundationalCourse.subtitle}
+              center
+            />
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-20 items-start mb-32">
-            <div className="space-y-10">
-               <div className="flex items-baseline gap-6 border-b border-navy-100 pb-8">
-                 <span className="text-[10px] font-mono text-gold-600 uppercase tracking-[0.5em] font-bold">I.</span>
-                 <p className="text-2xl md:text-4xl text-navy-950 font-light tracking-tight">Foundation Course in <span className="text-gold-500 italic font-medium">Arbitration</span></p>
-               </div>
-               
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Mode</span>
-                   <p className="text-lg text-navy-950/70 font-light">Online (20 Videos)</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Live Session</span>
-                   <p className="text-lg text-navy-950/70 font-light">Orientation + Q&amp;A</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Assessment</span>
-                   <p className="text-lg text-navy-950/70 font-light">Quiz</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Certification</span>
-                   <p className="text-lg text-navy-950/70 font-light">Yes</p>
-                 </div>
-               </div>
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-20 items-start mb-32">
+              <div className="space-y-10">
+                <div className="flex items-baseline gap-6 border-b border-navy-100 pb-8">
+                  <span className="text-[10px] font-mono text-gold-600 uppercase tracking-[0.5em] font-bold">I.</span>
+                  <p className="text-2xl md:text-4xl text-navy-950 font-light tracking-tight">{foundationalCourse.title}</p>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Mode</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.mode}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Live Session</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.liveSession}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Assessment</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.assessment}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Certification</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.certification}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                  <div className="relative aspect-[1.4/1] w-full rounded-[2.5rem] overflow-hidden border border-navy-100 bg-white shadow-sm flex items-center justify-center group/cert">
+                      <div className="absolute inset-0 bg-[linear-gradient(45deg,#f8f9fa_25%,transparent_25%,transparent_75%,#f8f9fa_75%,#f8f9fa),linear-gradient(45deg,#f8f9fa_25%,transparent_25%,transparent_75%,#f8f9fa_75%,#f8f9fa)] bg-size-[20px_20px] bg-position-[0_0,10px_10px] opacity-50" />
+                      <div className="text-center z-10 p-8">
+                           <div className="w-16 h-16 rounded-full bg-navy-50 flex items-center justify-center mx-auto mb-4 group-hover/cert:scale-110 transition-transform duration-500">
+                               <Award className="w-8 h-8 text-gold-500" />
+                           </div>
+                           <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-navy-950/40 font-bold">Certificate</p>
+                      </div>
+                  </div>
+
+                  <div className="p-8 rounded-[2.5rem] bg-navy-50/50 border border-navy-100 backdrop-blur-xl relative group">
+                      <div className="absolute -inset-1 bg-linear-to-r from-gold-500/10 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                      <div className="relative">
+                        <div className="flex items-center justify-between mb-8">
+                          <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-navy-950/40">Fee</h5>
+                          <Sparkles className="w-5 h-5 text-gold-500" />
+                        </div>
+                        <div className="mb-8">
+                          <p className="text-5xl font-light text-navy-950 mb-2 tracking-tighter">{foundationalCourse.feeAmount} <span className="text-sm font-mono text-navy-950/20">{foundationalCourse.feeCurrency} {foundationalCourse.feeNote}</span></p>
+                        </div>
+                        <MagneticButton variant="primary" size="lg" className="w-full">
+                          <Link href={foundationalCourse.ctaLink || "#"} className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">{foundationalCourse.ctaText || "Sign Up"}</Link>
+                        </MagneticButton>
+                      </div>
+                  </div>
+              </div>
             </div>
 
-            <div className="space-y-6">
-                <div className="relative aspect-[1.4/1] w-full rounded-[2.5rem] overflow-hidden border border-navy-100 bg-white shadow-sm flex items-center justify-center group/cert">
-                    <div className="absolute inset-0 bg-[linear-gradient(45deg,#f8f9fa_25%,transparent_25%,transparent_75%,#f8f9fa_75%,#f8f9fa),linear-gradient(45deg,#f8f9fa_25%,transparent_25%,transparent_75%,#f8f9fa_75%,#f8f9fa)] bg-[size:20px_20px] bg-[position:0_0,10px_10px] opacity-50" />
-                    <div className="text-center z-10 p-8">
-                         <div className="w-16 h-16 rounded-full bg-navy-50 flex items-center justify-center mx-auto mb-4 group-hover/cert:scale-110 transition-transform duration-500">
-                             <Award className="w-8 h-8 text-gold-500" />
-                         </div>
-                         <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-navy-950/40 font-bold">Certificate</p>
-                    </div>
+            {/* Training Modules Header */}
+            {foundationModulesArr.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-6 mb-12">
+                   <div className="h-px bg-navy-100 grow" />
+                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/20 font-bold italic">Training Modules</span>
+                   <div className="h-px bg-navy-100 grow" />
                 </div>
-
-                <div className="p-8 rounded-[2.5rem] bg-navy-50/50 border border-navy-100 backdrop-blur-xl relative group">
-                    <div className="absolute -inset-1 bg-linear-to-r from-gold-500/10 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                    <div className="relative">
-                      <div className="flex items-center justify-between mb-8">
-                        <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-navy-950/40">Fee</h5>
-                        <Sparkles className="w-5 h-5 text-gold-500" />
-                      </div>
-                      <div className="mb-8">
-                        <p className="text-5xl font-light text-navy-950 mb-2 tracking-tighter">INR 5,000 <span className="text-sm font-mono text-navy-950/20">+ GST</span></p>
-                      </div>
-                      <MagneticButton variant="primary" size="lg" className="w-full">
-                        <Link href="#" className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">Sign Up</Link>
-                      </MagneticButton>
-                    </div>
-                </div>
-            </div>
+                <CurriculumRoadmap modules={foundationModulesArr} type="Foundation" />
+              </div>
+            )}
           </div>
-
-          {/* Training Modules Header */}
-          <div className="space-y-4">
-             <div className="flex items-center gap-6 mb-12">
-                <div className="h-px bg-navy-100 grow" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/20 font-bold italic">Training Modules</span>
-                <div className="h-px bg-navy-100 grow" />
-             </div>
-             <CurriculumRoadmap modules={foundationModules} type="Foundation" />
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <div className="w-full h-px bg-navy-100/50" />
 
       {/* Section: Certificate Course in Arbitration Advocacy */}
-      <section className="py-24 md:py-40 bg-navy-950 relative overflow-hidden dark">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3 pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <SectionHeader 
-            subtitle="Advanced Certification" 
-            title="Certificate Course in Arbitration Advocacy"
-            description=""
-            dark
-            center
-          />
+      {advancedCourse && (
+        <section className="py-24 md:py-40 bg-navy-950 relative overflow-hidden dark">
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3 pointer-events-none" />
+          
+          <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <SectionHeader 
+              subtitle="Advanced Certification" 
+              title={advancedCourse.title}
+              description={advancedCourse.subtitle}
+              dark
+              center
+            />
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-20 items-start mb-20">
-            <div className="space-y-10">
-               <div className="flex items-baseline gap-6 border-b border-white/5 pb-8">
-                 <span className="text-[10px] font-mono text-gold-500/60 uppercase tracking-[0.5em] font-bold">II.</span>
-                 <p className="text-2xl md:text-4xl text-white font-light tracking-tight">Certificate Course in <span className="text-gold-500 italic font-medium">Arbitration Advocacy</span></p>
-               </div>
-               
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Mode</span>
-                   <p className="text-lg text-white/80 font-light">Online (40 Videos)</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Live Session</span>
-                   <p className="text-lg text-white/80 font-light">Orientation + Q&amp;A</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Assessment</span>
-                   <p className="text-lg text-white/80 font-light">Quiz + Exercises</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Certification</span>
-                   <p className="text-lg text-white/80 font-light">Certified Arbitration Counsel</p>
-                 </div>
-               </div>
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-20 items-start mb-20">
+              <div className="space-y-10">
+                <div className="flex items-baseline gap-6 border-b border-white/5 pb-8">
+                  <span className="text-[10px] font-mono text-gold-500/60 uppercase tracking-[0.5em] font-bold">II.</span>
+                  <p className="text-2xl md:text-4xl text-white font-light tracking-tight">{advancedCourse.title}</p>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Mode</span>
+                    <p className="text-lg text-white/80 font-light">{advancedCourse.mode}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Live Session</span>
+                    <p className="text-lg text-white/80 font-light">{advancedCourse.liveSession}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Assessment</span>
+                    <p className="text-lg text-white/80 font-light">{advancedCourse.assessment}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Certification</span>
+                    <p className="text-lg text-white/80 font-light">{advancedCourse.certification}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                  <div className="relative aspect-[1.4/1] w-full rounded-[2.5rem] overflow-hidden border border-white/10 bg-white/5 flex items-center justify-center group/cert">
+                      <div className="text-center z-10 p-8">
+                           <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 group-hover/cert:scale-110 transition-transform duration-500">
+                               <Award className="w-8 h-8 text-gold-500" />
+                           </div>
+                           <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/40 font-bold">Advanced Certificate</p>
+                      </div>
+                  </div>
+
+                  <div className="p-8 rounded-[2.5rem] bg-white/3 border border-white/10 backdrop-blur-xl relative group">
+                      <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                      <div className="relative">
+                        <div className="flex items-center justify-between mb-8">
+                          <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-gold-500/60">Fee</h5>
+                          <Award className="w-5 h-5 text-gold-500" />
+                        </div>
+                        <div className="mb-8">
+                          <p className="text-5xl font-light text-white mb-2 tracking-tighter">{advancedCourse.feeAmount} <span className="text-sm font-mono text-white/20">{advancedCourse.feeCurrency} {advancedCourse.feeNote}</span></p>
+                        </div>
+                        <MagneticButton variant="primary" size="lg" className="w-full">
+                          <Link href={advancedCourse.ctaLink || "#"} className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">{advancedCourse.ctaText || "Sign Up"}</Link>
+                        </MagneticButton>
+                      </div>
+                  </div>
+              </div>
             </div>
 
-            <div className="space-y-6">
-                <div className="relative aspect-[1.4/1] w-full rounded-[2.5rem] overflow-hidden border border-white/10 bg-white/5 flex items-center justify-center group/cert">
-                    <div className="text-center z-10 p-8">
-                         <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 group-hover/cert:scale-110 transition-transform duration-500">
-                             <Award className="w-8 h-8 text-gold-500" />
-                         </div>
-                         <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/40 font-bold">Advanced Certificate</p>
-                    </div>
+            {advancedModulesArr.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-6 mb-12">
+                   <div className="h-px bg-white/10 grow" />
+                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/20 font-bold italic">Training Modules</span>
+                   <div className="h-px bg-white/10 grow" />
                 </div>
-
-                <div className="p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl relative group">
-                    <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                    <div className="relative">
-                      <div className="flex items-center justify-between mb-8">
-                        <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-gold-500/60">Fee</h5>
-                        <Award className="w-5 h-5 text-gold-500" />
-                      </div>
-                      <div className="mb-8">
-                        <p className="text-5xl font-light text-white mb-2 tracking-tighter">INR 10,000 <span className="text-sm font-mono text-white/20">+ GST</span></p>
-                      </div>
-                      <MagneticButton variant="primary" size="lg" className="w-full">
-                        <Link href="#" className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">Sign Up</Link>
-                      </MagneticButton>
-                    </div>
-                </div>
-            </div>
+                <CurriculumRoadmap modules={advancedModulesArr} type="Advanced" dark />
+              </div>
+            )}
           </div>
-
-          <div className="space-y-4">
-             <div className="flex items-center gap-6 mb-12">
-                <div className="h-px bg-white/10 grow" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/20 font-bold italic">Training Modules</span>
-                <div className="h-px bg-white/10 grow" />
-             </div>
-             <CurriculumRoadmap modules={advancedModules} type="Advanced" dark />
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Section: Faculty */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader 
-            subtitle="Expert Network" 
-            title="Faculty"
-            description=""
-          />
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { name: "Faculty Member 1", role: "Expert Arbitrator", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" },
-              { name: "Faculty Member 2", role: "Senior Counsel", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80" }
-            ].map((faculty, i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="relative aspect-3/4 rounded-4xl overflow-hidden border border-navy-100 mb-6 transition-all duration-500 group-hover:shadow-2xl">
-                  <Image src={faculty.image} alt={faculty.name} fill className="object-cover md:grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
+      {faculty.length > 0 && (
+        <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader 
+              subtitle="Expert Network" 
+              title="Faculty"
+              description=""
+            />
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {faculty.map((member, i) => (
+                <div key={i} className="group cursor-pointer">
+                  <div className="relative aspect-3/4 rounded-4xl overflow-hidden border border-navy-100 mb-6 transition-all duration-500 group-hover:shadow-2xl">
+                    <Image src={member.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80"} alt={member.name} fill className="object-cover md:grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
+                  </div>
+                  <h4 className="text-xl font-medium text-navy-950 mb-1">{member.name}</h4>
+                  <p className="text-sm font-mono uppercase tracking-widest text-gold-500 font-bold">{member.role}</p>
                 </div>
-                <h4 className="text-xl font-medium text-navy-950 mb-1">{faculty.name}</h4>
-                <p className="text-sm font-mono uppercase tracking-widest text-gold-500 font-bold">{faculty.role}</p>
-              </div>
-            ))}
-            <div className="flex flex-col items-center justify-center p-8 rounded-4xl border-2 border-dashed border-navy-100 bg-slate-50/50">
-               <p className="text-navy-950/30 font-medium text-center italic">Faculty Profiles<br/>Coming Soon</p>
+              ))}
+              {faculty.length < 4 && (
+                <div className="flex flex-col items-center justify-center p-8 rounded-4xl border-2 border-dashed border-navy-100 bg-slate-50/50">
+                  <p className="text-navy-950/30 font-medium text-center italic">More Faculty Profiles<br/>Coming Soon</p>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Section: Collaborators */}
       <div className="border-t border-navy-100/50">

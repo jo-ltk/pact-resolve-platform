@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -60,10 +60,10 @@ const CurriculumRoadmap = ({ modules, type, dark = false }: { modules: any[], ty
            viewport={{ once: true }}
            transition={{ delay: i * 0.05 }}
            className={cn(
-             "group relative overflow-hidden rounded-3xl md:rounded-[2rem] border transition-all duration-500",
+             "group relative overflow-hidden rounded-3xl md:rounded-4xl border transition-all duration-500",
              activeStep === i 
                ? (dark ? "bg-white/10 border-gold-500 shadow-[0_0_30px_-10px_rgba(191,154,102,0.1)]" : "bg-navy-950 border-gold-500 shadow-2xl") 
-               : (dark ? "bg-white/[0.02] border-white/5 hover:bg-white/[0.04] hover:border-white/10" : "bg-white border-navy-100 hover:border-gold-500/30 hover:bg-navy-50/50 shadow-xs")
+               : (dark ? "bg-white/2 border-white/5 hover:bg-white/4 hover:border-white/10" : "bg-white border-navy-100 hover:border-gold-500/30 hover:bg-navy-50/50 shadow-xs")
            )}
         >
            <button
@@ -190,7 +190,7 @@ const NegotiationHero = () => (
           </div>
           <div className="relative group hidden lg:block">
             <div className="absolute -inset-4 bg-white/5 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-            <div className="relative p-10 rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm">
+            <div className="relative p-10 rounded-3xl border border-white/10 bg-white/2 backdrop-blur-sm">
               <p className="text-xl text-white/70 font-light italic leading-relaxed">
                 Got a query? Email – academy@thepact.in
               </p>
@@ -209,61 +209,59 @@ const NegotiationHero = () => (
 );
 
 export default function NegotiationPage() {
-  // Skilled Negotiator Course - EXACT CONTENT
-  const basicModules = [
-    {
-      title: "Module 1: Negotiation Advocacy Essentials",
-      content: `What "Negotiation Advocacy" Really Is; Negotiation v. Mediation v. Litigation: Choosing the Right Mindset; The Three Outcomes to Manage: Deal, No Deal, Worse Deal; Interests, Positions, and the Hidden "Why"; The Ethics of Negotiation Advocacy`
-    },
-    {
-      title: "Module 2: Preparation That Creates Leverage",
-      content: "Define Your Goal, Range, and Walk-Away; BATNA and Leverage: Your Power Without Posturing; Information Mapping: What You Know, Need, and Can Trade; Stakeholders and Authority: Who Must Say Yes; Designing Your Negotiation Plan in 10 Minutes"
-    },
-    {
-      title: "Module 3: Communication and Framing",
-      content: "The Language of Persuasion: Framing Without Fighting; Asking Powerful Questions ; Listening as a Leverage Tool; Managing Emotion and Face; Credibility Moves: How to Be Believed"
-    },
-    {
-      title: "Module 4: Core Bargaining Mechanics",
-      content: `Anchoring: Starting Numbers Without Starting a War; Concessions: The Art of Controlled Movement; Packaging Trades: Creating Value Beyond Price; Dealing With "Take-It-Or-Leave-It"; Closing the Deal: From Agreement to Commitment`
-    },
-    {
-      title: "Module 5: Common Negotiation Scenarios",
-      content: "Salary and Promotion Negotiations; Commercial Contracts: Scope, Price, Risk; Disputes and Settlements: Negotiating Under Conflict; Everyday Negotiations: Rent, Services, and Consumer Issues; Negotiating by Email and WhatsApp"
-    },
-    {
-      title: "Module 6: Capstone (Basic)",
-      content: "Build a Negotiation Plan (Live Walkthrough); Roleplay: Opening and Anchoring; Roleplay: Concessions and Packaging; Roleplay: Handling Hardball' Closing and Debrief: Why Deals Collapse at the End"
-    }
-  ];
+  const [courses, setCourses] = useState<any[]>([]);
+  const [modules, setModules] = useState<any[]>([]);
+  const [faculty, setFaculty] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Advanced Curriculum - EXACT CONTENT
-  const advancedModules = [
-    {
-      title: "Module 1: Advanced Strategy and Game Thinking",
-      content: "Negotiation as a Game: Moves, Counters, and Incentives; Power Mapping: Leverage Beyond BATNA; Sequencing: What to Talk About First; Coalition and Multi-Party Negotiation Basics; Negotiating Under Uncertainty"
-    },
-    {
-      title: "Module 2: Advanced Tactics and Influence",
-      content: `Re-Anchoring and Resetting Unfair Ranges; Bracketing Strategies and What They Really Signal; Hardball Playbook: Threats, Deadlines, and Silence; Persuasion Architecture: The "Yes Path"; Cross-Cultural Negotiation: Style, Trust, and Misread Signals`
-    },
-    {
-      title: "Module 3: High-Stakes Negotiation Design",
-      content: "Negotiating Complex Deals: Term Sheets and Structure; Contingent Contracts: Betting Without Gambling; Risk Allocation and Liability: The Hidden Negotiation; Negotiating with Asymmetric Information; Negotiating with Institutions and Bureaucracies"
-    },
-    {
-      title: "Module 4: Difficult People and Difficult Situations",
-      content: "Negotiating with High-Conflict Personalities; Managing Manipulation and Bad Faith Signals; Repairing Relationships While Negotiating; Negotiating Under Time Pressure; When to Walk Away (and How to Do It Well)"
-    },
-    {
-      title: "Module 5: Closing, Drafting, and Implementation",
-      content: "From Agreement to Paper: Capturing the Deal; Negotiating Boilerplate That Actually Matters; Final-Round Psychology: Preventing Last-Minute Collapse; Implementation Planning: Making the Deal Work; Post-Deal Renegotiation and Change Management"
-    },
-    {
-      title: "Module 6: Capstone (Advanced)",
-      content: "Full High-Stakes Strategy Blueprint; Simulation: Multi-Issue Package Negotiation; Simulation: Hardball and Re-Anchoring; Simulation: Drafting and Closing Under Pressure; Debrief: Your Negotiator Profile and Upgrade Plan"
-    }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [coursesRes, modulesRes, facultyRes] = await Promise.all([
+          fetch('/api/content/academy/courses?program=negotiation'),
+          fetch('/api/content/academy/modules?program=negotiation'),
+          fetch('/api/content/academy/faculty?program=negotiation')
+        ]);
+
+        if (!coursesRes.ok || !modulesRes.ok || !facultyRes.ok) {
+          throw new Error("Failed to fetch negotiation data");
+        }
+
+        const [coursesData, modulesData, facultyData] = await Promise.all([
+          coursesRes.json(),
+          modulesRes.json(),
+          facultyRes.json()
+        ]);
+
+        if (coursesData.success) setCourses(coursesData.data);
+        if (modulesData.success) setModules(modulesData.data);
+        if (facultyData.success) setFaculty(facultyData.data);
+      } catch (error) {
+        console.error("Error fetching negotiation data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const foundationalCourse = courses.find(c => c.courseType === 'foundational');
+  const advancedCourse = courses.find(c => c.courseType === 'advanced');
+  
+  const foundationModulesArr = modules.filter(m => m.courseType === 'foundational');
+  const advancedModulesArr = modules.filter(m => m.courseType === 'advanced');
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-navy-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-gold-500/20 border-t-gold-500 rounded-full animate-spin" />
+          <p className="text-white/40 font-mono text-xs uppercase tracking-widest">Loading Academy...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-white">
@@ -325,71 +323,75 @@ export default function NegotiationPage() {
       </section>
 
       {/* Section: Skilled Negotiator Course */}
-      <section id="courses" className="py-24 md:py-40 bg-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gold-500/5 blur-[120px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <SectionHeader 
-            subtitle="Online Courses" 
-            title="Skilled Negotiator Course"
-            description=""
-            center
-          />
+      {foundationalCourse && (
+        <section id="courses" className="py-24 md:py-40 bg-white relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gold-500/5 blur-[120px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+          
+          <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <SectionHeader 
+              subtitle="Online Courses" 
+              title={foundationalCourse.title}
+              description={foundationalCourse.subtitle}
+              center
+            />
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-20 items-start mb-32">
-            <div className="space-y-10">
-               <div className="flex items-baseline gap-6 border-b border-navy-100 pb-8">
-                 <p className="text-2xl md:text-4xl text-navy-950 font-light tracking-tight">Skilled <span className="text-gold-500 italic font-medium">Negotiator</span> Course</p>
-               </div>
-               
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Mode</span>
-                   <p className="text-lg text-navy-950/70 font-light">Online (20 Videos)</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Live Session</span>
-                   <p className="text-lg text-navy-950/70 font-light">Orientation + Q&A</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Assessment</span>
-                   <p className="text-lg text-navy-950/70 font-light">Quiz</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Certification</span>
-                   <p className="text-lg text-navy-950/70 font-light">Yes</p>
-                 </div>
-               </div>
-            </div>
-
-            <div className="p-8 rounded-[2.5rem] bg-navy-50/50 border border-navy-100 backdrop-blur-xl relative group">
-                <div className="absolute -inset-1 bg-linear-to-r from-gold-500/10 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-8">
-                    <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-navy-950/40">Fee</h5>
-                    <Sparkles className="w-5 h-5 text-gold-500" />
-                  </div>
-                  <div className="mb-8">
-                    <p className="text-5xl font-light text-navy-950 mb-2 tracking-tighter">INR 5,000 <span className="text-sm font-mono text-navy-950/20">+ GST</span></p>
-                  </div>
-                  <MagneticButton variant="primary" size="lg" className="w-full">
-                    <Link href="#" className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">Sign Up</Link>
-                  </MagneticButton>
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-20 items-start mb-32">
+              <div className="space-y-10">
+                <div className="flex items-baseline gap-6 border-b border-navy-100 pb-8">
+                  <p className="text-2xl md:text-4xl text-navy-950 font-light tracking-tight">{foundationalCourse.title}</p>
                 </div>
-            </div>
-          </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Mode</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.mode}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Live Session</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.liveSession}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Assessment</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.assessment}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Certification</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.certification}</p>
+                  </div>
+                </div>
+              </div>
 
-          {/* Course Module Header */}
-          <div className="space-y-4">
-             <div className="flex items-center gap-6 mb-12">
-                <div className="h-px bg-navy-100 grow" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/20 font-bold italic">Course Modules</span>
-                <div className="h-px bg-navy-100 grow" />
-             </div>
-             <CurriculumRoadmap modules={basicModules} type="Foundation" />
+              <div className="p-8 rounded-[2.5rem] bg-navy-50/50 border border-navy-100 backdrop-blur-xl relative group">
+                  <div className="absolute -inset-1 bg-linear-to-r from-gold-500/10 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-8">
+                      <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-navy-950/40">Fee</h5>
+                      <Sparkles className="w-5 h-5 text-gold-500" />
+                    </div>
+                    <div className="mb-8">
+                      <p className="text-5xl font-light text-navy-950 mb-2 tracking-tighter">{foundationalCourse.feeAmount} <span className="text-sm font-mono text-navy-950/20">{foundationalCourse.feeCurrency} {foundationalCourse.feeNote}</span></p>
+                    </div>
+                    <MagneticButton variant="primary" size="lg" className="w-full">
+                      <Link href={foundationalCourse.ctaLink || "#"} className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">{foundationalCourse.ctaText || "Sign Up"}</Link>
+                    </MagneticButton>
+                  </div>
+              </div>
+            </div>
+
+            {/* Course Module Header */}
+            {foundationModulesArr.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-6 mb-12">
+                   <div className="h-px bg-navy-100 grow" />
+                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/20 font-bold italic">Course Modules</span>
+                   <div className="h-px bg-navy-100 grow" />
+                </div>
+                <CurriculumRoadmap modules={foundationModulesArr} type="Foundation" />
+              </div>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Faculty Section (After Skilled Negotiator Course) */}
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-white border-t border-navy-100/50">
@@ -424,103 +426,107 @@ export default function NegotiationPage() {
       <div className="w-full h-px bg-navy-100/50" />
 
       {/* Section: Advanced Curriculum */}
-      <section className="py-24 md:py-40 bg-navy-950 relative overflow-hidden dark">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3 pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <SectionHeader 
-            subtitle="Advanced Program" 
-            title="Advanced Curriculum"
-            description=""
-            dark
-            center
-          />
-
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-20 items-start mb-20">
-            <div className="space-y-10">
-               <div className="flex items-baseline gap-6 border-b border-white/5 pb-8">
-                 <p className="text-2xl md:text-4xl text-white font-light tracking-tight">Advanced <span className="text-gold-500 italic font-medium">Curriculum</span></p>
-               </div>
-               
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Mode</span>
-                   <p className="text-lg text-white/80 font-light">Online (20 Videos)</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Live Session</span>
-                   <p className="text-lg text-white/80 font-light">Orientation + Q&A</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Assessment</span>
-                   <p className="text-lg text-white/80 font-light">Quiz</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Certification</span>
-                   <p className="text-lg text-white/80 font-light">Yes</p>
-                 </div>
-               </div>
-            </div>
-
-            <div className="p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl relative group">
-                <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-8">
-                    <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-gold-500/60">Fee</h5>
-                    <Award className="w-5 h-5 text-gold-500" />
-                  </div>
-                  <div className="mb-8">
-                    <p className="text-5xl font-light text-white mb-2 tracking-tighter">INR 5,000 <span className="text-sm font-mono text-white/20">+ GST</span></p>
-                  </div>
-                  <MagneticButton variant="primary" size="lg" className="w-full">
-                    <Link href="#" className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">Sign Up</Link>
-                  </MagneticButton>
-                </div>
-            </div>
-          </div>
-
-          {/* Course Module Header */}
-          <div className="space-y-4">
-             <div className="flex items-center gap-6 mb-12">
-                <div className="h-px bg-white/10 grow" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/20 font-bold italic">Course Module</span>
-                <div className="h-px bg-white/10 grow" />
-             </div>
-             <CurriculumRoadmap modules={advancedModules} type="Advanced" dark />
-          </div>
-        </div>
-      </section>
-
-      {/* Faculty Section (After Advanced Course) */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader 
-            subtitle="Expert Network" 
-            title="Faculty"
-            description=""
-          />
+      {advancedCourse && (
+        <section className="py-24 md:py-40 bg-navy-950 relative overflow-hidden dark">
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3 pointer-events-none" />
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { name: "Faculty Member 1", role: "Advanced Negotiator", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" },
-              { name: "Faculty Member 2", role: "Expert Counsel", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80" }
-            ].map((faculty, i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="relative aspect-3/4 rounded-4xl overflow-hidden border border-navy-100 mb-6 transition-all duration-500 group-hover:shadow-2xl">
-                  <Image src={faculty.image} alt={faculty.name} fill className="object-cover md:grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
+          <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <SectionHeader 
+              subtitle="Advanced Program" 
+              title={advancedCourse.title}
+              description={advancedCourse.subtitle}
+              dark
+              center
+            />
+
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-20 items-start mb-20">
+              <div className="space-y-10">
+                <div className="flex items-baseline gap-6 border-b border-white/5 pb-8">
+                  <p className="text-2xl md:text-4xl text-white font-light tracking-tight">{advancedCourse.title}</p>
                 </div>
-                <h4 className="text-xl font-medium text-navy-950 mb-1">{faculty.name}</h4>
-                <p className="text-sm font-mono uppercase tracking-widest text-gold-500 font-bold">{faculty.role}</p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Mode</span>
+                    <p className="text-lg text-white/80 font-light">{advancedCourse.mode}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Live Session</span>
+                    <p className="text-lg text-white/80 font-light">{advancedCourse.liveSession}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Assessment</span>
+                    <p className="text-lg text-white/80 font-light">{advancedCourse.assessment}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Certification</span>
+                    <p className="text-lg text-white/80 font-light">{advancedCourse.certification}</p>
+                  </div>
+                </div>
               </div>
-            ))}
-            <div className="flex flex-col items-center justify-center p-8 rounded-4xl border-2 border-dashed border-navy-100 bg-slate-50/50">
-               <p className="text-navy-950/30 font-medium text-center italic">Faculty Profiles<br/>Coming Soon</p>
+
+              <div className="p-8 rounded-[2.5rem] bg-white/3 border border-white/10 backdrop-blur-xl relative group">
+                  <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-8">
+                      <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-gold-500/60">Fee</h5>
+                      <Award className="w-5 h-5 text-gold-500" />
+                    </div>
+                    <div className="mb-8">
+                      <p className="text-5xl font-light text-white mb-2 tracking-tighter">{advancedCourse.feeAmount} <span className="text-sm font-mono text-white/20">{advancedCourse.feeCurrency} {advancedCourse.feeNote}</span></p>
+                    </div>
+                    <MagneticButton variant="primary" size="lg" className="w-full">
+                      <Link href={advancedCourse.ctaLink || "#"} className="w-full flex justify-center py-2 text-base font-bold uppercase tracking-widest">{advancedCourse.ctaText || "Sign Up"}</Link>
+                    </MagneticButton>
+                  </div>
+              </div>
+            </div>
+
+            {advancedModulesArr.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-6 mb-12">
+                   <div className="h-px bg-white/10 grow" />
+                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/20 font-bold italic">Course Module</span>
+                   <div className="h-px bg-white/10 grow" />
+                </div>
+                <CurriculumRoadmap modules={advancedModulesArr} type="Advanced" dark />
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* Faculty Section */}
+      {faculty.length > 0 && (
+        <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader 
+              subtitle="Expert Network" 
+              title="Faculty"
+              description=""
+            />
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {faculty.map((member, i) => (
+                <div key={i} className="group cursor-pointer">
+                  <div className="relative aspect-3/4 rounded-4xl overflow-hidden border border-navy-100 mb-6 transition-all duration-500 group-hover:shadow-2xl">
+                    <Image src={member.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80"} alt={member.name} fill className="object-cover md:grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
+                  </div>
+                  <h4 className="text-xl font-medium text-navy-950 mb-1">{member.name}</h4>
+                  <p className="text-sm font-mono uppercase tracking-widest text-gold-500 font-bold">{member.role}</p>
+                </div>
+              ))}
+              {faculty.length < 4 && (
+                <div className="flex flex-col items-center justify-center p-8 rounded-4xl border-2 border-dashed border-navy-100 bg-slate-50/50">
+                  <p className="text-navy-950/30 font-medium text-center italic">More Faculty Profiles<br/>Coming Soon</p>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Section: Collaborators */}
       <div className="border-t border-navy-100/50">

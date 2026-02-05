@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -209,65 +209,63 @@ const MediationHero = () => (
 );
 
 export default function MediationPage() {
-  // Foundational Course in Mediation Advocacy - EXACT CONTENT
-  const foundationModules = [
-    {
-      title: "Module 1: Mediation Advocacy Essentials",
-      content: `What "Advocacy" Means in Mediation; The Mediation Process: From Referral to Resolution; Roles in Mediation: Mediator, Parties, Counsel; How Mediation Differs From Arbitration and Court; Core Skills of a Mediation Advocate`
-    },
-    {
-      title: "Module 2: Preparing for Mediation",
-      content: `Understanding Interests v. Positions; Client Preparation: Expectations, Emotions, Authority; Information Strategy: What to Share and What to Hold; Choosing the Right Mediator; Setting Goals Beyond "Winning"`
-    },
-    {
-      title: "Module 3: Mediation Statements and Opening Moves",
-      content: "The Purpose of a Mediation Statement; Tone and Framing: Persuasive Without Provoking; Joint Session or Private Caucus: Strategic Choices; Opening Statements in Mediation; First Offers and Anchoring"
-    },
-    {
-      title: "Module 4: Negotiation Dynamics in Mediation",
-      content: "Bargaining Styles and How to Respond; Concessions: Timing, Size, and Signalling; Impasse: Why Talks Get Stuck; Using the Mediator Effectively; Managing Emotions at the Table"
-    },
-    {
-      title: "Module 5: Evidence, Law, and Risk in Mediation",
-      content: "Using Law Without Over-Lawyering; Presenting Evidence for Persuasion; Damages and Numbers in Mediation; BATNA, WATNA, and Reality Testing; Confidentiality and Without-Prejudice Communication"
-    },
-    {
-      title: "Module 6: Closing the Deal",
-      content: "Mediator Proposals and Bracketed Offers; Creative Solutions and Non-Monetary Terms; Final Bargaining and Decision Moments; Drafting the Settlement Agreement; When Mediation Fails: Ending Well"
-    },
-    {
-      title: "Module 7: Capstone",
-      content: "Mini-Case: Interests, Options, Risks; Drafting a Mediation Statement; Simulated Negotiation Moves; Closing a Deal Simulation; Reflection: What Makes Mediation Advocacy Effective"
-    }
-  ];
+  const [courses, setCourses] = useState<any[]>([]);
+  const [modules, setModules] = useState<any[]>([]);
+  const [faculty, setFaculty] = useState<any[]>([]);
+  const [partners, setPartners] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Advanced Curriculum - EXACT CONTENT
-  const advancedModules = [
-    {
-      title: "Module 1: Advanced Mediation Strategy",
-      content: "Mediation Psychology and Decision-Making; Narrative Framing in Negotiation; Managing Power Imbalances; Multi-Issue and Package Deals; Strategic Use of Time and Deadlines"
-    },
-    {
-      title: "Module 2: Advanced Negotiation Tactics",
-      content: "Advanced Anchoring and Re-Anchoring; Bracketing Strategies Explained; Managing Hardball Tactics; Dealing With Non-Monetary Resistance; When and How to Walk Away"
-    },
-    {
-      title: "Module 3: Working With the Mediator (Advanced)",
-      content: "Using Mediator Evaluations Strategically; Confidential Caucus Communication; Mediator Proposals at Advanced Stages; Managing Co-Mediation and Teams; Ethical Limits in Mediation Advocacy"
-    },
-    {
-      title: "Module 4: Complex and Multi-Party Mediations",
-      content: "Multi-Party Dynamics and Coalition Building; Mediating Commercial and Business Disputes; Construction and Infrastructure Mediations; Employment and Workplace Mediations; Cross-Border and Cultural Mediation Challenges"
-    },
-    {
-      title: "Module 5: Settlement Design and Durability",
-      content: "Designing Durable Settlements; Drafting Complex Settlement Agreements; Conditional and Staged Settlements; Confidentiality, Publicity, and Reputation; Post-Settlement Relationship Management"
-    },
-    {
-      title: "Module 6: Capstone (Advanced)",
-      content: "Full Mediation Strategy Blueprint; Advanced Simulation: High-Conflict Mediation; Multi-Issue Negotiation Exercise; Settlement Drafting Exercise; Reflection: Mastery in Mediation Advocacy"
-    }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [coursesRes, modulesRes, facultyRes, partnersRes] = await Promise.all([
+          fetch(`/api/content/academy/courses?program=mediation&t=${Date.now()}`),
+          fetch(`/api/content/academy/modules?program=mediation&t=${Date.now()}`),
+          fetch(`/api/content/academy/faculty?program=mediation&t=${Date.now()}`),
+          fetch(`/api/content/academy/partners?program=mediation&t=${Date.now()}`)
+        ]);
+
+        if (!coursesRes.ok || !modulesRes.ok || !facultyRes.ok || !partnersRes.ok) {
+          throw new Error("Failed to fetch mediation data");
+        }
+
+        const [coursesData, modulesData, facultyData, partnersData] = await Promise.all([
+          coursesRes.json(),
+          modulesRes.json(),
+          facultyRes.json(),
+          partnersRes.json()
+        ]);
+
+        if (coursesData.success) setCourses(coursesData.data);
+        if (modulesData.success) setModules(modulesData.data);
+        if (facultyData.success) setFaculty(facultyData.data);
+        if (partnersData.success) setPartners(partnersData.data);
+      } catch (error) {
+        console.error("Error fetching mediation data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const foundationalCourse = courses.find(c => c.courseType === 'foundational');
+  const advancedCourse = courses.find(c => c.courseType === 'advanced');
+  
+  const foundationModulesArr = modules.filter(m => m.courseType === 'foundational');
+  const advancedModulesArr = modules.filter(m => m.courseType === 'advanced');
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-gold-500/20 border-t-gold-500 rounded-full animate-spin" />
+          <p className="text-navy-950/40 font-mono text-xs uppercase tracking-widest">Loading Academy...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-white">
@@ -345,264 +343,264 @@ export default function MediationPage() {
       </section>
 
       {/* Section: Foundational Course in Mediation Advocacy */}
-      <section id="courses" className="py-24 md:py-40 bg-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gold-500/5 blur-[120px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <SectionHeader 
-            subtitle="Online Course" 
-            title="Foundational Course in Mediation Advocacy"
-            description=""
-            center
-          />
-
-          <div className="flex flex-col gap-12 mb-24">
-            <div className="space-y-10">
-               <div className="flex items-baseline gap-6 border-b border-navy-100 pb-8">
-                 <p className="text-2xl md:text-4xl text-navy-950 font-light tracking-tight">Foundational Course in <span className="text-gold-500 italic font-medium">Mediation Advocacy</span></p>
-               </div>
-               
-               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Mode</span>
-                   <p className="text-lg text-navy-950/70 font-light">Online (20 Videos)</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Live Session</span>
-                   <p className="text-lg text-navy-950/70 font-light">Orientation + Q&A</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Assessment</span>
-                   <p className="text-lg text-navy-950/70 font-light">Quiz</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Certification</span>
-                   <p className="text-lg text-navy-950/70 font-light">Yes</p>
-                 </div>
-               </div>
-            </div>
-
-            {/* Wide Horizontal Enrollment Banner */}
-            <div className="relative group w-full">
-              <div className="absolute -inset-0.5 bg-linear-to-r from-gold-500/20 via-transparent to-gold-500/10 rounded-4xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-              <div className="relative overflow-hidden rounded-4xl border border-navy-100 bg-white shadow-2xl flex flex-col lg:flex-row items-stretch lg:items-center w-full">
-                {/* Left: Pricing */}
-                <div className="p-8 lg:p-12 lg:border-r border-navy-50 shrink-0 bg-slate-50/50">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
-                    <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/40 font-bold">Enrollment Open</span>
-                  </div>
-                  <div className="flex items-baseline gap-3">
-                    <p className="text-5xl md:text-6xl font-light text-navy-950 tracking-tighter">5,000</p>
-                    <div className="flex flex-col">
-                      <p className="text-sm font-bold text-gold-600 font-mono tracking-widest leading-none">INR</p>
-                      <p className="text-[10px] font-mono text-navy-950/20 uppercase tracking-widest mt-1">+ GST</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Middle: Key Benefits (Visible on Desktop) */}
-                <div className="hidden xl:flex flex-1 px-8 2xl:px-12 gap-6 2xl:gap-12 items-center overflow-hidden">
-                  {[
-                    { icon: Video, label: "20+ HD Modules" },
-                    { icon: Users, label: "Live Q&A Sessions" },
-                    { icon: Award, label: "Global Certification" }
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-4 group/item shrink-0">
-                      <div className="w-10 h-10 rounded-xl bg-navy-50 flex items-center justify-center text-gold-500 group-hover/item:bg-gold-500 group-hover/item:text-white transition-colors">
-                        <item.icon className="w-4 h-4" />
-                      </div>
-                      <span className="text-[11px] font-mono uppercase tracking-widest text-navy-950/60 font-medium whitespace-nowrap">{item.label}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Right: CTA */}
-                <div className="p-8 lg:p-10 2xl:p-12 lg:ml-auto lg:shrink-0">
-                  <MagneticButton variant="primary" size="lg" className="w-full lg:w-auto px-10 md:px-12 2xl:px-16 py-6 md:py-8 text-sm md:text-base font-bold uppercase tracking-[0.2em] shadow-xl shadow-gold-500/10 transition-all">
-                    <Link href="#" className="flex items-center justify-center gap-4 whitespace-nowrap">
-                      Enroll Today <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </MagneticButton>
-                </div>
-
-                {/* Decorative background element */}
-                <div className="absolute top-0 right-0 w-64 h-full bg-gold-500/5 -skew-x-12 translate-x-32 pointer-events-none hidden lg:block" />
-              </div>
-            </div>
-          </div>
-
-          {/* Course Module Header */}
-          <div className="space-y-4">
-             <div className="flex items-center gap-6 mb-12">
-                <div className="h-px bg-navy-100 grow" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/20 font-bold italic">Course Module</span>
-                <div className="h-px bg-navy-100 grow" />
-             </div>
-             <CurriculumRoadmap modules={foundationModules} type="Foundation" />
-          </div>
-        </div>
-      </section>
-
-      {/* Faculty Section (After Foundation Course) */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white border-t border-navy-100/50">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader 
-            subtitle="Expert Network" 
-            title="Faculty"
-            description=""
-          />
+      {foundationalCourse && (
+        <section id="courses" className="py-24 md:py-40 bg-white relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gold-500/5 blur-[120px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { name: "Faculty Member 1", role: "Mediation Expert", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" },
-              { name: "Faculty Member 2", role: "Senior Mediator", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80" }
-            ].map((faculty, i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="relative aspect-3/4 rounded-4xl overflow-hidden border border-navy-100 mb-6 transition-all duration-500 group-hover:shadow-2xl">
-                  <Image src={faculty.image} alt={faculty.name} fill className="object-cover md:grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
+          <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <SectionHeader 
+              subtitle="Online Course" 
+              title={foundationalCourse.title}
+              description={foundationalCourse.subtitle}
+              center
+            />
+
+            <div className="flex flex-col gap-12 mb-24">
+              <div className="space-y-10">
+                <div className="flex items-baseline gap-6 border-b border-navy-100 pb-8">
+                  <p className="text-2xl md:text-4xl text-navy-950 font-light tracking-tight">{foundationalCourse.title}</p>
                 </div>
-                <h4 className="text-xl font-medium text-navy-950 mb-1">{faculty.name}</h4>
-                <p className="text-sm font-mono uppercase tracking-widest text-gold-500 font-bold">{faculty.role}</p>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Mode</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.mode}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Live Session</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.liveSession}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Assessment</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.assessment}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-navy-950/30 uppercase tracking-widest block font-bold">Certification</span>
+                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.certification}</p>
+                  </div>
+                </div>
               </div>
-            ))}
-            <div className="flex flex-col items-center justify-center p-8 rounded-4xl border-2 border-dashed border-navy-100 bg-slate-50/50">
-               <p className="text-navy-950/30 font-medium text-center italic">Faculty Profiles<br/>Coming Soon</p>
+
+              {/* Wide Horizontal Enrollment Banner */}
+              <div className="relative group w-full">
+                <div className="absolute -inset-0.5 bg-linear-to-r from-gold-500/20 via-transparent to-gold-500/10 rounded-4xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="relative overflow-hidden rounded-4xl border border-navy-100 bg-white shadow-2xl flex flex-col lg:flex-row items-stretch lg:items-center w-full">
+                  {/* Left: Pricing */}
+                  <div className="p-8 lg:p-12 lg:border-r border-navy-50 shrink-0 bg-slate-50/50">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
+                      <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/40 font-bold">{foundationalCourse.enrollmentStatus || "Enrollment Open"}</span>
+                    </div>
+                    <div className="flex items-baseline gap-3">
+                      <p className="text-5xl md:text-6xl font-light text-navy-950 tracking-tighter">{foundationalCourse.feeAmount}</p>
+                      <div className="flex flex-col">
+                        <p className="text-sm font-bold text-gold-600 font-mono tracking-widest leading-none">{foundationalCourse.feeCurrency}</p>
+                        <p className="text-[10px] font-mono text-navy-950/20 uppercase tracking-widest mt-1">{foundationalCourse.feeNote}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Middle: Key Benefits (Visible on Desktop) */}
+                  <div className="hidden xl:flex flex-1 px-8 2xl:px-12 gap-6 2xl:gap-12 items-center overflow-hidden">
+                    {(foundationalCourse.benefits || []).slice(0, 3).map((benefit: string, i: number) => (
+                      <div key={i} className="flex items-center gap-4 group/item shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-navy-50 flex items-center justify-center text-gold-500 group-hover/item:bg-gold-500 group-hover/item:text-white transition-colors">
+                          <Video className="w-4 h-4" />
+                        </div>
+                        <span className="text-[11px] font-mono uppercase tracking-widest text-navy-950/60 font-medium whitespace-nowrap">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Right: CTA */}
+                  <div className="p-8 lg:p-10 2xl:p-12 lg:ml-auto lg:shrink-0">
+                    <MagneticButton variant="primary" size="lg" className="w-full lg:w-auto px-10 md:px-12 2xl:px-16 py-6 md:py-8 text-sm md:text-base font-bold uppercase tracking-[0.2em] shadow-xl shadow-gold-500/10 transition-all">
+                      <Link href={foundationalCourse.ctaLink || "#"} className="flex items-center justify-center gap-4 whitespace-nowrap">
+                        {foundationalCourse.ctaText || "Enroll Today"} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </MagneticButton>
+                  </div>
+
+                  {/* Decorative background element */}
+                  <div className="absolute top-0 right-0 w-64 h-full bg-gold-500/5 -skew-x-12 translate-x-32 pointer-events-none hidden lg:block" />
+                </div>
+              </div>
+            </div>
+
+            {/* Course Module Header */}
+            {foundationModulesArr.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-6 mb-12">
+                   <div className="h-px bg-navy-100 grow" />
+                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/20 font-bold italic">Course Modules</span>
+                   <div className="h-px bg-navy-100 grow" />
+                </div>
+                <CurriculumRoadmap modules={foundationModulesArr} type="Foundational" />
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* Faculty Section */}
+      {faculty.length > 0 && (
+        <section className="py-24 px-6 md:px-12 lg:px-24 bg-white border-t border-navy-100/50">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader 
+              subtitle="Expert Network" 
+              title="Faculty"
+              description=""
+            />
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {faculty.filter(f => f.courseTypes?.includes('foundational')).map((member, i) => (
+                <div key={i} className="group cursor-pointer">
+                  <div className="relative aspect-3/4 rounded-4xl overflow-hidden border border-navy-100 mb-6 transition-all duration-500 group-hover:shadow-2xl">
+                    <Image src={member.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80"} alt={member.name} fill className="object-cover md:grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
+                  </div>
+                  <h4 className="text-xl font-medium text-navy-950 mb-1">{member.name}</h4>
+                  <p className="text-sm font-mono uppercase tracking-widest text-gold-500 font-bold">{member.role}</p>
+                </div>
+              ))}
+              {faculty.filter(f => f.courseTypes?.includes('foundational')).length < 4 && (
+                <div className="flex flex-col items-center justify-center p-8 rounded-4xl border-2 border-dashed border-navy-100 bg-slate-50/50">
+                  <p className="text-navy-950/30 font-medium text-center italic">More Faculty Profiles<br/>Coming Soon</p>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <div className="w-full h-px bg-navy-100/50" />
 
       {/* Section: Advanced Curriculum */}
-      <section className="py-24 md:py-40 bg-navy-950 relative overflow-hidden dark">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3 pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <SectionHeader 
-            subtitle="Advanced Certification" 
-            title="Advanced Curriculum"
-            description=""
-            dark
-            center
-          />
+      {advancedCourse && (
+        <section className="py-24 md:py-40 bg-navy-950 relative overflow-hidden dark">
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3 pointer-events-none" />
+          
+          <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <SectionHeader 
+              subtitle="Advanced Certification" 
+              title={advancedCourse.title}
+              description={advancedCourse.subtitle}
+              dark
+              center
+            />
 
-          <div className="flex flex-col gap-12 mb-20">
-            <div className="space-y-10">
-               <div className="flex items-baseline gap-6 border-b border-white/5 pb-8">
-                 <p className="text-2xl md:text-4xl text-white font-light tracking-tight">Advanced <span className="text-gold-500 italic font-medium">Curriculum</span></p>
-               </div>
-               
-               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Mode</span>
-                   <p className="text-lg text-white/80 font-light">Online (40 Videos)</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Live Session</span>
-                   <p className="text-lg text-white/80 font-light">Orientation + Q&A</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Assessment</span>
-                   <p className="text-lg text-white/80 font-light">Quiz + Exercises</p>
-                 </div>
-                 <div className="space-y-2">
-                   <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest block">Certification</span>
-                   <p className="text-lg text-white/80 font-light">Certified Mediation Counsel</p>
-                 </div>
-               </div>
-            </div>
-
-            {/* Wide Horizontal Dark Banner */}
-            <div className="relative group w-full">
-              <div className="absolute -inset-0.5 bg-linear-to-r from-gold-500/30 via-transparent to-gold-500/10 rounded-4xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-              <div className="relative overflow-hidden rounded-4xl border border-white/10 bg-white/2 backdrop-blur-xl flex flex-col lg:flex-row items-stretch lg:items-center w-full">
-                {/* Left: Pricing */}
-                <div className="p-8 lg:p-12 lg:border-r border-white/5 shrink-0 bg-white/2">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
-                    <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/40 font-bold">Certification Status: Active</span>
+            <div className="flex flex-col gap-12 mb-20">
+              <div className="space-y-10">
+                <div className="flex items-baseline gap-6 border-b border-white/5 pb-8">
+                  <p className="text-2xl md:text-4xl text-white font-light tracking-tight">{advancedCourse.title}</p>
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest block font-bold">Mode</span>
+                    <p className="text-lg text-white/70 font-light">{advancedCourse.mode}</p>
                   </div>
-                  <div className="flex items-baseline gap-3">
-                    <p className="text-5xl md:text-6xl font-light text-white tracking-tighter">10,000</p>
-                    <div className="flex flex-col">
-                      <p className="text-sm font-bold text-gold-500 font-mono tracking-widest leading-none">INR</p>
-                      <p className="text-[10px] font-mono text-white/20 uppercase tracking-widest mt-1">+ GST</p>
-                    </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest block font-bold">Live Session</span>
+                    <p className="text-lg text-white/70 font-light">{advancedCourse.liveSession}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest block font-bold">Assessment</span>
+                    <p className="text-lg text-white/70 font-light">{advancedCourse.assessment}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest block font-bold">Certification</span>
+                    <p className="text-lg text-white/70 font-light">{advancedCourse.certification}</p>
                   </div>
                 </div>
+              </div>
 
-                {/* Middle: Key Benefits */}
-                <div className="hidden xl:flex flex-1 px-8 2xl:px-12 gap-6 2xl:gap-12 items-center overflow-hidden">
-                  {[
-                    { icon: Video, label: "40+ Advanced Lessons" },
-                    { icon: Globe, label: "Global Accreditation" },
-                    { icon: Award, label: "Master Certification" }
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-4 group/item shrink-0">
-                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gold-500 group-hover/item:bg-gold-500 group-hover/item:text-navy-950 transition-colors">
-                        <item.icon className="w-4 h-4" />
+              {/* Wide Horizontal Enrollment Banner (Dark) */}
+              <div className="relative group w-full">
+                <div className="absolute -inset-0.5 bg-linear-to-r from-gold-500/30 via-transparent to-gold-500/10 rounded-4xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="relative overflow-hidden rounded-4xl border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl flex flex-col lg:flex-row items-stretch lg:items-center w-full">
+                  {/* Left: Pricing */}
+                  <div className="p-8 lg:p-12 lg:border-r border-white/5 shrink-0 bg-white/2">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse shadow-[0_0_10px_rgba(191,154,102,0.8)]" />
+                      <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/40 font-bold">{advancedCourse.enrollmentStatus || "Enrollment Open"}</span>
+                    </div>
+                    <div className="flex items-baseline gap-3">
+                      <p className="text-5xl md:text-6xl font-light text-white tracking-tighter">{advancedCourse.feeAmount}</p>
+                      <div className="flex flex-col">
+                        <p className="text-sm font-bold text-gold-400 font-mono tracking-widest leading-none">{advancedCourse.feeCurrency}</p>
+                        <p className="text-[10px] font-mono text-white/20 uppercase tracking-widest mt-1">{advancedCourse.feeNote}</p>
                       </div>
-                      <span className="text-[11px] font-mono uppercase tracking-widest text-white/50 font-medium whitespace-nowrap">{item.label}</span>
                     </div>
-                  ))}
-                </div>
+                  </div>
 
-                {/* Right: CTA */}
-                <div className="p-8 lg:p-10 2xl:p-12 lg:ml-auto lg:shrink-0">
-                  <MagneticButton variant="primary" size="lg" className="w-full lg:w-auto px-10 md:px-12 2xl:px-16 py-6 md:py-8 text-sm md:text-base font-bold uppercase tracking-[0.2em] shadow-xl shadow-gold-500/20 hover:scale-[1.02] transition-all">
-                    <Link href="#" className="flex items-center justify-center gap-4 whitespace-nowrap">
-                      Begin Certification <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </MagneticButton>
+                  {/* Middle: Benefits */}
+                  <div className="hidden xl:flex flex-1 px-8 2xl:px-12 gap-6 2xl:gap-12 items-center overflow-hidden">
+                    {(advancedCourse.benefits || []).slice(0, 3).map((benefit: string, i: number) => (
+                      <div key={i} className="flex items-center gap-4 group/item shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gold-400 group-hover/item:bg-gold-500 group-hover/item:text-navy-950 transition-colors">
+                          <Video className="w-4 h-4" />
+                        </div>
+                        <span className="text-[11px] font-mono uppercase tracking-widest text-white/50 font-medium whitespace-nowrap">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Right: CTA */}
+                  <div className="p-8 lg:p-10 2xl:p-12 lg:ml-auto lg:shrink-0">
+                    <MagneticButton variant="primary" size="lg" className="w-full lg:w-auto px-10 md:px-12 2xl:px-16 py-6 md:py-8 text-sm md:text-base font-bold uppercase tracking-[0.2em] shadow-xl shadow-white/5 transition-all">
+                      <Link href={advancedCourse.ctaLink || "#"} className="flex items-center justify-center gap-4 whitespace-nowrap">
+                        {advancedCourse.ctaText || "Secure Spot"} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </MagneticButton>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="space-y-4">
-             <div className="flex items-center gap-6 mb-12">
-                <div className="h-px bg-white/10 grow" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/20 font-bold italic">Course Module</span>
-                <div className="h-px bg-white/10 grow" />
-             </div>
-             <CurriculumRoadmap modules={advancedModules} type="Advanced" dark />
+            {advancedModulesArr.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-6 mb-12">
+                   <div className="h-px bg-white/5 grow" />
+                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/20 font-bold italic">Advanced Modules</span>
+                   <div className="h-px bg-white/5 grow" />
+                </div>
+                <CurriculumRoadmap modules={advancedModulesArr} type="Advanced" dark />
+              </div>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Faculty Section (After Advanced Course) */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader 
-            subtitle="Expert Network" 
-            title="Faculty"
-            description=""
-          />
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { name: "Faculty Member 1", role: "Advanced Mediator", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80" },
-              { name: "Faculty Member 2", role: "Expert Counsel", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80" }
-            ].map((faculty, i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="relative aspect-3/4 rounded-4xl overflow-hidden border border-navy-100 mb-6 transition-all duration-500 group-hover:shadow-2xl">
-                  <Image src={faculty.image} alt={faculty.name} fill className="object-cover md:grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
+      {faculty.filter(f => f.courseTypes?.includes('advanced')).length > 0 && (
+        <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader 
+              subtitle="Expert Network" 
+              title="Faculty"
+              description=""
+            />
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {faculty.filter(f => f.courseTypes?.includes('advanced')).map((member, i) => (
+                <div key={i} className="group cursor-pointer">
+                  <div className="relative aspect-3/4 rounded-4xl overflow-hidden border border-navy-100 mb-6 transition-all duration-500 group-hover:shadow-2xl">
+                    <Image src={member.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80"} alt={member.name} fill className="object-cover md:grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
+                  </div>
+                  <h4 className="text-xl font-medium text-navy-950 mb-1">{member.name}</h4>
+                  <p className="text-sm font-mono uppercase tracking-widest text-gold-500 font-bold">{member.role}</p>
                 </div>
-                <h4 className="text-xl font-medium text-navy-950 mb-1">{faculty.name}</h4>
-                <p className="text-sm font-mono uppercase tracking-widest text-gold-500 font-bold">{faculty.role}</p>
+              ))}
+              <div className="flex flex-col items-center justify-center p-8 rounded-4xl border-2 border-dashed border-navy-100 bg-slate-50/50">
+                 <p className="text-navy-950/30 font-medium text-center italic">Advanced Faculty Profiles<br/>Coming Soon</p>
               </div>
-            ))}
-            <div className="flex flex-col items-center justify-center p-8 rounded-4xl border-2 border-dashed border-navy-100 bg-slate-50/50">
-               <p className="text-navy-950/30 font-medium text-center italic">Faculty Profiles<br/>Coming Soon</p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Section: Final CTA / Inquiry */}
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-white relative overflow-hidden">
@@ -663,6 +661,38 @@ export default function MediationPage() {
           </FadeInUp>
         </div>
       </section>
+
+      {/* Section: Strategic Partners / Expert Network */}
+      {partners.length > 0 && (
+        <section className="py-24 px-6 md:px-12 lg:px-24 bg-navy-50/30 border-t border-navy-100/50">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader 
+              subtitle="Expert Network" 
+              title="Strategic Partners"
+              description="Collaborating with leading institutions to deliver world-class mediation advocacy training."
+              center
+            />
+            
+            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-20 mt-16">
+              {partners.map((partner, i) => (
+                <div key={i} className="group relative">
+                  <div className="relative h-20 w-48 grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110">
+                    <Image 
+                      src={partner.logo} 
+                      alt={partner.name} 
+                      fill 
+                      className="object-contain" 
+                    />
+                  </div>
+                  <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-gold-600 font-bold">{partner.name}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <Footer />
     </main>
