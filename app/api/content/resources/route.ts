@@ -10,8 +10,12 @@ function revalidateResources() {
   revalidatePath('/resources');
   revalidatePath('/resources/blog');
   revalidatePath('/resources/podcast');
+  revalidatePath('/resources/journal');
   revalidatePath('/resources/media');
   revalidatePath('/admin/resources');
+  revalidatePath('/admin/resources/library');
+  revalidatePath('/admin/resources/podcast');
+  revalidatePath('/admin/resources/journal');
 }
 
 export async function GET(request: NextRequest) {
@@ -52,6 +56,12 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    
+    // Validate required fields
+    if (!body.title || !body.type) {
+      return NextResponse.json({ success: false, error: "Title and type are required" }, { status: 400 });
+    }
+    
     const db = await getDb();
     const collection = db.collection<ResourceItem>(COLLECTIONS.RESOURCES);
     
@@ -66,9 +76,9 @@ export async function POST(request: NextRequest) {
     revalidateResources();
     
     return NextResponse.json({ success: true, data: { _id: result.insertedId, ...newItem } }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error creating resource:", error);
-    return NextResponse.json({ success: false, error: "Failed to create item" }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || "Failed to create item" }, { status: 500 });
   }
 }
 
@@ -82,6 +92,12 @@ export async function PUT(request: NextRequest) {
     const db = await getDb();
     const collection = db.collection<ResourceItem>(COLLECTIONS.RESOURCES);
     
+    // Check if item exists
+    const existing = await collection.findOne({ _id: new ObjectId(_id) });
+    if (!existing) {
+      return NextResponse.json({ success: false, error: "Resource not found" }, { status: 404 });
+    }
+    
     await collection.updateOne(
       { _id: new ObjectId(_id) },
       { $set: { ...updateData, updatedAt: new Date() } }
@@ -90,9 +106,12 @@ export async function PUT(request: NextRequest) {
     revalidateResources();
     
     return NextResponse.json({ success: true, message: "Updated successfully" });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating resource:", error);
-    return NextResponse.json({ success: false, error: "Failed to update item" }, { status: 500 });
+    if (error.message?.includes("ObjectId")) {
+      return NextResponse.json({ success: false, error: "Invalid resource ID" }, { status: 400 });
+    }
+    return NextResponse.json({ success: false, error: error.message || "Failed to update item" }, { status: 500 });
   }
 }
 
@@ -106,13 +125,20 @@ export async function DELETE(request: NextRequest) {
     const db = await getDb();
     const collection = db.collection<ResourceItem>(COLLECTIONS.RESOURCES);
     
-    await collection.deleteOne({ _id: new ObjectId(id) });
+    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+    
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ success: false, error: "Resource not found" }, { status: 404 });
+    }
     
     revalidateResources();
     
     return NextResponse.json({ success: true, message: "Deleted successfully" });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error deleting resource:", error);
-    return NextResponse.json({ success: false, error: "Failed to delete item" }, { status: 500 });
+    if (error.message?.includes("ObjectId")) {
+      return NextResponse.json({ success: false, error: "Invalid resource ID" }, { status: 400 });
+    }
+    return NextResponse.json({ success: false, error: error.message || "Failed to delete item" }, { status: 500 });
   }
 }

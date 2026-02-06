@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type GlobalSettings } from "@/lib/db/schemas";
 import { globalSettingsSchema } from "@/lib/validation/schemas";

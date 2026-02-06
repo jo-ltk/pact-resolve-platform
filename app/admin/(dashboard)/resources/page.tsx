@@ -1,18 +1,23 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { 
   BookOpen, 
   Library, 
   Mic, 
   PenTool, 
-  ArrowRight
+  ArrowRight,
+  Database,
+  Loader2,
+  CheckCircle2
 } from "lucide-react";
 import { DashboardSectionCard } from "@/components/admin/DashboardSectionCard";
 import { FadeInUp, StaggerContainer } from "@/components/motion-wrapper";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/lib/context/AuthContext";
+import { toast } from "sonner";
 
 const SECTIONS = [
   {
@@ -42,6 +47,41 @@ const SECTIONS = [
 ];
 
 export default function ResourcesDashboard() {
+  const { token } = useAuth();
+  const [isSeeding, setIsSeeding] = useState(false);
+  const [hasSeeded, setHasSeeded] = useState(false);
+
+  const handleSeedData = async () => {
+    if (!confirm("This will replace all Resources data with default content. Are you sure?")) {
+      return;
+    }
+    
+    setIsSeeding(true);
+    try {
+      const response = await fetch("/api/content/resources/seed", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      
+      const result = await response.json();
+      if (result.success) {
+        toast.success(`Resources seeded successfully! ${result.count || 0} items created.`);
+        setHasSeeded(true);
+      } else {
+        toast.error(result.error || "Failed to seed data");
+      }
+    } catch (error: any) {
+      console.error("Resources seed error:", error);
+      const errorMessage = error?.message || "An error occurred while seeding data";
+      toast.error(errorMessage);
+    } finally {
+      setIsSeeding(false);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-10 pb-16">
       {/* Header Section */}
@@ -60,6 +100,29 @@ export default function ResourcesDashboard() {
             Manage the PACT Resources content, including the library, blog, podcast, and journal.
           </p>
         </div>
+        <Button 
+          onClick={handleSeedData}
+          disabled={isSeeding || hasSeeded}
+          variant={hasSeeded ? "outline" : "default"}
+          className="rounded-xl px-6 shadow-lg"
+        >
+          {isSeeding ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Seeding...
+            </>
+          ) : hasSeeded ? (
+            <>
+              <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" />
+              Data Seeded
+            </>
+          ) : (
+            <>
+              <Database className="w-4 h-4 mr-2" />
+              Seed Initial Data
+            </>
+          )}
+        </Button>
       </FadeInUp>
 
       {/* Sections Grid */}

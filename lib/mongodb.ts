@@ -85,7 +85,12 @@ export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db
 
     console.log(`[MongoDB] CONNECTED in ${Date.now() - startTime}ms`);
 
-    const db = client.db(dbName);
+    // Use specific DB name from env if provided, otherwise use the one from URI
+    const db = process.env.MONGODB_DB_NAME ? client.db(process.env.MONGODB_DB_NAME) : client.db();
+    
+    // If we're using the default from URI (no name passed to client.db()), 
+    // we should log it for debugging purposes
+    console.log(`[MongoDB] Selected Database: ${db.databaseName || '(default from URI)'}`);
 
     // Cache the connection in global space
     globalWithMongo._mongoClientRetry = client;

@@ -232,6 +232,145 @@ const newsFeatures: Partial<ResourceItem>[] = [
   },
 ];
 
+const podcastEpisodes: Partial<ResourceItem>[] = [
+  {
+    type: "podcast",
+    title: "Are Mediators Actually Mediating?",
+    subtitle: "Bill Marsh & Chitra Narayan",
+    author: "Jonathan Rodrigues",
+    category: "Mediation Practice",
+    description: "A candid discussion about what really happens behind closed mediation doors.",
+    url: "https://www.youtube.com/live/2AFA_Jdv7mA",
+    publication: "Mission Mediation Podcast",
+    date: "2024",
+    order: 1,
+    isActive: true,
+    isFeatured: true
+  },
+  {
+    type: "podcast",
+    title: "Are Lawyers Relevant in Mediation?",
+    subtitle: "Ekta Bahl & Geoff Sharp",
+    author: "Jonathan Rodrigues",
+    category: "Lawyer's Role",
+    description: "Exploring the role of lawyers in the mediation process.",
+    url: "https://www.youtube.com/watch?v=yFby7ZLlkAg",
+    publication: "Mission Mediation Podcast",
+    date: "2024",
+    order: 2,
+    isActive: true,
+    isFeatured: true
+  },
+  {
+    type: "podcast",
+    title: "Building Trust in Private Mediation",
+    subtitle: "Jawad A J & Jonathan Lloyd-Jones",
+    author: "Jonathan Rodrigues",
+    category: "Trust Building",
+    description: "Strategies for building trust in private mediation settings.",
+    url: "https://www.youtube.com/watch?v=stg6rttI2kg",
+    publication: "Mission Mediation Podcast",
+    date: "2024",
+    order: 3,
+    isActive: true
+  },
+  {
+    type: "podcast",
+    title: "Commercial Mediation Works (Case Study)",
+    subtitle: "Jeff Kichaven & Nisshant Laroia",
+    author: "Jonathan Rodrigues",
+    category: "Case Study",
+    description: "Real-world case study demonstrating successful commercial mediation.",
+    url: "https://www.youtube.com/watch?v=rYI4_PgBitE",
+    publication: "Mission Mediation Podcast",
+    date: "2024",
+    order: 4,
+    isActive: true
+  },
+  {
+    type: "podcast",
+    title: "Can you Mediate without Lawyers?",
+    subtitle: "Jonathan Rodrigues & Laila Ollapally",
+    author: "Jonathan Rodrigues",
+    category: "Party Representation",
+    description: "Discussion on party representation in mediation.",
+    url: "https://www.youtube.com/watch?v=B8PZuN-f6n4",
+    publication: "Mission Mediation Podcast",
+    date: "2024",
+    order: 5,
+    isActive: true
+  },
+  {
+    type: "podcast",
+    title: "Private Mediation Essentials: Self-determination",
+    subtitle: "Joel Lee & Jonathan Rodrigues",
+    author: "Jonathan Rodrigues",
+    category: "Core Principles",
+    description: "Understanding self-determination as a core principle of mediation.",
+    url: "https://www.youtube.com/watch?v=yvIci9WuZzc",
+    publication: "Mission Mediation Podcast",
+    date: "2024",
+    order: 6,
+    isActive: true
+  },
+  {
+    type: "podcast",
+    title: "Mediation in India",
+    subtitle: "Attorney General for India R. Venkataramani & Soni Singh",
+    author: "Jonathan Rodrigues",
+    category: "Indian Context",
+    description: "Exploring the state of mediation in India with key stakeholders.",
+    url: "https://www.youtube.com/watch?v=eJZeUtoIBpQ",
+    publication: "Mission Mediation Podcast",
+    date: "2024",
+    order: 7,
+    isActive: true
+  },
+  {
+    type: "podcast",
+    title: "Mediation Essentials: Confidentiality",
+    subtitle: "Sudhanshu Batra & Jonathan Rodrigues",
+    author: "Jonathan Rodrigues",
+    category: "Core Principles",
+    description: "The importance of confidentiality in mediation practice.",
+    url: "https://www.youtube.com/live/jiRvEzdDepM",
+    publication: "Mission Mediation Podcast",
+    date: "2024",
+    order: 8,
+    isActive: true
+  },
+];
+
+const journalPublications: Partial<ResourceItem>[] = [
+  {
+    type: "journal",
+    title: "The Future of Mediation in India",
+    subtitle: "Volume 1, Issue 1",
+    author: "Jonathan Rodrigues",
+    publication: "National Mediation Review",
+    description: "An in-depth analysis of the current state and future prospects of mediation in India.",
+    url: "#",
+    date: "2024",
+    category: "Commercial Mediation",
+    order: 1,
+    isActive: true,
+    isFeatured: true
+  },
+  {
+    type: "journal",
+    title: "Transformative Mediation: A New Paradigm",
+    subtitle: "Volume 1, Issue 2",
+    author: "Jonathan Rodrigues",
+    publication: "National Mediation Review",
+    description: "Exploring transformative mediation as an alternative approach to conflict resolution.",
+    url: "#",
+    date: "2024",
+    category: "Mediation Theory",
+    order: 2,
+    isActive: true
+  },
+];
+
 export async function POST(request: NextRequest) {
   try {
     const { db } = await connectToDatabase();
@@ -247,7 +386,9 @@ export async function POST(request: NextRequest) {
       ...recommendedReads,
       ...recommendedWatching,
       ...recommendedBooks,
-      ...newsFeatures
+      ...newsFeatures,
+      ...podcastEpisodes,
+      ...journalPublications
     ].map(withTime);
 
     await db.collection(COLLECTIONS.RESOURCES).insertMany(allItems);

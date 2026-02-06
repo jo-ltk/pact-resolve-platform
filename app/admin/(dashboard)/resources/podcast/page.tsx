@@ -7,16 +7,13 @@ import {
   MoreHorizontal, 
   Edit, 
   Trash2, 
-  BookOpen,
+  Mic,
   Loader2,
   ArrowLeft,
   Image as ImageIcon,
-  PenTool,
-  Video,
-  Newspaper,
-  Book,
   ExternalLink,
-  Presentation
+  Calendar,
+  Users
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -51,20 +48,10 @@ import { Switch } from "@/components/ui/switch";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/context/AuthContext";
-import { type ResourceItem, type ResourceType } from "@/lib/db/schemas";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { type ResourceItem } from "@/lib/db/schemas";
 
-const TABS: { value: ResourceType; label: string; icon: any }[] = [
-  { value: "blog", label: "Articles", icon: PenTool },
-  { value: "publication", label: "Publications", icon: ExternalLink },
-  { value: "video", label: "Videos", icon: Video },
-  { value: "book", label: "Books", icon: Book },
-  { value: "news", label: "News", icon: Newspaper }
-];
-
-export default function LibraryAdminPage() {
+export default function PodcastAdminPage() {
   const { token } = useAuth();
-  const [activeTab, setActiveTab] = useState<ResourceType>("blog");
   const [items, setItems] = useState<ResourceItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -72,13 +59,12 @@ export default function LibraryAdminPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => { fetchItems(); }, [activeTab]);
+  useEffect(() => { fetchItems(); }, []);
 
   async function fetchItems() {
     setIsLoading(true);
     try {
-      // Fetch only items of current type to optimize
-      const response = await fetch(`/api/content/resources?all=true&type=${activeTab}`, {
+      const response = await fetch(`/api/content/resources?all=true&type=podcast`, {
         headers: token ? { "Authorization": `Bearer ${token}` } : {}
       });
       if (!response.ok) {
@@ -89,25 +75,28 @@ export default function LibraryAdminPage() {
       if (result.success) {
         setItems(result.data || []);
       } else {
-        toast.error(result.error || "Failed to fetch resources");
+        toast.error(result.error || "Failed to fetch podcast episodes");
       }
     } catch (error: any) { 
       console.error("Fetch error:", error);
-      toast.error(error.message || "Failed to fetch resources"); 
+      toast.error(error.message || "Failed to fetch podcast episodes"); 
     }
     finally { setIsLoading(false); }
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this resource?")) return;
+    if (!confirm("Are you sure you want to delete this podcast episode?")) return;
     try {
       const response = await fetch(`/api/content/resources?id=${id}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` }
       });
-      if ((await response.json()).success) {
-        toast.success("Resource deleted");
+      const result = await response.json();
+      if (result.success) {
+        toast.success("Podcast episode deleted");
         setItems(items.filter(i => (i._id as any).toString() !== id));
+      } else {
+        toast.error(result.error || "Delete failed");
       }
     } catch (error) { toast.error("Delete failed"); }
   };
@@ -120,30 +109,35 @@ export default function LibraryAdminPage() {
       const response = await fetch("/api/content/resources", {
         method,
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-        body: JSON.stringify({ ...editingItem, type: activeTab })
+        body: JSON.stringify({ ...editingItem, type: "podcast" })
       });
       const result = await response.json();
       if (result.success) {
-        toast.success(editingItem?._id ? "Resource updated" : "Resource created");
+        toast.success(editingItem?._id ? "Podcast episode updated" : "Podcast episode created");
         setIsDialogOpen(false);
         fetchItems();
       } else {
         toast.error(result.error || "Save failed");
       }
-    } catch (error) { toast.error("Save failed"); }
+    } catch (error) { 
+      console.error(error);
+      toast.error("Save failed"); 
+    }
     finally { setIsSaving(false); }
   };
 
   const openCreateDialog = () => {
     setEditingItem({ 
       title: "", 
-      type: activeTab,
+      type: "podcast",
       subtitle: "", 
       description: "",
       image: "",
       url: "",
       author: "",
-      publication: "", // Generic usage
+      publication: "",
+      date: "",
+      category: "",
       order: items.length + 1, 
       isActive: true,
       isFeatured: false
@@ -151,9 +145,15 @@ export default function LibraryAdminPage() {
     setIsDialogOpen(true);
   };
 
+  const openEditDialog = (item: ResourceItem) => {
+    setEditingItem(item);
+    setIsDialogOpen(true);
+  };
+
   const filteredItems = items.filter(item => 
     item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    item.subtitle?.toLowerCase().includes(searchQuery.toLowerCase())
+    item.subtitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.author?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -164,33 +164,19 @@ export default function LibraryAdminPage() {
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
           </Link>
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 border border-emerald-500/20">
-              <BookOpen className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-600 border border-rose-500/20">
+              <Mic className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-navy-950 tracking-tight">Blog & Library</h1>
-              <p className="text-navy-950/40 text-sm font-medium uppercase tracking-widest mt-1">Manage articles, books, videos and news</p>
+              <h1 className="text-3xl font-bold text-navy-950 tracking-tight">Podcast Episodes</h1>
+              <p className="text-navy-950/40 text-sm font-medium uppercase tracking-widest mt-1">Manage Mission Mediation Podcast episodes</p>
             </div>
           </div>
         </div>
         <Button onClick={openCreateDialog} className="rounded-xl px-6 h-12 bg-navy-950 hover:bg-navy-900 text-white font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-navy-950/10">
-          <Plus className="w-4 h-4 mr-2" /> Add Resource
+          <Plus className="w-4 h-4 mr-2" /> Add Episode
         </Button>
       </div>
-
-      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as ResourceType)} className="w-full">
-        <TabsList className="bg-white p-1 rounded-2xl border border-navy-50 h-auto flex-wrap justify-start gap-1">
-          {TABS.map(tab => (
-            <TabsTrigger 
-              key={tab.value} 
-              value={tab.value}
-              className="rounded-xl px-6 py-3 data-[state=active]:bg-navy-950 data-[state=active]:text-white font-bold transition-all"
-            >
-              <tab.icon className="w-4 h-4 mr-2" /> {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
 
       <Card className="rounded-3xl border-none shadow-xl shadow-navy-950/5 bg-white overflow-hidden">
         <CardContent className="p-0">
@@ -198,7 +184,7 @@ export default function LibraryAdminPage() {
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
               <Input 
-                placeholder="Search resources..." 
+                placeholder="Search episodes..." 
                 className="pl-10 h-11 bg-navy-50/50 border-none rounded-xl focus-visible:ring-primary/20"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -211,8 +197,9 @@ export default function LibraryAdminPage() {
               <TableHeader>
                 <TableRow className="hover:bg-transparent border-navy-50">
                   <TableHead className="w-[80px] text-[10px] font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Resource Info</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Details</TableHead>
+                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Episode Info</TableHead>
+                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Guests / Host</TableHead>
+                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Date / Category</TableHead>
                   <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
                   <TableHead className="text-right pr-8 text-[10px] font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
                 </TableRow>
@@ -221,15 +208,15 @@ export default function LibraryAdminPage() {
                 {isLoading ? (
                   Array.from({ length: 3 }).map((_, i) => (
                     <TableRow key={i} className="border-navy-50/50">
-                      <TableCell colSpan={5} className="py-4 px-8"><Skeleton className="h-12 w-full rounded-xl" /></TableCell>
+                      <TableCell colSpan={6} className="py-4 px-8"><Skeleton className="h-12 w-full rounded-xl" /></TableCell>
                     </TableRow>
                   ))
                 ) : filteredItems.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="py-20 text-center">
+                    <TableCell colSpan={6} className="py-20 text-center">
                       <div className="flex flex-col items-center gap-3">
-                        <BookOpen className="w-12 h-12 text-navy-200" />
-                        <p className="text-navy-950/40 font-medium">No resources found in {activeTab}</p>
+                        <Mic className="w-12 h-12 text-navy-200" />
+                        <p className="text-navy-950/40 font-medium">No podcast episodes found</p>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -244,26 +231,38 @@ export default function LibraryAdminPage() {
                           {item.image ? (
                             <img src={item.image} alt={item.title} className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500" />
                           ) : (
-                            <div className="text-navy-950/20">
-                              {activeTab === 'video' ? <Video className="w-5 h-5"/> : <ImageIcon className="w-5 h-5" />}
-                            </div>
+                            <Mic className="w-5 h-5 text-navy-950/20" />
                           )}
                         </div>
-                        <div className="flex flex-col max-w-[250px]">
+                        <div className="flex flex-col max-w-[300px]">
                           <span className="font-bold text-navy-950 text-sm truncate">{item.title}</span>
-                          <span className="text-[10px] text-navy-950/40 font-mono uppercase tracking-widest truncate">
-                            {item.subtitle || item.author || "-"}
-                          </span>
+                          {item.description && (
+                            <span className="text-xs text-navy-950/50 truncate max-w-[280px]">{item.description}</span>
+                          )}
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-col gap-1">
-                        {item.publication && <span className="text-xs text-navy-950/60 truncate max-w-[200px]">{item.publication}</span>}
-                        {item.url && (
-                           <a href={item.url} target="_blank" className="text-[10px] text-blue-500 hover:underline truncate max-w-[200px] flex items-center gap-1">
-                             {item.url} <ExternalLink className="w-3 h-3"/>
-                           </a>
+                        {item.subtitle && <span className="text-xs text-navy-950/60 font-medium">{item.subtitle}</span>}
+                        {item.author && (
+                          <span className="text-[10px] text-navy-950/40 flex items-center gap-1">
+                            <Users className="w-3 h-3" /> {item.author}
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col gap-1">
+                        {item.date && (
+                          <span className="text-xs text-navy-950/60 flex items-center gap-1">
+                            <Calendar className="w-3 h-3" /> {item.date}
+                          </span>
+                        )}
+                        {item.category && (
+                          <Badge variant="outline" className="w-fit text-[10px] uppercase font-bold tracking-widest">
+                            {item.category}
+                          </Badge>
                         )}
                       </div>
                     </TableCell>
@@ -288,11 +287,11 @@ export default function LibraryAdminPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="rounded-2xl p-2 min-w-[170px] shadow-2xl border-navy-50">
                           <DropdownMenuItem 
-                            onClick={() => { setEditingItem(item); setIsDialogOpen(true); }}
+                            onClick={() => openEditDialog(item)}
                             className="rounded-xl flex items-center gap-3 px-3 py-2 cursor-pointer focus:bg-navy-50"
                           >
                             <Edit className="w-4 h-4 text-navy-950/40" />
-                            <span className="text-sm font-medium">Edit Resource</span>
+                            <span className="text-sm font-medium">Edit Episode</span>
                           </DropdownMenuItem>
                           <DropdownMenuItem 
                             onClick={() => handleDelete((item._id as any).toString())}
@@ -317,61 +316,56 @@ export default function LibraryAdminPage() {
           <form onSubmit={handleSave}>
             <DialogHeader className="p-8 pb-0">
               <DialogTitle className="text-2xl font-bold tracking-tight text-navy-950">
-                {editingItem?._id ? "Edit Resource" : "New Resource"} ({TABS.find(t => t.value === activeTab)?.label})
+                {editingItem?._id ? "Edit Podcast Episode" : "New Podcast Episode"}
               </DialogTitle>
               <DialogDescription>
-                Details for this {activeTab}. Fields vary by resource type.
+                Add or edit a Mission Mediation Podcast episode. Include title, guests, description, and video URL.
               </DialogDescription>
             </DialogHeader>
 
             <div className="p-8 space-y-6">
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Title</Label>
+                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Episode Title</Label>
                   <Input 
                     value={editingItem?.title || ""} 
                     onChange={(e) => setEditingItem(prev => ({ ...prev!, title: e.target.value }))} 
                     className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                    placeholder="Resource Title"
+                    placeholder="e.g. Are Mediators Actually Mediating?"
                     required 
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">
-                    {activeTab === 'book' ? 'Author' : activeTab === 'video' ? 'Speaker/Host' : activeTab === 'news' ? 'Publication' : 'Subtitle / Author'}
-                  </Label>
+                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Guests / Hosts</Label>
                   <Input 
                     value={editingItem?.subtitle || ""} 
                     onChange={(e) => setEditingItem(prev => ({ ...prev!, subtitle: e.target.value }))} 
                     className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                    placeholder={activeTab === 'book' ? 'Author Name' : 'Subtitle'}
+                    placeholder="e.g. Bill Marsh & Chitra Narayan"
                   />
                 </div>
               </div>
 
-              {/* Extra fields based on type */}
-              {(activeTab === 'blog' || activeTab === 'publication') && (
-                <div className="grid grid-cols-2 gap-6">
-                   <div className="space-y-2">
-                     <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Author Name (Specific)</Label>
-                     <Input 
-                       value={editingItem?.author || ""} 
-                       onChange={(e) => setEditingItem(prev => ({ ...prev!, author: e.target.value }))} 
-                       className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                       placeholder="e.g. Jonathan Rodrigues"
-                     />
-                   </div>
-                   <div className="space-y-2">
-                     <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Publication Name</Label>
-                     <Input 
-                       value={editingItem?.publication || ""} 
-                       onChange={(e) => setEditingItem(prev => ({ ...prev!, publication: e.target.value }))} 
-                       className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                       placeholder="e.g. Kluwer Mediation Blog"
-                     />
-                   </div>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Author / Host Name</Label>
+                  <Input 
+                    value={editingItem?.author || ""} 
+                    onChange={(e) => setEditingItem(prev => ({ ...prev!, author: e.target.value }))} 
+                    className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
+                    placeholder="e.g. Jonathan Rodrigues"
+                  />
                 </div>
-              )}
+                <div className="space-y-2">
+                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Theme / Category</Label>
+                  <Input 
+                    value={editingItem?.category || ""} 
+                    onChange={(e) => setEditingItem(prev => ({ ...prev!, category: e.target.value }))} 
+                    className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
+                    placeholder="e.g. Mediation Practice"
+                  />
+                </div>
+              </div>
 
               <div className="space-y-2">
                 <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Description / Summary</Label>
@@ -379,13 +373,13 @@ export default function LibraryAdminPage() {
                   value={editingItem?.description || ""} 
                   onChange={(e) => setEditingItem(prev => ({ ...prev!, description: e.target.value }))} 
                   className="min-h-[100px] rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20 resize-none p-4"
-                  placeholder="Brief description..."
+                  placeholder="Episode description or summary..."
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Cover Image URL</Label>
+                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Thumbnail Image URL</Label>
                   <div className="relative">
                     <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
                     <Input 
@@ -397,14 +391,15 @@ export default function LibraryAdminPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Content URL</Label>
+                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Video URL (YouTube)</Label>
                   <div className="relative">
                     <ExternalLink className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
                     <Input 
                       value={editingItem?.url || ""} 
                       onChange={(e) => setEditingItem(prev => ({ ...prev!, url: e.target.value }))} 
                       className="pl-10 h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                      placeholder="https://..."
+                      placeholder="https://www.youtube.com/..."
+                      required
                     />
                   </div>
                 </div>
@@ -421,12 +416,12 @@ export default function LibraryAdminPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Category</Label>
+                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Publication Name</Label>
                   <Input 
-                    value={editingItem?.category || ""} 
-                    onChange={(e) => setEditingItem(prev => ({ ...prev!, category: e.target.value }))} 
+                    value={editingItem?.publication || ""} 
+                    onChange={(e) => setEditingItem(prev => ({ ...prev!, publication: e.target.value }))} 
                     className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                    placeholder="Optional category"
+                    placeholder="e.g. Mission Mediation Podcast"
                   />
                 </div>
               </div>
@@ -437,7 +432,7 @@ export default function LibraryAdminPage() {
                   <Input 
                     type="number" 
                     value={editingItem?.order || 0} 
-                    onChange={(e) => setEditingItem(prev => ({ ...prev!, order: parseInt(e.target.value) }))} 
+                    onChange={(e) => setEditingItem(prev => ({ ...prev!, order: parseInt(e.target.value) || 0 }))} 
                     className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
                   />
                 </div>
@@ -465,7 +460,7 @@ export default function LibraryAdminPage() {
                 Cancel
               </Button>
               <Button type="submit" disabled={isSaving} className="rounded-xl h-12 px-8 bg-navy-950 hover:bg-navy-900 text-white font-bold transition-all shadow-lg">
-                {isSaving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : editingItem?._id ? "Update Resource" : "Create Resource"}
+                {isSaving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : editingItem?._id ? "Update Episode" : "Create Episode"}
               </Button>
             </DialogFooter>
           </form>
@@ -474,3 +469,4 @@ export default function LibraryAdminPage() {
     </div>
   );
 }
+
