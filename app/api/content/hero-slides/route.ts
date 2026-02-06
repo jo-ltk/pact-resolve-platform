@@ -14,20 +14,14 @@ export async function GET(request: NextRequest) {
     const showAll = searchParams.get("all") === "true";
     
     const db = await getDb();
-    console.log(`[API/HeroSlides] Using DB: ${db.databaseName}`);
-    
     const collection = db.collection<HeroSlide>(COLLECTIONS.HERO_SLIDES);
-    console.log(`[API/HeroSlides] Accessing Collection: ${collection.collectionName}`);
     
     const query = showAll ? {} : { isActive: true };
-    console.log(`[API/HeroSlides] Query:`, JSON.stringify(query));
     
     const slides = await collection
       .find(query)
       .sort({ order: 1 })
       .toArray();
-      
-    console.log(`[API/HeroSlides] Found ${slides.length} slides`);
     
     return NextResponse.json({ 
       success: true, 

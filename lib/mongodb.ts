@@ -85,12 +85,23 @@ export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db
 
     console.log(`[MongoDB] CONNECTED in ${Date.now() - startTime}ms`);
 
-    // Use specific DB name from env if provided, otherwise use the one from URI
-    const db = process.env.MONGODB_DB_NAME ? client.db(process.env.MONGODB_DB_NAME) : client.db();
+    // Determine database name
+    let dbName = process.env.MONGODB_DB_NAME;
     
-    // If we're using the default from URI (no name passed to client.db()), 
-    // we should log it for debugging purposes
-    console.log(`[MongoDB] Selected Database: ${db.databaseName || '(default from URI)'}`);
+    // If no env var, check the default from URI
+    if (!dbName) {
+      const defaultDb = client.db();
+      // If URI doesn't specify DB, Mongo driver defaults to "test" or "admin"
+      if (defaultDb.databaseName === 'test' || defaultDb.databaseName === 'admin') {
+         dbName = 'pact_mediation'; // Fallback to project default
+      } else {
+         dbName = defaultDb.databaseName;
+      }
+    }
+
+    const db = client.db(dbName);
+    
+    console.log(`[MongoDB] Selected Database: ${dbName}`);
 
     // Cache the connection in global space
     globalWithMongo._mongoClientRetry = client;
@@ -99,12 +110,6 @@ export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db
     return { client, db };
   } catch (error: any) {
     console.error("[MongoDB] FULL ERROR OBJECT:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
-    
-    // Diagnostic logging for production debugging
-    console.error("[MongoDB] DIAGNOSTIC INFO:");
-    console.error(` - NODE_ENV: ${process.env.NODE_ENV}`);
-    console.error(` - MONGODB_DB_NAME Env Var: ${process.env.MONGODB_DB_NAME || "(Not Set)"}`);
-    console.error(` - URI Prefix: ${uri.substring(0, 15)}...`);
     
     if (error.message?.includes('alert number 80') || error.code === 'ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR' || error.message?.includes('timeout')) {
       console.error("\n[HELP] DATABASE ACCESS BLOCKED:");
