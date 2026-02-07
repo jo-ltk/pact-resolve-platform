@@ -25,7 +25,15 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json({ 
       success: true, 
-      data: slides 
+      data: slides,
+      debug: {
+        nodeEnv: process.env.NODE_ENV,
+        dbName: db.databaseName,
+        envVarDbName: process.env.MONGODB_DB_NAME || "(not set)",
+        collection: collection.collectionName,
+        matchCount: slides.length,
+        totalCount: await collection.countDocuments()
+      }
     });
   } catch (error) {
     console.error("Error fetching hero slides:", error);

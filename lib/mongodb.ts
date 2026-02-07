@@ -88,21 +88,14 @@ export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db
     // Determine database name
     let dbName = process.env.MONGODB_DB_NAME;
     
-    // FORCE FIX: In production, if we are seeing empty data, it's likely hitting the wrong DB.
-    // We know from local dev that 'pact_mediation' is the correct one.
-    // If no specific env var is set, we will FORCE 'pact_mediation' to ensure we hit the right data.
+    // If no env var, check the default from URI
     if (!dbName) {
-      if (process.env.NODE_ENV === 'production') {
-        dbName = 'pact_mediation';
-        console.log(`[MongoDB] Production Mode Detected: Forcing database to '${dbName}'`);
+      const defaultDb = client.db();
+      // If URI doesn't specify DB, Mongo driver defaults to "test" or "admin"
+      if (defaultDb.databaseName === 'test' || defaultDb.databaseName === 'admin') {
+         dbName = 'pact_mediation'; // Fallback to project default
       } else {
-        // Validation for other environments
-        const defaultDb = client.db();
-        if (defaultDb.databaseName === 'test' || defaultDb.databaseName === 'admin') {
-           dbName = 'pact_mediation'; 
-        } else {
-           dbName = defaultDb.databaseName;
-        }
+         dbName = defaultDb.databaseName;
       }
     }
 
