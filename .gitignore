@@ -24,6 +24,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+next-env.d.ts
+
 
 # Strapi artifacts
 cms/node_modules/
