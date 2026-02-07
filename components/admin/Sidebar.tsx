@@ -34,7 +34,6 @@ const menuItems = [
   { icon: GraduationCap, label: "Academy", href: "/admin/academy", adminOnly: false },
   { icon: Globe, label: "Ecosystem", href: "/admin/ecosystem", adminOnly: false },
   { icon: BookOpen, label: "Resources", href: "/admin/resources", adminOnly: false },
-  { icon: Library, label: "Media Library", href: "/admin/media-library", adminOnly: false },
   { icon: Settings, label: "Global Settings", href: "/admin/global-settings", adminOnly: true },
   { icon: History, label: "Audit Logs", href: "/admin/audit-logs", adminOnly: true },
 ];
