@@ -22,7 +22,8 @@ import {
   Maximize2,
   X,
   Target,
-  Rocket
+  Rocket,
+  RefreshCw
 } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -125,10 +126,57 @@ export default function AdvocateMaximusPage() {
                 The Premier Moot
               </span>
             </div>
-            <h1 className="text-[12vw] sm:text-[10vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-16 select-none italic uppercase">
-              ADVOCATE <br />
-              <span className="text-gold-500">MAXIMUS</span> 
-            </h1>
+            <div className="relative mb-16 lg:mb-24">
+              <div className="max-w-4xl relative z-10">
+                <h1 className="text-[10vw] sm:text-[9vw] md:text-[8rem] lg:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] select-none italic uppercase">
+                  ADVOCATE <br />
+                  <span className="text-gold-500">MAXIMUS</span> 
+                </h1>
+              </div>
+              
+              {/* Creative Logo Seal - Positioned as a floating interactive emblem */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ delay: 0.8, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute top-1/2 -right-4 sm:-right-8 lg:-right-24 -translate-y-[40%] lg:-translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 lg:w-[400px] lg:h-[400px] z-20"
+              >
+                {/* The "Emblem" Body */}
+                <div className="relative w-full h-full rounded-full bg-white p-4 sm:p-6 lg:p-8 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6),0_0_50px_rgba(191,154,102,0.25)] border-4 sm:border-8 lg:border-12 border-navy-950/5 overflow-hidden group">
+                  {/* Internal Depth Layer */}
+                  <div className="absolute inset-0 bg-radial-to-br from-white via-white to-gold-50/40" />
+                  
+                  {/* Subtle Inner Detail Ring */}
+                  <div className="absolute inset-2 sm:inset-4 lg:inset-6 rounded-full border border-gold-500/10 pointer-events-none" />
+                  
+                  <Image 
+                    src="/images/advocate-maximus/AM19-construction-logo.png"
+                    alt="Advocate Maximus Official Emblem"
+                    fill
+                    className="object-contain p-4 sm:p-6 lg:p-10 relative z-10 drop-shadow-2xl"
+                  />
+                  
+                  {/* Creative Shine Animation - Sweeps across the white surface */}
+                  <motion.div 
+                    animate={{ left: ['-100%', '200%'] }}
+                    transition={{ duration: 5, repeat: Infinity, delay: 1, ease: "linear" }}
+                    className="absolute top-0 w-1/2 h-full bg-linear-to-r from-transparent via-white/70 to-transparent -skew-x-25 z-20 pointer-events-none"
+                  />
+                </div>
+                
+                {/* Orbital Decoration Rings */}
+                <motion.div 
+                   animate={{ rotate: 360 }}
+                   transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                   className="absolute inset-[-10%] sm:inset-[-12%] rounded-full border-2 border-white/5 border-dashed pointer-events-none" 
+                />
+                <motion.div 
+                   animate={{ rotate: -360 }}
+                   transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+                   className="absolute inset-[-5%] sm:inset-[-6%] rounded-full border border-gold-500/10 pointer-events-none" 
+                />
+              </motion.div>
+            </div>
             
             <div className="max-w-5xl space-y-8 sm:space-y-12">
               <div className="space-y-6 sm:space-y-10">
@@ -206,7 +254,7 @@ export default function AdvocateMaximusPage() {
                   fill
                   className="object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-linear-to-t from-navy-950/60 via-transparent to-transparent opacity-80" />
                 
                 {/* Bottom Left Text */}
                 <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-10 md:left-10 lg:bottom-20 lg:left-20">
@@ -286,6 +334,121 @@ export default function AdvocateMaximusPage() {
         </div>
 
         
+      </section>
+      
+      {/* The Difference Section */}
+      <section className="py-12 sm:py-20 bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-navy-950/5 to-transparent" />
+        
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            {/* Wide Image */}
+            <div className="lg:col-span-7 order-1 lg:order-2 relative group">
+              <FadeInUp className="relative">
+                <div className="absolute -inset-4 bg-gold-500/5 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl ring-1 ring-navy-950/5">
+                  <Image 
+                    src="/images/advocate-maximus/48944736_305133906789479_600439576191827968_o.jpg"
+                    alt="Mediation Setting"
+                    fill
+                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-navy-950/60 via-transparent to-transparent opacity-40" />
+                </div>
+              </FadeInUp>
+            </div>
+            
+            {/* Content Sidebar */}
+            <div className="lg:col-span-12 xl:col-span-5 order-2 lg:order-1 space-y-10">
+              <SectionHeader 
+                subtitle="The Edge" 
+                title="The Difference" 
+              />
+              
+              <StaggerContainer className="space-y-8 -mt-8 sm:-mt-12 md:-mt-16">
+                  {[
+                    {
+                      icon: Globe,
+                      title: "Teams Beyond Borders",
+                      desc: "Collaborate across institutions to build global perspectives."
+                    },
+                    {
+                      icon: RefreshCw,
+                      title: "Hybrid Format",
+                      desc: "Master Arbitration and Mediation in a single competition."
+                    },
+                    {
+                      icon: Award,
+                      title: "Creative Recognition",
+                      desc: "Awards that celebrate strategic brilliance and ethical advocacy."
+                    }
+                  ].map((item, i) => (
+                    <StaggerItem key={i} className="flex gap-5 items-start group">
+                      <div className="w-10 h-10 rounded-lg bg-navy-50 flex items-center justify-center text-navy-950 shrink-0 group-hover:bg-gold-500 transition-all duration-300">
+                        <item.icon className="w-5 h-5" />
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-lg font-bold text-navy-950 tracking-tight group-hover:text-gold-600 transition-colors">{item.title}</h3>
+                        <p className="text-sm text-navy-950/50 font-light leading-relaxed">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </StaggerItem>
+                  ))}
+              </StaggerContainer>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* YouTube Video Section */}
+      <section className="py-12 sm:py-20 bg-navy-950 relative overflow-hidden dark">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(191,154,102,0.08),transparent_70%)]" />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+          <SectionHeader 
+            subtitle="The Experience" 
+            title="Relive the Elite Competition" 
+            light 
+            center 
+          />
+          
+          <div className="-mt-8 sm:-mt-12 md:-mt-16">
+          
+          <FadeInUp className="relative group max-w-5xl mx-auto">
+             <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 to-navy-950 rounded-2xl sm:rounded-[2.5rem] blur-sm opacity-50 group-hover:opacity-100 transition duration-1000" />
+             <div className="relative aspect-video rounded-xl sm:rounded-4xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10">
+                <iframe 
+                  src="https://www.youtube.com/embed/z7sqCsE_nDI" 
+                  title="Advocate Maximus 2017 Experience"
+                  className="absolute inset-0 w-full h-full opacity-90 group-hover:opacity-100 transition-opacity duration-500"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowFullScreen
+                />
+                
+                {/* Decorative Overlay for a more cinematic feel */}
+                <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/10" />
+             </div>
+             
+             {/* Floating Badge - More subtle and integrated */}
+             <motion.div 
+               animate={{ y: [0, -8, 0] }}
+               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+               className="absolute -bottom-6 -right-4 sm:-bottom-8 sm:right-12 px-6 py-4 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl hidden md:block"
+             >
+                <div className="flex items-center gap-3">
+                   <div className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
+                   <div>
+                      <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40">Edition</p>
+                      <p className="text-lg font-black text-white italic tracking-tighter uppercase leading-none">2017 Recap</p>
+                   </div>
+                </div>
+             </motion.div>
+          </FadeInUp>
+          </div>
+        </div>
       </section>
 
       {/* Our Footprint Section */}
@@ -480,7 +643,7 @@ export default function AdvocateMaximusPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {gallery.map((item, i) => (
                 <FadeInUp key={i} delay={i * 0.1}>
-                  <div className="group relative aspect-square rounded-[2rem] overflow-hidden bg-white shadow-sm hover:shadow-2xl transition-all duration-700">
+                  <div className="group relative aspect-square rounded-4xl overflow-hidden bg-white shadow-sm hover:shadow-2xl transition-all duration-700">
                     <Image 
                       src={item.url}
                       alt={item.title || "Gallery Item"}

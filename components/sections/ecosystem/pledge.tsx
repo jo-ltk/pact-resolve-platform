@@ -427,7 +427,7 @@ export function PledgeSection() {
                                 "Email of Signatory", "Email of Organisation"
                               ].map((label) => (
                                 <div key={label} className="space-y-2 group">
-                                   <label className="text-[10px] font-mono uppercase tracking-[0.2em] text-navy-950/40 group-focus-within:text-gold-500 transition-colors font-bold">{label}</label>
+                                   <label className="text-[12px] font-mono uppercase tracking-[0.2em] text-navy-950/40 group-focus-within:text-gold-500 transition-colors font-bold">{label}</label>
                                    <input 
                                      type="text" 
                                      className="w-full bg-transparent border-b border-navy-100 py-3 font-sans text-navy-950 outline-hidden focus:border-gold-500 transition-all placeholder:text-navy-950/10" 
