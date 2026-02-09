@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { COLLECTIONS } from "@/lib/db/schemas";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 // Seed data based on existing frontend content
 
@@ -381,8 +382,10 @@ const partners = [
   }
 ];
 
+
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { db } = await connectToDatabase();
 
     const now = new Date();
@@ -413,6 +416,21 @@ export async function POST(request: NextRequest) {
     // Seed partners
     const allPartners = partners.map(addTimestamps);
     await db.collection(COLLECTIONS.ACADEMY_PARTNERS).insertMany(allPartners);
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "SEED_ACADEMY",
+        resource: "academy_seed",
+        details: { 
+            coursesCount: allCourses.length,
+            modulesCount: allModules.length,
+            facultyCount: allFaculty.length,
+            partnersCount: allPartners.length
+        }
+      });
+    }
 
     return NextResponse.json({
       success: true,

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { UserRepository } from "@/lib/db/repositories/user-repository";
 import { hashPassword } from "@/lib/auth/password";
 import { z } from "zod";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 const signupSchema = z.object({
   name: z.string().min(2),
@@ -12,6 +13,7 @@ const signupSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     
     // Validation
@@ -48,6 +50,17 @@ export async function POST(request: NextRequest) {
 
     // Remove password from response
     const { password: _, ...userWithoutPassword } = newUser;
+
+    // Audit Log (Only if performed by an authenticated user, e.g. admin creating another user)
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_USER",
+        resource: "users",
+        resourceId: newUser._id.toString(),
+        details: { name: newUser.name, email: newUser.email, role: newUser.role }
+      });
+    }
 
     return NextResponse.json(
       { message: "User created successfully", user: userWithoutPassword },

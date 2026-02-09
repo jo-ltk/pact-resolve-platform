@@ -3,6 +3,7 @@ import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type AcademyCourse, type AcademyProgram, type AcademyCourseType } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 export const dynamic = 'force-dynamic';
 
@@ -32,6 +33,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const db = await getDb();
     const collection = db.collection<AcademyCourse>(COLLECTIONS.ACADEMY_COURSES);
@@ -46,6 +48,17 @@ export async function POST(request: NextRequest) {
     
     revalidatePath(`/academy/${body.program}`);
     revalidatePath(`/admin/academy/${body.program}`);
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_ACADEMY_COURSE",
+        resource: "academy_courses",
+        resourceId: result.insertedId.toString(),
+        details: { title: body.title, program: body.program }
+      });
+    }
     
     return NextResponse.json({ success: true, data: { _id: result.insertedId, ...newItem } }, { status: 201 });
   } catch (error) {
@@ -56,6 +69,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, ...updateData } = body;
     
@@ -71,6 +85,17 @@ export async function PUT(request: NextRequest) {
     
     revalidatePath(`/academy/${updateData.program}`);
     revalidatePath(`/admin/academy/${updateData.program}`);
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_ACADEMY_COURSE",
+        resource: "academy_courses",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ success: true, message: "Updated successfully" });
   } catch (error) {
@@ -81,6 +106,7 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -95,6 +121,16 @@ export async function DELETE(request: NextRequest) {
     if (item) {
       revalidatePath(`/academy/${item.program}`);
       revalidatePath(`/admin/academy/${item.program}`);
+    }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_ACADEMY_COURSE",
+        resource: "academy_courses",
+        resourceId: id
+      });
     }
     
     return NextResponse.json({ success: true, message: "Deleted successfully" });

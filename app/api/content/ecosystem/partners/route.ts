@@ -3,6 +3,7 @@ import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type EcosystemPartner, type EcosystemPartnerCategory } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 export const dynamic = 'force-dynamic';
 
@@ -33,6 +34,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const db = await getDb();
     const collection = db.collection<EcosystemPartner>(COLLECTIONS.ECOSYSTEM_PARTNERS);
@@ -47,6 +49,17 @@ export async function POST(request: NextRequest) {
     
     revalidatePath('/ecosystem/collaborators');
     revalidatePath('/admin/ecosystem/collaborators');
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_ECOSYSTEM_PARTNER",
+        resource: "ecosystem_partners",
+        resourceId: result.insertedId.toString(),
+        details: { name: body.name, category: body.category }
+      });
+    }
     
     return NextResponse.json({ success: true, data: { _id: result.insertedId, ...newItem } }, { status: 201 });
   } catch (error) {
@@ -57,6 +70,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, ...updateData } = body;
     
@@ -72,6 +86,17 @@ export async function PUT(request: NextRequest) {
     
     revalidatePath('/ecosystem/collaborators');
     revalidatePath('/admin/ecosystem/collaborators');
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_ECOSYSTEM_PARTNER",
+        resource: "ecosystem_partners",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ success: true, message: "Updated successfully" });
   } catch (error) {
@@ -82,6 +107,7 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -94,6 +120,16 @@ export async function DELETE(request: NextRequest) {
     
     revalidatePath('/ecosystem/collaborators');
     revalidatePath('/admin/ecosystem/collaborators');
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_ECOSYSTEM_PARTNER",
+        resource: "ecosystem_partners",
+        resourceId: id
+      });
+    }
     
     return NextResponse.json({ success: true, message: "Deleted successfully" });
   } catch (error) {

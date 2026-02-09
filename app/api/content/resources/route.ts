@@ -3,6 +3,7 @@ import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type ResourceItem, type ResourceType } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 export const dynamic = 'force-dynamic';
 
@@ -55,6 +56,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     
     // Validate required fields
@@ -74,6 +76,17 @@ export async function POST(request: NextRequest) {
     const result = await collection.insertOne(newItem as ResourceItem);
     
     revalidateResources();
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_RESOURCE",
+        resource: "resources",
+        resourceId: result.insertedId.toString(),
+        details: { title: body.title, type: body.type }
+      });
+    }
     
     return NextResponse.json({ success: true, data: { _id: result.insertedId, ...newItem } }, { status: 201 });
   } catch (error: any) {
@@ -84,6 +97,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, ...updateData } = body;
     
@@ -104,6 +118,17 @@ export async function PUT(request: NextRequest) {
     );
     
     revalidateResources();
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_RESOURCE",
+        resource: "resources",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ success: true, message: "Updated successfully" });
   } catch (error: any) {
@@ -117,6 +142,7 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -132,6 +158,16 @@ export async function DELETE(request: NextRequest) {
     }
     
     revalidateResources();
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_RESOURCE",
+        resource: "resources",
+        resourceId: id
+      });
+    }
     
     return NextResponse.json({ success: true, message: "Deleted successfully" });
   } catch (error: any) {

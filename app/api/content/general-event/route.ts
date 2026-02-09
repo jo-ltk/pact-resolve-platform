@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type MCIEvent } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 /**
  * GET /api/content/general-event
@@ -72,6 +73,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     
     const db = await getDb();
@@ -87,6 +89,17 @@ export async function POST(request: NextRequest) {
     };
     
     const result = await collection.insertOne(newEvent as MCIEvent);
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_GENERAL_EVENT",
+        resource: "general_events",
+        resourceId: result.insertedId.toString(),
+        details: { title: body.title }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -107,6 +120,7 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, ...updateData } = body;
     
@@ -136,6 +150,17 @@ export async function PUT(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_GENERAL_EVENT",
+        resource: "general_events",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -156,6 +181,7 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -176,6 +202,16 @@ export async function DELETE(request: NextRequest) {
         { success: false, error: "Event not found" },
         { status: 404 }
       );
+    }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_GENERAL_EVENT",
+        resource: "general_events",
+        resourceId: id
+      });
     }
     
     return NextResponse.json({ 

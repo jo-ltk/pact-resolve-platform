@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { COLLECTIONS } from "@/lib/db/schemas";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 const ecosystemTeamMembers = [
   {
@@ -199,6 +200,7 @@ const ecosystemPartners = [
 
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { db } = await connectToDatabase();
 
     const now = new Date();
@@ -217,6 +219,20 @@ export async function POST(request: NextRequest) {
     await db.collection(COLLECTIONS.ECOSYSTEM_TEAM).insertMany(ecosystemTeamMembers.map(addTimestamps));
     await db.collection(COLLECTIONS.ECOSYSTEM_AWARDS).insertMany(ecosystemAwards.map(addTimestamps));
     await db.collection(COLLECTIONS.ECOSYSTEM_PARTNERS).insertMany(ecosystemPartners.map(addTimestamps));
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "SEED_ECOSYSTEM",
+        resource: "ecosystem_seed",
+        details: { 
+          teamCount: ecosystemTeamMembers.length,
+          awardsCount: ecosystemAwards.length,
+          partnersCount: ecosystemPartners.length
+        }
+      });
+    }
 
     return NextResponse.json({
       success: true,

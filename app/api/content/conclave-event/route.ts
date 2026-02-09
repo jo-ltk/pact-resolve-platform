@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type ConclaveEvent } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 /**
  * GET /api/content/conclave-event
@@ -85,6 +86,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     console.log("POST Conclave Event - Data:", JSON.stringify(body, null, 2));
     
@@ -114,6 +116,17 @@ export async function POST(request: NextRequest) {
     console.log("POST Conclave Event - Inserting to DB...");
     const result = await collection.insertOne(newEvent as ConclaveEvent);
     console.log("POST Conclave Event - Insert result:", result.insertedId);
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_CONCLAVE_EVENT",
+        resource: "conclave_events",
+        resourceId: result.insertedId.toString(),
+        details: { year: body.year, title: body.title }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -134,6 +147,7 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, createdAt, updatedAt, ...updateData } = body;
     
@@ -181,6 +195,18 @@ export async function PUT(request: NextRequest) {
     }
     
     console.log("PUT Conclave Event - Update success");
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_CONCLAVE_EVENT",
+        resource: "conclave_events",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
+
     return NextResponse.json({ 
       success: true, 
       message: "Event updated successfully" 
@@ -200,6 +226,7 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -222,6 +249,16 @@ export async function DELETE(request: NextRequest) {
       );
     }
     
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_CONCLAVE_EVENT",
+        resource: "conclave_events",
+        resourceId: id
+      });
+    }
+
     return NextResponse.json({ 
       success: true, 
       message: "Conclave event deleted successfully" 

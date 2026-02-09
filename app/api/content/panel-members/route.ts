@@ -4,6 +4,7 @@ import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type PanelMember } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 /**
  * GET /api/content/panel-members
@@ -43,7 +44,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    // TODO: Add authentication middleware
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     
     const db = await getDb();
@@ -60,6 +61,17 @@ export async function POST(request: NextRequest) {
     revalidatePath("/");
     revalidatePath("/admin/home-page/panel-members");
     revalidatePath("/mediation/mediator-panel");
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_PANEL_MEMBER",
+        resource: "panel_members",
+        resourceId: result.insertedId.toString(),
+        details: { name: body.name }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -80,7 +92,7 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
-    // TODO: Add authentication middleware
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, ...updateData } = body;
     
@@ -114,6 +126,17 @@ export async function PUT(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_PANEL_MEMBER",
+        resource: "panel_members",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -134,7 +157,7 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    // TODO: Add authentication middleware
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -159,6 +182,16 @@ export async function DELETE(request: NextRequest) {
         { success: false, error: "Member not found" },
         { status: 404 }
       );
+    }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_PANEL_MEMBER",
+        resource: "panel_members",
+        resourceId: id
+      });
     }
     
     return NextResponse.json({ 

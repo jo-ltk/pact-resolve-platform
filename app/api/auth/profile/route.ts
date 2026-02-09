@@ -3,6 +3,7 @@ import { UserRepository } from "@/lib/db/repositories/user-repository";
 import { verifyToken } from "@/lib/auth/jwt";
 import { hashPassword } from "@/lib/auth/password";
 import { z } from "zod";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 const profileSchema = z.object({
   name: z.string().min(2).optional(),
@@ -53,6 +54,14 @@ export async function PUT(request: NextRequest) {
     if (!success) {
       return NextResponse.json({ error: "User not found or update failed" }, { status: 404 });
     }
+
+    // Audit Log
+    AuditRepository.log({
+      userId: payload.userId,
+      action: "UPDATE_PROFILE",
+      resource: "admin_profile",
+      details: { updatedFields: Object.keys(updateData) }
+    });
 
     // Fetch updated user to return
     const updatedUser = await UserRepository.findById(payload.userId);

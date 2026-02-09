@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type HeroSlide } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 /**
  * GET /api/content/hero-slides
@@ -42,7 +43,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    // TODO: Add authentication middleware
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     
     const db = await getDb();
@@ -55,6 +56,17 @@ export async function POST(request: NextRequest) {
     };
     
     const result = await collection.insertOne(newSlide as HeroSlide);
+    
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_HERO_SLIDE",
+        resource: "hero_slides",
+        resourceId: result.insertedId.toString(),
+        details: { title: body.title }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -75,7 +87,7 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
-    // TODO: Add authentication middleware
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, ...updateData } = body;
     
@@ -105,6 +117,17 @@ export async function PUT(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_HERO_SLIDE",
+        resource: "hero_slides",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -125,7 +148,7 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    // TODO: Add authentication middleware
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -146,6 +169,16 @@ export async function DELETE(request: NextRequest) {
         { success: false, error: "Slide not found" },
         { status: 404 }
       );
+    }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_HERO_SLIDE",
+        resource: "hero_slides",
+        resourceId: id
+      });
     }
     
     return NextResponse.json({ 

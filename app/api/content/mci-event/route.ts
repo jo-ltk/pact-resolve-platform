@@ -3,6 +3,7 @@ import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type MCIEvent } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 /**
  * GET /api/content/mci-event
@@ -54,6 +55,7 @@ export async function POST(request: NextRequest) {
   const routeStart = Date.now();
   console.log(`[API] POST /api/content/mci-event - START`);
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     console.log(`[API] Body parsed. Size: ${JSON.stringify(body).length} chars`);
     
@@ -76,6 +78,17 @@ export async function POST(request: NextRequest) {
     // Purge cache for the event page
     revalidatePath("/events/mci");
     revalidatePath("/admin/events/mci");
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_MCI_EVENT",
+        resource: "mci_events",
+        resourceId: result.insertedId.toString(),
+        details: { year: body.year, title: body.title }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -98,6 +111,7 @@ export async function PUT(request: NextRequest) {
   const routeStart = Date.now();
   console.log(`[API] PUT /api/content/mci-event - START`);
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, createdAt, ...updateData } = body;
     
@@ -125,6 +139,17 @@ export async function PUT(request: NextRequest) {
     revalidatePath("/admin/events/mci");
     
     if (result.matchedCount === 0) return NextResponse.json({ success: false, error: "Event not found" }, { status: 404 });
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_MCI_EVENT",
+        resource: "mci_events",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ success: true, message: "Event updated successfully" });
   } catch (error: any) {
@@ -142,6 +167,7 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -156,6 +182,16 @@ export async function DELETE(request: NextRequest) {
     revalidatePath("/admin/events/mci");
     
     if (result.deletedCount === 0) return NextResponse.json({ success: false, error: "Event not found" }, { status: 404 });
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_MCI_EVENT",
+        resource: "mci_events",
+        resourceId: id
+      });
+    }
     
     return NextResponse.json({ success: true, message: "Event deleted successfully" });
   } catch (error) {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type FooterSettings } from "@/lib/db/schemas";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 /**
  * GET /api/content/footer
@@ -42,7 +43,7 @@ export async function GET() {
  */
 export async function PUT(request: NextRequest) {
   try {
-    // TODO: Add authentication middleware
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     
     const db = await getDb();
@@ -62,6 +63,16 @@ export async function PUT(request: NextRequest) {
       },
       { upsert: true }
     );
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_FOOTER",
+        resource: "footer",
+        details: { updatedFields: Object.keys(body) }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 

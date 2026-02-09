@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type Partner } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 /**
  * GET /api/content/partners
@@ -53,7 +54,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    // TODO: Add authentication middleware
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     
     const db = await getDb();
@@ -66,6 +67,17 @@ export async function POST(request: NextRequest) {
     };
     
     const result = await collection.insertOne(newPartner as Partner);
+    
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_PARTNER",
+        resource: "partners",
+        resourceId: result.insertedId.toString(),
+        details: { name: body.name, category: body.category }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -86,7 +98,7 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
-    // TODO: Add authentication middleware
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, ...updateData } = body;
     
@@ -116,6 +128,17 @@ export async function PUT(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_PARTNER",
+        resource: "partners",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -136,7 +159,7 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    // TODO: Add authentication middleware
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -157,6 +180,16 @@ export async function DELETE(request: NextRequest) {
         { success: false, error: "Partner not found" },
         { status: 404 }
       );
+    }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_PARTNER",
+        resource: "partners",
+        resourceId: id
+      });
     }
     
     return NextResponse.json({ 

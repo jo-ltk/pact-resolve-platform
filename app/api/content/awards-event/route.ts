@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type NationalImpactAward } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 /**
  * GET /api/content/awards-event
@@ -75,6 +76,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     
     const db = await getDb();
@@ -95,6 +97,17 @@ export async function POST(request: NextRequest) {
     };
     
     const result = await collection.insertOne(newEvent as NationalImpactAward);
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_NAIIM_EVENT",
+        resource: "naiim_events",
+        resourceId: result.insertedId.toString(),
+        details: { year: body.year, title: body.title }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -115,6 +128,7 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, createdAt, ...updateData } = body;
     
@@ -152,6 +166,17 @@ export async function PUT(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_NAIIM_EVENT",
+        resource: "naiim_events",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -172,6 +197,7 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -192,6 +218,16 @@ export async function DELETE(request: NextRequest) {
         { success: false, error: "Event not found" },
         { status: 404 }
       );
+    }
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_NAIIM_EVENT",
+        resource: "naiim_events",
+        resourceId: id
+      });
     }
     
     return NextResponse.json({ 

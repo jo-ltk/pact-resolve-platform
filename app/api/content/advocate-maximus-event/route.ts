@@ -3,6 +3,7 @@ import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type MCIEvent } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 /**
  * GET /api/content/advocate-maximus-event
@@ -76,6 +77,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     
     const db = await getDb();
@@ -99,6 +101,17 @@ export async function POST(request: NextRequest) {
     
     revalidatePath("/events/advocate-maximus");
     revalidatePath("/admin/events/advocate-maximus");
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_ADVOCATE_MAXIMUS_EVENT",
+        resource: "advocate_maximus_events",
+        resourceId: result.insertedId.toString(),
+        details: { year: body.year, title: body.title }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -119,6 +132,7 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, createdAt, ...updateData } = body;
     
@@ -159,6 +173,17 @@ export async function PUT(request: NextRequest) {
     
     revalidatePath("/events/advocate-maximus");
     revalidatePath("/admin/events/advocate-maximus");
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_ADVOCATE_MAXIMUS_EVENT",
+        resource: "advocate_maximus_events",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -179,6 +204,7 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -203,6 +229,16 @@ export async function DELETE(request: NextRequest) {
     
     revalidatePath("/events/advocate-maximus");
     revalidatePath("/admin/events/advocate-maximus");
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_ADVOCATE_MAXIMUS_EVENT",
+        resource: "advocate_maximus_events",
+        resourceId: id
+      });
+    }
     
     return NextResponse.json({ 
       success: true, 

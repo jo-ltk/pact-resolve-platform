@@ -3,6 +3,7 @@ import { getDb } from "@/lib/mongodb";
 import { COLLECTIONS, type MediationFee } from "@/lib/db/schemas";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,6 +27,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const db = await getDb();
     const collection = db.collection<MediationFee>(COLLECTIONS.MEDIATION_FEES);
@@ -40,6 +42,17 @@ export async function POST(request: NextRequest) {
     
     revalidatePath("/mediation/rules-fees");
     revalidatePath("/admin/mediation/fees");
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "CREATE_MEDIATION_FEE",
+        resource: "mediation_fees",
+        resourceId: result.insertedId.toString(),
+        details: { description: body.description?.substring(0, 50) }
+      });
+    }
     
     return NextResponse.json({ success: true, data: { _id: result.insertedId, ...newItem } }, { status: 201 });
   } catch (error) {
@@ -50,6 +63,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const body = await request.json();
     const { _id, ...updateData } = body;
     
@@ -65,6 +79,17 @@ export async function PUT(request: NextRequest) {
     
     revalidatePath("/mediation/rules-fees");
     revalidatePath("/admin/mediation/fees");
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "UPDATE_MEDIATION_FEE",
+        resource: "mediation_fees",
+        resourceId: _id,
+        details: { updatedFields: Object.keys(updateData) }
+      });
+    }
     
     return NextResponse.json({ success: true, message: "Updated successfully" });
   } catch (error) {
@@ -75,6 +100,7 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    const userId = request.headers.get("x-user-id");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     
@@ -87,6 +113,16 @@ export async function DELETE(request: NextRequest) {
     
     revalidatePath("/mediation/rules-fees");
     revalidatePath("/admin/mediation/fees");
+
+    // Audit Log
+    if (userId) {
+      AuditRepository.log({
+        userId,
+        action: "DELETE_MEDIATION_FEE",
+        resource: "mediation_fees",
+        resourceId: id
+      });
+    }
     
     return NextResponse.json({ success: true, message: "Deleted successfully" });
   } catch (error) {
