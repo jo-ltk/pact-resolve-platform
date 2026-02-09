@@ -191,7 +191,7 @@ const NegotiationHero = () => (
           <div className="relative group hidden lg:block">
             <div className="absolute -inset-4 bg-white/5 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             <div className="relative p-10 rounded-3xl border border-white/10 bg-white/2 backdrop-blur-sm">
-              <p className="text-xl text-white/70 font-light italic leading-relaxed">
+              <p className="text-xl text-white/70 font-light leading-relaxed">
                 Got a query? Email – academy@thepact.in
               </p>
               <div className="mt-8 flex items-center gap-4">
@@ -383,7 +383,7 @@ export default function NegotiationPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-6 mb-12">
                    <div className="h-px bg-navy-100 grow" />
-                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/20 font-bold italic">Course Modules</span>
+                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/20 font-bold">Course Modules</span>
                    <div className="h-px bg-navy-100 grow" />
                 </div>
                 <CurriculumRoadmap modules={foundationModulesArr} type="Foundation" />
@@ -417,7 +417,7 @@ export default function NegotiationPage() {
               </div>
             ))}
             <div className="flex flex-col items-center justify-center p-8 rounded-4xl border-2 border-dashed border-navy-100 bg-slate-50/50">
-               <p className="text-navy-950/30 font-medium text-center italic">Faculty Profiles<br/>Coming Soon</p>
+               <p className="text-navy-950/30 font-medium text-center">Faculty Profiles<br/>Coming Soon</p>
             </div>
           </div>
         </div>
@@ -487,7 +487,7 @@ export default function NegotiationPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-6 mb-12">
                    <div className="h-px bg-white/10 grow" />
-                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/20 font-bold italic">Course Module</span>
+                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/20 font-bold">Course Module</span>
                    <div className="h-px bg-white/10 grow" />
                 </div>
                 <CurriculumRoadmap modules={advancedModulesArr} type="Advanced" dark />
@@ -520,7 +520,7 @@ export default function NegotiationPage() {
               ))}
               {faculty.length < 4 && (
                 <div className="flex flex-col items-center justify-center p-8 rounded-4xl border-2 border-dashed border-navy-100 bg-slate-50/50">
-                  <p className="text-navy-950/30 font-medium text-center italic">More Faculty Profiles<br/>Coming Soon</p>
+                  <p className="text-navy-950/30 font-medium text-center">More Faculty Profiles<br/>Coming Soon</p>
                 </div>
               )}
             </div>

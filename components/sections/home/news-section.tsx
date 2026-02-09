@@ -108,8 +108,9 @@ export function NewsSection() {
     fetchNews();
   }, []);
 
-  if (!isLoading && news.length === 0) {
-    return null; // Don't show section if no news
+  // Don't show section while loading or if no news
+  if (isLoading || news.length === 0) {
+    return null;
   }
 
   return (
@@ -141,19 +142,11 @@ export function NewsSection() {
             className="w-full"
           >
             <CarouselContent className="-ml-4">
-              {isLoading ? (
-                Array.from({ length: 3 }).map((_, index) => (
-                  <CarouselItem key={index} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                    <NewsSkeleton />
-                  </CarouselItem>
-                ))
-              ) : (
-                news.map((item, index) => (
-                  <CarouselItem key={(item._id as any) || index} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                    <NewsCard item={item} />
-                  </CarouselItem>
-                ))
-              )}
+              {news.map((item, index) => (
+                <CarouselItem key={(item._id as any) || index} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
+                  <NewsCard item={item} />
+                </CarouselItem>
+              ))}
             </CarouselContent>
             <div className="flex justify-start gap-4 mt-8 md:mt-12">
               <CarouselPrevious className="static translate-y-0 h-10 w-10 md:h-12 md:w-12 border-black/10 hover:bg-black hover:text-white transition-all" />

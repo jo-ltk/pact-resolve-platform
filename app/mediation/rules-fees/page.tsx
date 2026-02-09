@@ -103,7 +103,7 @@ const RulesSection = () => {
             </div>
             
             <div className="absolute bottom-10 left-10 md:bottom-20 md:left-20 max-w-md">
-               <p className="text-white/90 text-lg md:text-xl font-light italic leading-relaxed">
+               <p className="text-white/90 text-lg md:text-xl font-light leading-relaxed">
                  "Our rules ensure a safe harbor for dialogue, governed by global neutrality standards."
                </p>
             </div>
@@ -181,7 +181,7 @@ const FeesSection = () => {
             <div className="absolute bottom-10 left-10 md:bottom-20 md:left-20 max-w-xl">
                <span className="text-gold-500 font-mono text-[10px] uppercase tracking-widest block mb-4">Standard Policy</span>
                <h3 className="text-3xl md:text-5xl font-bold text-white tracking-tighter italic uppercase mb-4">Predictable Value</h3>
-               <p className="text-white/90 text-lg md:text-xl font-light italic leading-relaxed">
+               <p className="text-white/90 text-lg md:text-xl font-light leading-relaxed">
                  "Our fee structure is designed to reflect value and ensure that costs are never a barrier to resolution."
                </p>
             </div>

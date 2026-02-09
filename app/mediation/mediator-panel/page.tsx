@@ -67,7 +67,7 @@ const PanelHero = () => (
         </div>
 
         <div className="mt-12 md:mt-16 pt-12 border-t border-white/5">
-           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gold-500/90 font-light leading-[1.4] italic max-w-5xl">
+           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gold-500/90 font-light leading-[1.4] max-w-5xl">
              "Each mediator possesses proven expertise in mediation practice and adheres to the highest standards of ethics, confidentiality, and procedural fairness, ensuring confidence and integrity throughout the mediation process."
            </p>
         </div>

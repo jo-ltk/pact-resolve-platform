@@ -456,7 +456,7 @@ export default function PodcastPage() {
                       </h3>
                       
                       <div className="mt-auto pt-4 border-t border-navy-100 flex items-center justify-between">
-                        <p className="text-navy-950/50 text-xs font-light truncate max-w-[80%] italic">
+                        <p className="text-navy-950/50 text-xs font-light truncate max-w-[80%]">
                           {episode.guests}
                         </p>
                         <ArrowUpRight className="w-4 h-4 text-navy-950/20 group-hover:text-gold-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />

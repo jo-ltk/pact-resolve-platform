@@ -306,7 +306,7 @@ export default function MediationSimplifiedPage() {
                         ))}
                       </div>
 
-                      <p className="text-white/90 font-light leading-relaxed italic text-lg lg:text-xl">
+                      <p className="text-white/90 font-light leading-relaxed text-lg lg:text-xl">
                         "{review.quote}"
                       </p>
                     </div>

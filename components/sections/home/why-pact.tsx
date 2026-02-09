@@ -70,7 +70,7 @@ export function WhyPact() {
           </div>
           <h2 className="text-3xl md:text-6xl font-light tracking-tight text-white mb-6 md:mb-8 leading-[1.2]">
             Committed to the highest <br className="hidden md:block" />
-            <span className="text-gold-500 font-medium italic">standards</span> of training and services
+            <span className="text-gold-500 font-medium">standards</span> of training and services
           </h2>
         </FadeInUp>
 

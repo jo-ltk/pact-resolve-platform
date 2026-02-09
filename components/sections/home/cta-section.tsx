@@ -83,7 +83,7 @@ export function CTASection() {
             className="text-3xl md:text-6xl font-light text-navy-950 mb-6 tracking-tight leading-[1.1]"
           >
             Got a query or simply ready? <br className="hidden md:block" />
-            <span className="font-semibold text-navy-900 italic">We’ll get help to you right away.</span>
+            <span className="font-semibold text-navy-900">We’ll get help to you right away.</span>
           </motion.h2>
           
           <motion.p 

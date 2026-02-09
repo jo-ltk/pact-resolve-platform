@@ -59,7 +59,7 @@ export function PanelNeutrals() {
                 </div>
               </div>
               <h3 className="text-xl font-medium text-black mb-1">{member.name}</h3>
-              <p className="text-sm text-black/40 font-mono italic">{member.role}</p>
+              <p className="text-sm text-black/40 font-mono">{member.role}</p>
             </div>
           ))}
         </div>

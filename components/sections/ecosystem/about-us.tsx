@@ -103,7 +103,7 @@ export function AboutUs() {
             </FadeInUp>
             
             <FadeInUp delay={0.3} className="space-y-6 md:space-y-8">
-              <p className="text-base md:text-lg font-light text-navy-950/40 italic leading-relaxed border-l-4 border-gold-500/50 pl-6 md:pl-10">
+              <p className="text-base md:text-lg font-light text-navy-950/40 leading-relaxed border-l-4 border-gold-500/50 pl-6 md:pl-10">
                 Through mediation services, advocacy training, consulting and capacity-building initiatives, The PACT advances a culture of dialogue, confidentiality, and collaboration—helping individuals and organisations resolve disputes efficiently while preserving relationships and reputations.
               </p>
               <div className="flex flex-wrap gap-3 md:gap-4">
@@ -155,7 +155,7 @@ export function AboutUs() {
                 <div className="relative h-full px-6 py-8 sm:px-8 sm:py-10 md:py-12 rounded-5xl bg-navy-50/20 border border-navy-100/30 hover:bg-white hover:border-gold-500/20 transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col items-center text-center">
                   
                   {/* Number Background Detail */}
-                  <div className="absolute -bottom-6 -right-4 text-[8rem] font-bold text-navy-950/1.5 group-hover:text-gold-500/4 transition-all duration-1000 italic select-none pointer-events-none">
+                  <div className="absolute -bottom-6 -right-4 text-[8rem] font-bold text-navy-950/1.5 group-hover:text-gold-500/4 transition-all duration-1000 select-none pointer-events-none">
                     {i + 1 < 10 ? `0${i + 1}` : i + 1}
                   </div>
 
@@ -255,7 +255,7 @@ export function AboutUs() {
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl italic uppercase p-8 text-center">
+                      <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl uppercase p-8 text-center">
                         {award.recipientName} Award
                       </div>
                     )}
@@ -271,25 +271,25 @@ export function AboutUs() {
               <>
                 <FadeInUp className="group">
                   <div className="relative aspect-4/3 rounded-4xl overflow-hidden mb-8 bg-navy-50 border border-navy-100 shadow-sm transition-all duration-500 group-hover:shadow-2xl">
-                    <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl italic uppercase">
+                    <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl uppercase">
                       Jonathan Rodrigues Award
                     </div>
                     <div className="absolute inset-0 bg-linear-to-t from-navy-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                   <p className="text-lg md:text-xl font-light text-navy-950 leading-snug">
-                    <span className="font-semibold text-gold-500">Jonathan Rodrigues</span> was felicitated by Justice Vijay Bishnoi, Judge, Supreme Court of India, and Justice Rajendra Menon with the <span className="italic">Mediation Path-breaker Award</span> by AIIMAS in 2025
+                    <span className="font-semibold text-gold-500">Jonathan Rodrigues</span> was felicitated by Justice Vijay Bishnoi, Judge, Supreme Court of India, and Justice Rajendra Menon with the <span>Mediation Path-breaker Award</span> by AIIMAS in 2025
                   </p>
                 </FadeInUp>
 
                 <FadeInUp delay={0.2} className="group">
                   <div className="relative aspect-4/3 rounded-4xl overflow-hidden mb-8 bg-navy-50 border border-navy-100 shadow-sm transition-all duration-500 group-hover:shadow-2xl">
-                    <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl italic uppercase">
+                    <div className="absolute inset-0 flex items-center justify-center text-navy-950/10 font-black text-4xl uppercase">
                       Nisshant Laroia Award
                     </div>
                     <div className="absolute inset-0 bg-linear-to-t from-navy-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                   <p className="text-lg md:text-xl font-light text-navy-950 leading-snug">
-                    <span className="font-semibold text-gold-500">Nisshant Laroia</span> was felicitated by Law Minister Kiren Rijiju, with the <span className="italic">Certificate of Appreciation</span> for his Work in Mediation, hosted by GNLU in 2021
+                    <span className="font-semibold text-gold-500">Nisshant Laroia</span> was felicitated by Law Minister Kiren Rijiju, with the <span>Certificate of Appreciation</span> for his Work in Mediation, hosted by GNLU in 2021
                   </p>
                 </FadeInUp>
               </>

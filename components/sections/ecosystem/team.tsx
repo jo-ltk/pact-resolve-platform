@@ -129,7 +129,7 @@ export function TeamSection() {
                           </div>
                           <h4 className="text-[10vw] md:text-6xl font-light text-navy-950 tracking-tighter leading-none uppercase">
                             {partner.name.split(' ')[0]} <br className="hidden md:block" />
-                            <span className="text-gold-500 italic font-medium">{partner.name.split(' ').slice(1).join(' ')}</span>
+                            <span className="text-gold-500 font-medium">{partner.name.split(' ').slice(1).join(' ')}</span>
                           </h4>
                         </div>
                         
@@ -185,7 +185,7 @@ export function TeamSection() {
                       <div className="space-y-1">
                         <span className="text-gold-500 font-mono text-[9px] uppercase tracking-[0.3em] font-bold block">{partner.role}</span>
                         <h4 className="text-2xl md:text-3xl font-light text-navy-950 tracking-tight leading-tight uppercase">
-                           {partner.name.split(' ')[0]} <span className="text-gold-500 font-medium italic">{partner.name.split(' ').slice(1).join(' ')}</span>
+                           {partner.name.split(' ')[0]} <span className="text-gold-500 font-medium">{partner.name.split(' ').slice(1).join(' ')}</span>
                         </h4>
                       </div>
                       

@@ -67,7 +67,7 @@ export function EcosystemHero() {
             <div className="hidden lg:block">
               <div className="relative p-10 rounded-[2rem] border border-white/10 bg-white/[0.02] backdrop-blur-md">
                 <div className="absolute -top-6 -right-6 w-12 h-12 bg-gold-500/20 rounded-full flex items-center justify-center blur-lg" />
-                <p className="text-xl text-white/50 font-light italic leading-relaxed">
+                <p className="text-xl text-white/50 font-light leading-relaxed">
                   "Building a community that can Network, Inspire, Create, Empower, and Resolve. We are stronger together."
                 </p>
                 <div className="mt-8 flex items-center gap-4">

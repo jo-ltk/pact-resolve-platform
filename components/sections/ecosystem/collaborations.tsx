@@ -260,12 +260,12 @@ export function Collaborations() {
              </FadeInUp>
              
              <div className="relative aspect-square md:aspect-4/5 rounded-[3rem] overflow-hidden bg-navy-50 border-4 border-white shadow-2xl group">
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-navy-950/10 font-black text-4xl uppercase p-12 text-center italic group-hover:text-navy-950/20 transition-colors duration-700">
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-navy-950/10 font-black text-4xl uppercase p-12 text-center group-hover:text-navy-950/20 transition-colors duration-700">
                    Current Associations
                 </div>
                 {/* Small Carousel Placeholder Area for older associations */}
                 <div className="absolute top-6 left-6 right-6 p-4 rounded-2xl bg-white/50 backdrop-blur-sm border border-white/20">
-                   <p className="text-[10px] font-mono text-navy-950/40 uppercase tracking-widest mb-1 italic">Older Associations</p>
+                   <p className="text-[10px] font-mono text-navy-950/40 uppercase tracking-widest mb-1">Older Associations</p>
                    <div className="flex gap-4 opacity-30">
                       <div className="h-4 w-12 bg-navy-950" />
                       <div className="h-4 w-16 bg-navy-950" />
@@ -341,7 +341,7 @@ export function Collaborations() {
                 <span className="italic font-medium text-gold-500">Organisations</span>
               </h2>
               <div className="h-px w-24 bg-gold-500/30 mx-auto mb-8" />
-              <p className="max-w-2xl text-navy-950/50 text-lg md:text-xl font-light italic leading-relaxed">
+              <p className="max-w-2xl text-navy-950/50 text-lg md:text-xl font-light leading-relaxed">
                 Our work is strengthened by alliances with specialised mediation and ADR institutions in India and abroad, who share their expertise, platforms, and networks to deepen the impact of #MissionMediation.
               </p>
             </FadeInUp>

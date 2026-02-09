@@ -115,7 +115,7 @@ const WhyMediateHero = () => (
           <div className="relative group hidden lg:block">
             <div className="absolute -inset-4 bg-white/5 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             <div className="relative p-10 rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm">
-              <p className="text-xl text-white/70 font-light italic leading-relaxed">
+              <p className="text-xl text-white/70 font-light leading-relaxed">
                 "With the support of an impartial mediator, parties can explore practical solutions, protect ongoing relationships, and achieve outcomes that work for everyone involved."
               </p>
               <div className="mt-8 flex items-center gap-4">
@@ -178,7 +178,7 @@ const PuzzlePieces = () => {
               className="group"
             >
               <div className="relative h-full px-6 py-8 sm:px-8 sm:py-10 md:py-12 rounded-5xl bg-navy-50/20 border border-navy-100/30 hover:bg-white hover:border-gold-500/20 transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col items-center text-center">
-                <div className="absolute -bottom-6 -right-4 text-[8rem] font-bold text-navy-950/1.5 group-hover:text-gold-500/4 transition-all duration-1000 italic select-none pointer-events-none">
+                <div className="absolute -bottom-6 -right-4 text-[8rem] font-bold text-navy-950/1.5 group-hover:text-gold-500/4 transition-all duration-1000 select-none pointer-events-none">
                   {i + 1 < 10 ? `0${i + 1}` : i + 1}
                 </div>
                 <div className="relative mb-6">
@@ -313,7 +313,7 @@ const PactProvides = () => {
                               <Timer className="w-4 h-4" />
                               <span className="text-[10px] uppercase tracking-[0.2em] font-bold">Estimated Time</span>
                             </div>
-                            <span className="text-2xl md:text-3xl font-light text-white tracking-tighter italic whitespace-nowrap">
+                            <span className="text-2xl md:text-3xl font-light text-white tracking-tighter whitespace-nowrap">
                               {step.duration}
                             </span>
                           </div>
@@ -490,7 +490,7 @@ const Checklist = () => {
                 <div className="max-w-2xl">
                    <div className="mb-12">
                       <p className="text-navy-950/40 font-mono text-xs tracking-widest uppercase mb-4">The Assessment</p>
-                      <h3 className="text-2xl md:text-3xl font-light text-navy-950 tracking-tight leading-snug mb-8 bg-navy-50/50 p-6 rounded-2xl border border-navy-100/50 italic">
+                      <h3 className="text-2xl md:text-3xl font-light text-navy-950 tracking-tight leading-snug mb-8 bg-navy-50/50 p-6 rounded-2xl border border-navy-100/50">
                          "{CHECKLIST_MODAL_DATA[selectedIdx].summary}"
                       </h3>
                    </div>
@@ -518,7 +518,7 @@ const Checklist = () => {
                         <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center text-gold-600 shadow-sm shrink-0">
                            {React.createElement(CHECKLIST_MODAL_DATA[selectedIdx].benefitIcon, { className: "w-7 h-7" })}
                         </div>
-                        <p className="text-lg md:text-xl font-medium text-navy-950 leading-relaxed italic">
+                        <p className="text-lg md:text-xl font-medium text-navy-950 leading-relaxed">
                            {CHECKLIST_MODAL_DATA[selectedIdx].highlight}
                         </p>
                       </div>

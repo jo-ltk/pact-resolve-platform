@@ -110,7 +110,7 @@ export function PledgeSection() {
                   <div className="group relative h-full px-6 py-10 rounded-5xl bg-navy-50/20 border border-navy-100/30 hover:bg-white hover:border-gold-500/20 transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col items-center text-center">
                     
                     {/* Number Background Detail */}
-                    <div className="absolute -bottom-6 -right-4 text-[8rem] font-bold text-navy-950/1.5 group-hover:text-gold-500/4 transition-all duration-1000 italic select-none pointer-events-none font-mono">
+                    <div className="absolute -bottom-6 -right-4 text-[8rem] font-bold text-navy-950/1.5 group-hover:text-gold-500/4 transition-all duration-1000 select-none pointer-events-none font-mono">
                       {i + 1 < 10 ? `0${i + 1}` : i + 1}
                     </div>
 
@@ -213,13 +213,13 @@ export function PledgeSection() {
                          <div className="group/item flex gap-6">
                             <div className="w-1.5 h-1.5 rounded-full bg-gold-500 mt-3 shrink-0 group-hover/item:scale-150 transition-transform duration-500" />
                             <p className="text-lg md:text-xl text-white/60 font-light leading-relaxed group-hover/item:text-white transition-colors duration-500">
-                              The Pledge is <span className="text-gold-500 font-medium italic">not a binding commitment</span> and does not create legally enforceable rights or obligations.
+                              The Pledge is <span className="text-gold-500 font-medium">not a binding commitment</span> and does not create legally enforceable rights or obligations.
                             </p>
                          </div>
                          <div className="group/item flex gap-6">
                             <div className="w-1.5 h-1.5 rounded-full bg-gold-500 mt-3 shrink-0 group-hover/item:scale-150 transition-transform duration-500" />
                             <p className="text-lg md:text-xl text-white/60 font-light leading-relaxed group-hover/item:text-white transition-colors duration-500">
-                              Mediation may not be eligible to <span className="text-gold-500 font-medium italic">every dispute</span> and does not limit a party's other dispute resolution options.
+                              Mediation may not be eligible to <span className="text-gold-500 font-medium">every dispute</span> and does not limit a party's other dispute resolution options.
                             </p>
                          </div>
                       </div>
@@ -322,7 +322,7 @@ export function PledgeSection() {
                               <div className="absolute top-0 right-0 p-4 opacity-5">
                                 <ShieldCheck className="w-24 h-24" />
                               </div>
-                              <p className="text-xl text-navy-950 font-normal leading-relaxed italic relative z-10">
+                              <p className="text-xl text-navy-950 font-normal leading-relaxed relative z-10">
                                 "Without binding signatories to mediate by obligation, the PACT Mediation Pledge serves as a steady reminder to consider mediation as a go-to process to resolve disputes via innovation and interest-based interactions."
                               </p>
                             </div>
@@ -363,7 +363,7 @@ export function PledgeSection() {
                                 </div>
                                 <div className="space-y-3">
                                   <p className="text-[10px] font-mono text-gold-500 uppercase tracking-widest font-bold">Preservation of Rights</p>
-                                  <p className="text-sm text-navy-950/70 font-light leading-relaxed italic opacity-60">This pledge does not create binding legal obligations or restrict access to other resolution mechanisms.</p>
+                                  <p className="text-sm text-navy-950/70 font-light leading-relaxed opacity-60">This pledge does not create binding legal obligations or restrict access to other resolution mechanisms.</p>
                                 </div>
                              </div>
                            </div>
@@ -389,7 +389,7 @@ export function PledgeSection() {
                                 </div>
                                 <div className="space-y-3">
                                   <p className="text-[10px] font-mono text-gold-500 uppercase tracking-widest font-bold">Preservation of Rights</p>
-                                  <p className="text-sm text-white/40 font-light leading-relaxed italic">This pledge reflects an intention to promote mediation and does not create binding legal obligations.</p>
+                                  <p className="text-sm text-white/40 font-light leading-relaxed">This pledge reflects an intention to promote mediation and does not create binding legal obligations.</p>
                                 </div>
                              </div>
                            </div>
