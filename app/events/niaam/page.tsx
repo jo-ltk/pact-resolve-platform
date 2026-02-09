@@ -118,7 +118,7 @@ const AwardCard = ({ awardee, image }: { awardee: AwardRecipient, image: string 
                   </div>
                   
                   <div className="space-y-3">
-                    <h3 className="text-xl sm:text-2xl font-bold text-navy-950 tracking-tight leading-[1.1] group-hover:text-gold-600 transition-all duration-500 uppercase italic px-2">
+                    <h3 className="text-xl sm:text-2xl font-bold text-navy-950 tracking-tight leading-[1.1] group-hover:text-gold-600 transition-all duration-500 uppercase italic px-2 wrap-break-word">
                        {awardee.name}
                     </h3>
                     <div className="inline-flex items-center px-4 py-1 rounded-full bg-navy-50/50 border border-navy-100/50 text-[9px] sm:text-[10px] text-navy-950/50 font-mono uppercase tracking-[0.15em] group-hover:border-gold-500/30 group-hover:bg-gold-500/5 group-hover:text-gold-700 transition-all duration-500">
@@ -140,12 +140,12 @@ const AwardCard = ({ awardee, image }: { awardee: AwardRecipient, image: string 
         </motion.div>
       </DialogTrigger>
       
-      <DialogContent className="max-w-[95vw] md:max-w-6xl w-full p-0 border-none bg-navy-950/95 backdrop-blur-3xl overflow-hidden rounded-4xl sm:rounded-5xl shadow-[0_0_100px_rgba(0,0,0,0.8)] z-100 no-scrollbar">
+      <DialogContent showCloseButton={false} className="max-w-[95vw] md:max-w-6xl w-full p-0 border-none bg-navy-950/95 backdrop-blur-3xl overflow-hidden rounded-4xl sm:rounded-5xl shadow-[0_0_100px_rgba(0,0,0,0.8)] z-100 no-scrollbar">
         <DialogTitle className="sr-only">Award Certificate - {awardee.name}</DialogTitle>
         
         {/* Premium Close Button - Positioned consistently across mobile/desktop */}
-        <DialogClose className="fixed top-4 right-4 sm:top-8 sm:right-8 w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-navy-950/40 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-gold-500 hover:border-gold-500 hover:text-navy-950 transition-all duration-500 group/close z-50 shadow-2xl">
-           <X className="w-5 h-5 sm:w-8 sm:h-8 group-hover/close:rotate-90 transition-transform" />
+        <DialogClose className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-gold-500 hover:text-navy-950 hover:scale-110 transition-all duration-500 group/close z-50 shadow-2xl">
+           <X className="w-5 h-5 sm:w-6 sm:h-6 group-hover/close:rotate-90 transition-transform duration-500" />
         </DialogClose>
 
         <div className="w-full relative flex flex-col md:flex-row overflow-y-auto max-h-[90vh] no-scrollbar">
@@ -170,7 +170,7 @@ const AwardCard = ({ awardee, image }: { awardee: AwardRecipient, image: string 
                   <div className="h-px w-10 bg-gold-500" />
                   <span className="text-gold-500 font-mono text-xs sm:text-sm tracking-[0.4em] uppercase font-bold">{awardee.year} RECIPIENT</span>
                 </div>
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tighter italic text-white uppercase leading-[0.9]">{awardee.name}</h2>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tighter italic text-white uppercase leading-[0.9] wrap-break-word">{awardee.name}</h2>
               </div>
               
               <div className="space-y-8 sm:space-y-10">
@@ -234,32 +234,62 @@ export default function NIAAMPage() {
 
   // Fallback Awardees List (19 total to match certificates)
   const defaultAwardees: AwardRecipient[] = [
-    { name: "Adv. Tanu Mehta", city: "Mumbai", category: "Mediation Education", year: "2025" },
-    { name: "Justice Mohan Lal Mehta", city: "New Delhi", category: "Mediation Institution Building", year: "2025" },
+    { name: "Adv Tanu Mehta", city: "Mumbai", category: "Mediation Education", year: "2025" },
     { name: "Raj Panchmatia", city: "Mumbai", category: "Mediation Advocacy", year: "2025" },
-    { name: "Adv. Veena Ralli", city: "New Delhi", category: "Mediation Practice", year: "2025" },
-    { name: "Adv. J P Sengh", city: "New Delhi", category: "Mediation Practice", year: "2024" },
-    { name: "Justice A K Sikri", city: "New Delhi", category: "Mediation Advocacy", year: "2024" },
-    { name: "Adv. Pusshp Gupta", city: "New Delhi", category: "Mediation Education", year: "2024" },
+    { name: "Adv Veena Ralli", city: "New Delhi", category: "Mediation Practice", year: "2025" },
+    { name: "Justice Mohan Lal Mehta", city: "New Delhi", category: "Mediation Institution Building", year: "2025" },
     { name: "Adv. Sudhanshu Batra", city: "New Delhi", category: "Mediation Practice", year: "2024" },
+    { name: "Adv. J P Sengh", city: "New Delhi", category: "Mediation Practice", year: "2024" },
+    { name: "Adv. Pusshp Gupta", city: "New Delhi", category: "Mediation Education", year: "2024" },
+    { name: "Justice A K Sikri", city: "New Delhi", category: "Mediation Advocacy", year: "2024" },
     { name: "Justice Kurian Joseph", city: "New Delhi", category: "Mediation Advocacy", year: "2024" },
-    { name: "A J Jawad", city: "Hyderabad", category: "Mediation Education", year: "2023" },
-    { name: "Justice Tejas Karia", city: "New Delhi", category: "Mediation Advocacy", year: "2023" },
-    { name: "Laila Ollapally", city: "Bengaluru", category: "Mediation Practice", year: "2023" },
     { name: "Justice Gita Mittal", city: "New Delhi", category: "Mediation Advocacy", year: "2023" },
-    { name: "Chitra Narayan", city: "Chennai", category: "Mediation Education", year: "2023" },
+    { name: "Justice Tejas Karia", city: "New Delhi", category: "Mediation Advocacy", year: "2023" },
+    { name: "Adv. Prashant Popat", city: "Mumbai", category: "Mediation Practice", year: "2025" },
+    { name: "Laila Ollapally", city: "Bengaluru", category: "Mediation Practice", year: "2023" },
+    { name: "Adv. Chitra Narayan", city: "Chennai", category: "Mediation Education", year: "2023" },
     { name: "Adv. Sadhana Ramachandran", city: "New Delhi", category: "Mediation Practice", year: "2023" },
+    { name: "A J Jawad", city: "Hyderabad", category: "Mediation Education", year: "2023" },
     { name: "Adv. Sriram Panchu", city: "Chennai", category: "Mediation Practice", year: "2023" },
-    { name: "Justice Sanjay Kishan Kaul", city: "New Delhi", category: "Mediation Advocacy", year: "2025" },
-    { name: "Justice Madan B. Lokur", city: "New Delhi", category: "Mediation Institutional Development", year: "2024" },
     { name: "Adv. Niranjan Bhat (Post-humously)", city: "Ahmedabad", category: "Mediation Practice", year: "2023" }
   ];
 
-  // Merge logic: Use items from eventData.recipients, then fill with defaultAwardees up to 19 items
+  // Merge logic: Ensure unique awardees by filtering defaults by name
+  // Using a robust normalization (no dots, lowercase) to match names
+  const normalize = (name: string) => name.toLowerCase().replace(/\./g, "").replace(/\(post-humously\)/g, "").trim();
+  
   const dbAwardees = eventData?.recipients || [];
-  const awardees: AwardRecipient[] = dbAwardees.length >= 19 
-    ? dbAwardees 
-    : [...dbAwardees, ...defaultAwardees.slice(dbAwardees.length)];
+  const dbNames = new Set(dbAwardees.map(a => normalize(a.name)));
+  const uniqueDefaults = defaultAwardees.filter(a => !dbNames.has(normalize(a.name)));
+  
+  const awardees: AwardRecipient[] = [...dbAwardees, ...uniqueDefaults];
+
+  // Helper to map any name variant to its actual certificate filename
+  const getCertificateImage = (name: string) => {
+    const norm = normalize(name);
+    const mapping: Record<string, string> = {
+      "a j jawad": "A J Jawad",
+      "adv tanu mehta": "Adv Tanu Mehta",
+      "adv veena ralli": "Adv Veena Ralli",
+      "adv chitra narayan": "Adv. Chitra Narayan",
+      "adv j p sengh": "Adv. J P Sengh",
+      "adv niranjan bhat": "Adv. Niranjan Bhat",
+      "adv prashant popat": "Adv. Prashant Popat",
+      "adv pusshp gupta": "Adv. Pusshp Gupta",
+      "adv sadhana ramachandran": "Adv. Sadhana Ramachandran",
+      "adv sriram panchu": "Adv. Sriram Panchu",
+      "adv sudhanshu batra": "Adv. Sudhanshu Batra",
+      "justice a k sikri": "Justice A K Sikri",
+      "justice gita mittal": "Justice Gita Mittal",
+      "justice kurian joseph": "Justice Kurian Joseph",
+      "justice mohan lal mehta": "Justice Mohan Lal Mehta",
+      "justice tejas karia": "Justice Tejas Karia",
+      "laila ollapally": "Laila Ollapally",
+      "raj panchmatia": "Raj Panchmatia"
+    };
+    const fileName = mapping[norm] || name.replace(/\./g, "").trim();
+    return `/images/awards/${fileName}.png`;
+  };
 
   const galleryItems = eventData?.gallery?.length ? eventData.gallery : [
     { url: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80", title: "Ceremonial Moment 1", description: "Celebrating the advancement of mediation excellence in India." },
@@ -350,7 +380,7 @@ export default function NIAAMPage() {
           <div className="flex flex-col gap-8 sm:gap-10 md:gap-12 lg:gap-16">
             {/* Cinematic Feature Image */}
             <FadeInUp className="relative group">
-              <div className="absolute -inset-6 sm:-inset-10 bg-gold-500/5 blur-3xl rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="absolute inset-0 bg-linear-to-br from-gold-500/10 via-transparent to-navy-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative aspect-video md:aspect-21/9 rounded-2xl sm:rounded-3xl md:rounded-[3rem] lg:rounded-[4rem] overflow-hidden bg-navy-50 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] sm:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] ring-1 ring-navy-950/5">
                 <Image 
                   src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&q=80"
@@ -358,7 +388,7 @@ export default function NIAAMPage() {
                   fill
                   className="object-cover transition-transform duration-2000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-navy-950/10 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-navy-950/20 to-transparent opacity-60" />
                 
                 {/* Niaam Badge - Top Right */}
                 <div className="absolute top-3 right-3 sm:top-6 sm:right-6 md:top-8 md:right-8 w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 rounded-full bg-navy-950 flex flex-col items-center justify-center text-center shadow-xl sm:shadow-2xl border-2 sm:border-3 md:border-4 border-gold-500/30">
@@ -377,7 +407,7 @@ export default function NIAAMPage() {
                 className="relative md:ml-12 lg:ml-16 p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-2xl md:rounded-3xl bg-white backdrop-blur-xl border border-navy-950/10 shadow-2xl max-w-full sm:max-w-[320px] md:max-w-[360px]"
               >
                 <div className="flex items-center gap-3 sm:gap-4 text-left">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-950 shadow-lg shrink-0">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-linear-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-950 shadow-lg shrink-0">
                     <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
                   </div>
                   <div>
@@ -413,7 +443,7 @@ export default function NIAAMPage() {
                 }
               ].map((item, i) => (
                 <StaggerItem key={i}>
-                  <div className="group relative h-full p-6 sm:p-7 md:p-8 rounded-2xl sm:rounded-[2rem] md:rounded-[2.5rem] bg-navy-50/50 border border-transparent hover:border-gold-500/30 hover:bg-white hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden text-center flex flex-col items-center">
+                  <div className="group relative h-full p-6 sm:p-7 md:p-8 rounded-2xl sm:rounded-4xl md:rounded-[2.5rem] bg-navy-50/50 border border-transparent hover:border-gold-500/30 hover:bg-white hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden text-center flex flex-col items-center">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-white flex items-center justify-center mb-4 sm:mb-5 md:mb-6 shadow-sm group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 text-gold-500 border border-navy-100">
                       <item.icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
                     </div>
@@ -479,12 +509,12 @@ export default function NIAAMPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
             {awardees.map((awardee, i) => (
-              <StaggerItem key={i}>
-                <AwardCard 
-                  awardee={awardee} 
-                  image={`/images/awards/Impact Awards-${(i % 19) + 7}.png`}
-                />
-              </StaggerItem>
+                <StaggerItem key={i}>
+                  <AwardCard 
+                    awardee={awardee} 
+                    image={getCertificateImage(awardee.name)}
+                  />
+                </StaggerItem>
             ))}
           </StaggerContainer>
           
@@ -522,7 +552,7 @@ export default function NIAAMPage() {
                     <Dialog>
                       <DialogTrigger asChild>
                         <button className="w-full text-left group/image relative outline-hidden cursor-pointer">
-                          <div className="aspect-16/10 md:aspect-21/9 w-full relative rounded-5xl md:rounded-[4rem] overflow-hidden bg-navy-900/10 shadow-2xl group-hover/image:shadow-gold-500/20 transition-all duration-1000">
+                          <div className="relative h-full w-full rounded-2xl sm:rounded-4xl overflow-hidden border border-navy-100/10 bg-white shadow-2xl transition-all duration-700 group-hover:shadow-gold-500/10 group-hover:border-gold-500/20">
                             <Image 
                               src={item.url}
                               alt={item.title || `Ceremony Moment ${i + 1}`}
@@ -545,11 +575,11 @@ export default function NIAAMPage() {
                         </div>
                       </button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-none! w-screen h-screen p-0 m-0 border-none bg-black/90 backdrop-blur-3xl shadow-none focus:outline-hidden flex items-center justify-center z-100 no-scrollbar">
+                    <DialogContent showCloseButton={false} className="max-w-none! w-screen h-screen p-0 m-0 border-none bg-black/90 backdrop-blur-3xl shadow-none focus:outline-hidden flex items-center justify-center z-100 no-scrollbar">
                       <DialogTitle className="sr-only">{item.title || `Ceremony Moment ${i + 1}`}</DialogTitle>
                       <div className="relative w-[96vw] h-[85vh] rounded-4xl md:rounded-[6rem] overflow-hidden bg-navy-950 shadow-[0_0_150px_rgba(0,0,0,0.6)] border border-white/10 group/modal transition-all duration-700 no-scrollbar">
-                        <DialogClose className="absolute top-8 right-8 z-50 w-14 h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-gold-500 hover:text-navy-950 hover:scale-110 transition-all duration-500 shadow-2xl group/close">
-                          <X className="w-8 h-8 group-hover/close:rotate-90 transition-transform duration-500" />
+                        <DialogClose className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-gold-500 hover:text-navy-950 hover:scale-110 transition-all duration-500 shadow-2xl group/close">
+                          <X className="w-5 h-5 sm:w-6 sm:h-6 group-hover/close:rotate-90 transition-transform duration-500" />
                         </DialogClose>
 
                           <Image 
