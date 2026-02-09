@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft, LogOut, User, Search, Menu, X } from "lucide-react";
+import { ArrowLeft, LogOut, User, Search, Menu, X, ChevronRight } from "lucide-react";
 import { useAuth } from "@/lib/context/AuthContext";
 import { useSidebar } from "@/lib/context/SidebarContext";
 import { 
@@ -74,39 +74,57 @@ export function AdminNavbar() {
 
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-2 md:gap-3 px-1 md:px-2 py-1 md:py-2 hover:bg-slate-50 rounded-2xl transition-all border border-transparent group h-auto">
-                    <div className="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-accent/10 flex items-center justify-center text-accent font-black shadow-inner group-hover:scale-105 transition-transform">
-                      {user?.name.charAt(0)}
+                  <Button variant="ghost" className="flex items-center gap-2 md:gap-4 px-2 md:px-3 py-2 hover:bg-slate-50 rounded-2xl transition-all border border-transparent group h-auto">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-accent/10 flex items-center justify-center text-accent font-black shadow-inner group-hover:scale-105 transition-transform border border-accent/20 overflow-hidden">
+                        {user?.image ? (
+                          <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+                        ) : (
+                          user?.name.charAt(0)
+                        )}
+                      </div>
+                      <div className="hidden sm:block text-left pr-1">
+                        <p className="text-xs font-black text-navy-950 leading-none uppercase tracking-tighter">{user?.name}</p>
+                        <p className="text-[9px] text-navy-950/30 mt-1.5 uppercase font-bold tracking-widest">{user?.role}</p>
+                      </div>
                     </div>
-                    <div className="hidden sm:block text-left pr-3">
-                      <p className="text-xs font-black text-navy-950 leading-none uppercase tracking-tight">{user?.name}</p>
-                      <p className="text-[9px] text-navy-950/30 mt-1.5 uppercase font-bold tracking-widest">{user?.role}</p>
-                    </div>
+                    <ChevronRight className="w-4 h-4 text-navy-950/20 group-hover:text-accent rotate-90 transition-all duration-300" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-60 mt-4 p-2 rounded-2xl bg-white border-slate-100 text-navy-950 shadow-2xl shadow-navy-950/10 animate-in fade-in zoom-in-95 duration-200">
-                   <div className="px-4 py-3 border-b border-slate-50 mb-1">
-                      <p className="text-[10px] font-bold text-navy-950/30 uppercase tracking-widest">Active Account</p>
-                      <p className="text-sm font-black text-navy-950 truncate">{user?.email}</p>
+                <DropdownMenuContent align="end" className="w-64 mt-4 p-2 rounded-4xl bg-white border-slate-100 text-navy-950 shadow-2xl shadow-navy-950/10 animate-in fade-in zoom-in-95 duration-200 overflow-hidden relative">
+                   <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+                   
+                   <div className="px-5 py-4 border-b border-slate-50 mb-2 relative z-10">
+                      <p className="text-[10px] font-black text-navy-950/20 uppercase tracking-[0.2em] mb-1">Account</p>
+                      <p className="text-sm font-black text-navy-950 truncate tracking-tight">{user?.email}</p>
                    </div>
-                   <Link href="/admin/profile">
-                     <DropdownMenuItem className="cursor-pointer gap-3 rounded-xl py-3 px-4 hover:bg-slate-50 focus:bg-accent/5 focus:text-accent transition-all group">
-                        <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center group-hover:bg-accent/10">
-                          <User className="w-4 h-4 text-navy-950/40 group-hover:text-accent" />
+                   
+                   <div className="space-y-1 relative z-10">
+                     <Link href="/admin/profile">
+                       <DropdownMenuItem className="cursor-pointer gap-4 rounded-xl py-3.5 px-4 hover:bg-slate-50 focus:bg-accent/5 focus:text-accent transition-all group border border-transparent hover:border-slate-100">
+                          <div className="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                            <User className="w-4 h-4 text-navy-950/40 group-hover:text-accent" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="font-black text-[11px] uppercase tracking-widest text-navy-950 leading-none">View Profile</span>
+                            <span className="text-[9px] text-navy-950/30 font-bold uppercase mt-1">Manage settings</span>
+                          </div>
+                       </DropdownMenuItem>
+                     </Link>
+
+                     <DropdownMenuItem 
+                        onClick={logout}
+                        className="cursor-pointer gap-4 text-red-500 hover:text-white hover:bg-red-500 focus:text-white focus:bg-red-500 rounded-xl py-3.5 px-4 transition-all group border border-transparent"
+                     >
+                        <div className="w-9 h-9 rounded-xl bg-red-50 group-hover:bg-white/20 flex items-center justify-center transition-colors">
+                          <LogOut className="w-4 h-4" />
                         </div>
-                        <span className="font-bold text-xs uppercase tracking-widest">Profile</span>
+                        <div className="flex flex-col">
+                          <span className="font-black text-[11px] uppercase tracking-widest leading-none">Sign Out</span>
+                          <span className="text-[9px] opacity-60 font-bold uppercase mt-1">End session</span>
+                        </div>
                      </DropdownMenuItem>
-                   </Link>
-                   <div className="h-px bg-slate-50 my-1 mx-2" />
-                   <DropdownMenuItem 
-                      onClick={logout}
-                      className="cursor-pointer gap-3 text-red-500 hover:text-white hover:bg-red-500 focus:text-white focus:bg-red-500 rounded-xl py-3 px-4 transition-all"
-                   >
-                      <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center transition-colors">
-                        <LogOut className="w-4 h-4" />
-                      </div>
-                      <span className="font-bold text-xs uppercase tracking-widest">Sign Out</span>
-                   </DropdownMenuItem>
+                   </div>
                 </DropdownMenuContent>
              </DropdownMenu>
           </div>

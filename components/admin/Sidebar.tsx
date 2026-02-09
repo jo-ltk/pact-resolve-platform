@@ -95,31 +95,47 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="p-6 mt-auto">
-        <div className="bg-navy-950/5 rounded-3xl p-5 mb-4 border border-navy-950/5 overflow-hidden relative group">
-          <div className="flex items-center gap-4 mb-6 relative z-10">
-            <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-accent to-accent/60 flex items-center justify-center text-navy-950 font-black shadow-lg shadow-accent/10 border border-white/20">
-              {user?.name?.charAt(0) || "A"}
+      <div className="p-4 mt-auto">
+        <div className="bg-white rounded-4xl p-5 mb-4 border border-navy-950/5 overflow-hidden relative group shadow-xl shadow-navy-950/5">
+          <div className="flex items-center gap-4 mb-6 relative z-10 transition-transform duration-500 group-hover:scale-[1.02]">
+            <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-accent to-accent/60 flex items-center justify-center text-navy-950 font-black shadow-lg shadow-accent/20 border border-white/20 overflow-hidden">
+              {user?.image ? (
+                <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                user?.name?.charAt(0) || "A"
+              )}
             </div>
             <div className="flex-1 overflow-hidden">
               <p className="text-sm font-bold truncate text-navy-950">{user?.name || "Admin"}</p>
-              <p className="text-[10px] text-accent uppercase tracking-widest font-black mt-1 opacity-70">
+              <p className="text-[10px] text-accent font-black mt-1 uppercase tracking-widest">
                 {user?.role || "Administrator"}
               </p>
             </div>
           </div>
-          <Button 
-            variant="ghost" 
-            className="w-full justify-start text-red-600 hover:text-white hover:bg-red-500 gap-3 px-4 h-12 rounded-xl transition-all font-bold group/btn"
-            onClick={logout}
-          >
-            <LogOut className="w-4 h-4 group-hover/btn:-translate-x-1 transition-transform" />
-            <span>Sign Out</span>
-          </Button>
+
+          <div className="grid grid-cols-2 gap-2 relative z-10">
+            <Link href="/admin/profile" className="flex-1">
+              <Button 
+                variant="ghost" 
+                className="w-full bg-slate-50 hover:bg-accent/10 text-navy-950 hover:text-accent gap-2 px-2 h-11 rounded-xl transition-all font-bold text-xs border border-slate-100 hover:border-accent/20"
+              >
+                <Users className="w-3.5 h-3.5" />
+                <span>Profile</span>
+              </Button>
+            </Link>
+            <Button 
+              variant="ghost" 
+              className="flex-1 bg-red-50 hover:bg-red-500 text-red-600 hover:text-white gap-2 px-2 h-11 rounded-xl transition-all font-bold text-xs border border-red-100 hover:border-red-500"
+              onClick={logout}
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Exit</span>
+            </Button>
+          </div>
           
-          <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-accent/5 rounded-full blur-2xl group-hover:bg-accent/10 transition-all" />
+          <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-accent/5 rounded-full blur-3xl group-hover:bg-accent/10 transition-all duration-700" />
         </div>
-        <p className="text-[10px] text-center text-navy-950/20 font-bold tracking-widest uppercase">
+        <p className="text-[10px] text-center text-navy-950/20 font-bold tracking-widest uppercase py-2">
           PACT Management &bull; v1.0.0
         </p>
       </div>

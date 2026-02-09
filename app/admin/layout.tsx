@@ -13,11 +13,9 @@ export default function AdminRootLayout({
     <AuthProvider>
       <SidebarProvider>
         <div className="min-h-screen bg-[#F8FAFC]">
-          <AdminNavbar />
-          <main className="pb-24">
+          <main>
             {children}
           </main>
-          <MobileBottomNav />
         </div>
         <Toaster position="top-right" richColors />
       </SidebarProvider>

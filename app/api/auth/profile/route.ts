@@ -8,6 +8,7 @@ const profileSchema = z.object({
   name: z.string().min(2).optional(),
   email: z.string().email().optional(),
   password: z.string().optional(),
+  image: z.string().optional(),
 });
 
 export async function PUT(request: NextRequest) {
@@ -37,6 +38,7 @@ export async function PUT(request: NextRequest) {
     const updateData: any = {};
     if (validation.data.name) updateData.name = validation.data.name;
     if (validation.data.email) updateData.email = validation.data.email.toLowerCase();
+    if (validation.data.image) updateData.image = validation.data.image;
     
     if (validation.data.password) {
       updateData.password = await hashPassword(validation.data.password);
@@ -62,6 +64,7 @@ export async function PUT(request: NextRequest) {
         name: updatedUser?.name,
         email: updatedUser?.email,
         role: updatedUser?.role,
+        image: updatedUser?.image,
       }
     });
   } catch (error: any) {

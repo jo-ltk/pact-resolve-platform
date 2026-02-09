@@ -13,7 +13,8 @@ import {
   LogOut,
   MailIcon,
   ShieldCheck,
-  UserCheck
+  UserCheck,
+  Loader2
 } from "lucide-react";
 import { useAuth } from "@/lib/context/AuthContext";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,9 @@ export default function ProfilePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
 
+  const [isImageLoading, setIsImageLoading] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -39,6 +43,51 @@ export default function ProfilePage() {
     password: "",
     confirmPassword: "",
   });
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    setIsImageLoading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const uploadRes = await fetch("/api/upload", {
+        method: "POST",
+        headers: {
+          "x-user-id": user._id || "",
+        },
+        body: formData,
+      });
+
+      const uploadData = await uploadRes.json();
+
+      if (!uploadRes.ok) throw new Error(uploadData.error || "Upload failed");
+
+      const imageUrl = uploadData.data.url;
+
+      const response = await fetch("/api/auth/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ image: imageUrl }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || "Failed to update profile");
+
+      updateUser(data.user);
+      toast.success("Profile picture updated!");
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsImageLoading(false);
+    }
+  };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,46 +169,70 @@ export default function ProfilePage() {
     <div className="flex flex-col gap-8 pb-16">
       {/* Header section with cover effect */}
       <FadeInUp className="relative group">
-        <div className="h-48 w-full rounded-[2.5rem] bg-linear-to-r from-navy-950 via-navy-900 to-accent/20 overflow-hidden relative shadow-2xl">
-           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-           <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-[100px] -mr-48 -mt-48 animate-pulse" />
+        <div className="h-48 w-full rounded-[2.5rem] bg-linear-to-r from-accent/5 via-accent/10 to-accent/5 overflow-hidden relative shadow-inner border border-accent/10">
+           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5 mix-blend-overlay" />
+           <div className="absolute top-0 right-0 w-96 h-96 bg-accent/20 rounded-full blur-[100px] -mr-48 -mt-48 animate-pulse" />
+           <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/10 rounded-full blur-[80px] -ml-32 -mb-32" />
         </div>
         
-        <div className="px-8 -mt-20 relative z-10 flex flex-col md:flex-row items-end gap-6">
-              <div className="w-40 h-40 rounded-[2.5rem] bg-white p-2 shadow-2xl border border-slate-100">
-                 <div className="w-full h-full rounded-4xl bg-accent/10 flex items-center justify-center text-5xl font-black text-accent shadow-inner">
-                    {user.name.charAt(0)}
+        <div className="px-8 -mt-20 relative z-10 flex flex-col md:flex-row items-center md:items-end gap-6">
+            <div className="relative group/avatar">
+              <div className="w-40 h-40 rounded-[2.5rem] bg-white p-2 shadow-2xl border border-slate-100 overflow-hidden">
+                 <div className="w-full h-full rounded-4xl bg-accent/10 flex items-center justify-center text-5xl font-black text-accent shadow-inner overflow-hidden relative">
+                    {user.image ? (
+                      <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+                    ) : (
+                      user.name.charAt(0)
+                    )}
+                    {isImageLoading && (
+                      <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center">
+                        <Loader2 className="w-8 h-8 text-accent animate-spin" />
+                      </div>
+                    )}
                  </div>
               </div>
-              <button className="absolute bottom-2 right-2 w-10 h-10 rounded-2xl bg-navy-950 text-white flex items-center justify-center shadow-xl border-4 border-white hover:scale-110 active:scale-95 transition-all group-hover/avatar:bg-accent group-hover/avatar:text-navy-950">
-                 <Camera className="w-4 h-4" />
-              </button>
-           </div>
-           
-           <div className="pb-4 flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                 <h1 className="text-4xl font-black text-navy-950 tracking-tight">{user.name}</h1>
-                 <Badge className="bg-accent/10 text-accent border-accent/20 hover:bg-accent/20 font-black tracking-widest uppercase py-1 px-3 rounded-lg">
-                    {user.role}
-                 </Badge>
-              </div>
-           </div>
-
-           <div className="pb-4 flex gap-3">
-              <Button 
-                onClick={() => setIsEditing(!isEditing)} 
-                variant={isEditing ? "ghost" : "default"}
-                className="rounded-2xl px-8 h-12 font-bold transition-all shadow-lg active:scale-95"
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                className="hidden" 
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+              <button 
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isImageLoading}
+                className="absolute -bottom-2 -right-2 w-12 h-12 rounded-2xl bg-white text-navy-950 flex items-center justify-center shadow-2xl border-4 border-white hover:scale-110 active:scale-95 transition-all hover:bg-accent group/cam z-20 disabled:opacity-50"
               >
-                {isEditing ? "Cancel Edit" : "Edit Profile"}
-              </Button>
-           </div>
+                 <Camera className="w-5 h-5 text-navy-950/40 group-hover/cam:text-navy-950" />
+              </button>
+            </div>
+            
+            <div className="pb-4 flex-1 mt-4 md:mt-0 text-center md:text-left">
+               <div className="flex flex-col md:flex-row items-center gap-3 mb-2">
+                  <h1 className="text-4xl font-black text-navy-950 tracking-tight">{user.name}</h1>
+                  <Badge className="bg-accent/10 text-accent border-accent/20 hover:bg-accent/20 font-black tracking-widest uppercase py-1 px-3 rounded-lg">
+                     {user.role}
+                  </Badge>
+               </div>
+               <p className="text-navy-950/40 font-medium uppercase tracking-widest text-[10px]">{user.email}</p>
+            </div>
+
+            <div className="pb-4 flex gap-3">
+               <Button 
+                 onClick={() => setIsEditing(!isEditing)} 
+                 variant={isEditing ? "ghost" : "default"}
+                 className="rounded-2xl px-10 h-14 font-bold transition-all shadow-lg active:scale-95 bg-white text-navy-950 hover:bg-slate-50 border border-slate-100"
+               >
+                 {isEditing ? "Cancel Edit" : "Edit Profile"}
+               </Button>
+            </div>
+        </div>
       </FadeInUp>
 
       <StaggerContainer className="grid lg:grid-cols-3 gap-8 mt-4">
          {/* Account Info Form */}
          <FadeInUp className="lg:col-span-2 space-y-8">
-            <Card className="rounded-[2.5rem] border-slate-100 shadow-xl shadow-navy-950/5 overflow-hidden">
+            <Card className="rounded-4xl border-slate-100 shadow-xl shadow-navy-950/5 overflow-hidden bg-white">
                <CardHeader className="p-8 border-b border-slate-50">
                   <div className="flex items-center gap-3">
                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
@@ -182,7 +255,7 @@ export default function ProfilePage() {
                                 disabled={!isEditing}
                                 value={formData.name}
                                 onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                className="h-14 pl-12 rounded-2xl bg-slate-50 border-transparent focus:border-accent focus:bg-white transition-all font-bold placeholder:text-navy-950/20"
+                                className="h-14 pl-12 rounded-2xl bg-white border-slate-100 focus:border-accent transition-all font-bold placeholder:text-navy-950/20 shadow-sm"
                               />
                            </div>
                         </div>
@@ -194,7 +267,7 @@ export default function ProfilePage() {
                                 disabled={!isEditing}
                                 value={formData.email}
                                 onChange={(e) => setFormData({...formData, email: e.target.value})}
-                                className="h-14 pl-12 rounded-2xl bg-slate-50 border-transparent focus:border-accent focus:bg-white transition-all font-bold placeholder:text-navy-950/20"
+                                className="h-14 pl-12 rounded-2xl bg-white border-slate-100 focus:border-accent transition-all font-bold placeholder:text-navy-950/20 shadow-sm"
                               />
                            </div>
                         </div>
@@ -215,7 +288,7 @@ export default function ProfilePage() {
                </CardContent>
             </Card>
 
-            <Card className="rounded-[2.5rem] border-slate-100 shadow-xl shadow-navy-950/5 overflow-hidden">
+            <Card className="rounded-4xl border-slate-100 shadow-xl shadow-navy-950/5 overflow-hidden bg-white">
                <CardHeader className="p-8 border-b border-slate-50">
                   <div className="flex items-center gap-3">
                      <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
@@ -237,7 +310,7 @@ export default function ProfilePage() {
                              placeholder="••••••••"
                              value={passwordData.password}
                              onChange={(e) => setPasswordData({...passwordData, password: e.target.value})}
-                             className="h-14 rounded-2xl bg-slate-50 border-transparent focus:border-accent focus:bg-white transition-all font-bold"
+                             className="h-14 rounded-2xl bg-white border-slate-100 focus:border-accent transition-all font-bold shadow-sm"
                            />
                         </div>
                         <div className="space-y-2">
@@ -248,7 +321,7 @@ export default function ProfilePage() {
                              value={passwordData.confirmPassword}
                              onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
                              className={cn(
-                               "h-14 rounded-2xl bg-slate-50 border-transparent focus:bg-white transition-all font-bold",
+                               "h-14 rounded-2xl bg-white border-slate-100 transition-all font-bold shadow-sm",
                                passwordData.confirmPassword && passwordData.password !== passwordData.confirmPassword 
                                  ? "border-red-500 focus:border-red-500 text-red-500" 
                                  : "focus:border-accent"
@@ -277,47 +350,7 @@ export default function ProfilePage() {
 
          {/* Sidebar stats/actions */}
          <FadeInUp delay={0.2} className="space-y-8">
-            <Card className="rounded-[2.5rem] bg-navy-950 text-white border-none shadow-2xl overflow-hidden relative group">
-               <CardContent className="p-10 relative z-10">
-                  <div className="space-y-8">
-                     <div className="space-y-2">
-                        <p className="text-[10px] font-black uppercase tracking-[0.25em] text-accent">Security Status</p>
-                        <div className="flex items-center gap-3">
-                           <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center border border-accent/20">
-                              <Shield className="w-6 h-6 text-accent" />
-                           </div>
-                           <h3 className="text-2xl font-bold">2FA Enabled</h3>
-                        </div>
-                     </div>
-                     
-                     <div className="h-px bg-white/5" />
-                     
-                     <div className="grid grid-cols-2 gap-4 text-center">
-                        <div className="space-y-1">
-                           <p className="text-[10px] font-black uppercase opacity-40">Session</p>
-                           <p className="text-xl font-bold text-emerald-400">Active</p>
-                        </div>
-                        <div className="space-y-1 border-l border-white/5">
-                           <p className="text-[10px] font-black uppercase opacity-40">Location</p>
-                           <p className="text-xl font-bold">London, UK</p>
-                        </div>
-                     </div>
-
-                     <Button 
-                       onClick={logout}
-                       variant="outline" 
-                       className="w-full h-14 rounded-2xl border-white/10 bg-white/5 hover:bg-red-500 hover:border-red-500 text-white font-bold transition-all group/btn"
-                     >
-                        <LogOut className="w-4 h-4 mr-2 group-hover/btn:-translate-x-1 transition-transform" />
-                        Sign Out from All Devices
-                     </Button>
-                  </div>
-                  
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-[80px] -mr-32 -mt-32 group-hover:bg-accent/10 transition-all pointer-events-none" />
-               </CardContent>
-            </Card>
-
-            <Card className="rounded-[2.5rem] border-slate-100 shadow-xl shadow-navy-950/5 overflow-hidden">
+            <Card className="rounded-4xl border-slate-100 shadow-xl shadow-navy-950/5 overflow-hidden bg-white">
                <CardHeader className="p-8 border-b border-slate-50">
                   <p className="text-[10px] font-black uppercase tracking-[0.25em] text-navy-950/20 mb-2">Platform Access</p>
                   <CardTitle className="text-xl font-bold text-navy-950">Permissions</CardTitle>
@@ -343,6 +376,15 @@ export default function ProfilePage() {
                   </div>
                </CardContent>
             </Card>
+
+            <Button 
+               onClick={logout}
+               variant="outline" 
+               className="w-full h-16 rounded-4xl border-red-100 bg-red-50/50 hover:bg-red-500 hover:text-white text-red-600 font-bold transition-all group/btn shadow-sm"
+            >
+               <LogOut className="w-5 h-5 mr-3 group-hover/btn:-translate-x-1 transition-transform" />
+               Sign Out from Account
+            </Button>
          </FadeInUp>
       </StaggerContainer>
     </div>

@@ -5,6 +5,8 @@ import { Sidebar } from "@/components/admin/Sidebar";
 import { useAuth } from "@/lib/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { AdminNavbar } from "@/components/admin/AdminNavbar";
+import { MobileBottomNav } from "@/components/admin/MobileBottomNav";
 
 export default function AdminDashboardLayout({
   children,
@@ -36,16 +38,19 @@ export default function AdminDashboardLayout({
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)] bg-muted/30 overflow-x-hidden">
-      <Sidebar />
-      <main className="flex-1 md:ml-80 flex flex-col min-h-full relative px-4 md:px-10 scrollbar-none transition-all duration-300">
-        <div className="flex-1 p-4 md:p-8">
-          <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {children}
+    <div className="flex flex-col min-h-screen">
+      <AdminNavbar />
+      <div className="flex flex-1 bg-[#F8FAFC] overflow-x-hidden relative">
+        <Sidebar />
+        <main className="flex-1 md:ml-80 flex flex-col min-h-full relative px-4 md:px-10 scrollbar-none transition-all duration-300 pb-24 md:pb-8">
+          <div className="flex-1 pt-4 md:pt-8 w-full">
+            <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+              {children}
+            </div>
           </div>
-        </div>
-
-      </main>
+        </main>
+      </div>
+      <MobileBottomNav />
     </div>
   );
 }

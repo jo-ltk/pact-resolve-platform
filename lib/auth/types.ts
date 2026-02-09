@@ -7,6 +7,7 @@ export interface User {
   hashedPassword?: string;
   role: UserRole;
   isActive: boolean;
+  image?: string;
   createdAt: Date;
 }
 
