@@ -54,7 +54,7 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
   <FadeInUp className={cn("mb-8 sm:mb-12 md:mb-20", center ? "flex flex-col items-center text-center" : "")}>
     <div className="inline-flex items-center gap-2 sm:gap-4 mb-3 sm:mb-6 opacity-80">
       <div className={cn("h-px w-8 sm:w-12 bg-gold-500", light ? "bg-gold-500" : "bg-gold-500/50")} />
-      <span className={cn("text-[10px] sm:text-[11px] md:text-xs font-mono tracking-[0.2em] sm:tracking-[0.4em] uppercase font-bold", light ? "text-gold-500" : "text-navy-950/60")}>{subtitle}</span>
+      <span className={cn("text-xs sm:text-[11px] md:text-xs font-mono tracking-[0.2em] sm:tracking-[0.4em] uppercase font-bold", light ? "text-gold-500" : "text-navy-950/60")}>{subtitle}</span>
     </div>
     <h2 className={cn("text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-[5rem] font-light tracking-tight mb-4 sm:mb-6 md:mb-8 leading-[1.1] sm:leading-[0.95]", light ? "text-white" : "text-navy-950")}>
       {title.split(' ').map((word, i) => (
@@ -206,7 +206,7 @@ export default function AdvocateMaximusPage() {
                   
                   <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-gold-500/10 border border-gold-500/20">
                     <div className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
-                    <span className="text-[10px] font-mono tracking-widest text-gold-500 uppercase font-bold">
+                    <span className="text-xs font-mono tracking-widest text-gold-500 uppercase font-bold">
                       Open for Participation
                     </span>
                   </div>
@@ -259,7 +259,7 @@ export default function AdvocateMaximusPage() {
                 {/* Bottom Left Text */}
                 <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-10 md:left-10 lg:bottom-20 lg:left-20">
                   <div className="flex flex-col gap-1 sm:gap-1.5 md:gap-2">
-                     <span className="text-[8px] sm:text-[9px] md:text-[10px] lg:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.4em] text-gold-500 font-bold">The Archive</span>
+                     <span className="text-[8px] sm:text-[9px] md:text-xs lg:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.4em] text-gold-500 font-bold">The Archive</span>
                      <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-black text-white italic tracking-tighter uppercase leading-none">Established 2017</h3>
                   </div>
                 </div>
@@ -297,7 +297,7 @@ export default function AdvocateMaximusPage() {
                     ].map((item, i) => (
                       <div key={i} className="p-6 rounded-3xl bg-navy-50 border border-navy-100/50 group hover:bg-white hover:shadow-xl transition-all duration-500">
                         <item.icon className="w-5 h-5 text-gold-500 mb-3 group-hover:scale-110 transition-transform" />
-                        <p className="text-[10px] font-mono uppercase tracking-widest text-navy-950/40 mb-1">{item.label}</p>
+                        <p className="text-xs font-mono uppercase tracking-widest text-navy-950/40 mb-1">{item.label}</p>
                         <p className="text-xl font-bold text-navy-950 tracking-tight">{item.value}</p>
                       </div>
                     ))}
@@ -441,7 +441,7 @@ export default function AdvocateMaximusPage() {
                 <div className="flex items-center gap-3">
                    <div className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
                    <div>
-                      <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40">Edition</p>
+                      <p className="text-xs font-mono font-bold uppercase tracking-widest text-white/40">Edition</p>
                       <p className="text-lg font-black text-white italic tracking-tighter uppercase leading-none">2017 Recap</p>
                    </div>
                 </div>
@@ -492,7 +492,7 @@ export default function AdvocateMaximusPage() {
                     <span className="text-5xl sm:text-6xl md:text-7xl font-black italic text-navy-950 tracking-tighter block group-hover:text-gold-500 transition-colors">
                       {stat.value}
                     </span>
-                    <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.4em] text-gold-500 font-bold">
+                    <span className="text-xs sm:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.4em] text-gold-500 font-bold">
                       {stat.label}
                     </span>
                   </div>

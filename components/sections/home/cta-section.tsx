@@ -71,7 +71,7 @@ export function CTASection() {
             viewport={{ once: true }}
             className="inline-flex flex-col md:flex-row items-center gap-4 mb-6"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 text-gold-600 text-[10px] md:text-sm font-semibold border border-gold-500/20">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 text-gold-600 text-xs md:text-sm font-semibold border border-gold-500/20">
               <MessageSquare className="h-4 w-4" />
               <span>Connect With Us</span>
             </div>
@@ -128,7 +128,7 @@ export function CTASection() {
               <Phone className="h-5 w-5" />
             </div>
             <div>
-              <div className="text-[10px] uppercase tracking-widest text-gold-600 font-bold mb-0.5">9am – 3pm IST</div>
+              <div className="text-xs uppercase tracking-widest text-gold-600 font-bold mb-0.5">9am – 3pm IST</div>
               <div className="text-lg font-semibold text-navy-950 tracking-tight">9765987280</div>
             </div>
           </motion.div>
@@ -145,7 +145,7 @@ export function CTASection() {
               <Mail className="h-5 w-5" />
             </div>
             <div>
-              <div className="text-[10px] uppercase tracking-widest text-gold-600 font-bold mb-0.5">Email Us</div>
+              <div className="text-xs uppercase tracking-widest text-gold-600 font-bold mb-0.5">Email Us</div>
               <div className="text-lg font-semibold text-navy-950 tracking-tight">official@thepact.in</div>
             </div>
           </motion.div>
@@ -196,7 +196,7 @@ export function CTASection() {
                 <MagneticButton
                   enableMotion
                   size="lg"
-                  className="w-full py-6 text-[10px] uppercase tracking-[0.2em] font-black bg-white text-navy-950 hover:bg-accent transition-colors duration-300 rounded-xl shadow-xl shadow-white/5 group"
+                  className="w-full py-6 text-xs uppercase tracking-[0.2em] font-black bg-white text-navy-950 hover:bg-accent transition-colors duration-300 rounded-xl shadow-xl shadow-white/5 group"
                 >
                   <span className="flex items-center gap-3">
                     Select & Inquire
@@ -253,7 +253,7 @@ export function CTASection() {
                 <MagneticButton
                   enableMotion
                   size="lg"
-                  className="w-full py-6 text-[10px] uppercase tracking-[0.2em] font-black bg-navy-950 text-white hover:bg-navy-900 transition-colors duration-300 rounded-xl shadow-xl shadow-navy-950/10 group"
+                  className="w-full py-6 text-xs uppercase tracking-[0.2em] font-black bg-navy-950 text-white hover:bg-navy-900 transition-colors duration-300 rounded-xl shadow-xl shadow-navy-950/10 group"
                 >
                   <span className="flex items-center gap-3">
                     Reserve Now

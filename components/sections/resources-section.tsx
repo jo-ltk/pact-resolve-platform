@@ -27,7 +27,7 @@ export function ResourcesSection() {
               className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-foreground/5 bg-foreground/2 p-6 transition-all duration-300 hover:bg-foreground/5 hover:shadow-2xl"
             >
               <div className="flex flex-col gap-1">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
+                <span className="font-mono text-xs uppercase tracking-widest text-foreground/40">
                   {resource.category}
                 </span>
                 <h3 className="font-sans text-xl font-light text-foreground group-hover:text-primary transition-colors">

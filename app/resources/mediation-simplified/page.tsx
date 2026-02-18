@@ -83,7 +83,7 @@ export default function MediationSimplifiedPage() {
           <FadeInUp>
             <div className="max-w-4xl">
               <div className="inline-flex items-center gap-3 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 backdrop-blur-md mb-8">
-                <span className="text-gold-500 font-mono text-[10px] tracking-[0.4em] uppercase font-bold">
+                <span className="text-gold-500 font-mono text-xs tracking-[0.4em] uppercase font-bold">
                   Now Available
                 </span>
               </div>
@@ -185,7 +185,7 @@ export default function MediationSimplifiedPage() {
                   <div className="absolute -top-6 -right-6 w-24 h-24 bg-gold-500 rounded-full flex items-center justify-center shadow-xl">
                     <div className="text-center">
                       <span className="text-navy-950 font-bold text-2xl block">1st</span>
-                      <span className="text-navy-950/70 text-[10px] uppercase tracking-wider">In India</span>
+                      <span className="text-navy-950/70 text-xs uppercase tracking-wider">In India</span>
                     </div>
                   </div>
                 </div>

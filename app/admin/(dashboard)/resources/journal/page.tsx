@@ -198,12 +198,12 @@ export default function JournalAdminPage() {
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent border-navy-50">
-                  <TableHead className="w-[80px] text-[10px] font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Publication Info</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Author / Publication</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Date / Category</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
-                  <TableHead className="text-right pr-8 text-[10px] font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
+                  <TableHead className="w-[80px] text-xs font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
+                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Publication Info</TableHead>
+                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Author / Publication</TableHead>
+                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Date / Category</TableHead>
+                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
+                  <TableHead className="text-right pr-8 text-xs font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -248,12 +248,12 @@ export default function JournalAdminPage() {
                       <div className="flex flex-col gap-1">
                         {item.author && <span className="text-xs text-navy-950/60 font-medium">{item.author}</span>}
                         {item.publication && (
-                          <span className="text-[10px] text-navy-950/40 flex items-center gap-1">
+                          <span className="text-xs text-navy-950/40 flex items-center gap-1">
                             <BookOpen className="w-3 h-3" /> {item.publication}
                           </span>
                         )}
                         {item.subtitle && (
-                          <span className="text-[10px] text-navy-950/40">{item.subtitle}</span>
+                          <span className="text-xs text-navy-950/40">{item.subtitle}</span>
                         )}
                       </div>
                     </TableCell>
@@ -265,7 +265,7 @@ export default function JournalAdminPage() {
                           </span>
                         )}
                         {item.category && (
-                          <Badge variant="outline" className="w-fit text-[10px] uppercase font-bold tracking-widest">
+                          <Badge variant="outline" className="w-fit text-xs uppercase font-bold tracking-widest">
                             {item.category}
                           </Badge>
                         )}
@@ -273,11 +273,11 @@ export default function JournalAdminPage() {
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-2">
-                         <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-black tracking-widest h-6">
+                         <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-black tracking-widest h-6">
                            {item.isActive ? "Active" : "Hidden"}
                          </Badge>
                          {item.isFeatured && (
-                           <Badge variant="outline" className="rounded-full text-[10px] uppercase font-black tracking-widest h-6 text-gold-600 border-gold-200 bg-gold-50">
+                           <Badge variant="outline" className="rounded-full text-xs uppercase font-black tracking-widest h-6 text-gold-600 border-gold-200 bg-gold-50">
                              Featured
                            </Badge>
                          )}

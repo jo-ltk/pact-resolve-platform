@@ -116,7 +116,7 @@ export default function ResourcesPage() {
               </div>
               <div className="shrink-0 flex gap-4">
                 {['Learn', 'Practice', 'Resolve'].map((word, i) => (
-                  <div key={i} className="hidden md:flex items-center justify-center w-24 h-24 rounded-full border border-white/10 bg-white/5 text-[10px] uppercase tracking-widest font-bold text-white/40">
+                  <div key={i} className="hidden md:flex items-center justify-center w-24 h-24 rounded-full border border-white/10 bg-white/5 text-xs uppercase tracking-widest font-bold text-white/40">
                     {word}
                   </div>
                 ))}

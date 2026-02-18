@@ -188,7 +188,7 @@ export default function MediationCoursesPage() {
                 <CardHeader className="p-6 bg-gradient-to-br from-blue-50 to-white border-b border-navy-100/30">
                   <div className="flex items-start justify-between">
                     <div className="space-y-2">
-                      <Badge variant={foundationalCourse.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-bold border-none px-3">
+                      <Badge variant={foundationalCourse.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-bold border-none px-3">
                         {foundationalCourse.isActive ? "Active" : "Hidden"}
                       </Badge>
                       <h3 className="text-xl font-bold text-navy-950">{foundationalCourse.title}</h3>
@@ -248,7 +248,7 @@ export default function MediationCoursesPage() {
                 <CardHeader className="p-6 bg-gradient-to-br from-navy-900 to-navy-950 border-b border-white/10">
                   <div className="flex items-start justify-between">
                     <div className="space-y-2">
-                      <Badge variant={advancedCourse.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-bold border-none px-3">
+                      <Badge variant={advancedCourse.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-bold border-none px-3">
                         {advancedCourse.isActive ? "Active" : "Hidden"}
                       </Badge>
                       <h3 className="text-xl font-bold text-white">{advancedCourse.title}</h3>

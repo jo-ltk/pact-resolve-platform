@@ -151,8 +151,8 @@ export default function FeesAdminPage() {
             <CardContent className="p-8 grow flex flex-col">
                <div className="mb-6">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-accent font-bold group-hover:text-accent/80">Fee Item #{item.order}</span>
-                    <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase">{item.isActive ? "Active" : "Hidden"}</Badge>
+                    <span className="font-mono text-xs uppercase tracking-widest text-accent font-bold group-hover:text-accent/80">Fee Item #{item.order}</span>
+                    <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase">{item.isActive ? "Active" : "Hidden"}</Badge>
                   </div>
                   <h3 className="text-2xl font-bold text-navy-950 uppercase italic tracking-tight mb-4 group-hover:text-accent transition-colors">{item.title}</h3>
                   <div className="text-4xl font-light text-navy-950 tracking-tighter mb-4">

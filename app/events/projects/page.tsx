@@ -51,7 +51,7 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
   <FadeInUp className={cn("mb-12 md:mb-20", center ? "flex flex-col items-center text-center" : "")}>
     <div className="inline-flex items-center gap-4 mb-6 opacity-80">
       <div className={cn("h-px w-12 bg-gold-500", light ? "bg-gold-500" : "bg-gold-500/50")} />
-      <span className={cn("text-[10px] md:text-xs tracking-[0.3em] uppercase font-semibold", light ? "text-gold-500" : "text-navy-950/40")}>{subtitle}</span>
+      <span className={cn("text-xs md:text-xs tracking-[0.3em] uppercase font-semibold", light ? "text-gold-500" : "text-navy-950/40")}>{subtitle}</span>
     </div>
     <h2 className={cn("text-4xl sm:text-5xl md:text-7xl lg:text-[5rem] font-light tracking-tight mb-8 leading-[0.95]", light ? "text-white" : "text-navy-950")}>
       {title.split(' ').map((word, i) => (
@@ -213,10 +213,10 @@ export default function ProjectsPage() {
                   </div>
                   <div className="space-y-4">
                     <h4 className="text-xl font-bold text-navy-950 tracking-tight leading-tight group-hover:text-gold-500 transition-colors uppercase">{item.text}</h4>
-                    <p className="text-[10px] font-semibold text-navy-950/40 uppercase tracking-[0.2em]">{item.sub}</p>
+                    <p className="text-xs font-semibold text-navy-950/40 uppercase tracking-[0.2em]">{item.sub}</p>
                   </div>
                   <div className="mt-8">
-                     <a href="mailto:official@thepact.in" className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-navy-300 group-hover:text-gold-600 transition-colors">
+                     <a href="mailto:official@thepact.in" className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-navy-300 group-hover:text-gold-600 transition-colors">
                         Invite PACT <ArrowUpRight className="w-3 h-3" />
                      </a>
                   </div>
@@ -271,7 +271,7 @@ export default function ProjectsPage() {
                     </div>
                     
                     <div className="flex flex-col gap-2 mb-8">
-                       <span className="text-[10px] tracking-[0.3em] text-gold-500 font-semibold uppercase">
+                       <span className="text-xs tracking-[0.3em] text-gold-500 font-semibold uppercase">
                          {item.category} • {item.date}
                        </span>
                        <h3 className="text-3xl font-bold text-white leading-tight tracking-tighter uppercase group-hover:text-gold-500 transition-colors">
@@ -321,7 +321,7 @@ export default function ProjectsPage() {
                   </div>
                   <div className="mb-4">
                     <span className="text-5xl font-black italic text-navy-950 tracking-tighter block group-hover:text-gold-500 transition-colors">{stat.value}</span>
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-gold-500 font-semibold">{stat.label}</span>
+                    <span className="text-xs uppercase tracking-[0.2em] text-gold-500 font-semibold">{stat.label}</span>
                   </div>
                   <p className="text-navy-950/40 text-xs font-light leading-relaxed">{stat.desc}</p>
                 </div>
@@ -349,10 +349,10 @@ export default function ProjectsPage() {
                         
                         <div className="grow space-y-4">
                           <div className="flex flex-wrap items-center gap-4">
-                            <span className="px-3 py-1 rounded-full bg-navy-50 text-[10px] text-navy-950/40 uppercase tracking-widest font-bold">
+                            <span className="px-3 py-1 rounded-full bg-navy-50 text-xs text-navy-950/40 uppercase tracking-widest font-bold">
                               {item.category}
                             </span>
-                            <span className="text-[10px] text-gold-600 uppercase tracking-widest font-semibold flex items-center gap-2">
+                            <span className="text-xs text-gold-600 uppercase tracking-widest font-semibold flex items-center gap-2">
                               <MapPin className="w-3 h-3" /> {item.location}
                             </span>
                           </div>
@@ -372,7 +372,7 @@ export default function ProjectsPage() {
                             target="_blank" 
                             className="group/link inline-flex items-center gap-4 px-8 py-4 rounded-full bg-navy-50 group-hover:bg-navy-950 text-navy-950 group-hover:text-white transition-all duration-500 w-full md:w-auto justify-center"
                           >
-                            <span className="text-[10px] font-bold uppercase tracking-widest">View Project</span>
+                            <span className="text-xs font-bold uppercase tracking-widest">View Project</span>
                             <div className="w-8 h-8 rounded-full bg-white text-navy-950 flex items-center justify-center shadow-sm group-hover/link:scale-110 group-hover/link:rotate-45 transition-all">
                               <ExternalLink className="w-4 h-4" />
                             </div>

@@ -112,7 +112,7 @@ export default function MediationPage() {
                 </a>
               </div>
               <div className="shrink-0 flex gap-4">
-                <div className="w-24 h-24 rounded-full border border-white/10 bg-white/5 flex flex-col items-center justify-center text-[10px] uppercase tracking-widest font-bold text-white/40">
+                <div className="w-24 h-24 rounded-full border border-white/10 bg-white/5 flex flex-col items-center justify-center text-xs uppercase tracking-widest font-bold text-white/40">
                   <Handshake className="w-8 h-8 mb-2 text-gold-500/50" />
                   PACT
                 </div>

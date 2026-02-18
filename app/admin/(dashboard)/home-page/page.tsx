@@ -94,7 +94,7 @@ export default function HomepageDashboard() {
           <div className="space-y-3">
              <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full bg-accent animate-pulse shadow-[0_0_15px_rgba(191,154,102,0.4)]" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-navy-950/60">Platform Structural Support</span>
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-navy-950/60">Platform Structural Support</span>
              </div>
              <h3 className="text-2xl font-bold text-navy-950 tracking-tight">Need to Update Section Layout?</h3>
              <p className="text-navy-950/60 text-sm max-w-xl leading-relaxed">

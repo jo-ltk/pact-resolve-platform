@@ -124,7 +124,7 @@ export function Navbar() {
               <span className="font-sans text-lg md:text-xl lg:text-2xl font-black tracking-tighter text-white leading-none">
                 PACT
               </span>
-              <span className="text-[8px] md:text-[9px] lg:text-[10px] font-medium text-white/70 tracking-wide leading-tight block mt-0.5">
+              <span className="text-[8px] md:text-[9px] lg:text-xs font-medium text-white/70 tracking-wide leading-tight block mt-0.5">
                 Mediation Academy<br />&amp; Institutional Mediation Services
               </span>
             </div>
@@ -258,7 +258,7 @@ export function Navbar() {
                     <span className="font-sans text-xl font-black tracking-tighter text-white uppercase leading-none">
                       PACT
                     </span>
-                    <span className="text-[10px] font-medium text-white/70 tracking-wide leading-tight mt-1">
+                    <span className="text-xs font-medium text-white/70 tracking-wide leading-tight mt-1">
                       Mediation Academy<br />&amp; Institutional Mediation Services
                     </span>
                   </div>

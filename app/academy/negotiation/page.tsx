@@ -30,7 +30,7 @@ const SectionHeader = ({ subtitle, title, description, dark = false, center = fa
   <FadeInUp className={cn("mb-12 md:mb-20", center ? "flex flex-col items-center text-center" : "")}>
     <div className="inline-flex items-center gap-4 mb-6 opacity-80">
       <div className={cn("h-px w-12 bg-gold-500", dark ? "bg-gold-500" : "bg-gold-500/50")} />
-      <span className={cn("text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase font-bold", dark ? "text-gold-500" : "text-navy-950/60")}>{subtitle}</span>
+      <span className={cn("text-xs md:text-xs font-mono tracking-[0.4em] uppercase font-bold", dark ? "text-gold-500" : "text-navy-950/60")}>{subtitle}</span>
     </div>
     <h2 className={cn("text-4xl sm:text-5xl md:text-7xl lg:text-[5rem] font-light tracking-tight mb-8 leading-[0.95]", dark ? "text-white" : "text-navy-950")}>
       {title.split(' ').map((word, i) => (
@@ -90,7 +90,7 @@ const CurriculumRoadmap = ({ modules, type, dark = false }: { modules: any[], ty
                   <div className="hidden md:flex items-center gap-6 px-8 grow opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                     <div className={cn("h-px grow transition-all duration-500", activeStep === i ? "bg-gold-500/50" : (dark ? "bg-white/10" : "bg-navy-100"))} />
                     <span className={cn(
-                      "font-mono text-[10px] uppercase tracking-[0.2em] whitespace-nowrap transition-colors duration-300",
+                      "font-mono text-xs uppercase tracking-[0.2em] whitespace-nowrap transition-colors duration-300",
                       activeStep === i ? "text-gold-500" : (dark ? "text-white/30" : "text-navy-900/20")
                     )}>
                       {type} Phase
@@ -164,7 +164,7 @@ const NegotiationHero = () => (
       <FadeInUp>
         <div className="flex items-center gap-3 mb-4 sm:mb-6 md:mb-8">
           <div className="h-px w-8 md:w-12 bg-gold-500" />
-          <span className="text-gold-500 font-mono text-[10px] md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase">
+          <span className="text-gold-500 font-mono text-xs md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase">
             Academy / Negotiation
           </span>
         </div>
@@ -273,7 +273,7 @@ export default function NegotiationPage() {
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
           <div className="flex-1 space-y-8">
             <FadeInUp>
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-navy-50 text-[10px] font-mono text-navy-950/40 uppercase tracking-widest mb-4">Corporate Training</div>
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-navy-50 text-xs font-mono text-navy-950/40 uppercase tracking-widest mb-4">Corporate Training</div>
               <h2 className="text-4xl md:text-6xl font-light tracking-tight text-navy-950 mb-6">
                 Train Your <span className="text-gold-500 italic font-medium">Team</span>
               </h2>
@@ -365,7 +365,7 @@ export default function NegotiationPage() {
                   <div className="absolute -inset-1 bg-linear-to-r from-gold-500/10 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                   <div className="relative">
                     <div className="flex items-center justify-between mb-8">
-                      <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-navy-950/40">Fee</h5>
+                      <h5 className="text-xs font-mono uppercase tracking-[0.3em] font-bold text-navy-950/40">Fee</h5>
                       <Sparkles className="w-5 h-5 text-gold-500" />
                     </div>
                     <div className="mb-8">
@@ -383,7 +383,7 @@ export default function NegotiationPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-6 mb-12">
                    <div className="h-px bg-navy-100 grow" />
-                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-navy-950/20 font-bold">Course Modules</span>
+                   <span className="text-xs font-mono uppercase tracking-[0.4em] text-navy-950/20 font-bold">Course Modules</span>
                    <div className="h-px bg-navy-100 grow" />
                 </div>
                 <CurriculumRoadmap modules={foundationModulesArr} type="Foundation" />
@@ -470,7 +470,7 @@ export default function NegotiationPage() {
                   <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 to-transparent rounded-[2.6rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                   <div className="relative">
                     <div className="flex items-center justify-between mb-8">
-                      <h5 className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-gold-500/60">Fee</h5>
+                      <h5 className="text-xs font-mono uppercase tracking-[0.3em] font-bold text-gold-500/60">Fee</h5>
                       <Award className="w-5 h-5 text-gold-500" />
                     </div>
                     <div className="mb-8">
@@ -487,7 +487,7 @@ export default function NegotiationPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-6 mb-12">
                    <div className="h-px bg-white/10 grow" />
-                   <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/20 font-bold">Course Module</span>
+                   <span className="text-xs font-mono uppercase tracking-[0.4em] text-white/20 font-bold">Course Module</span>
                    <div className="h-px bg-white/10 grow" />
                 </div>
                 <CurriculumRoadmap modules={advancedModulesArr} type="Advanced" dark />

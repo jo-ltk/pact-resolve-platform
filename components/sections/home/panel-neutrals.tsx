@@ -31,7 +31,7 @@ export function PanelNeutrals() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6 md:gap-8 text-center md:text-left">
           <div className="items-center md:items-start flex flex-col md:block">
             <div className="inline-block px-4 py-1.5 rounded-full border border-black/10 bg-black/5 mb-6">
-              <span className="text-[10px] md:text-xs font-mono uppercase tracking-widest text-black/60">Expertise</span>
+              <span className="text-xs md:text-xs font-mono uppercase tracking-widest text-black/60">Expertise</span>
             </div>
             <h2 className="text-4xl md:text-7xl font-light tracking-tight text-black leading-tight">
               Panel of Neutrals

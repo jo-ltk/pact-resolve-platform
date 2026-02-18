@@ -172,10 +172,10 @@ export default function MediationModulesPage() {
               
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3 mb-2">
-                  <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-bold border-none px-3">
+                  <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-bold border-none px-3">
                     {item.isActive ? "Active" : "Hidden"}
                   </Badge>
-                  <span className="font-mono text-[10px] text-navy-400 uppercase tracking-widest">
+                  <span className="font-mono text-xs text-navy-400 uppercase tracking-widest">
                     {courseType === "foundational" ? "Foundation" : "Advanced"} Module
                   </span>
                 </div>

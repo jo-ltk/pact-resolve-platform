@@ -121,7 +121,7 @@ export function NewsSection() {
             <h2 className="text-3xl md:text-5xl font-light tracking-tight text-black leading-tight uppercase">
               PACT NEWS – GET WITH IT
             </h2>
-            <p className="mt-4 text-black/60 font-mono text-[10px] md:text-sm uppercase tracking-widest leading-relaxed">
+            <p className="mt-4 text-black/60 font-mono text-xs md:text-sm uppercase tracking-widest leading-relaxed">
               Focussed Articles • Events • Press Releases • Podcasts • Blogs
             </p>
           </div>

@@ -36,7 +36,7 @@ export function Collaborators() {
 
       <div className="max-w-7xl mx-auto text-center relative z-10 mb-12">
         <div className="inline-block mb-3 md:mb-4">
-          <h2 className="text-[10px] font-mono uppercase tracking-[0.5em] text-gold-600 mb-2">
+          <h2 className="text-xs font-mono uppercase tracking-[0.5em] text-gold-600 mb-2">
             Strategic Partners
           </h2>
           <div className="h-[1px] w-full bg-linear-to-r from-transparent via-gold-400 to-transparent mx-auto" />
@@ -78,7 +78,7 @@ export function Collaborators() {
       </div>
 
       <div className="max-w-7xl mx-auto text-center mt-12 pt-6 border-t border-black/5 relative z-10">
-        <p className="text-black/20 font-mono text-[10px] uppercase tracking-[0.3em]">
+        <p className="text-black/20 font-mono text-xs uppercase tracking-[0.3em]">
           Trusted by Industry Leaders Worldwide
         </p>
       </div>

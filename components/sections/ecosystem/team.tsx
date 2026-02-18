@@ -130,7 +130,7 @@ export function TeamSection() {
                       <div className="flex-1 space-y-8 text-center md:text-left">
                         <div className="space-y-2">
                           <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
-                            <span className="text-gold-500 font-mono text-[10px] uppercase tracking-[0.3em] font-bold">{partner.role}</span>
+                            <span className="text-gold-500 font-mono text-xs uppercase tracking-[0.3em] font-bold">{partner.role}</span>
                             <div className="h-px w-8 bg-gold-500/20" />
                           </div>
                           <h4 className="text-[10vw] md:text-6xl font-light text-navy-950 tracking-tighter leading-none uppercase">
@@ -260,7 +260,7 @@ export function TeamSection() {
                   
                   <div className="grow">
                     <h4 className="text-xl font-light text-navy-950 group-hover:text-gold-500 transition-colors">{m.name}</h4>
-                    <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-navy-950/40">{m.role}</p>
+                    <p className="text-xs font-mono uppercase tracking-[0.2em] text-navy-950/40">{m.role}</p>
                   </div>
                   <ArrowUpRight className="w-5 h-5 text-navy-950/10 group-hover:text-gold-500 group-hover:-translate-y-1 group-hover:translate-x-1 transition-all" />
                 </div>
@@ -286,7 +286,7 @@ export function TeamSection() {
 
                    <div className="grow">
                      <h4 className="text-xl font-light text-navy-950 group-hover:text-gold-500 transition-colors">{m.name}</h4>
-                     <p className="text-[10px] font-mono uppercase tracking-widest text-gold-500 font-bold">{m.niche}</p>
+                     <p className="text-xs font-mono uppercase tracking-widest text-gold-500 font-bold">{m.niche}</p>
                    </div>
                    <ArrowUpRight className="w-5 h-5 text-navy-950/10 group-hover:text-gold-500 group-hover:-translate-y-1 group-hover:translate-x-1 transition-all" />
                  </div>
@@ -352,7 +352,7 @@ export function TeamSection() {
                       </div>
                       <div className="text-left">
                         <p className="text-sm font-bold text-navy-950 uppercase tracking-widest mb-1">Join the Mission</p>
-                        <p className="text-[10px] text-navy-950/40 font-mono uppercase tracking-widest">Apply for Externship</p>
+                        <p className="text-xs text-navy-950/40 font-mono uppercase tracking-widest">Apply for Externship</p>
                       </div>
                     </div>
                     <ArrowUpRight className="w-5 h-5 text-navy-950/20 group-hover/join:text-gold-500 transition-colors" />

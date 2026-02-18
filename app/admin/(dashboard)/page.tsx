@@ -146,7 +146,7 @@ export default function DashboardOverview() {
             <SubtleHover>
               <Card className="border-navy-950/5 shadow-sm bg-white hover:border-accent/20 hover:shadow-xl hover:shadow-accent/5 transition-all flex flex-col group rounded-3xl overflow-hidden min-h-[160px]">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-6">
-                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em]">
+                  <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.15em]">
                     {metric.title}
                   </span>
                   <div className={cn("p-2.5 rounded-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300", metric.bg)}>
@@ -160,7 +160,7 @@ export default function DashboardOverview() {
                       {metric.description}
                     </p>
                     <Badge variant="secondary" className={cn(
-                      "px-2 py-0.5 text-[10px] font-bold border-none h-5 rounded-full",
+                      "px-2 py-0.5 text-xs font-bold border-none h-5 rounded-full",
                       metric.trendUp ? "bg-emerald-100/50 text-emerald-700" : "bg-muted text-muted-foreground"
                     )}>
                       {metric.trend}
@@ -185,7 +185,7 @@ export default function DashboardOverview() {
                     Platform structural health and data density monitoring
                   </CardDescription>
                 </div>
-                <Badge variant="outline" className="text-[10px] font-black px-3 py-1 bg-primary/5 text-primary border-primary/10 rounded-full tracking-widest">LIVE STATUS</Badge>
+                <Badge variant="outline" className="text-xs font-black px-3 py-1 bg-primary/5 text-primary border-primary/10 rounded-full tracking-widest">LIVE STATUS</Badge>
               </div>
             </CardHeader>
             <CardContent className="p-8">
@@ -249,7 +249,7 @@ export default function DashboardOverview() {
               <div className="mt-6 p-6 mx-2 mb-2 bg-navy-950 rounded-3xl border border-white/5 shadow-2xl overflow-hidden relative group">
                 <div className="flex items-center gap-3 relative z-10">
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/90">System Integrity 100%</span>
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-white/90">System Integrity 100%</span>
                 </div>
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/20 transition-all pointer-events-none" />
               </div>

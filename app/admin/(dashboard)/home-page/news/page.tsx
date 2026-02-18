@@ -286,7 +286,7 @@ export default function NewsAdminPage() {
                             <span className="line-clamp-2" title={item.title}>{item.title}</span>
                           </div>
                           {item.isFeatured && (
-                            <Badge variant="secondary" className="bg-amber-100 text-amber-700 border-amber-200 text-[10px] h-5 px-2 inline-flex">
+                            <Badge variant="secondary" className="bg-amber-100 text-amber-700 border-amber-200 text-xs h-5 px-2 inline-flex">
                               <Star className="w-3 h-3 mr-1 fill-amber-500" />
                               Featured
                             </Badge>

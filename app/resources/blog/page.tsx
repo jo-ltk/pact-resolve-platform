@@ -218,7 +218,7 @@ export default function BlogPage() {
                             <Youtube className="w-6 h-6 text-[#FF0000] group-hover:text-white" />
                           </div>
                           {video.subtitle && (
-                            <span className="text-[10px] font-mono uppercase tracking-widest text-white/40 bg-white/5 px-3 py-1 rounded-full">
+                            <span className="text-xs font-mono uppercase tracking-widest text-white/40 bg-white/5 px-3 py-1 rounded-full">
                               {video.subtitle}
                             </span>
                           )}

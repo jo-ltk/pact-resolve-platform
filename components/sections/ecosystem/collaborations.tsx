@@ -202,7 +202,7 @@ export function Collaborations() {
                      />
                   </div>
                   <div className="space-y-4 grow">
-                    <span className="text-[10px] font-mono text-gold-500 uppercase tracking-widest font-bold block mb-3 leading-tight">{(partner as any).region}</span>
+                    <span className="text-xs font-mono text-gold-500 uppercase tracking-widest font-bold block mb-3 leading-tight">{(partner as any).region}</span>
                     <h4 className="text-lg font-bold text-navy-900 leading-tight uppercase tracking-tight mb-6">{(partner as any).name}</h4>
                     <p className="text-[13px] text-navy-950/30 font-light leading-relaxed">{(partner as any).description}</p>
                   </div>
@@ -309,7 +309,7 @@ export function Collaborations() {
               {/* Large Carousel for Current Associations */}
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-gold-500 font-bold">Current Partners</span>
+                  <span className="text-xs font-mono uppercase tracking-widest text-gold-500 font-bold">Current Partners</span>
                   <div className="h-px grow bg-gold-500/10" />
                 </div>
                 <div className="relative w-full overflow-hidden bg-white/50 backdrop-blur-sm rounded-4xl border border-navy-100 p-8 shadow-sm group">
@@ -333,7 +333,7 @@ export function Collaborations() {
               {/* Marquee for Older Associations */}
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-navy-950/40 font-bold">Older Associations</span>
+                  <span className="text-xs font-mono uppercase tracking-widest text-navy-950/40 font-bold">Older Associations</span>
                   <div className="h-px grow bg-navy-950/5" />
                 </div>
                 <div className="relative w-full overflow-hidden py-4 border-y border-navy-100/50">
@@ -377,7 +377,7 @@ export function Collaborations() {
                   </div>
                   <div className="text-center md:text-left">
                     <div className="flex items-center gap-3 justify-center md:justify-start mb-4">
-                      <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-gold-500/60 font-bold">The Evolution</span>
+                      <span className="text-xs font-mono uppercase tracking-[0.4em] text-gold-500/60 font-bold">The Evolution</span>
                       <div className="w-12 h-px bg-gold-500/20" />
                     </div>
                     <h4 className="text-3xl md:text-5xl font-bold text-navy-900 tracking-tighter leading-tight mb-2">
@@ -488,7 +488,7 @@ export function Collaborations() {
                    ))}
                    {/* The "And Others" indicator */}
                    <div className="h-10 px-6 flex items-center justify-center bg-navy-950 rounded-full border border-navy-950 shadow-md group shrink-0">
-                     <span className="text-[10px] font-mono uppercase tracking-widest text-gold-500 font-black">And Others</span>
+                     <span className="text-xs font-mono uppercase tracking-widest text-gold-500 font-black">And Others</span>
                    </div>
                  </motion.div>
                  
@@ -511,7 +511,7 @@ export function Collaborations() {
                      </div>
                    ))}
                    <div className="h-10 px-6 flex items-center justify-center bg-navy-950 rounded-full border border-navy-950 shadow-md group shrink-0">
-                     <span className="text-[10px] font-mono uppercase tracking-widest text-gold-500 font-black">And Others</span>
+                     <span className="text-xs font-mono uppercase tracking-widest text-gold-500 font-black">And Others</span>
                    </div>
                  </motion.div>
                </div>

@@ -201,7 +201,7 @@ export default function AuditLogsPage() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className={`${getActionBadge(log.action)} font-bold text-[10px] px-2.5 py-0.5 rounded-lg border shadow-sm`}>
+                          <Badge variant="outline" className={`${getActionBadge(log.action)} font-bold text-xs px-2.5 py-0.5 rounded-lg border shadow-sm`}>
                             {log.action}
                           </Badge>
                         </TableCell>
@@ -271,7 +271,7 @@ export default function AuditLogsPage() {
                     <div className="w-2.5 h-2.5 rounded-full bg-amber-500/20 border border-amber-500/50" />
                     <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/20 border border-emerald-500/50" />
                 </div>
-                <pre className="text-emerald-400/90 text-[10px] leading-relaxed font-mono custom-scrollbar">
+                <pre className="text-emerald-400/90 text-xs leading-relaxed font-mono custom-scrollbar">
                   {JSON.stringify(selectedLog?.details || {}, null, 2)}
                 </pre>
               </div>

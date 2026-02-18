@@ -122,7 +122,7 @@
     "patterns": {
       "section-subtitle": {
         "element": "span",
-        "classes": "text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-foreground/40",
+        "classes": "text-xs md:text-xs font-mono tracking-[0.4em] uppercase text-foreground/40",
         "usage": "Above section titles, paired with divider line"
       },
       "section-title": {
@@ -254,15 +254,15 @@
     },
     "badges": {
       "default": {
-        "classes": "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-navy-50 border border-navy-100 text-[10px] font-mono tracking-[0.4em] uppercase",
+        "classes": "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-navy-50 border border-navy-100 text-xs font-mono tracking-[0.4em] uppercase",
         "description": "Section indicator badges"
       },
       "dark": {
-        "classes": "px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gold-500 text-[10px] font-mono tracking-widest uppercase",
+        "classes": "px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gold-500 text-xs font-mono tracking-widest uppercase",
         "description": "Badges for dark backgrounds"
       },
       "pill": {
-        "classes": "px-4 md:px-6 py-2 rounded-full bg-navy-50 text-[10px] font-mono text-navy-950/40 uppercase tracking-widest",
+        "classes": "px-4 md:px-6 py-2 rounded-full bg-navy-50 text-xs font-mono text-navy-950/40 uppercase tracking-widest",
         "description": "Simple pill tags"
       }
     },
@@ -386,7 +386,7 @@
       "subtitle": {
         "layout": "inline-flex items-center gap-4 opacity-40/70",
         "elements": [
-          "span.font-mono.text-[10px].tracking-[0.4em].uppercase",
+          "span.font-mono.text-xs.tracking-[0.4em].uppercase",
           "div.h-px.w-8.bg-gold-500"
         ]
       },

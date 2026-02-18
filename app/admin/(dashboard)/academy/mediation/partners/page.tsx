@@ -100,7 +100,7 @@ export default function MediationPartnersPage() {
                 </div>
                 <DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-navy-50"><MoreHorizontal className="w-4 h-4" /></Button></DropdownMenuTrigger><DropdownMenuContent align="end" className="rounded-xl"><DropdownMenuItem onClick={() => openEditDialog(item)}>Edit</DropdownMenuItem><DropdownMenuItem onClick={() => handleDelete((item._id as any).toString())} className="text-red-500">Delete</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
               </div>
-              <div className="flex items-center gap-2 mb-2"><Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-bold border-none px-3">{item.isActive ? "Active" : "Hidden"}</Badge></div>
+              <div className="flex items-center gap-2 mb-2"><Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-bold border-none px-3">{item.isActive ? "Active" : "Hidden"}</Badge></div>
               <h3 className="text-lg font-bold text-navy-950 group-hover:text-accent transition-colors">{item.name}</h3>
               {item.description && <p className="text-sm text-navy-950/50 line-clamp-2 mt-1">{item.description}</p>}
               <div className="flex flex-wrap gap-1 mt-3">{item.programs?.map(p => <Badge key={p} variant="outline" className="rounded-full text-[9px] uppercase font-bold px-2 py-0.5">{p}</Badge>)}</div>

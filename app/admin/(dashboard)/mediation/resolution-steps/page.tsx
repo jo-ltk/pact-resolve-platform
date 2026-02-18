@@ -165,7 +165,7 @@ export default function ResolutionStepsAdminPage() {
                    </div>
                 </div>
                 <div className="mb-3">
-                   <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent font-bold px-2 py-0.5 rounded bg-accent/5">{item.label}</span>
+                   <span className="text-xs font-mono uppercase tracking-[0.2em] text-accent font-bold px-2 py-0.5 rounded bg-accent/5">{item.label}</span>
                 </div>
                 <p className="text-sm text-navy-950/60 font-light leading-relaxed line-clamp-2">{item.description}</p>
             </div>

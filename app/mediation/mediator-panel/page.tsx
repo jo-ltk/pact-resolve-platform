@@ -19,7 +19,7 @@ import { Footer } from "@/components/footer";
 const SectionHeader = ({ subtitle, title, description, light = false, center = false }: { subtitle: string, title: string, description?: string, light?: boolean, center?: boolean }) => (
   <FadeInUp className={cn("mb-8 md:mb-16", center ? "flex flex-col items-center text-center" : "")}>
     <div className="inline-flex items-center gap-4 mb-4 opacity-70">
-      <span className={cn("text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase", light ? "text-white" : "text-navy-950")}>{subtitle}</span>
+      <span className={cn("text-xs md:text-xs font-mono tracking-[0.4em] uppercase", light ? "text-white" : "text-navy-950")}>{subtitle}</span>
       <div className={cn("h-px w-8 bg-gold-500/50", light ? "bg-gold-500" : "bg-gold-500")} />
     </div>
     <h2 className={cn("text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-light tracking-tighter mb-4 sm:mb-6 leading-[1.1]", light ? "text-white" : "text-navy-950")}>
@@ -50,7 +50,7 @@ const PanelHero = () => (
       <FadeInUp>
         <div className="flex items-center gap-3 mb-4 sm:mb-6 md:mb-8">
           <div className="h-px w-8 md:w-12 bg-gold-500" />
-          <span className="text-gold-500 font-mono text-[10px] md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase">
+          <span className="text-gold-500 font-mono text-xs md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase">
             Mediation / Mediator Panel
           </span>
         </div>

@@ -31,7 +31,7 @@ export function EcosystemHero() {
         <FadeInUp>
           <div className="flex items-center gap-3 mb-6 md:mb-8">
             <div className="h-px w-8 md:w-12 bg-gold-500" />
-            <span className="text-gold-500 font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase">
+            <span className="text-gold-500 font-mono text-xs md:text-xs tracking-[0.4em] uppercase">
               Global Network
             </span>
           </div>
@@ -74,7 +74,7 @@ export function EcosystemHero() {
                   <div className="h-10 w-10 rounded-full bg-gold-500/20 flex items-center justify-center">
                     <div className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
                   </div>
-                  <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest font-bold">17,000+ Users Impacted</span>
+                  <span className="text-xs font-mono text-white/40 uppercase tracking-widest font-bold">17,000+ Users Impacted</span>
                 </div>
               </div>
             </div>

@@ -145,8 +145,8 @@ export default function NegotiationModulesPage() {
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
-                <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-bold border-none px-3">{item.isActive ? "Active" : "Hidden"}</Badge>
-                <span className="font-mono text-[10px] text-navy-400 uppercase tracking-widest">{courseType === "foundational" ? "Skilled" : "Advanced"} Module</span>
+                <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-bold border-none px-3">{item.isActive ? "Active" : "Hidden"}</Badge>
+                <span className="font-mono text-xs text-navy-400 uppercase tracking-widest">{courseType === "foundational" ? "Skilled" : "Advanced"} Module</span>
               </div>
               <h3 className="text-lg font-bold text-navy-950 group-hover:text-accent transition-colors mb-2">{item.title}</h3>
               <p className="text-sm text-navy-950/50 line-clamp-2 leading-relaxed">{item.content}</p>

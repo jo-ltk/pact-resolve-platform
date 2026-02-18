@@ -95,7 +95,7 @@ export function AdminNavbar() {
                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
                    
                    <div className="px-5 py-4 border-b border-slate-50 mb-2 relative z-10">
-                      <p className="text-[10px] font-black text-navy-950/20 uppercase tracking-[0.2em] mb-1">Account</p>
+                      <p className="text-xs font-black text-navy-950/20 uppercase tracking-[0.2em] mb-1">Account</p>
                       <p className="text-sm font-black text-navy-950 truncate tracking-tight">{user?.email}</p>
                    </div>
                    

@@ -107,7 +107,7 @@ export function Sidebar() {
             </div>
             <div className="flex-1 overflow-hidden">
               <p className="text-sm font-bold truncate text-navy-950">{user?.name || "Admin"}</p>
-              <p className="text-[10px] text-accent font-black mt-1 uppercase tracking-widest">
+              <p className="text-xs text-accent font-black mt-1 uppercase tracking-widest">
                 {user?.role || "Administrator"}
               </p>
             </div>
@@ -135,7 +135,7 @@ export function Sidebar() {
           
           <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-accent/5 rounded-full blur-3xl group-hover:bg-accent/10 transition-all duration-700" />
         </div>
-        <p className="text-[10px] text-center text-navy-950/20 font-bold tracking-widest uppercase py-2">
+        <p className="text-xs text-center text-navy-950/20 font-bold tracking-widest uppercase py-2">
           PACT Management &bull; v1.0.0
         </p>
       </div>

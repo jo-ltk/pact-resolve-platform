@@ -299,7 +299,7 @@ export default function MCIGalleryPage() {
               {isSaving ? <Loader2 className="w-5 h-5 mr-3 animate-spin" /> : <Save className="w-5 h-5 mr-3" />}
               Publish Gallery
             </Button>
-            <p className="text-[10px] text-center text-white/40 font-mono uppercase tracking-tighter">
+            <p className="text-xs text-center text-white/40 font-mono uppercase tracking-tighter">
               {eventData ? `Linked to ${eventData.year} Edition` : "Draft Mode"}
             </p>
           </div>
@@ -466,7 +466,7 @@ export default function MCIGalleryPage() {
                   value={tempItem.url} 
                   onChange={(url) => setTempItem({ ...tempItem, url })} 
                 />
-                <p className="text-[10px] text-muted-foreground italic px-1">Tip: Landscape (16:9) images work best.</p>
+                <p className="text-xs text-muted-foreground italic px-1">Tip: Landscape (16:9) images work best.</p>
               </div>
 
               <div className="space-y-6">
@@ -519,7 +519,7 @@ export default function MCIGalleryPage() {
         </div>
         <div className="ml-auto flex items-center gap-3">
              <div className="text-right hidden md:block">
-                 <p className="text-[10px] font-bold text-amber-900/40 uppercase tracking-widest leading-none">Status</p>
+                 <p className="text-xs font-bold text-amber-900/40 uppercase tracking-widest leading-none">Status</p>
                  <p className="text-sm font-bold text-amber-900/80 dark:text-amber-100">Synchronized</p>
              </div>
              <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(16,185,129,0.5)]" />

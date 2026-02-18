@@ -327,7 +327,7 @@ export function HeroCarousel() {
                 <span 
                   key={index}
                   className={cn(
-                    "text-[10px] lg:text-[11px] font-bold tracking-[0.2em] uppercase transition-all duration-500 line-clamp-2 leading-tight text-left",
+                    "text-xs lg:text-[11px] font-bold tracking-[0.2em] uppercase transition-all duration-500 line-clamp-2 leading-tight text-left",
                     current === index ? "text-white opacity-100" : "text-white/20"
                   )}
                 >
@@ -347,7 +347,7 @@ export function HeroCarousel() {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   className="flex flex-col items-center gap-2"
                 >
-                  <span className="text-[10px] font-black tracking-[0.4em] uppercase text-white/40">
+                  <span className="text-xs font-black tracking-[0.4em] uppercase text-white/40">
                     Section {current + 1} of {slides.length}
                   </span>
                   

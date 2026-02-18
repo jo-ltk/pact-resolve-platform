@@ -19,7 +19,7 @@ import { Footer } from "@/components/footer";
 const SectionHeader = ({ subtitle, title, description, light = false, center = false }: { subtitle: string, title: string, description?: string, light?: boolean, center?: boolean }) => (
   <FadeInUp className={cn("mb-8 md:mb-16", center ? "flex flex-col items-center text-center" : "")}>
     <div className="inline-flex items-center gap-4 mb-4 opacity-70">
-      <span className={cn("text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase", light ? "text-white" : "text-navy-950")}>{subtitle}</span>
+      <span className={cn("text-xs md:text-xs font-mono tracking-[0.4em] uppercase", light ? "text-white" : "text-navy-950")}>{subtitle}</span>
       <div className={cn("h-px w-8 bg-gold-500/50", light ? "bg-gold-500" : "bg-gold-500")} />
     </div>
     <h2 className={cn("text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-light tracking-tighter mb-4 sm:mb-6 leading-[1.1]", light ? "text-white" : "text-navy-950")}>
@@ -50,7 +50,7 @@ const RulesHero = () => (
       <FadeInUp>
         <div className="flex items-center gap-3 mb-4 sm:mb-6 md:mb-8">
           <div className="h-px w-8 md:w-12 bg-gold-500" />
-          <span className="text-gold-500 font-mono text-[10px] md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase">
+          <span className="text-gold-500 font-mono text-xs md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase">
             Mediation / Rules & Fee
           </span>
         </div>
@@ -96,7 +96,7 @@ const RulesSection = () => {
             
             <div className="absolute top-10 right-10 md:top-20 md:right-20">
                <div className="px-6 py-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl">
-                  <span className="text-white text-[10px] md:text-xs font-mono tracking-widest uppercase font-bold">
+                  <span className="text-white text-xs md:text-xs font-mono tracking-widest uppercase font-bold">
                     Regulated Framework
                   </span>
                </div>
@@ -172,14 +172,14 @@ const FeesSection = () => {
             
             <div className="absolute top-10 right-10 md:top-20 md:right-20">
                <div className="px-6 py-4 bg-white/5 backdrop-blur-xl border border-white/20 rounded-2xl">
-                  <span className="text-gold-500 text-[10px] md:text-xs font-mono tracking-widest uppercase font-bold">
+                  <span className="text-gold-500 text-xs md:text-xs font-mono tracking-widest uppercase font-bold">
                     Fiscal Clarity
                   </span>
                </div>
             </div>
             
             <div className="absolute bottom-10 left-10 md:bottom-20 md:left-20 max-w-xl">
-               <span className="text-gold-500 font-mono text-[10px] uppercase tracking-widest block mb-4">Standard Policy</span>
+               <span className="text-gold-500 font-mono text-xs uppercase tracking-widest block mb-4">Standard Policy</span>
                <h3 className="text-3xl md:text-5xl font-bold text-white tracking-tighter italic uppercase mb-4">Predictable Value</h3>
                <p className="text-white/90 text-lg md:text-xl font-light leading-relaxed">
                  "Our fee structure is designed to reflect value and ensure that costs are never a barrier to resolution."

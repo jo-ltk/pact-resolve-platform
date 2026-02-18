@@ -273,7 +273,7 @@ export default function AwardsManagementPage() {
               {isSaving ? <Loader2 className="w-5 h-5 mr-3 animate-spin" /> : <Save className="w-5 h-5 mr-3" />}
               Publish Updates
             </Button>
-            <p className="text-[10px] text-center text-white/40 font-mono uppercase tracking-tighter">
+            <p className="text-xs text-center text-white/40 font-mono uppercase tracking-tighter">
               {eventData ? `Linked to ${eventData.year} Edition` : "Draft Mode"}
             </p>
           </div>
@@ -290,7 +290,7 @@ export default function AwardsManagementPage() {
               </div>
               <div className="flex flex-col">
                 <h3 className="text-xl font-black text-navy-950 italic uppercase leading-none">Hall of Fame</h3>
-                <p className="text-[10px] text-purple-600 font-bold uppercase tracking-widest mt-1">Recognition – Honorary Recipients</p>
+                <p className="text-xs text-purple-600 font-bold uppercase tracking-widest mt-1">Recognition – Honorary Recipients</p>
               </div>
           </div>
           
@@ -321,7 +321,7 @@ export default function AwardsManagementPage() {
                         <div>
                           <div className="flex items-center gap-2 mb-6">
                             <Medal className="w-4 h-4 text-purple-600" />
-                            <span className="text-[10px] font-mono font-bold text-purple-600 tracking-[0.3em] uppercase">
+                            <span className="text-xs font-mono font-bold text-purple-600 tracking-[0.3em] uppercase">
                                 NIAAM Honoree
                             </span>
                           </div>
@@ -340,7 +340,7 @@ export default function AwardsManagementPage() {
                            
                            <div className="flex items-center gap-2 text-navy-950/20 group-hover:text-navy-950/40 transition-colors">
                               <MapPin className="w-3.5 h-3.5" />
-                              <span className="text-[10px] font-mono uppercase tracking-[0.2em] font-bold">{item.city}</span>
+                              <span className="text-xs font-mono uppercase tracking-[0.2em] font-bold">{item.city}</span>
                            </div>
                         </div>
                     </div>
@@ -411,7 +411,7 @@ export default function AwardsManagementPage() {
               </div>
               <div className="flex flex-col">
                 <h3 className="text-xl font-black text-navy-950 italic uppercase leading-none">Ceremonial Clicks</h3>
-                <p className="text-[10px] text-amber-600 font-bold uppercase tracking-widest mt-1">Gallery – Moments captured</p>
+                <p className="text-xs text-amber-600 font-bold uppercase tracking-widest mt-1">Gallery – Moments captured</p>
               </div>
           </div>
           

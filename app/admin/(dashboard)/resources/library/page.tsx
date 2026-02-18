@@ -210,11 +210,11 @@ export default function LibraryAdminPage() {
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent border-navy-50">
-                  <TableHead className="w-[80px] text-[10px] font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Resource Info</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Details</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
-                  <TableHead className="text-right pr-8 text-[10px] font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
+                  <TableHead className="w-[80px] text-xs font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
+                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Resource Info</TableHead>
+                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Details</TableHead>
+                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
+                  <TableHead className="text-right pr-8 text-xs font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -251,7 +251,7 @@ export default function LibraryAdminPage() {
                         </div>
                         <div className="flex flex-col max-w-[250px]">
                           <span className="font-bold text-navy-950 text-sm truncate">{item.title}</span>
-                          <span className="text-[10px] text-navy-950/40 font-mono uppercase tracking-widest truncate">
+                          <span className="text-xs text-navy-950/40 font-mono uppercase tracking-widest truncate">
                             {item.subtitle || item.author || "-"}
                           </span>
                         </div>
@@ -261,7 +261,7 @@ export default function LibraryAdminPage() {
                       <div className="flex flex-col gap-1">
                         {item.publication && <span className="text-xs text-navy-950/60 truncate max-w-[200px]">{item.publication}</span>}
                         {item.url && (
-                           <a href={item.url} target="_blank" className="text-[10px] text-blue-500 hover:underline truncate max-w-[200px] flex items-center gap-1">
+                           <a href={item.url} target="_blank" className="text-xs text-blue-500 hover:underline truncate max-w-[200px] flex items-center gap-1">
                              {item.url} <ExternalLink className="w-3 h-3"/>
                            </a>
                         )}
@@ -269,11 +269,11 @@ export default function LibraryAdminPage() {
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-2">
-                         <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-black tracking-widest h-6">
+                         <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-black tracking-widest h-6">
                            {item.isActive ? "Active" : "Hidden"}
                          </Badge>
                          {item.isFeatured && (
-                           <Badge variant="outline" className="rounded-full text-[10px] uppercase font-black tracking-widest h-6 text-gold-600 border-gold-200 bg-gold-50">
+                           <Badge variant="outline" className="rounded-full text-xs uppercase font-black tracking-widest h-6 text-gold-600 border-gold-200 bg-gold-50">
                              Featured
                            </Badge>
                          )}

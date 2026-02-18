@@ -155,7 +155,7 @@ export default function PodcastPage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-500"></span>
                 </span>
-                <span className="text-gold-500 font-mono text-[10px] tracking-[0.4em] uppercase font-bold">
+                <span className="text-gold-500 font-mono text-xs tracking-[0.4em] uppercase font-bold">
                   Streaming Now
                 </span>
               </div>
@@ -430,7 +430,7 @@ export default function PodcastPage() {
                       
                       {/* Floating Identity */}
                       <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                        <div className="px-3 py-1 rounded-full bg-navy-950/90 text-[10px] font-mono font-bold text-gold-500 border border-gold-500/20 backdrop-blur-md">
+                        <div className="px-3 py-1 rounded-full bg-navy-950/90 text-xs font-mono font-bold text-gold-500 border border-gold-500/20 backdrop-blur-md">
                           S1 EP{String(episode.number).padStart(2, '0')}
                         </div>
                       </div>
@@ -446,7 +446,7 @@ export default function PodcastPage() {
                     {/* Content Area - Clean and Stable */}
                     <div className="p-6 md:p-8 flex flex-col flex-1 bg-white">
                       <div className="mb-4">
-                        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-gold-600 font-bold">
+                        <span className="text-xs font-mono uppercase tracking-[0.2em] text-gold-600 font-bold">
                           {episode.theme}
                         </span>
                       </div>

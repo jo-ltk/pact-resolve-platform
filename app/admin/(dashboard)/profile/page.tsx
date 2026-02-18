@@ -214,7 +214,7 @@ export default function ProfilePage() {
                      {user.role}
                   </Badge>
                </div>
-               <p className="text-navy-950/40 font-medium uppercase tracking-widest text-[10px]">{user.email}</p>
+               <p className="text-navy-950/40 font-medium uppercase tracking-widest text-xs">{user.email}</p>
             </div>
 
             <div className="pb-4 flex gap-3">
@@ -328,7 +328,7 @@ export default function ProfilePage() {
                              )}
                            />
                            {passwordData.confirmPassword && passwordData.password !== passwordData.confirmPassword && (
-                             <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 ml-1 animate-in fade-in slide-in-from-top-1">
+                             <p className="text-xs text-red-500 font-bold uppercase tracking-widest mt-2 ml-1 animate-in fade-in slide-in-from-top-1">
                                Passwords do not match
                              </p>
                            )}
@@ -352,7 +352,7 @@ export default function ProfilePage() {
          <FadeInUp delay={0.2} className="space-y-8">
             <Card className="rounded-4xl border-slate-100 shadow-xl shadow-navy-950/5 overflow-hidden bg-white">
                <CardHeader className="p-8 border-b border-slate-50">
-                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-navy-950/20 mb-2">Platform Access</p>
+                  <p className="text-xs font-black uppercase tracking-[0.25em] text-navy-950/20 mb-2">Platform Access</p>
                   <CardTitle className="text-xl font-bold text-navy-950">Permissions</CardTitle>
                </CardHeader>
                <CardContent className="p-8">
@@ -369,7 +369,7 @@ export default function ProfilePage() {
                           </div>
                           <div>
                              <p className="text-sm font-bold text-navy-950">{perm.label}</p>
-                             <p className="text-[10px] uppercase font-bold text-navy-950/40 mt-1">{perm.sub}</p>
+                             <p className="text-xs uppercase font-bold text-navy-950/40 mt-1">{perm.sub}</p>
                           </div>
                        </div>
                      ))}

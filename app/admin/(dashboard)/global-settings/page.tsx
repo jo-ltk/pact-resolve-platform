@@ -251,11 +251,11 @@ export default function GlobalSettingsPage() {
         </div>
         <div className="flex flex-wrap items-center gap-3">
           {isEmpty ? (
-            <Badge variant="outline" className="text-[10px] font-black px-4 py-2 bg-amber-50 text-amber-700 border-amber-200 rounded-full tracking-widest">
+            <Badge variant="outline" className="text-xs font-black px-4 py-2 bg-amber-50 text-amber-700 border-amber-200 rounded-full tracking-widest">
               NOT CONFIGURED
             </Badge>
           ) : (
-            <Badge variant="outline" className="text-[10px] font-black px-4 py-2 bg-emerald-50 text-emerald-700 border-emerald-200 rounded-full tracking-widest">
+            <Badge variant="outline" className="text-xs font-black px-4 py-2 bg-emerald-50 text-emerald-700 border-emerald-200 rounded-full tracking-widest">
               <CheckCircle2 className="w-3 h-3 mr-1.5" />
               CONFIGURED
             </Badge>
@@ -476,7 +476,7 @@ export default function GlobalSettingsPage() {
                     : "bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.6)]"
                 )} />
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/90">
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-white/90">
                     {hasChanges ? "Unsaved Changes" : "All Changes Saved"}
                   </span>
                   <p className="text-white/50 text-xs mt-0.5">

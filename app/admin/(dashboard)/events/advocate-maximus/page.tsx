@@ -298,7 +298,7 @@ export default function AdvocateMaximusAdminPage() {
               {isSaving ? <Loader2 className="w-5 h-5 mr-3 animate-spin" /> : <Save className="w-5 h-5 mr-3" />}
               Publish Changes
             </Button>
-            <p className="text-[10px] text-center text-white/40 font-mono uppercase tracking-tighter">
+            <p className="text-xs text-center text-white/40 font-mono uppercase tracking-tighter">
               Connected to MongoDB Atlas & Vercel
             </p>
           </div>
@@ -307,13 +307,13 @@ export default function AdvocateMaximusAdminPage() {
 
       <Tabs defaultValue="partners" className="space-y-8">
         <TabsList className="bg-navy-50 p-1.5 rounded-2xl h-14 border border-navy-100 flex items-stretch max-w-2xl">
-          <TabsTrigger value="partners" className="grow rounded-xl font-bold uppercase tracking-widest text-[10px] data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
+          <TabsTrigger value="partners" className="grow rounded-xl font-bold uppercase tracking-widest text-xs data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
             <Users className="w-4 h-4 mr-2" /> Strategic Partners
           </TabsTrigger>
-          <TabsTrigger value="identity" className="grow rounded-xl font-bold uppercase tracking-widest text-[10px] data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
+          <TabsTrigger value="identity" className="grow rounded-xl font-bold uppercase tracking-widest text-xs data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
             <Settings className="w-4 h-4 mr-2" /> Event Identity
           </TabsTrigger>
-          <TabsTrigger value="gallery" className="grow rounded-xl font-bold uppercase tracking-widest text-[10px] data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
+          <TabsTrigger value="gallery" className="grow rounded-xl font-bold uppercase tracking-widest text-xs data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
             <LayoutGrid className="w-4 h-4 mr-2" /> Memories
           </TabsTrigger>
         </TabsList>
@@ -327,7 +327,7 @@ export default function AdvocateMaximusAdminPage() {
                 </div>
                 <div className="flex flex-col text-left">
                   <h3 className="text-xl font-black text-navy-950 italic uppercase leading-none">Strategic Partners</h3>
-                  <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest mt-1">{partners.length} Profiles Linked</p>
+                  <p className="text-xs text-emerald-600 font-bold uppercase tracking-widest mt-1">{partners.length} Profiles Linked</p>
                 </div>
             </div>
             <div className="flex gap-3">
@@ -370,11 +370,11 @@ export default function AdvocateMaximusAdminPage() {
                         </Button>
                       </div>
 
-                      <div className="absolute top-2 left-2 px-2 py-0.5 bg-emerald-600 text-white rounded text-[10px] font-bold">#{index + 1}</div>
+                      <div className="absolute top-2 left-2 px-2 py-0.5 bg-emerald-600 text-white rounded text-xs font-bold">#{index + 1}</div>
                     </div>
                     <CardContent className="p-4 flex-1 space-y-1">
                       <h4 className="font-bold text-navy-950 truncate">{partner.title || "New Partner"}</h4>
-                      <p className="text-[10px] text-muted-foreground line-clamp-1">{partner.description || "No description set"}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-1">{partner.description || "No description set"}</p>
                     </CardContent>
                     <CardFooter className="p-2 border-t flex justify-between">
                       <div className="flex gap-1">
@@ -489,7 +489,7 @@ export default function AdvocateMaximusAdminPage() {
                   </div>
                   <div className="flex flex-col text-left">
                     <h3 className="text-xl font-black text-navy-950 italic uppercase leading-none">Event Gallery</h3>
-                    <p className="text-[10px] text-blue-600 font-bold uppercase tracking-widest mt-1">{gallery.length} Frames Saved</p>
+                    <p className="text-xs text-blue-600 font-bold uppercase tracking-widest mt-1">{gallery.length} Frames Saved</p>
                   </div>
               </div>
               <Button 
@@ -522,7 +522,7 @@ export default function AdvocateMaximusAdminPage() {
                    <div className="p-6 space-y-5">
                       <div className="flex justify-between items-center">
                          <div className="px-3 py-1 bg-emerald-500/10 rounded-lg">
-                            <h4 className="font-extrabold text-[10px] uppercase tracking-[0.2em] text-emerald-600">Memory Frame #{idx+1}</h4>
+                            <h4 className="font-extrabold text-xs uppercase tracking-[0.2em] text-emerald-600">Memory Frame #{idx+1}</h4>
                          </div>
                          <Button 
                             size="icon" 
@@ -541,7 +541,7 @@ export default function AdvocateMaximusAdminPage() {
                       <div className="space-y-4">
                          <div className="grid grid-cols-1 gap-4">
                             <div className="space-y-1.5">
-                               <Label className="text-[10px] font-black uppercase text-navy-400 tracking-widest ml-1">Title / Caption</Label>
+                               <Label className="text-xs font-black uppercase text-navy-400 tracking-widest ml-1">Title / Caption</Label>
                                <Input 
                                  value={item.title} 
                                  onChange={e => {
@@ -554,7 +554,7 @@ export default function AdvocateMaximusAdminPage() {
                          </div>
                          <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1.5">
-                               <Label className="text-[10px] font-black uppercase text-navy-400 tracking-widest ml-1">Archive Order</Label>
+                               <Label className="text-xs font-black uppercase text-navy-400 tracking-widest ml-1">Archive Order</Label>
                                <Input 
                                  type="number" 
                                  value={item.order} 
@@ -567,7 +567,7 @@ export default function AdvocateMaximusAdminPage() {
                             <div className="flex items-end pb-0.5">
                                <Button 
                                   variant="ghost" 
-                                  className="w-full h-11 rounded-2xl text-[10px] font-bold uppercase tracking-widest text-emerald-600 border border-emerald-100 hover:bg-emerald-50"
+                                  className="w-full h-11 rounded-2xl text-xs font-bold uppercase tracking-widest text-emerald-600 border border-emerald-100 hover:bg-emerald-50"
                                   onClick={() => handleSaveAll()}
                                >
                                   Save Frame
@@ -575,7 +575,7 @@ export default function AdvocateMaximusAdminPage() {
                             </div>
                          </div>
                          <div className="space-y-1.5">
-                            <Label className="text-[10px] font-black uppercase text-navy-400 tracking-widest ml-1">Context / Description</Label>
+                            <Label className="text-xs font-black uppercase text-navy-400 tracking-widest ml-1">Context / Description</Label>
                             <Input 
                                value={item.description} 
                                onChange={e => {
@@ -619,7 +619,7 @@ export default function AdvocateMaximusAdminPage() {
               <div className="space-y-4">
                  <Label className="text-sm font-bold text-navy-950 ml-1">Partner Logo (Horizontal preferred)</Label>
                  <ImageUpload value={tempPartner.url} onChange={(url) => setTempPartner({ ...tempPartner, url })} />
-                 <p className="text-[10px] text-muted-foreground italic px-1">Tip: Use horizontal logos with transparent backgrounds.</p>
+                 <p className="text-xs text-muted-foreground italic px-1">Tip: Use horizontal logos with transparent backgrounds.</p>
               </div>
 
               <div className="space-y-6">

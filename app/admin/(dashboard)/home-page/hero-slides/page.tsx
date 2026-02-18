@@ -301,7 +301,7 @@ export default function HeroSlidesAdminPage() {
                     )}
                     <div className="absolute top-2 left-2">
                       <Badge className={cn(
-                        "border-none px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase backdrop-blur-md shadow-lg",
+                        "border-none px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase backdrop-blur-md shadow-lg",
                         slide.isActive ? "bg-emerald-500/90 text-white" : "bg-red-500/90 text-white"
                       )}>
                         {slide.isActive ? "Active" : "Inactive"}
@@ -384,7 +384,7 @@ export default function HeroSlidesAdminPage() {
                           >
                             <div className="flex flex-col">
                               <span className="text-sm">{slide.isActive ? "Hide Slide" : "Show Slide"}</span>
-                              <span className="text-[10px] text-muted-foreground">Toggle carousel visibility</span>
+                              <span className="text-xs text-muted-foreground">Toggle carousel visibility</span>
                             </div>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator className="my-1 bg-gray-100" />
@@ -396,7 +396,7 @@ export default function HeroSlidesAdminPage() {
                               <Trash2 className="w-4 h-4" />
                               <div className="flex flex-col">
                                 <span className="text-sm font-bold">Remove Slide</span>
-                                <span className="text-[10px] opacity-80">Permanent deletion</span>
+                                <span className="text-xs opacity-80">Permanent deletion</span>
                               </div>
                             </div>
                           </DropdownMenuItem>

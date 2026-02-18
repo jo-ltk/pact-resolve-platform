@@ -131,10 +131,10 @@ export function CommandCenter() {
           Command Center
         </span>
         <div className="ml-auto flex items-center gap-1.5">
-          <Kbd className="bg-slate-50 border-slate-200 text-[10px] font-black h-5 min-w-[20px] shadow-xs">
+          <Kbd className="bg-slate-50 border-slate-200 text-xs font-black h-5 min-w-[20px] shadow-xs">
             {isMac ? "⌘" : "Ctrl"}
           </Kbd>
-          <Kbd className="bg-slate-50 border-slate-200 text-[10px] font-black h-5 min-w-[20px] shadow-xs">
+          <Kbd className="bg-slate-50 border-slate-200 text-xs font-black h-5 min-w-[20px] shadow-xs">
             K
           </Kbd>
         </div>
@@ -178,7 +178,7 @@ export function CommandCenter() {
                 </div>
                 <div className="flex flex-col flex-1">
                   <span className="text-[14px] font-bold text-navy-950 group-data-[selected=true]:text-accent transition-colors leading-tight">{item.label}</span>
-                  <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black mt-1 opacity-60">{item.category}</span>
+                  <span className="text-xs text-slate-400 uppercase tracking-widest font-black mt-1 opacity-60">{item.category}</span>
                 </div>
                 <div className="opacity-0 group-data-[selected=true]:opacity-100 transition-all duration-500 -translate-x-3 group-data-[selected=true]:translate-x-0">
                   <div className="w-7 h-7 rounded-full bg-accent/5 flex items-center justify-center border border-accent/10">
@@ -203,7 +203,7 @@ export function CommandCenter() {
                 </div>
                 <div className="flex flex-col flex-1">
                   <span className="text-[14px] font-bold text-navy-950 transition-colors leading-tight">{item.label}</span>
-                  <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black mt-1 opacity-60">{item.category}</span>
+                  <span className="text-xs text-slate-400 uppercase tracking-widest font-black mt-1 opacity-60">{item.category}</span>
                 </div>
               </CommandItem>
             ))}
@@ -224,7 +224,7 @@ export function CommandCenter() {
                     </div>
                     <div className="flex flex-col flex-1">
                       <span className="text-[14px] font-bold text-navy-950 group-data-[selected=true]:text-red-600 transition-colors leading-tight">{item.label}</span>
-                      <span className="text-[10px] text-red-500/40 uppercase tracking-widest font-black mt-1 opacity-60">Admin Only</span>
+                      <span className="text-xs text-red-500/40 uppercase tracking-widest font-black mt-1 opacity-60">Admin Only</span>
                     </div>
                   </CommandItem>
                 ))}
@@ -246,7 +246,7 @@ export function CommandCenter() {
                 </div>
                 <div className="flex flex-col flex-1">
                   <span className="text-[14px] font-bold text-navy-950 group-data-[selected=true]:text-emerald-700 transition-colors leading-tight">{item.label}</span>
-                  <span className="text-[10px] text-emerald-500/40 uppercase tracking-widest font-black mt-1 opacity-60">Execute Action</span>
+                  <span className="text-xs text-emerald-500/40 uppercase tracking-widest font-black mt-1 opacity-60">Execute Action</span>
                 </div>
               </CommandItem>
             ))}

@@ -99,7 +99,7 @@ export default function EventsDashboard() {
           <div className="space-y-3">
              <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_15px_rgba(52,211,153,0.8)]" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/90">Event Engine V2.1</span>
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-white/90">Event Engine V2.1</span>
              </div>
              <h3 className="text-2xl font-bold text-white tracking-tight">Planning a New Event Series?</h3>
              <p className="text-white/60 text-sm max-w-xl leading-relaxed">

@@ -124,7 +124,7 @@ export default function EventsPage() {
             <div className="space-y-6">
               <div className="inline-flex items-center gap-3 opacity-80">
                 <div className="h-px w-10 bg-gold-500" />
-                <span className="text-[10px] font-mono text-gold-500 uppercase tracking-widest font-bold">Initiatives</span>
+                <span className="text-xs font-mono text-gold-500 uppercase tracking-widest font-bold">Initiatives</span>
               </div>
               <h2 className="text-5xl md:text-7xl font-light text-white tracking-tight leading-none italic uppercase">
                 Browse our <br />
@@ -178,7 +178,7 @@ export default function EventsPage() {
                           <event.icon className="w-8 h-8" />
                         </div>
                         <div className="space-y-1">
-                          <span className="font-mono text-[10px] text-white/40 uppercase tracking-[0.4em] font-bold group-hover:text-gold-500 transition-colors">{event.subtitle}</span>
+                          <span className="font-mono text-xs text-white/40 uppercase tracking-[0.4em] font-bold group-hover:text-gold-500 transition-colors">{event.subtitle}</span>
                           <div className="h-px w-8 bg-gold-500/30 group-hover:w-full transition-all duration-500" />
                         </div>
                       </div>

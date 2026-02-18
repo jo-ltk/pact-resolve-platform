@@ -70,7 +70,7 @@ export function DashboardSectionCard({
               </div>
 
               <div className="mt-auto pt-6 flex items-center gap-2">
-                 <span className="text-[10px] font-black uppercase tracking-widest text-primary/40 group-hover:text-primary transition-colors">
+                 <span className="text-xs font-black uppercase tracking-widest text-primary/40 group-hover:text-primary transition-colors">
                     Manage Section
                  </span>
                  <div className="h-px flex-1 bg-border/40 group-hover:bg-primary/20 transition-colors" />

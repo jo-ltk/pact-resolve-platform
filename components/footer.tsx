@@ -21,7 +21,7 @@ export function Footer() {
             
             <div className="grid grid-cols-2 gap-8 md:gap-16 w-full text-left">
               <div className="space-y-4">
-                <h4 className="text-[10px] md:text-xs font-mono uppercase tracking-widest text-white/40">Connect With Us</h4>
+                <h4 className="text-xs md:text-xs font-mono uppercase tracking-widest text-white/40">Connect With Us</h4>
                 <div className="flex flex-col gap-2">
                   <Link href="https://www.facebook.com/thepactindia/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-xs md:text-sm hover:text-gold-500 transition-colors group">
                     <Facebook className="h-4 w-4" /> Facebook
@@ -42,7 +42,7 @@ export function Footer() {
               </div>
               
               <div className="space-y-4">
-                <h4 className="text-[10px] md:text-xs font-mono uppercase tracking-widest text-white/40">Quick Links</h4>
+                <h4 className="text-xs md:text-xs font-mono uppercase tracking-widest text-white/40">Quick Links</h4>
                 <div className="flex flex-col gap-2 font-mono">
                   <Link href="/privacy" className="text-xs md:text-sm hover:text-gold-500 transition-colors">Privacy Policy</Link>
                   <Link href="/terms" className="text-xs md:text-sm hover:text-gold-500 transition-colors">Terms of Service</Link>

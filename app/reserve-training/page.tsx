@@ -145,7 +145,7 @@ export default function ReserveTrainingPage() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-gold-500/10 border border-gold-500/20 mb-6 md:mb-8">
               <Sparkles className="h-4 w-4 text-gold-500" />
-              <span className="text-gold-500 text-[10px] md:text-sm font-semibold tracking-wide uppercase">Academy Registration</span>
+              <span className="text-gold-500 text-xs md:text-sm font-semibold tracking-wide uppercase">Academy Registration</span>
             </div>
             
             <h1 className="text-3xl md:text-6xl lg:text-7xl font-light text-white mb-4 md:mb-6 tracking-tight px-4">
@@ -183,9 +183,9 @@ export default function ReserveTrainingPage() {
                           }`}
                         >
                           <step.icon className="h-4 w-4 md:h-5 md:w-5" />
-                          <span className="hidden sm:block text-[10px] md:text-sm font-semibold uppercase tracking-wider">{step.title}</span>
+                          <span className="hidden sm:block text-xs md:text-sm font-semibold uppercase tracking-wider">{step.title}</span>
                           {currentStep === step.number && (
-                            <span className="sm:hidden text-[10px] font-bold">{step.number}</span>
+                            <span className="sm:hidden text-xs font-bold">{step.number}</span>
                           )}
                         </button>
                         {idx < steps.length - 1 && (

@@ -98,7 +98,7 @@ export default function AdminLoginPage() {
             </div>
             <div>
               <h2 className="text-2xl font-black text-white tracking-widest uppercase">PACT</h2>
-              <p className="text-[10px] text-accent font-bold uppercase tracking-[0.2em] opacity-80 mt-0.5">Management Portal</p>
+              <p className="text-xs text-accent font-bold uppercase tracking-[0.2em] opacity-80 mt-0.5">Management Portal</p>
             </div>
           </Link>
         </div>
@@ -132,7 +132,7 @@ export default function AdminLoginPage() {
         <div className="absolute top-6 right-6 sm:top-8 sm:right-8 lg:top-12 lg:right-12 z-20">
            <Link 
             href="/" 
-            className="flex items-center gap-2 text-navy-950/40 hover:text-navy-950 transition-all text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-slate-50 hover:bg-slate-100 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-slate-100 shadow-sm"
+            className="flex items-center gap-2 text-navy-950/40 hover:text-navy-950 transition-all text-[9px] sm:text-xs font-black uppercase tracking-widest bg-slate-50 hover:bg-slate-100 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-slate-100 shadow-sm"
           >
             <ArrowLeft className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
             Live Site
@@ -225,11 +225,11 @@ export default function AdminLoginPage() {
                         {isLoading ? (
                           <>
                             <Loader2 className="h-4 w-4 animate-spin text-accent" />
-                            <span className="text-[10px] sm:text-xs">Verifying Access...</span>
+                            <span className="text-xs sm:text-xs">Verifying Access...</span>
                           </>
                         ) : (
                           <>
-                            <span className="text-[10px] sm:text-xs">Secure Sign In</span>
+                            <span className="text-xs sm:text-xs">Secure Sign In</span>
                             <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform text-accent" />
                           </>
                         )}

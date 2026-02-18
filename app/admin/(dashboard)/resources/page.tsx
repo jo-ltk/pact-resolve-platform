@@ -146,7 +146,7 @@ export default function ResourcesDashboard() {
           <div className="space-y-3">
              <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse shadow-[0_0_15px_rgba(96,165,250,0.8)]" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/90">Resources Status</span>
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-white/90">Resources Status</span>
              </div>
              <h3 className="text-2xl font-bold text-white tracking-tight">Viewing Resource Pages?</h3>
              <p className="text-white/60 text-sm max-w-xl leading-relaxed">

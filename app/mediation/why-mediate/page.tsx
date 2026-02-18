@@ -63,7 +63,7 @@ const RESOLUTION_STEPS_FALLBACK = [
 const SectionHeader = ({ subtitle, title, description, light = false, center = false }: { subtitle: string, title: string, description?: string, light?: boolean, center?: boolean }) => (
   <FadeInUp className={cn("mb-8 md:mb-16", center ? "flex flex-col items-center text-center" : "")}>
     <div className="inline-flex items-center gap-4 mb-4 opacity-70">
-      <span className={cn("text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase", light ? "text-white" : "text-navy-950")}>{subtitle}</span>
+      <span className={cn("text-xs md:text-xs font-mono tracking-[0.4em] uppercase", light ? "text-white" : "text-navy-950")}>{subtitle}</span>
       <div className={cn("h-px w-8 bg-gold-500/50", light ? "bg-gold-500" : "bg-gold-500")} />
     </div>
     <h2 className={cn("text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-light tracking-tighter mb-4 sm:mb-6 leading-[1.1]", light ? "text-white" : "text-navy-950")}>
@@ -95,7 +95,7 @@ const WhyMediateHero = () => (
       <FadeInUp>
         <div className="flex items-center gap-3 mb-4 sm:mb-6 md:mb-8">
           <div className="h-px w-8 md:w-12 bg-gold-500" />
-          <span className="text-gold-500 font-mono text-[10px] md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase">
+          <span className="text-gold-500 font-mono text-xs md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase">
             Mediation / Why Mediate
           </span>
         </div>
@@ -153,7 +153,7 @@ const PuzzlePieces = () => {
           <FadeInUp>
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-navy-50 border border-navy-100 mb-8">
               <div className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
-              <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-navy-950/60 font-bold">The PACT Advantage</span>
+              <span className="text-xs md:text-xs font-mono tracking-[0.4em] uppercase text-navy-950/60 font-bold">The PACT Advantage</span>
             </div>
             <h2 className="text-4xl sm:text-5xl md:text-[5.5rem] font-extralight tracking-tight text-navy-950 mb-8 leading-[0.95]">
               Why Mediate at <span className="italic font-medium text-gold-500">PACT</span>
@@ -274,7 +274,7 @@ const PactProvides = () => {
                 <div className="hidden md:flex items-center gap-6 px-8 grow opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                    <div className={cn("h-px grow transition-all duration-500", activeStep === i ? "bg-gold-500/50" : "bg-white/10")} />
                    <span className={cn(
-                     "font-mono text-[10px] uppercase tracking-[0.2em] whitespace-nowrap transition-colors duration-300",
+                     "font-mono text-xs uppercase tracking-[0.2em] whitespace-nowrap transition-colors duration-300",
                      activeStep === i ? "text-gold-500" : "text-white/30"
                    )}>
                      {step.label}
@@ -311,7 +311,7 @@ const PactProvides = () => {
                             <div className="absolute inset-0 bg-gold-500/10 opacity-0 group-hover/time:opacity-100 blur-xl transition-opacity duration-500" />
                             <div className="flex items-center gap-2 text-gold-500 mb-1">
                               <Timer className="w-4 h-4" />
-                              <span className="text-[10px] uppercase tracking-[0.2em] font-bold">Estimated Time</span>
+                              <span className="text-xs uppercase tracking-[0.2em] font-bold">Estimated Time</span>
                             </div>
                             <span className="text-2xl md:text-3xl font-light text-white tracking-tighter whitespace-nowrap">
                               {step.duration}
@@ -414,7 +414,7 @@ const Checklist = () => {
               <p className="text-xl md:text-2xl text-navy-950 font-light leading-snug tracking-tight">
                 {item}
               </p>
-              <div className="flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-gold-600 opacity-60 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-[0.2em] text-gold-600 opacity-60 group-hover:opacity-100 transition-opacity">
                 Explore Details <Plus className="w-3 h-3 group-hover:rotate-90 transition-transform" />
               </div>
             </motion.div>
@@ -465,7 +465,7 @@ const Checklist = () => {
                   <div className="w-16 h-16 rounded-2xl bg-gold-500 text-navy-950 flex items-center justify-center mb-8 shadow-2xl shadow-gold-500/20">
                     {React.createElement(CHECKLIST_MODAL_DATA[selectedIdx].icon, { className: "w-8 h-8" })}
                   </div>
-                  <h4 className="text-gold-500 font-mono text-[10px] tracking-widest uppercase mb-4 opacity-80 font-bold">
+                  <h4 className="text-gold-500 font-mono text-xs tracking-widest uppercase mb-4 opacity-80 font-bold">
                     Case Assessment 0{selectedIdx + 1}
                   </h4>
                   <h2 className="text-3xl md:text-5xl font-light tracking-tighter italic leading-[1.1] mb-6">
@@ -475,10 +475,10 @@ const Checklist = () => {
                 </div>
 
                 <div className="relative z-10 pt-10 border-t border-white/10">
-                   <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] mb-4">Core Advantage</p>
+                   <p className="text-xs font-bold text-white/40 uppercase tracking-[0.2em] mb-4">Core Advantage</p>
                    <div className="flex items-center gap-4">
                       <div className="text-4xl font-light text-gold-500">{CHECKLIST_MODAL_DATA[selectedIdx].stat.value}</div>
-                      <div className="text-[10px] text-white/60 leading-tight uppercase tracking-widest font-bold">
+                      <div className="text-xs text-white/60 leading-tight uppercase tracking-widest font-bold">
                         {CHECKLIST_MODAL_DATA[selectedIdx].stat.label}
                       </div>
                    </div>
@@ -496,7 +496,7 @@ const Checklist = () => {
                    </div>
 
                    <section className="mb-12">
-                      <h4 className="text-[10px] font-bold text-navy-950/40 uppercase tracking-[.2em] mb-8 border-b border-navy-50 pb-4">Checklist Points</h4>
+                      <h4 className="text-xs font-bold text-navy-950/40 uppercase tracking-[.2em] mb-8 border-b border-navy-50 pb-4">Checklist Points</h4>
                       <ul className="grid grid-cols-1 gap-5">
                          {CHECKLIST_MODAL_DATA[selectedIdx].points.map((text, idx) => (
                            <motion.li 
@@ -532,7 +532,7 @@ const Checklist = () => {
                       >
                         Start Your Case <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Link>
-                      <p className="text-[10px] text-navy-950/30 uppercase tracking-widest font-bold">PACT Confidentiality Guaranteed</p>
+                      <p className="text-xs text-navy-950/30 uppercase tracking-widest font-bold">PACT Confidentiality Guaranteed</p>
                    </div>
                 </div>
               </div>

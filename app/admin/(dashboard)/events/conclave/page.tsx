@@ -326,7 +326,7 @@ export default function ConclaveHighlightsPage() {
               {isSaving ? <Loader2 className="w-5 h-5 mr-3 animate-spin" /> : <Save className="w-5 h-5 mr-3" />}
               Publish Updates
             </Button>
-            <p className="text-[10px] text-center text-white/40 font-mono uppercase tracking-tighter">
+            <p className="text-xs text-center text-white/40 font-mono uppercase tracking-tighter">
               {eventData ? `Linked to ${eventData.year} Edition` : "Draft Mode"}
             </p>
           </div>
@@ -349,7 +349,7 @@ export default function ConclaveHighlightsPage() {
               )}
               <div className="flex flex-col">
                 <h3 className="text-xl font-black text-navy-950 italic uppercase leading-none">The {eventData?.year || 2025} Collection</h3>
-                <p className="text-[10px] text-amber-600 font-bold uppercase tracking-widest mt-1">Highlights – {eventData?.year || 2025}</p>
+                <p className="text-xs text-amber-600 font-bold uppercase tracking-widest mt-1">Highlights – {eventData?.year || 2025}</p>
               </div>
           </div>
           
@@ -487,7 +487,7 @@ export default function ConclaveHighlightsPage() {
               </div>
               <div className="flex flex-col">
                 <h3 className="text-xl font-black text-navy-950 italic uppercase leading-none">Distinction</h3>
-                <p className="text-[10px] text-blue-600 font-bold uppercase tracking-widest mt-1">Guests of Honour – {eventData?.year || 2025}</p>
+                <p className="text-xs text-blue-600 font-bold uppercase tracking-widest mt-1">Guests of Honour – {eventData?.year || 2025}</p>
               </div>
           </div>
           <Button onClick={addGuestItem} variant="outline" className="rounded-2xl h-12 px-6 border-2 border-dashed border-blue-500/30 text-blue-600 hover:bg-blue-500/5 hover:border-blue-500 transition-all font-bold">
@@ -524,7 +524,7 @@ export default function ConclaveHighlightsPage() {
                     {/* Content Overlay */}
                     <div className="absolute bottom-0 left-0 p-8 w-full z-10">
                       <h4 className="font-black text-2xl text-white italic tracking-tight leading-none mb-2">{guest.name || "Guest Name"}</h4>
-                      <p className="text-[10px] font-bold text-amber-500 uppercase tracking-[0.2em]">{guest.title || "Designation"}</p>
+                      <p className="text-xs font-bold text-amber-500 uppercase tracking-[0.2em]">{guest.title || "Designation"}</p>
                     </div>
                   </div>
                 </Card>
@@ -555,7 +555,7 @@ export default function ConclaveHighlightsPage() {
             </div>
             <div className="flex flex-col">
               <h3 className="text-xl font-black text-navy-950 italic uppercase leading-none">Coverage</h3>
-              <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest mt-1">Media & Press – {eventData?.year || 2025}</p>
+              <p className="text-xs text-emerald-600 font-bold uppercase tracking-widest mt-1">Media & Press – {eventData?.year || 2025}</p>
             </div>
           </div>
           <Button onClick={addCoverageItem} variant="outline" className="rounded-2xl h-12 px-6 border-2 border-dashed border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/5 hover:border-emerald-500 transition-all font-bold">
@@ -569,7 +569,7 @@ export default function ConclaveHighlightsPage() {
               <motion.div layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} key={`coverage-${idx}`}>
                 <Card className="group relative h-full flex flex-col bg-linear-to-br from-gray-50 to-gray-100 border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 rounded-3xl overflow-hidden">
                   <CardContent className="p-8 flex-1 space-y-4">
-                    <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-[0.2em]">{item.source || "Source"}</p>
+                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-[0.2em]">{item.source || "Source"}</p>
                     <h4 className="font-bold text-xl text-navy-950 leading-snug line-clamp-3">{item.headline || "Headline"}</h4>
                   </CardContent>
                   <CardFooter className="p-6 pt-0 flex justify-between items-center">

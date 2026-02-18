@@ -107,9 +107,9 @@ export function AboutUs() {
                 Through mediation services, advocacy training, consulting and capacity-building initiatives, The PACT advances a culture of dialogue, confidentiality, and collaboration—helping individuals and organisations resolve disputes efficiently while preserving relationships and reputations.
               </p>
               <div className="flex flex-wrap gap-3 md:gap-4">
-                <div className="px-4 md:px-6 py-2 rounded-full bg-navy-50 text-[10px] font-mono text-navy-950/40 uppercase tracking-widest">Est. 2015</div>
-                <div className="px-4 md:px-6 py-2 rounded-full bg-navy-50 text-[10px] font-mono text-navy-950/40 uppercase tracking-widest">17,000+ Users</div>
-                <div className="px-4 md:px-6 py-2 rounded-full bg-navy-50 text-[10px] font-mono text-navy-950/40 uppercase tracking-widest">Global Standards</div>
+                <div className="px-4 md:px-6 py-2 rounded-full bg-navy-50 text-xs font-mono text-navy-950/40 uppercase tracking-widest">Est. 2015</div>
+                <div className="px-4 md:px-6 py-2 rounded-full bg-navy-50 text-xs font-mono text-navy-950/40 uppercase tracking-widest">17,000+ Users</div>
+                <div className="px-4 md:px-6 py-2 rounded-full bg-navy-50 text-xs font-mono text-navy-950/40 uppercase tracking-widest">Global Standards</div>
               </div>
             </FadeInUp>
           </div>
@@ -129,7 +129,7 @@ export function AboutUs() {
             <FadeInUp>
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-navy-50 border border-navy-100 mb-8">
                 <div className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
-                <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-navy-950/60 font-bold">Our Reach</span>
+                <span className="text-xs md:text-xs font-mono tracking-[0.4em] uppercase text-navy-950/60 font-bold">Our Reach</span>
               </div>
               <h2 className="text-4xl sm:text-5xl md:text-[5.5rem] font-extralight tracking-tight text-navy-950 mb-8 leading-[0.95]">
                 What We <span className="italic font-medium text-gold-500">Do</span>
@@ -169,7 +169,7 @@ export function AboutUs() {
                   
                   <div className="grow space-y-4 relative z-10 w-full">
                     <div className="space-y-1">
-                      <span className="text-[10px] font-mono uppercase tracking-[0.5em] text-gold-500/60 font-bold">Module {i + 1}</span>
+                      <span className="text-xs font-mono uppercase tracking-[0.5em] text-gold-500/60 font-bold">Module {i + 1}</span>
                       <h3 className="text-xl md:text-2xl font-light text-navy-950 tracking-tighter leading-tight italic group-hover:text-gold-500 transition-colors duration-500 uppercase">
                         {item.title}
                       </h3>

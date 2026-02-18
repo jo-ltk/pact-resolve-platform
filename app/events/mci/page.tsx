@@ -53,7 +53,7 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
   <FadeInUp className={cn("mb-8 sm:mb-12 md:mb-20", center ? "flex flex-col items-center text-center" : "")}>
     <div className="inline-flex items-center gap-2 sm:gap-4 mb-3 sm:mb-6 opacity-80">
       <div className={cn("h-px w-6 sm:w-8 md:w-12 bg-gold-500", light ? "bg-gold-500" : "bg-gold-500/50")} />
-      <span className={cn("text-[10px] sm:text-[11px] md:text-xs font-mono tracking-[0.2em] sm:tracking-[0.4em] uppercase font-bold", light ? "text-gold-500" : "text-navy-950/60")}>{subtitle}</span>
+      <span className={cn("text-xs sm:text-[11px] md:text-xs font-mono tracking-[0.2em] sm:tracking-[0.4em] uppercase font-bold", light ? "text-gold-500" : "text-navy-950/60")}>{subtitle}</span>
     </div>
     <h2 className={cn("text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-[5rem] font-light tracking-tight mb-4 sm:mb-6 md:mb-8 leading-[1.1] sm:leading-[0.95]", light ? "text-white" : "text-navy-950")}>
       {title.split(' ').map((word, i) => (
@@ -168,7 +168,7 @@ export default function MCIPage() {
           <FadeInUp>
             <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
               <div className="h-px w-8 sm:w-12 bg-gold-500" />
-              <span className="text-gold-500 font-mono text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.4em] uppercase font-bold">
+              <span className="text-gold-500 font-mono text-xs sm:text-xs tracking-[0.3em] sm:tracking-[0.4em] uppercase font-bold">
                 {eventData?.subtitle || "India's Premier Mediation Event"}
               </span>
             </div>
@@ -195,7 +195,7 @@ export default function MCIPage() {
                      { label: "Sponsors", icon: Briefcase, value: "Coming Soon", color: "text-white/40" }
                    ].map((item, i) => (
                      <div key={i} className="flex flex-col gap-2 sm:gap-3 group/item">
-                        <span className="text-[9px] sm:text-[10px] font-mono text-white/50 uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold">{item.label}</span>
+                        <span className="text-[9px] sm:text-xs font-mono text-white/50 uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold">{item.label}</span>
                         <div className={cn("flex items-center gap-2 sm:gap-3 transition-colors", item.color)}>
                           <item.icon className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
                           <span className="text-sm sm:text-base md:text-lg font-medium tracking-tight">{item.value}</span>
@@ -292,7 +292,7 @@ export default function MCIPage() {
                   
                   <div className="relative z-10 w-full flex flex-col grow">
                     <div className="mb-4 sm:mb-6 md:mb-8">
-                      <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.3em] sm:tracking-[0.5em] text-white/60 group-hover:text-gold-500/80 font-bold transition-colors">Season Edition</span>
+                      <span className="text-[9px] sm:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.5em] text-white/60 group-hover:text-gold-500/80 font-bold transition-colors">Season Edition</span>
                       <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tighter italic group-hover:text-gold-500 transition-colors duration-500">
                         MCI {item.year}
                       </h3>
@@ -302,12 +302,12 @@ export default function MCIPage() {
 
                     <div className="space-y-4 sm:space-y-6 md:space-y-8 text-center grow">
                       <div className="space-y-1 sm:space-y-2">
-                        <span className="text-[9px] sm:text-[10px] font-mono text-gold-500/80 uppercase tracking-wider sm:tracking-widest block font-bold">Mediation Counsel</span>
+                        <span className="text-[9px] sm:text-xs font-mono text-gold-500/80 uppercase tracking-wider sm:tracking-widest block font-bold">Mediation Counsel</span>
                         <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-white/95 leading-tight tracking-tight">{item.counsel}</p>
                       </div>
                       
                       <div className="space-y-1 sm:space-y-2">
-                        <span className="text-[9px] sm:text-[10px] font-mono text-gold-500/80 uppercase tracking-wider sm:tracking-widest block font-bold">Mediator</span>
+                        <span className="text-[9px] sm:text-xs font-mono text-gold-500/80 uppercase tracking-wider sm:tracking-widest block font-bold">Mediator</span>
                         <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-white/95 leading-tight tracking-tight">{item.mediator}</p>
                       </div>
                     </div>
@@ -370,7 +370,7 @@ export default function MCIPage() {
                     <Zap className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
                   </div>
                   <div>
-                    <p className="text-[8px] sm:text-[9px] md:text-[10px] font-mono uppercase tracking-[0.2em] sm:tracking-[0.3em] text-navy-950/40 font-bold mb-1">Experience</p>
+                    <p className="text-[8px] sm:text-[9px] md:text-xs font-mono uppercase tracking-[0.2em] sm:tracking-[0.3em] text-navy-950/40 font-bold mb-1">Experience</p>
                     <p className="text-base sm:text-lg md:text-xl font-bold text-navy-950 tracking-tight leading-tight">7 Immersive Challenges</p>
                   </div>
                 </div>
@@ -464,7 +464,7 @@ export default function MCIPage() {
                   <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-16 md:left-16 flex items-end gap-3 sm:gap-4 md:gap-6 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
                     <span className="text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[10rem] font-bold leading-none tracking-tighter italic opacity-80 decoration-gold-500 underline decoration-2 sm:decoration-4 underline-offset-4 sm:underline-offset-8">07</span>
                     <div className="pb-2 sm:pb-3 md:pb-4">
-                      <p className="text-[8px] sm:text-[9px] md:text-[10px] lg:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.5em] font-bold text-gold-500 mb-1 sm:mb-2">Competition Structure</p>
+                      <p className="text-[8px] sm:text-[9px] md:text-xs lg:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.5em] font-bold text-gold-500 mb-1 sm:mb-2">Competition Structure</p>
                       <h3 className="text-base sm:text-xl md:text-2xl lg:text-4xl font-light tracking-tighter uppercase italic leading-none">Immersive <br />Challenges</h3>
                     </div>
                   </div>
@@ -509,7 +509,7 @@ export default function MCIPage() {
                           
                           <div className="space-y-1">
                             <h4 className="text-base sm:text-xl font-bold text-navy-950 tracking-tight leading-none group-hover:text-gold-500 transition-colors">{benefit.text}</h4>
-                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] font-mono font-bold text-navy-950/40">{benefit.sub}</p>
+                            <p className="text-xs sm:text-xs uppercase tracking-[0.2em] font-mono font-bold text-navy-950/40">{benefit.sub}</p>
                           </div>
                           
                           {/* Progress/Detail Decorative Bar */}
@@ -625,7 +625,7 @@ export default function MCIPage() {
                         <div className="space-y-1">
                           <div className="flex items-center justify-center lg:justify-start gap-2 mb-1">
                             <div className="h-px w-4 bg-gold-500" />
-                            <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.3em] text-gold-500 font-bold">Season {3-i}</span>
+                            <span className="text-xs sm:text-[11px] font-mono uppercase tracking-[0.3em] text-gold-500 font-bold">Season {3-i}</span>
                           </div>
                           <h4 className="text-2xl sm:text-3xl font-bold text-navy-950 tracking-tight">{edition.date}</h4>
                         </div>
@@ -646,7 +646,7 @@ export default function MCIPage() {
                         {edition.actions.map((action, j) => (
                           <button 
                             key={j} 
-                            className="group/btn flex items-center gap-2 px-5 py-3 sm:py-3.5 rounded-2xl border border-navy-100 bg-white text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-navy-950/60 hover:bg-navy-950 hover:text-white hover:border-navy-950 shadow-sm transition-all duration-300"
+                            className="group/btn flex items-center gap-2 px-5 py-3 sm:py-3.5 rounded-2xl border border-navy-100 bg-white text-xs sm:text-[11px] font-bold uppercase tracking-wider text-navy-950/60 hover:bg-navy-950 hover:text-white hover:border-navy-950 shadow-sm transition-all duration-300"
                           >
                             <action.icon className="w-3.5 h-3.5 text-gold-500 group-hover/btn:scale-110 transition-transform" />
                             <span>{action.label}</span>
@@ -738,7 +738,7 @@ export default function MCIPage() {
 
                           {/* Content Overlay */}
                           <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 lg:p-14 bg-linear-to-t from-navy-950/80 via-navy-950/40 to-transparent translate-y-6 group-hover/image:translate-y-0 opacity-0 group-hover/image:opacity-100 transition-all duration-700">
-                            <span className="text-gold-500 font-mono text-[8px] sm:text-[9px] md:text-[10px] lg:text-xs tracking-[0.3em] sm:tracking-[0.4em] uppercase font-bold mb-1 sm:mb-2 md:mb-3 block">MCI Collection</span>
+                            <span className="text-gold-500 font-mono text-[8px] sm:text-[9px] md:text-xs lg:text-xs tracking-[0.3em] sm:tracking-[0.4em] uppercase font-bold mb-1 sm:mb-2 md:mb-3 block">MCI Collection</span>
                             <h4 className="text-lg sm:text-xl md:text-2xl lg:text-5xl font-bold text-white tracking-tighter leading-none mb-2 sm:mb-3 md:mb-4">{image.title}</h4>
                             <p className="text-xs sm:text-sm md:text-base lg:text-xl text-white/70 font-light max-w-2xl line-clamp-1">{image.description}</p>
                           </div>
@@ -765,7 +765,7 @@ export default function MCIPage() {
                         {/* Text Overlay - Cinematic and only on hover */}
                         <div className="absolute inset-x-0 bottom-0 p-4 sm:p-8 md:p-10 lg:p-24 bg-linear-to-t from-black/90 via-black/20 to-transparent transition-all duration-700 opacity-0 group-hover/modal:opacity-100 translate-y-8 group-hover/modal:translate-y-0">
                            <div className="max-w-7xl mx-auto">
-                            <span className="text-gold-500 font-mono text-[9px] sm:text-[10px] md:text-xs lg:text-sm tracking-[0.4em] sm:tracking-[0.6em] uppercase font-bold mb-2 sm:mb-4 md:mb-6 block">Event Archive</span>
+                            <span className="text-gold-500 font-mono text-[9px] sm:text-xs md:text-xs lg:text-sm tracking-[0.4em] sm:tracking-[0.6em] uppercase font-bold mb-2 sm:mb-4 md:mb-6 block">Event Archive</span>
                             <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[8rem] font-bold text-white tracking-tighter leading-[0.8] mb-3 sm:mb-5 md:mb-8 italic">{image.title}</h3>
                             <p className="text-sm sm:text-base md:text-xl lg:text-3xl text-white/70 font-light leading-relaxed max-w-4xl">{image.description}</p>
                            </div>
@@ -774,8 +774,8 @@ export default function MCIPage() {
                         {/* Subtle close hint info when not hovering */}
                         <div className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-10 md:right-10 lg:bottom-16 lg:right-16 group-hover/modal:opacity-0 transition-opacity">
                           <div className="flex flex-col items-end gap-1 sm:gap-2">
-                             <span className="text-gold-500 font-mono text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-[0.3em] sm:tracking-[0.4em] font-bold">MCI Memories</span>
-                             <span className="text-white/40 font-mono text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-wider sm:tracking-widest">{image.title}</span>
+                             <span className="text-gold-500 font-mono text-[8px] sm:text-[9px] md:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] font-bold">MCI Memories</span>
+                             <span className="text-white/40 font-mono text-[8px] sm:text-[9px] md:text-xs uppercase tracking-wider sm:tracking-widest">{image.title}</span>
                           </div>
                         </div>
                       </div>

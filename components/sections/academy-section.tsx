@@ -45,7 +45,7 @@ export function AcademySection() {
                   <ArrowRight className="w-5 h-5 text-foreground/20 group-hover:text-gold-500 transition-all duration-500 group-hover:translate-x-2" />
                 </div>
                 <div>
-                  <h4 className="font-mono text-[10px] uppercase tracking-[0.3em] text-gold-500 mb-1">{course.subtitle}</h4>
+                  <h4 className="font-mono text-xs uppercase tracking-[0.3em] text-gold-500 mb-1">{course.subtitle}</h4>
                   <h3 className="font-sans text-3xl font-light text-foreground md:text-4xl group-hover:text-gold-500 transition-colors duration-500">{course.title}</h3>
                 </div>
                 <p className="text-base leading-relaxed text-foreground/60 max-w-sm">{course.description}</p>

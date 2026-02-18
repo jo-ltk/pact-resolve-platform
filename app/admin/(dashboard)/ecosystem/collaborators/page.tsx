@@ -193,11 +193,11 @@ export default function EcosystemPartnersAdminPage() {
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent border-navy-50">
-                  <TableHead className="w-[80px] text-[10px] font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Partner</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Category</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
-                  <TableHead className="text-right pr-8 text-[10px] font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
+                  <TableHead className="w-[80px] text-xs font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
+                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Partner</TableHead>
+                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Category</TableHead>
+                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
+                  <TableHead className="text-right pr-8 text-xs font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -232,17 +232,17 @@ export default function EcosystemPartnersAdminPage() {
                         </div>
                         <div className="flex flex-col">
                           <span className="font-bold text-navy-950 text-sm italic">{item.name}</span>
-                          {item.region && <span className="text-[10px] text-navy-950/40 font-mono uppercase tracking-widest">{item.region}</span>}
+                          {item.region && <span className="text-xs text-navy-950/40 font-mono uppercase tracking-widest">{item.region}</span>}
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="rounded-full text-[10px] uppercase font-bold tracking-widest border-navy-100 text-navy-950/60 bg-white">
+                      <Badge variant="outline" className="rounded-full text-xs uppercase font-bold tracking-widest border-navy-100 text-navy-950/60 bg-white">
                         {CATEGORIES.find(c => c.value === item.category)?.label || item.category}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-black tracking-widest h-6">
+                      <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-black tracking-widest h-6">
                         {item.isActive ? "Active" : "Hidden"}
                       </Badge>
                     </TableCell>

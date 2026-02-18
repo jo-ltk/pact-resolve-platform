@@ -88,7 +88,7 @@ export default function NegotiationCoursesPage() {
         <CardHeader className={`p-6 ${isDark ? "bg-gradient-to-br from-navy-900 to-navy-950 border-b border-white/10" : "bg-gradient-to-br from-rose-50 to-white border-b border-navy-100/30"}`}>
           <div className="flex items-start justify-between">
             <div className="space-y-2">
-              <Badge variant={course.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-bold border-none px-3">{course.isActive ? "Active" : "Hidden"}</Badge>
+              <Badge variant={course.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-bold border-none px-3">{course.isActive ? "Active" : "Hidden"}</Badge>
               <h3 className={`text-xl font-bold ${isDark ? "text-white" : "text-navy-950"}`}>{course.title}</h3>
               <p className={`text-sm ${isDark ? "text-white/50" : "text-navy-950/50"}`}>{course.subtitle}</p>
             </div>

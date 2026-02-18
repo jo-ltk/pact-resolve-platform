@@ -222,8 +222,8 @@ export default function CaseStudiesAdminPage() {
 
                <div className="absolute inset-0 flex flex-col justify-end p-6 pointer-events-none">
                   <div className="flex items-center gap-3 mb-2">
-                     <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-bold border-none px-3">{item.isActive ? "Active" : "Hidden"}</Badge>
-                     <span className="font-mono text-[10px] text-white/60 uppercase">Order #{item.order}</span>
+                     <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-bold border-none px-3">{item.isActive ? "Active" : "Hidden"}</Badge>
+                     <span className="font-mono text-xs text-white/60 uppercase">Order #{item.order}</span>
                   </div>
                   <h3 className="text-xl font-bold text-white uppercase italic tracking-tight group-hover:text-accent transition-colors">{item.title}</h3>
                </div>
@@ -231,11 +231,11 @@ export default function CaseStudiesAdminPage() {
             <CardContent className="p-6 grow flex flex-col bg-white">
                <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="space-y-1">
-                     <p className="text-[10px] text-navy-950/40 font-bold uppercase tracking-widest">Dispute Value</p>
+                     <p className="text-xs text-navy-950/40 font-bold uppercase tracking-widest">Dispute Value</p>
                      <p className="text-sm font-semibold text-accent">{item.costs?.value || "N/A"}</p>
                   </div>
                   <div className="space-y-1 text-right">
-                     <p className="text-[10px] text-navy-950/40 font-bold uppercase tracking-widest">Fees</p>
+                     <p className="text-xs text-navy-950/40 font-bold uppercase tracking-widest">Fees</p>
                      <p className="text-sm font-semibold text-navy-950">₹{item.costs?.fees || "N/A"}</p>
                   </div>
                </div>
@@ -252,7 +252,7 @@ export default function CaseStudiesAdminPage() {
                         <span className="text-xs font-bold text-navy-900">{item.costs?.hours}</span>
                      </div>
                   </div>
-                  <Button variant="outline" size="sm" className="h-7 text-[10px] uppercase font-bold rounded-lg border-navy-100" onClick={() => openEditDialog(item)}>
+                  <Button variant="outline" size="sm" className="h-7 text-xs uppercase font-bold rounded-lg border-navy-100" onClick={() => openEditDialog(item)}>
                      View Details <ExternalLink className="w-3 h-3 ml-1" />
                   </Button>
                </div>

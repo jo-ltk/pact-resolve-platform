@@ -384,7 +384,7 @@ export default function ClausesToolkitsPage() {
                   <p className="text-white/60 font-light text-sm mb-4 leading-relaxed">
                     {toolkit.description}
                   </p>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-gold-500/70">
+                  <span className="text-xs font-mono uppercase tracking-widest text-gold-500/70">
                     {toolkit.source}
                   </span>
                 </motion.a>
