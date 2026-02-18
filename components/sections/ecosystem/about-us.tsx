@@ -314,7 +314,7 @@ export function AboutUs() {
           
           <div className="relative rounded-4xl overflow-hidden border border-white/10 shadow-3xl">
             <Image
-              src="/images/Web Pic 5.png"
+              src="/images/pact-journey.png"
               alt="Rocket ship timeline 2015-2026"
               width={1920}
               height={800}

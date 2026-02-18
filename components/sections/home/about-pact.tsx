@@ -56,7 +56,7 @@ export function AboutPact() {
           <div className="relative bg-black rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-y md:border border-white/10">
             <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-transparent via-transparent to-black/40 pointer-events-none" />
             <Image
-              src="/images/Web Pic 5.png"
+              src="/images/pact-journey.png"
               alt="Journey with The PACT - Timeline from 2015 to 2026"
               width={1920}
               height={1080}
