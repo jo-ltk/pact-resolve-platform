@@ -196,7 +196,7 @@ export function CTASection() {
                 <MagneticButton
                   enableMotion
                   size="lg"
-                  className="w-full py-6 text-xs uppercase tracking-[0.2em] font-black bg-white text-navy-950 hover:bg-accent transition-colors duration-300 rounded-xl shadow-xl shadow-white/5 group"
+                  className="group w-full py-6 text-xs uppercase tracking-[0.2em] font-black bg-white! text-navy-950! hover:bg-accent! hover:text-navy-950! transition-colors duration-300 rounded-xl shadow-xl shadow-white/5"
                 >
                   <span className="flex items-center gap-3">
                     Select & Inquire
