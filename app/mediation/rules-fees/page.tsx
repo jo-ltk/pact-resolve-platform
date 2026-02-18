@@ -54,7 +54,7 @@ const RulesHero = () => (
             Mediation / Rules & Fee
           </span>
         </div>
-        <h1 className="text-4xl xs:text-5xl sm:text-7xl md:text-[8rem] font-bold text-white tracking-tighter leading-[0.9] md:leading-[0.8] mb-8 md:mb-12 select-none italic">
+        <h1 className="page-title text-4xl xs:text-5xl sm:text-7xl md:text-[8rem] font-bold text-white tracking-tighter leading-[0.9] md:leading-[0.8] mb-8 md:mb-12 select-none italic">
           RULES & FEE
         </h1>
         <div className="max-w-4xl">

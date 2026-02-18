@@ -84,7 +84,7 @@ export default function MediationPage() {
                 <div className="h-px w-8 bg-gold-500" />
               </div>
               
-              <h1 className="text-[12vw] md:text-8xl font-light tracking-tight mb-8 leading-none italic">
+              <h1 className="page-title text-[12vw] md:text-8xl font-light tracking-tight mb-8 leading-none italic">
                 <span className="text-gold-500">Mediation</span>
               </h1>
               

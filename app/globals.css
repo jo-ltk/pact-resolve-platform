@@ -168,6 +168,16 @@
     height: 1.1em;
   }
 
+  /* Typography rule: no italics except page titles */
+  .italic {
+    font-style: normal !important;
+  }
+
+  .page-title,
+  .page-title * {
+    font-style: italic !important;
+  }
+
   /* Added prefers-reduced-motion support for accessibility */
   @media (prefers-reduced-motion: reduce) {
     * {

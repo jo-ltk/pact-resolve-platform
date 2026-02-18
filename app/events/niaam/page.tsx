@@ -330,7 +330,7 @@ export default function NIAAMPage() {
                 Honouring Excellence
               </span>
             </div>
-            <h1 className="text-[12vw] sm:text-[10vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-16 select-none italic uppercase">
+            <h1 className="page-title text-[12vw] sm:text-[10vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-16 select-none italic uppercase">
               NATIONAL <br />
               IMPACT <br />
               <span className="text-gold-500">AWARDS</span> 

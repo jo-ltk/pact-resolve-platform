@@ -105,7 +105,7 @@ export default function EventsPage() {
               <div className="h-px w-12 bg-gold-500" />
             </div>
             
-            <h1 className="text-[14vw] md:text-[8rem] font-bold text-white tracking-tighter leading-[0.8] select-none uppercase italic">
+            <h1 className="page-title text-[14vw] md:text-[8rem] font-bold text-white tracking-tighter leading-[0.8] select-none uppercase italic">
               PACT <br />
               <span className="text-gold-500 font-extrabold lg:text-[10rem]">EVENTS</span>
             </h1>

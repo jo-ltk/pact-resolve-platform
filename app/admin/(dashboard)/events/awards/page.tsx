@@ -254,7 +254,7 @@ export default function AwardsManagementPage() {
               <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
             </Link>
             <div className="space-y-1">
-              <h1 className="text-4xl md:text-5xl font-black tracking-tighter italic flex items-center gap-4 uppercase text-white">
+              <h1 className="page-title text-4xl md:text-5xl font-black tracking-tighter italic flex items-center gap-4 uppercase text-white">
                 <Trophy className="w-10 h-10 text-purple-500" /> 
                 Impact Awards
               </h1>

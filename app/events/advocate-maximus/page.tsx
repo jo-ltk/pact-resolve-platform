@@ -128,7 +128,7 @@ export default function AdvocateMaximusPage() {
             </div>
             <div className="relative mb-16 lg:mb-24">
               <div className="max-w-4xl relative z-10">
-                <h1 className="text-[10vw] sm:text-[9vw] md:text-[8rem] lg:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] select-none italic uppercase">
+                <h1 className="page-title text-[10vw] sm:text-[9vw] md:text-[8rem] lg:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] select-none italic uppercase">
                   ADVOCATE <br />
                   <span className="text-gold-500">MAXIMUS</span> 
                 </h1>

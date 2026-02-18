@@ -172,7 +172,7 @@ export default function MCIPage() {
                 {eventData?.subtitle || "India's Premier Mediation Event"}
               </span>
             </div>
-            <h1 className="text-[14vw] sm:text-[12vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-8 sm:mb-12 md:mb-16 select-none italic uppercase">
+            <h1 className="page-title text-[14vw] sm:text-[12vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-8 sm:mb-12 md:mb-16 select-none italic uppercase">
               MEDIATION <br />
               <span className="text-gold-500">CHAMPIONS</span> <br />
               LEAGUE
