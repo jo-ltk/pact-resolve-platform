@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Quote, Star } from "lucide-react";
+import { Quote, Star, User } from "lucide-react";
 
 const testimonials = [
   {
@@ -10,6 +10,7 @@ const testimonials = [
     author: "Managing Partner",
     company: "Global Law Firm",
     image: "/assets/img/testimonials/arbitration-chamber.png",
+    avatar: "",
     rating: 5
   },
   {
@@ -17,6 +18,7 @@ const testimonials = [
     author: "General Counsel",
     company: "Fortune 500 Enterprise",
     image: "/assets/img/testimonials/corporate-boardroom.png",
+    avatar: "",
     rating: 5
   }
 ];
@@ -29,12 +31,12 @@ export function Supporters() {
           <div className="inline-flex items-center gap-3 mb-4">
             <div className="h-px w-8 bg-gold-500" />
             <p className="text-gold-500  text-xs uppercase tracking-[0.3em] font-bold">
-              Testimonials
+              Trusted to Deliver
             </p>
             <div className="h-px w-8 bg-gold-500" />
           </div>
           <h2 className="text-4xl md:text-6xl font-light tracking-tight text-navy-950 mb-6">
-            PACT <span className="text-gold-500 italic font-medium">Supporters</span>
+            PACT <span className="text-gold-500 italic font-medium">Testimonials</span>
           </h2>
         </div>
 
@@ -80,9 +82,27 @@ export function Supporters() {
                   </p>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-white/5">
+                <div className="mt-8 pt-6 border-t border-white/5 relative pr-20">
                   <p className="text-white font-semibold tracking-tight text-lg">{t.author}</p>
                   <p className="text-gold-500/70 text-xs  uppercase tracking-[0.2em] mt-1.5">{t.company}</p>
+
+                  {/* Profile picture slot (bottom-right) */}
+                  <div className="absolute bottom-0 right-0">
+                    <div className="relative h-14 w-14 rounded-full overflow-hidden border-2 border-gold-500/60 bg-white/5 shadow-2xl">
+                      {t.avatar ? (
+                        <Image
+                          src={t.avatar}
+                          alt={`${t.author} profile photo`}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="h-full w-full grid place-items-center text-white/60">
+                          <User className="h-6 w-6" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
