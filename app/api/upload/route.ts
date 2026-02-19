@@ -16,19 +16,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Limit file size (e.g., 5MB)
-    if (file.size > 5 * 1024 * 1024) {
+    // Limit file size (10MB for PDFs, 5MB for images)
+    const maxSize = file.type === "application/pdf" ? 10 * 1024 * 1024 : 5 * 1024 * 1024;
+    if (file.size > maxSize) {
       return NextResponse.json(
-        { error: "File size exceeds 5MB limit" },
+        { error: `File size exceeds ${file.type === "application/pdf" ? "10MB" : "5MB"} limit` },
         { status: 400 }
       );
     }
 
     // Restrict file types
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/svg+xml", "application/pdf"];
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: "Unsupported file type" },
+        { error: "Unsupported file type. Allowed: JPG, PNG, WebP, SVG, PDF" },
         { status: 400 }
       );
     }

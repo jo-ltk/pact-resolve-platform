@@ -52,6 +52,7 @@ import { Switch } from "@/components/ui/switch";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "@/components/admin/ImageUpload";
+import { FileUpload } from "@/components/admin/FileUpload";
 import { useAuth } from "@/lib/context/AuthContext";
 import { type ResourceItem, type ResourceType } from "@/lib/db/schemas";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -396,19 +397,29 @@ export default function LibraryAdminPage() {
                   value={editingItem?.image || ""}
                   onChange={(url) => setEditingItem(prev => ({ ...prev!, image: url }))}
                 />
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Content URL / PDF URL</Label>
-                  <div className="relative">
-                    <ExternalLink className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
-                    <Input 
-                      value={editingItem?.url || ""} 
-                      onChange={(e) => setEditingItem(prev => ({ ...prev!, url: e.target.value }))} 
-                      className="pl-10 h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                      placeholder="https://..."
-                    />
+                {(activeTab === 'publication' || activeTab === 'toolkit') ? (
+                  <FileUpload
+                    label="Upload PDF Document"
+                    description="Upload a PDF or provide a URL below"
+                    value={editingItem?.url || ""}
+                    onChange={(url) => setEditingItem(prev => ({ ...prev!, url: url }))}
+                    maxSizeMB={10}
+                  />
+                ) : (
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Content URL</Label>
+                    <div className="relative">
+                      <ExternalLink className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
+                      <Input 
+                        value={editingItem?.url || ""} 
+                        onChange={(e) => setEditingItem(prev => ({ ...prev!, url: e.target.value }))} 
+                        className="pl-10 h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
+                        placeholder="https://..."
+                      />
+                    </div>
+                    <p className="text-xs text-navy-950/50">External link or internal URL for this resource.</p>
                   </div>
-                  <p className="text-xs text-navy-950/50">You can upload PDFs via media upload and paste the generated URL here.</p>
-                </div>
+                )}
               </div>
 
               {(activeTab === 'blog' || activeTab === 'publication' || activeTab === 'news') && (
