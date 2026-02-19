@@ -607,6 +607,8 @@ export interface Testimonial extends BaseDocument {
   image: ImageData;
   /** Profile picture of the person */
   profileImage: ImageData;
+  /** Page where this testimonial belongs, e.g. "homepage", "simplified" */
+  page?: string;
   /** Display order */
   order: number;
   /** Whether this testimonial is visible */
@@ -682,6 +684,8 @@ export interface ResourceItem extends BaseDocument {
   description?: string;
   /** Cover image or thumbnail */
   image?: string;
+  /** Optional publication/brand logo */
+  logo?: string;
   /** URL to the content (PDF, Link, Video) */
   url?: string;
   /** Specific author name (if separate from subtitle) */
@@ -698,6 +702,25 @@ export interface ResourceItem extends BaseDocument {
   isActive: boolean;
   /** Whether highlighted/featured */
   isFeatured?: boolean;
+}
+
+// ============================================================================
+// 18. NMR CONTENT (National Mediation Review)
+// ============================================================================
+
+export interface NmrContent extends BaseDocument {
+  /** Section title/label, e.g. "Editors" */
+  label: string;
+  /** Main value/content, e.g. "Coming Soon" or names */
+  value: string;
+  /** Optional image (e.g. theme banner, editor photo) */
+  image?: ImageData;
+  /** Optional logo (e.g. partner logo) */
+  logo?: ImageData;
+  /** Display order */
+  order: number;
+  /** Whether visible */
+  isActive: boolean;
 }
 
 // ============================================================================
@@ -739,6 +762,8 @@ export const COLLECTIONS = {
   ABOUT_PACT: "aboutPact",
   WHY_PACT: "whyPact",
   NETWORK_LOGOS: "networkLogos",
+  // NMR Content
+  NMR_CONTENT: "nmrContent",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];

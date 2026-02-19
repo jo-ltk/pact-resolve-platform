@@ -13,12 +13,16 @@ import { AuditRepository } from "@/lib/db/repositories/audit-repository";
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
+    const page = searchParams.get("page");
     const isAdmin = searchParams.get("admin") === "true";
 
     const db = await getDb();
     const collection = db.collection<Testimonial>(COLLECTIONS.TESTIMONIALS);
 
-    const query = isAdmin ? {} : { isActive: true };
+    const query: any = isAdmin ? {} : { isActive: true };
+    if (page) {
+      query.page = page;
+    }
 
     const testimonials = await collection
       .find(query)
@@ -57,6 +61,10 @@ export async function POST(request: NextRequest) {
 
     revalidatePath("/");
     revalidatePath("/admin/home-page/testimonials");
+    if (body.page === "simplified") {
+      revalidatePath("/resources/mediation-simplified");
+    }
+    revalidatePath("/admin/resources/simplified");
 
     if (userId) {
       AuditRepository.log({
@@ -108,6 +116,10 @@ export async function PUT(request: NextRequest) {
 
     revalidatePath("/");
     revalidatePath("/admin/home-page/testimonials");
+    if (updateData.page === "simplified") {
+      revalidatePath("/resources/mediation-simplified");
+    }
+    revalidatePath("/admin/resources/simplified");
 
     if (result.matchedCount === 0) {
       return NextResponse.json(
@@ -160,6 +172,8 @@ export async function DELETE(request: NextRequest) {
 
     revalidatePath("/");
     revalidatePath("/admin/home-page/testimonials");
+    revalidatePath("/resources/mediation-simplified");
+    revalidatePath("/admin/resources/simplified");
 
     if (result.deletedCount === 0) {
       return NextResponse.json(

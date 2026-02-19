@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -25,6 +25,7 @@ import { Footer } from "@/components/footer";
 import { GrainOverlay } from "@/components/grain-overlay";
 import { FadeIn, FadeInUp } from "@/components/motion-wrapper";
 import { cn } from "@/lib/utils";
+import { type ResourceItem } from "@/lib/db/schemas";
 
 const whyMediationClauses = [
   {
@@ -138,6 +139,38 @@ const toolkits = [
 export default function ClausesToolkitsPage() {
   const [expandedClause, setExpandedClause] = useState<string | null>("A");
   const [copiedClause, setCopiedClause] = useState<string | null>(null);
+  const [toolkitItems, setToolkitItems] = useState<ResourceItem[]>([]);
+
+  useEffect(() => {
+    async function fetchToolkits() {
+      try {
+        const res = await fetch("/api/content/resources?all=false&type=toolkit");
+        const data = await res.json();
+        if (data.success) {
+          setToolkitItems(data.data || []);
+        }
+      } catch (error) {
+        console.error("Failed to fetch toolkits", error);
+      }
+    }
+
+    fetchToolkits();
+  }, []);
+
+  const visibleToolkits = useMemo(() => {
+    if (toolkitItems.length > 0) {
+      return toolkitItems
+        .sort((a, b) => (a.order || 0) - (b.order || 0))
+        .map((item) => ({
+          title: item.title,
+          description: item.description || item.subtitle || "Practical resource",
+          url: item.url || "#",
+          source: item.publication || item.author || "PACT Resources",
+        }));
+    }
+
+    return toolkits;
+  }, [toolkitItems]);
 
   const handleCopyClause = (id: string, content: string) => {
     navigator.clipboard.writeText(content);
@@ -360,7 +393,7 @@ export default function ClausesToolkitsPage() {
             </FadeInUp>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {toolkits.map((toolkit, i) => (
+              {visibleToolkits.map((toolkit, i) => (
                 <motion.a
                   key={i}
                   href={toolkit.url}

@@ -57,7 +57,7 @@ export default function BlogPage() {
         <ResourceSubPageHero
           tag="Resources"
           title={<><span className="text-gold-500">Blog</span> & Library</>}
-          description="Thoughtful insights, short tutorials, upcoming conferences and recommended literature on mediation and collaborative conflict resolution. If you're looking for practical clarity (not heavy jargon), you're in the right place."
+          description="Thoughtful insights, short tutorials, upcoming conferences and recommended literature on mediation and collaborative conflict resolution. If you're looking for practical clarity (not heavy jargon), you're in the right&nbsp;place."
         />
 
         {/* Submit Guidelines */}
@@ -118,19 +118,40 @@ export default function BlogPage() {
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1 }}
                         whileHover={{ y: -8 }}
-                        className="group p-8 rounded-3xl bg-navy-50 border border-navy-100 hover:bg-white hover:border-gold-500/30 hover:shadow-xl transition-all duration-500"
+                        className="group p-0 rounded-3xl bg-navy-50 border border-navy-100 hover:bg-white hover:border-gold-500/30 hover:shadow-xl transition-all duration-500 overflow-hidden"
                       >
-                        <div className="flex items-start justify-between mb-6">
-                          <div className="w-12 h-12 rounded-2xl bg-navy-950 flex items-center justify-center group-hover:bg-gold-500 transition-colors">
-                            <PenLine className="w-6 h-6 text-gold-500 group-hover:text-navy-950" />
-                          </div>
-                          <ExternalLink className="w-5 h-5 text-navy-950/30 group-hover:text-gold-500 transition-colors" />
+                        <div className="relative aspect-video bg-navy-100">
+                          {blog.image ? (
+                            <Image
+                              src={blog.image}
+                              alt={blog.title}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <PenLine className="w-10 h-10 text-navy-300" />
+                            </div>
+                          )}
+                          {blog.logo && (
+                            <div className="absolute bottom-3 right-3 w-10 h-10 rounded-lg bg-white border border-navy-100 p-1.5 shadow">
+                              <Image src={blog.logo} alt={`${blog.publication || "Publication"} logo`} fill className="object-contain p-1" />
+                            </div>
+                          )}
                         </div>
-                        <h3 className="text-xl font-medium text-navy-950 mb-2 group-hover:text-gold-500 transition-colors line-clamp-2">
-                          {blog.title}
-                        </h3>
-                        <p className="text-navy-950/60 text-sm font-light mb-1">{blog.author || "Unknown Author"}</p>
-                        <p className="text-gold-500/70 text-xs  uppercase tracking-widest">{blog.publication || blog.subtitle}</p>
+                        <div className="p-8">
+                          <div className="flex items-start justify-between mb-6">
+                            <div className="w-12 h-12 rounded-2xl bg-navy-950 flex items-center justify-center group-hover:bg-gold-500 transition-colors">
+                              <PenLine className="w-6 h-6 text-gold-500 group-hover:text-navy-950" />
+                            </div>
+                            <ExternalLink className="w-5 h-5 text-navy-950/30 group-hover:text-gold-500 transition-colors" />
+                          </div>
+                          <h3 className="text-xl font-medium text-navy-950 mb-2 group-hover:text-gold-500 transition-colors line-clamp-2">
+                            {blog.title}
+                          </h3>
+                          <p className="text-navy-950/60 text-sm font-light mb-1">{blog.author || "Unknown Author"}</p>
+                          <p className="text-gold-500/70 text-xs  uppercase tracking-widest">{blog.publication || blog.subtitle}</p>
+                        </div>
                       </motion.a>
                     ))}
                   </div>

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 interface ResourceSubPageHeroProps {
   tag: string;
   title: React.ReactNode;
-  description: string;
+  description: React.ReactNode;
   className?: string;
   children?: React.ReactNode;
 }

@@ -12,6 +12,7 @@ import {
   ArrowLeft,
   Image as ImageIcon,
   PenTool,
+  FileText,
   Video,
   Newspaper,
   Book,
@@ -50,6 +51,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import { useAuth } from "@/lib/context/AuthContext";
 import { type ResourceItem, type ResourceType } from "@/lib/db/schemas";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -59,7 +61,8 @@ const TABS: { value: ResourceType; label: string; icon: any }[] = [
   { value: "publication", label: "Publications", icon: ExternalLink },
   { value: "video", label: "Videos", icon: Video },
   { value: "book", label: "Books", icon: Book },
-  { value: "news", label: "News", icon: Newspaper }
+  { value: "news", label: "News", icon: Newspaper },
+  { value: "toolkit", label: "Clauses & Toolkits", icon: FileText }
 ];
 
 export default function LibraryAdminPage() {
@@ -141,6 +144,7 @@ export default function LibraryAdminPage() {
       subtitle: "", 
       description: "",
       image: "",
+      logo: "",
       url: "",
       author: "",
       publication: "", // Generic usage
@@ -260,6 +264,9 @@ export default function LibraryAdminPage() {
                     <TableCell>
                       <div className="flex flex-col gap-1">
                         {item.publication && <span className="text-xs text-navy-950/60 truncate max-w-[200px]">{item.publication}</span>}
+                        {item.logo && (
+                          <span className="text-xs text-navy-950/40 truncate max-w-[200px]">Logo added</span>
+                        )}
                         {item.url && (
                            <a href={item.url} target="_blank" className="text-xs text-blue-500 hover:underline truncate max-w-[200px] flex items-center gap-1">
                              {item.url} <ExternalLink className="w-3 h-3"/>
@@ -338,13 +345,13 @@ export default function LibraryAdminPage() {
                 </div>
                 <div className="space-y-2">
                   <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">
-                    {activeTab === 'book' ? 'Author' : activeTab === 'video' ? 'Speaker/Host' : activeTab === 'news' ? 'Publication' : 'Subtitle / Author'}
+                    {activeTab === 'book' ? 'Author' : activeTab === 'video' ? 'Speaker/Host' : activeTab === 'news' ? 'Publication' : activeTab === 'toolkit' ? 'Author / Contributor' : 'Subtitle / Author'}
                   </Label>
                   <Input 
                     value={editingItem?.subtitle || ""} 
                     onChange={(e) => setEditingItem(prev => ({ ...prev!, subtitle: e.target.value }))} 
                     className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                    placeholder={activeTab === 'book' ? 'Author Name' : 'Subtitle'}
+                    placeholder={activeTab === 'book' ? 'Author Name' : activeTab === 'toolkit' ? 'Contributor Name' : 'Subtitle'}
                   />
                 </div>
               </div>
@@ -383,21 +390,14 @@ export default function LibraryAdminPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <ImageUpload
+                  label="Cover Image"
+                  value={editingItem?.image || ""}
+                  onChange={(url) => setEditingItem(prev => ({ ...prev!, image: url }))}
+                />
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Cover Image URL</Label>
-                  <div className="relative">
-                    <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
-                    <Input 
-                      value={editingItem?.image || ""} 
-                      onChange={(e) => setEditingItem(prev => ({ ...prev!, image: e.target.value }))} 
-                      className="pl-10 h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                      placeholder="https://..."
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Content URL</Label>
+                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Content URL / PDF URL</Label>
                   <div className="relative">
                     <ExternalLink className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
                     <Input 
@@ -407,8 +407,19 @@ export default function LibraryAdminPage() {
                       placeholder="https://..."
                     />
                   </div>
+                  <p className="text-xs text-navy-950/50">You can upload PDFs via media upload and paste the generated URL here.</p>
                 </div>
               </div>
+
+              {(activeTab === 'blog' || activeTab === 'publication' || activeTab === 'news') && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <ImageUpload
+                    label="Publication Logo (Optional)"
+                    value={editingItem?.logo || ""}
+                    onChange={(url) => setEditingItem(prev => ({ ...prev!, logo: url }))}
+                  />
+                </div>
+              )}
 
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">

@@ -12,7 +12,7 @@ export function Supporters() {
   useEffect(() => {
     async function fetchTestimonials() {
       try {
-        const res = await fetch("/api/content/testimonials");
+        const res = await fetch("/api/content/testimonials?page=homepage");
         const result = await res.json();
         if (result.success) setTestimonials(result.data || []);
       } catch (error) {

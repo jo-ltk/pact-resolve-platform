@@ -9,7 +9,8 @@ import {
   ArrowRight,
   Database,
   Loader2,
-  CheckCircle2
+  CheckCircle2,
+  Star
 } from "lucide-react";
 import { DashboardSectionCard } from "@/components/admin/DashboardSectionCard";
 import { FadeInUp, StaggerContainer } from "@/components/motion-wrapper";
@@ -43,6 +44,22 @@ const SECTIONS = [
     link: "/admin/resources/journal",
     color: "text-blue-600",
     bg: "bg-blue-50/50"
+  },
+  {
+    title: "Mediation Simplified",
+    description: "Manage Testimonials and contents for the Mediation Simplified workbook.",
+    icon: Star,
+    link: "/admin/resources/simplified",
+    color: "text-amber-600",
+    bg: "bg-amber-50/50"
+  },
+  {
+    title: "National Mediation Review",
+    description: "Manage 'Stay Tuned' content: pictures, names, and logos for NMR.",
+    icon: PenTool,
+    link: "/admin/resources/nmr",
+    color: "text-indigo-600",
+    bg: "bg-indigo-50/50"
   }
 ];
 

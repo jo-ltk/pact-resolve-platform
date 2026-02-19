@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { BookOpen, Search, Lightbulb, GraduationCap, Scale, Building2, Users, Mail, ArrowRight, Clock, Sparkles } from "lucide-react";
+import { BookOpen, Search, Lightbulb, GraduationCap, Scale, Building2, Users, Mail, ArrowRight, Clock, Sparkles, User, Image as ImageIcon } from "lucide-react";
 import { ResourceSubPageHero } from "@/components/sections/resources/resource-subpage-hero";
 import { Footer } from "@/components/footer";
 import { GrainOverlay } from "@/components/grain-overlay";
@@ -59,6 +60,23 @@ const upcomingDetails = [
 ];
 
 export default function NationalMediationReviewPage() {
+  const [details, setDetails] = useState(upcomingDetails);
+
+  useEffect(() => {
+    async function fetchNmrContent() {
+      try {
+        const res = await fetch("/api/content/nmr-content");
+        const result = await res.json();
+        if (result.success && result.data && result.data.length > 0) {
+          setDetails(result.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch NMR content", err);
+      }
+    }
+    fetchNmrContent();
+  }, []);
+
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-background">
       <GrainOverlay />
@@ -67,7 +85,7 @@ export default function NationalMediationReviewPage() {
         <ResourceSubPageHero
           tag="Resources"
           title={<><span className="text-gold-500">National Mediation</span> Review</>}
-          description="Contemporary Trends and Themes on Mediation Practice & Profession in India"
+          description={<>Contemporary Trends and Themes on Mediation Practice & Profession <span className="whitespace-nowrap">in India</span></>}
         />
 
         {/* Introduction Section */}
@@ -230,22 +248,51 @@ export default function NationalMediationReviewPage() {
               </h2>
             </FadeInUp>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {upcomingDetails.map((detail, i) => (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {details.map((detail: any, i: number) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="text-center p-6 md:p-8 rounded-2xl bg-navy-50 border border-navy-100"
+                  className="group relative flex flex-col items-center text-center p-8 rounded-4xl bg-white border border-navy-100 hover:border-gold-500/30 hover:shadow-2xl transition-all duration-500"
                 >
-                  <p className="text-navy-950/40  text-xs uppercase tracking-widest mb-2">
+                  {/* Decorative Background Icon */}
+                  <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                    <Sparkles className="w-20 h-20 text-navy-950" />
+                  </div>
+
+                  <p className="text-navy-950/40 text-[10px] uppercase tracking-[0.3em] font-black mb-6">
                     {detail.label}
                   </p>
-                  <p className="text-navy-950 text-xl font-light">
+
+                  {/* Picture Area */}
+                  {detail.image?.url ? (
+                    <div className="relative w-full h-48 mb-6 rounded-2xl overflow-hidden border border-navy-50">
+                      <img 
+                        src={detail.image.url} 
+                        alt={detail.label} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </div>
+                  ) : detail.logo?.url ? (
+                    <div className="relative w-full h-32 mb-6 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-500">
+                      <img 
+                        src={detail.logo.url} 
+                        alt={detail.label} 
+                        className="max-w-[80%] max-h-full object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-16 h-16 rounded-2xl bg-navy-50 flex items-center justify-center mb-6 group-hover:bg-gold-50 transition-colors">
+                      <ImageIcon className="w-6 h-6 text-navy-200 group-hover:text-gold-500" />
+                    </div>
+                  )}
+
+                  <h3 className="text-2xl font-light text-navy-950 group-hover:text-gold-600 transition-colors">
                     {detail.value}
-                  </p>
+                  </h3>
                 </motion.div>
               ))}
             </div>

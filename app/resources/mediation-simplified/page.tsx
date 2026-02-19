@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -9,6 +10,14 @@ import { Footer } from "@/components/footer";
 import { GrainOverlay } from "@/components/grain-overlay";
 import { FadeIn, FadeInUp } from "@/components/motion-wrapper";
 import { cn } from "@/lib/utils";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 const features = [
   { icon: CheckCircle, text: "Understand mediation in a simple and structured way." },
@@ -24,10 +33,9 @@ const chapters = [
   "Lawyers – Gatekeepers to successful Negotiation",
   "Mediator's Code of Ethics",
   "Mediation Movements: Historical Milestones and Current Trends",
-  "Mediation and Technology",
 ];
 
-const reviews = [
+const STATIC_REVIEWS = [
   {
     name: "Justice Kurian Joseph",
     role: "Former Judge, Supreme Court of India",
@@ -52,6 +60,30 @@ const reviews = [
 ];
 
 export default function MediationSimplifiedPage() {
+  const [reviews, setReviews] = useState<any[]>(STATIC_REVIEWS);
+
+  useEffect(() => {
+    async function fetchReviews() {
+      try {
+        const res = await fetch("/api/content/testimonials?page=simplified");
+        const result = await res.json();
+        if (result.success && result.data && result.data.length > 0) {
+          // Map database format to component format
+          const mappedReviews = result.data.map((item: any) => ({
+            name: item.name,
+            role: item.title,
+            quote: item.quote,
+            rating: item.rating,
+            image: item.profileImage?.url || "/assets/img/testimonials/default-avatar.png",
+          }));
+          setReviews(mappedReviews);
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    }
+    fetchReviews();
+  }, []);
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-background">
       <GrainOverlay />
@@ -162,10 +194,10 @@ export default function MediationSimplifiedPage() {
                 <div className="relative">
                   <div className="relative aspect-4/3 rounded-3xl overflow-hidden bg-navy-50 border border-navy-100 shadow-2xl">
                     <Image
-                      src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80"
+                      src="https://m.media-amazon.com/images/I/71ZUxy9v9pL._SY466_.jpg"
                       alt="Mediation Simplified Book"
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                     <div className="absolute inset-0 bg-linear-to-t from-navy-950/60 to-transparent" />
                     <div className="absolute bottom-6 left-6 right-6">
@@ -232,10 +264,7 @@ export default function MediationSimplifiedPage() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
                   whileHover={{ y: -4 }}
-                  className={cn(
-                    "group p-6 md:p-8 rounded-2xl bg-navy-50 border border-navy-100 hover:bg-white hover:border-gold-500/30 hover:shadow-xl transition-all duration-500",
-                    i === chapters.length - 1 && "md:max-lg:col-span-2 lg:col-start-2"
-                  )}
+                  className="group p-6 md:p-8 rounded-2xl bg-navy-50 border border-navy-100 hover:bg-white hover:border-gold-500/30 hover:shadow-xl transition-all duration-500"
                 >
                   <div className="flex items-start gap-4">
                     <span className=" text-3xl text-gold-500/30 font-bold group-hover:text-gold-500 transition-colors">
@@ -248,7 +277,62 @@ export default function MediationSimplifiedPage() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </section>
 
+        {/* Gallery Carousel Section */}
+        <section className="py-20 md:py-32 bg-navy-50/30 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+            <FadeInUp className="text-center mb-16">
+              <div className="inline-flex items-center gap-3 mb-6 justify-center">
+                <div className="h-px w-8 bg-gold-500" />
+                <span className="text-gold-500  text-xs tracking-[0.3em] uppercase font-bold">
+                  Gallery
+                </span>
+                <div className="h-px w-8 bg-gold-500" />
+              </div>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-navy-950 tracking-tight leading-[1.1]">
+                Workbook <span className="text-gold-500 italic font-medium">in Action</span>
+              </h2>
+            </FadeInUp>
+
+            <div className="relative">
+              <Carousel
+                opts={{
+                  align: "start",
+                  loop: true,
+                }}
+                plugins={[
+                  Autoplay({
+                    delay: 4000,
+                  }),
+                ]}
+                className="w-full"
+              >
+                <CarouselContent className="-ml-4 md:-ml-6">
+                  {[1, 2, 3, 4, 5, 6].map((_, index) => (
+                    <CarouselItem key={index} className="pl-4 md:pl-6 md:basis-1/2 lg:basis-1/3">
+                      <div className="relative aspect-3/2 rounded-3xl overflow-hidden group shadow-xl border border-navy-100 bg-navy-100">
+                        <Image
+                          src={index % 2 === 0 ? "/assets/img/testimonials/corporate-boardroom.png" : "/assets/img/testimonials/arbitration-chamber.png"}
+                          alt={`Gallery Image ${index + 1}`}
+                          fill
+                          className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-navy-950/20 group-hover:bg-navy-950/0 transition-colors duration-500" />
+                        
+                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-gold-500/30 rounded-3xl transition-all duration-500 pointer-events-none" />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                
+                <div className="flex justify-center gap-4 mt-12 md:mt-16">
+                  <CarouselPrevious className="static translate-y-0 w-12 h-12 bg-white border-navy-100 hover:bg-gold-500 hover:text-navy-950 transition-all duration-300" />
+                  <CarouselNext className="static translate-y-0 w-12 h-12 bg-white border-navy-100 hover:bg-gold-500 hover:text-navy-950 transition-all duration-300" />
+                </div>
+              </Carousel>
+            </div>
           </div>
         </section>
 

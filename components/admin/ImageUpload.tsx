@@ -126,7 +126,7 @@ export function ImageUpload({ value, onChange, label, description, className }: 
               "flex flex-col items-center justify-center w-full aspect-video rounded-2xl border-2 border-dashed border-muted-foreground/20 bg-muted/5 hover:bg-muted/10 hover:border-accent/40 transition-all cursor-pointer group",
               isUploading && "pointer-events-none opacity-60"
             )}>
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+              <div className="flex flex-col items-center justify-center p-8 px-10 text-center">
                 {isUploading ? (
                   <>
                     <Loader2 className="w-10 h-10 text-accent animate-spin mb-3" />
