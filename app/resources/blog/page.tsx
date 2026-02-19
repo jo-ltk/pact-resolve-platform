@@ -118,39 +118,65 @@ export default function BlogPage() {
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1 }}
                         whileHover={{ y: -8 }}
-                        className="group p-0 rounded-3xl bg-navy-50 border border-navy-100 hover:bg-white hover:border-gold-500/30 hover:shadow-xl transition-all duration-500 overflow-hidden"
+                        className="group relative flex flex-col rounded-3xl bg-white border border-navy-100 hover:border-gold-500/30 hover:shadow-2xl transition-all duration-500 overflow-hidden"
                       >
-                        <div className="relative aspect-video bg-navy-100">
+                        {/* Thumbnail */}
+                        <div className="relative aspect-video bg-navy-50 overflow-hidden">
                           {blog.image ? (
                             <Image
                               src={blog.image}
                               alt={blog.title}
                               fill
-                              className="object-cover"
+                              className="object-cover group-hover:scale-105 transition-transform duration-700"
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
-                              <PenLine className="w-10 h-10 text-navy-300" />
+                              <div className="w-16 h-16 rounded-3xl bg-navy-100 flex items-center justify-center text-navy-300 group-hover:scale-110 transition-transform duration-500">
+                                <PenLine className="w-8 h-8" />
+                              </div>
                             </div>
                           )}
-                          {blog.logo && (
-                            <div className="absolute bottom-3 right-3 w-10 h-10 rounded-lg bg-white border border-navy-100 p-1.5 shadow">
-                              <Image src={blog.logo} alt={`${blog.publication || "Publication"} logo`} fill className="object-contain p-1" />
-                            </div>
-                          )}
+                          <div className="absolute inset-0 bg-navy-950/0 group-hover:bg-navy-950/10 transition-colors duration-500" />
                         </div>
-                        <div className="p-8">
-                          <div className="flex items-start justify-between mb-6">
-                            <div className="w-12 h-12 rounded-2xl bg-navy-950 flex items-center justify-center group-hover:bg-gold-500 transition-colors">
-                              <PenLine className="w-6 h-6 text-gold-500 group-hover:text-navy-950" />
+
+                        {/* Content */}
+                        <div className="p-8 flex flex-col flex-1 relative">
+                          <div className="flex items-center justify-between mb-6">
+                            <div className="px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20">
+                              <span className="text-[10px] font-black uppercase tracking-widest text-gold-600">
+                                {blog.category || "Article"}
+                              </span>
                             </div>
-                            <ExternalLink className="w-5 h-5 text-navy-950/30 group-hover:text-gold-500 transition-colors" />
+                            <ExternalLink className="w-4 h-4 text-navy-950/20 group-hover:text-gold-500 transition-colors" />
                           </div>
-                          <h3 className="text-xl font-medium text-navy-950 mb-2 group-hover:text-gold-500 transition-colors line-clamp-2">
+
+                          <h3 className="text-xl font-bold text-navy-950 mb-3 group-hover:text-gold-500 transition-colors line-clamp-2 leading-tight">
                             {blog.title}
                           </h3>
-                          <p className="text-navy-950/60 text-sm font-light mb-1">{blog.author || "Unknown Author"}</p>
-                          <p className="text-gold-500/70 text-xs  uppercase tracking-widest">{blog.publication || blog.subtitle}</p>
+                          
+                          <div className="mt-auto pt-6 border-t border-navy-50 flex items-end justify-between">
+                            <div className="min-w-0">
+                               <p className="text-navy-950/40 text-[10px] font-black uppercase tracking-widest mb-1">Author</p>
+                               <p className="text-navy-950 font-bold text-sm truncate">{blog.author || "Jonathan Rodrigues"}</p>
+                               <p className="text-gold-500/70 text-[10px] font-medium uppercase tracking-[0.15em] mt-0.5">{blog.publication || blog.subtitle}</p>
+                            </div>
+                            
+                            {blog.logo ? (
+                              <div className="w-12 h-12 rounded-xl bg-white border border-navy-100 p-2 shadow-sm shrink-0 flex items-center justify-center group-hover:border-gold-500/30 transition-colors">
+                                <Image 
+                                  src={blog.logo} 
+                                  alt={`${blog.publication || "Publication"} logo`} 
+                                  width={40} 
+                                  height={40} 
+                                  className="object-contain" 
+                                />
+                              </div>
+                            ) : (
+                              <div className="w-10 h-10 rounded-full bg-navy-50 flex items-center justify-center text-navy-200 shrink-0">
+                                <PenLine className="w-4 h-4" />
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </motion.a>
                     ))}
