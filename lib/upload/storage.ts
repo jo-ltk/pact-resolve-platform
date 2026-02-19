@@ -28,12 +28,27 @@ export class StorageProvider {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
+    // PDFs must use 'raw' resource type so Cloudinary serves them properly
+    const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+    const resourceType = isPdf ? "raw" as const : "auto" as const;
+
+    // Sanitize filename to avoid spaces and special characters which cause 401/signature issues
+    const sanitizedName = file.name
+      .replace(/[^\w.-]/g, '_') // Replace everything except letters, numbers, dots, and hyphens with _
+      .replace(/_{2,}/g, '_'); // Collapse consecutive underscores
+
     // Upload to Cloudinary using a promise to handle the stream-like buffer
     const uploadResponse = await new Promise<UploadApiResponse>((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
           folder: "pact_mediation_uploads",
-          resource_type: "auto", // Automatically detect if it's an image, video, or raw file
+          resource_type: resourceType,
+          // For raw files (PDFs), we MUST include the extension in the public_id 
+          // so browsers recognize it as a document and open it correctly.
+          public_id: isPdf ? `pact_${Date.now()}_${sanitizedName}` : undefined,
+          use_filename: true,
+          unique_filename: true,
+          access_mode: 'public', // Force public access to avoid 401 Unauthorized errors
         },
         (error, result) => {
           if (error || !result) {

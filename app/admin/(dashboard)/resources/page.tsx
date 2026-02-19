@@ -30,6 +30,14 @@ const SECTIONS = [
     bg: "bg-emerald-50/50"
   },
   {
+    title: "Publications",
+    description: "Manage Recommended Reads with PDF upload support.",
+    icon: BookOpen,
+    link: "/admin/resources/publications",
+    color: "text-violet-600",
+    bg: "bg-violet-50/50"
+  },
+  {
     title: "Podcast",
     description: "Manage podcast episodes and the hero banner section.",
     icon: Mic,

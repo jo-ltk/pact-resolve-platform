@@ -59,8 +59,12 @@ export function FileUpload({
         throw new Error(result.error || "Upload failed");
       }
 
-      onChange(result.data.url);
-      setUrlValue(result.data.url);
+      // Instead of storing the direct Cloudinary URL (which causes 401s),
+      // we store our own proxy URL which will fetch it securely using our API key.
+      const proxyUrl = `/api/file/view?path=${result.data.publicId}`;
+
+      onChange(proxyUrl);
+      setUrlValue(proxyUrl);
       toast.success("File uploaded successfully");
     } catch (error: any) {
       toast.error(error.message);
