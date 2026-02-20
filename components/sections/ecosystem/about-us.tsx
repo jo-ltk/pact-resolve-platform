@@ -90,7 +90,7 @@ export function AboutUs() {
       <EcosystemSubPageHero 
         tag="About Us"
         title={<>Transforming the <br /> <span className="text-gold-500 italic font-medium">culture of dialogue</span></>}
-        description="The PACT is a leading mediation institute and service provider committed to transforming how conflicts are addressed in India and beyond."
+        description="PACT works with law firms, corporates, institutions, and professionals to promote mediation as a practical, ethical, and effective pathway to resolution."
       />
       
       <section className="pt-16 pb-16 md:pt-24 md:pb-24 bg-white overflow-hidden">
@@ -98,7 +98,7 @@ export function AboutUs() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20">
             <FadeInUp delay={0.2}>
               <p className="text-xl md:text-2xl font-light text-navy-950/70 leading-relaxed tracking-tight">
-                The PACT is a leading mediation institute and service provider committed to transforming how conflicts are addressed in India and beyond. We work with law firms, corporates, institutions, and professionals to promote mediation as a practical, ethical and effective pathway to resolution.
+                PACT works with law firms, corporates, institutions, and professionals to promote mediation as a practical, ethical, and effective pathway to resolution. We are committed to transforming how conflicts are addressed in India and beyond We work with law firms, corporates, institutions, and professionals to promote mediation as a practical, ethical and effective pathway to resolution.
               </p>
             </FadeInUp>
             
