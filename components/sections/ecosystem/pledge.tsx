@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   CheckCircle2, ShieldCheck, Handshake, Landmark, Users, 
-  ArrowRight, Download, Send, Info, FileText,
+  ArrowRight, Download, Send, Info,
   Clock, BarChart3, Globe, Heart, Award, Activity, Zap,
   Loader2, Check, PenTool
 } from "lucide-react";
@@ -333,8 +333,14 @@ export function PledgeSection() {
                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-gold-500/5 rounded-full blur-3xl md:blur-[80px] group-hover:bg-gold-500/10 transition-colors duration-700" />
 
                  <div className="relative z-10 max-w-3xl mx-auto space-y-10">
-                    <div className="w-24 h-24 mx-auto bg-navy-50 rounded-3xl flex items-center justify-center border border-navy-100 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 shadow-lg">
-                      <FileText className="w-10 h-10 text-gold-500" />
+                    <div className="w-24 h-24 mx-auto bg-navy-50 rounded-3xl flex items-center justify-center border border-navy-100 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 shadow-lg p-5">
+                      <Image
+                        src="/images/pact-logo.png"
+                        alt="PACT Logo"
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-contain"
+                      />
                     </div>
                     
                     <div className="space-y-6">
@@ -385,7 +391,14 @@ export function PledgeSection() {
                      {/* Header */}
                      <div className="bg-navy-950 py-12 px-8 md:px-16 text-center text-white relative">
                         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_50%_50%,#bf9a66,transparent_70%)]" />
-                        <FileText className="w-12 h-12 text-gold-500 mx-auto mb-6 relative z-10" />
+                        <div className="relative w-16 h-16 mx-auto mb-6 z-10">
+                          <Image
+                            src="/images/pact-logo.png"
+                            alt="PACT Logo"
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
                         <h3 className="text-[8vw] md:text-5xl font-light tracking-tight relative z-10 uppercase">The PACT Mediation <br /><span className="text-gold-500 italic font-medium lowercase">Pledge</span></h3>
                      </div>
 
