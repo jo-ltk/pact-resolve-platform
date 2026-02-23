@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { 
   ArrowUpRight, 
@@ -22,7 +22,8 @@ import {
   ChevronRight,
   Target,
   FlaskConical,
-  Award
+  Award,
+  Loader2
 } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -46,6 +47,7 @@ import { Footer } from "@/components/footer";
 import { MagneticButton } from "@/components/magnetic-button";
 import { Collaborators } from "@/components/sections/home/collaborators";
 import { cn } from "@/lib/utils";
+import { ProjectUpdate } from "@/lib/db/schemas";
 
 const SectionHeader = ({ subtitle, title, description, light = false, center = false }: { subtitle: string, title: string, description?: string, light?: boolean, center?: boolean }) => (
   <FadeInUp className={cn("mb-12 md:mb-20", center ? "flex flex-col items-center text-center" : "")}>
@@ -73,11 +75,21 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
   </FadeInUp>
 );
 
+// Icon mapping for project updates
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  FlaskConical,
+  Target,
+  Award,
+  BookOpen,
+  Users,
+  Zap,
+};
+
 const archives = [
   {
     title: "BITS Law School | Panel on Mediation & Arbitration in International Commercial Conflicts",
     location: "Mumbai, 2025",
-    description: "Exploring how mixed-mode dispute resolution is shaping cross-border business disputes and India’s evolving position in that space.",
+    description: "Exploring how mixed-mode dispute resolution is shaping cross-border business disputes and India's evolving position in that space.",
     link: "https://www.youtube.com/watch?v=nQLB_E2Z3hg",
     category: "Webinar",
     image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80"
@@ -101,7 +113,7 @@ const archives = [
   {
     title: "Manav Rachna University – Mediation Bootcamp",
     location: "Faridabad, 2023",
-    description: "A intensive Bootcamp organised by MRU’s Centre of Excellence on ADR with Jonathan Rodrigues as trainer.",
+    description: "A intensive Bootcamp organised by MRU's Centre of Excellence on ADR with Jonathan Rodrigues as trainer.",
     link: "https://manavrachna.edu.in/assets/campus/mru/pdf/sol-newsletter-4.pdf",
     category: "Bootcamp",
     image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80"
@@ -124,7 +136,60 @@ const archives = [
   }
 ];
 
+// Default fallback data for Watch Out For section
+const defaultUpdates = [
+  { 
+    title: "Workshop on Mediation", 
+    date: "March 2026", 
+    location: "SRM Law School, Haryana",
+    iconName: "FlaskConical",
+    category: "Workshop"
+  },
+  { 
+    title: "ODRC Negotiation Contest", 
+    date: "June 2026", 
+    location: "Online Event",
+    iconName: "Target",
+    category: "Competition"
+  },
+  { 
+    title: "Lecture on Mediation", 
+    date: "April 2026", 
+    location: "IIULER Law School, Goa",
+    iconName: "Award",
+    category: "Lecture"
+  }
+];
+
 export default function ProjectsPage() {
+  const [projectUpdates, setProjectUpdates] = useState<ProjectUpdate[]>([]);
+  const [isLoadingUpdates, setIsLoadingUpdates] = useState(true);
+
+  useEffect(() => {
+    async function fetchProjectUpdates() {
+      try {
+        // Fetch only active updates for public page (no ?all=true)
+        const res = await fetch("/api/content/project-updates", { cache: 'no-store' });
+        const result = await res.json();
+        
+        if (result.success && result.data && result.data.length > 0) {
+          setProjectUpdates(result.data);
+        } else {
+          setProjectUpdates(defaultUpdates as ProjectUpdate[]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch project updates:", error);
+        setProjectUpdates(defaultUpdates as ProjectUpdate[]);
+      } finally {
+        setIsLoadingUpdates(false);
+      }
+    }
+
+    fetchProjectUpdates();
+  }, []);
+
+  const displayUpdates = projectUpdates.length > 0 ? projectUpdates : defaultUpdates;
+
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-white text-navy-950">
       <GrainOverlay />
@@ -199,12 +264,12 @@ export default function ProjectsPage() {
 
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: BookOpen, text: "Lectures & Seminars at Universities", sub: "Academic Outreach", color: "text-blue-600 bg-blue-50" },
-              { icon: Globe, text: "Workshop & Webinars on Campus", sub: "Digital Learning", color: "text-emerald-600 bg-emerald-50" },
-              { icon: Building2, text: "Office Offsites & Retreats", sub: "Corporate Culture", color: "text-amber-600 bg-amber-50" },
-              { icon: Users, text: "Reflective Practice with Leadership", sub: "Governance", color: "text-purple-600 bg-purple-50" },
-              { icon: Zap, text: "Design, Host and Sponsor Conferences", sub: "Strategic Events", color: "text-rose-600 bg-rose-50" },
-              { icon: Scale, text: "Support and Co-Host a Competition", sub: "Next-Gen Talent", color: "text-indigo-600 bg-indigo-50" }
+              { icon: BookOpen, text: "Lectures & Seminars at Universities", color: "text-blue-600 bg-blue-50" },
+              { icon: Globe, text: "Workshop & Webinars on Campus", color: "text-emerald-600 bg-emerald-50" },
+              { icon: Building2, text: "Office Offsites & Retreats", color: "text-amber-600 bg-amber-50" },
+              { icon: Users, text: "Reflective Practice with Leadership", color: "text-purple-600 bg-purple-50" },
+              { icon: Zap, text: "Design, Host and Sponsor Conferences", color: "text-rose-600 bg-rose-50" },
+              { icon: Scale, text: "Support and Co-Host a Competition", color: "text-indigo-600 bg-indigo-50" }
             ].map((item, i) => (
               <StaggerItem key={i}>
                 <div className="group relative h-full p-10 rounded-[2.5rem] bg-navy-50/50 border border-transparent hover:border-gold-500/30 hover:bg-white hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden text-center flex flex-col items-center">
@@ -213,7 +278,6 @@ export default function ProjectsPage() {
                   </div>
                   <div className="space-y-4">
                     <h4 className="text-xl font-bold text-navy-950 tracking-tight leading-tight group-hover:text-gold-500 transition-colors uppercase">{item.text}</h4>
-                    <p className="text-xs font-semibold text-navy-950/40 uppercase tracking-[0.2em]">{item.sub}</p>
                   </div>
                   <div className="mt-8">
                      <a href="mailto:official@thepact.in" className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-navy-300 group-hover:text-gold-600 transition-colors">
@@ -240,34 +304,23 @@ export default function ProjectsPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
           <SectionHeader subtitle="Upcoming" title="Watch Out For" light center />
            
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-20">
-              {[
-                { 
-                  title: "Workshop on Mediation", 
-                  date: "March 2026", 
-                  location: "SRM Law School, Haryana",
-                  icon: FlaskConical,
-                  category: "Workshop"
-                },
-                { 
-                  title: "ODRC Negotiation Contest", 
-                  date: "June 2026", 
-                  location: "Online Event",
-                  icon: Target,
-                  category: "Competition"
-                },
-                { 
-                  title: "Lecture on Mediation", 
-                  date: "April 2026", 
-                  location: "IIULER Law School, Goa",
-                  icon: Award,
-                  category: "Lecture"
-                }
-              ].map((item, i) => (
-                <FadeInUp key={i} delay={i * 0.1}>
+          {isLoadingUpdates ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="w-10 h-10 animate-spin text-gold-500" />
+            </div>
+          ) : displayUpdates.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-white/50 text-lg">No upcoming events. Check back soon!</p>
+            </div>
+          ) : (
+            <div className={`grid gap-8 md:gap-12 mt-20 ${displayUpdates.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' : displayUpdates.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+              {displayUpdates.map((item: any, i: number) => {
+                const IconComponent = iconMap[item.iconName] || Calendar;
+                return (
+                <FadeInUp key={item._id || i} delay={i * 0.1}>
                   <div className="group relative h-full p-12 rounded-[3.5rem] bg-white/5 backdrop-blur-xl border border-white/10 hover:border-gold-500/40 hover:bg-white/10 transition-all duration-700 shadow-2xl flex flex-col">
                     <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-gold-500 mb-10 group-hover:scale-110 group-hover:rotate-6 transition-all border border-white/5">
-                      <item.icon className="w-8 h-8" />
+                      <IconComponent className="w-8 h-8" />
                     </div>
                     
                     <div className="flex flex-col gap-2 mb-8">
@@ -290,8 +343,9 @@ export default function ProjectsPage() {
                     </div>
                   </div>
                 </FadeInUp>
-              ))}
-          </div>
+              )})}
+            </div>
+          )}
         </div>
       </section>
 

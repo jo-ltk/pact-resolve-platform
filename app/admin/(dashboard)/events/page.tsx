@@ -52,6 +52,14 @@ const eventCategories = [
     link: "/admin/events/general",
     color: "text-rose-500",
     bg: "bg-rose-500/10"
+  },
+  {
+    title: "Watch Out For",
+    description: "Manage upcoming events section on the Events & Projects page.",
+    icon: Calendar,
+    link: "/admin/events/projects",
+    color: "text-amber-500",
+    bg: "bg-amber-500/10"
   }
 ];
 

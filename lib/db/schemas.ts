@@ -820,6 +820,23 @@ export interface NmrContent extends BaseDocument {
   isActive: boolean;
 }
 
+export interface ProjectUpdate extends BaseDocument {
+  /** Title of the event/project */
+  title: string;
+  /** Date of the event/project (e.g., "March 2026") */
+  date: string;
+  /** Location of the event/project */
+  location: string;
+  /** Category: Workshop, Competition, Lecture, Bootcamp, etc. */
+  category: string;
+  /** Icon name for display */
+  iconName: string;
+  /** Display order */
+  order: number;
+  /** Whether this update is visible */
+  isActive: boolean;
+}
+
 // ============================================================================
 // COLLECTION NAMES
 // ============================================================================
@@ -865,6 +882,8 @@ export const COLLECTIONS = {
   CLAUSES_ESSENTIALS: "clausesEssentials",
   // Pledge Signatories
   PLEDGE_SIGNATORIES: "pledgeSignatories",
+  // Project Updates (Watch Out For)
+  PROJECT_UPDATES: "projectUpdates",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];
