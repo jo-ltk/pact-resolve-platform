@@ -499,10 +499,8 @@ export default function MCIPage() {
         </div>
       </section>
 
-
-
       {/* Past Editions Section */}
-      <section className="py-12 sm:py-16 md:py-24 lg:py-40 bg-white relative">
+      <section className="pt-8 sm:pt-12 md:pt-16 pb-12 sm:pb-16 md:pb-24 lg:pb-40 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24">
           <SectionHeader subtitle="History" title="Past Editions" center />
           
