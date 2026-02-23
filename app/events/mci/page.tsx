@@ -443,13 +443,11 @@ export default function MCIPage() {
              <FadeInUp>
                 <div className="flex flex-col items-center text-center">
                   <SectionHeader 
-                    subtitle="The Competition" 
-                    title="A Mediation Champions League" 
+                    subtitle="WHAT YOU SIGN UP FOR" 
+                    title="Mediation Champions League" 
                     center
+                    titleClassName="lg:whitespace-nowrap"
                   />
-                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-navy-950/80 italic -mt-4 sm:-mt-6 md:-mt-8 mb-6 sm:mb-8 md:mb-12">
-                     Challengers are rewarded with:
-                  </p>
                 </div>
              </FadeInUp>
 
