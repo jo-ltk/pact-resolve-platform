@@ -174,14 +174,14 @@ export default function MCIPage() {
             </div>
             <h1 className="page-title text-[14vw] sm:text-[12vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-8 sm:mb-12 md:mb-16 select-none italic uppercase">
               MEDIATION <br />
-              <span className="text-gold-500">CHAMPIONS</span> <br />
-              LEAGUE
+              <span className="text-gold-500">CHAMPIONSHIP</span> <br />
+              INDIA
             </h1>
             
             <div className="max-w-5xl space-y-6 sm:space-y-8 md:space-y-12">
               <div className="space-y-4 sm:space-y-6 md:space-y-8">
                 <p className="text-lg sm:text-2xl md:text-3xl lg:text-5xl text-white/95 font-light leading-[1.15] sm:leading-[1.1] tracking-tight">
-                  The fourth edition of India's premier mediation event will convene the country's top next-generation dispute resolution talent to compete and collaborate on the biggest stage.
+                  The fourth edition of India's Mediation Champions League will convene the country's top next-generation dispute resolution talent to compete and collaborate on the biggest stage.
                 </p>
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 font-light max-w-3xl leading-relaxed">
                   The flagship event also serves as a great space for mentoring, networking and branding for mediation.

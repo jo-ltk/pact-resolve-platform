@@ -66,7 +66,7 @@ export function Navbar() {
       label: "Events", 
       href: "/events",
       subItems: [
-        { label: "Mediation Champions League", href: "/events/mci" },
+        { label: "Mediation Championship India", href: "/events/mci" },
         { label: "Mission Mediation Conclave", href: "/events/mmc" },
         { label: "National ImPACT Awards", href: "/events/niaam" },
         { label: "Advocate Maximus", href: "/events/advocate-maximus" },
