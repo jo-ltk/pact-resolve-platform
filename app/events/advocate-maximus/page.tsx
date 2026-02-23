@@ -23,7 +23,8 @@ import {
   X,
   Target,
   Rocket,
-  RefreshCw
+  RefreshCw,
+  Image as ImageIcon
 } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -78,24 +79,109 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
 
 export default function AdvocateMaximusPage() {
   const [eventData, setEventData] = useState<MCIEvent | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchEvent() {
       try {
-        const res = await fetch("/api/content/advocate-maximus-event");
+        const res = await fetch("/api/content/advocate-maximus-event", { cache: "no-store" });
         const result = await res.json();
-        if (result.success && result.data && !Array.isArray(result.data)) {
-          setEventData(result.data);
+        if (result.success && result.data) {
+          // If it's an array, find the active one or take the first
+          const data = Array.isArray(result.data) ? result.data[0] : result.data;
+          setEventData(data);
         }
       } catch (e) {
         console.error("Failed to fetch Advocate Maximus data", e);
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchEvent();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-navy-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+           <div className="w-12 h-12 border-4 border-gold-500/20 border-t-gold-500 rounded-full animate-spin" />
+           <p className="text-gold-500 font-mono text-xs tracking-widest uppercase animate-pulse">Initializing Maximus Experience...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Check if shut - either from database or if no data found
+  const isShut = eventData?.isShut ?? false;
+
+  if (isShut) {
+    return (
+      <main className="relative min-h-screen w-full flex items-center justify-center bg-navy-950 overflow-hidden dark">
+        <GrainOverlay />
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={eventData?.heroImage?.url || "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80"}
+            alt="Advocate Maximus Hero"
+            fill
+            className="object-cover opacity-20 scale-105"
+            priority
+          />
+          <div className="absolute inset-0 bg-linear-to-b from-navy-950/40 via-navy-950/90 to-navy-950" />
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-500 font-mono text-xs tracking-widest uppercase font-bold"
+          >
+            <div className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
+            Under Maintenance / Coming Soon
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="text-6xl md:text-8xl font-black text-white italic tracking-tighter uppercase leading-[0.8]"
+          >
+            {eventData?.title?.[0] || "Advocate"} <br />
+            <span className="text-gold-500">{eventData?.title?.[1] || "Maximus"}</span>
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-white/60 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed"
+          >
+            We're currently refining the digital experience for the elite competition. 
+            The Maximus portal is undergoing administrative updates.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <a href="/" className="px-8 py-4 rounded-2xl bg-white text-navy-950 font-bold hover:bg-gold-500 hover:text-white transition-all transform hover:scale-105">
+              Return to Homepage
+            </a>
+            <a href={`mailto:${eventData?.emails?.general || 'info@thepact.in'}`} className="px-8 py-4 rounded-2xl border border-white/20 text-white font-bold hover:bg-white/5 transition-all">
+              Contact Secretariat
+            </a>
+          </motion.div>
+        </div>
+      </main>
+    );
+  }
+
   const partners = eventData?.strategicPartners || [];
   const gallery = eventData?.gallery || [];
+  const champions = (eventData as any)?.champions || [];
+  const rewards = (eventData as any)?.rewards || [];
+  const mediaCoverage = (eventData as any)?.mediaCoverage || [];
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-white text-navy-950">
       <GrainOverlay />
@@ -104,8 +190,8 @@ export default function AdvocateMaximusPage() {
       <section className="relative min-h-[90vh] flex items-center pt-24 pb-12 sm:pt-32 sm:pb-20 md:pt-40 md:pb-32 bg-navy-950 overflow-hidden dark">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80"
-            alt="Advocate Maximus Hero"
+            src={eventData?.heroImage?.url || "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80"}
+            alt={eventData?.heroImage?.alt || "Advocate Maximus Hero"}
             fill
             className="object-cover opacity-20 scale-105"
             priority
@@ -123,14 +209,14 @@ export default function AdvocateMaximusPage() {
             <div className="flex items-center gap-3 mb-8">
               <div className="h-px w-12 bg-gold-500" />
               <span className="text-gold-500 font-mono text-xs tracking-[0.4em] uppercase font-bold">
-                The Premier Moot
+                {eventData?.subtitle || "The Premier Moot"}
               </span>
             </div>
             <div className="relative mb-16 lg:mb-24">
               <div className="max-w-4xl relative z-10">
                 <h1 className="page-title text-[10vw] sm:text-[9vw] md:text-[8rem] lg:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] select-none italic uppercase">
-                  ADVOCATE <br />
-                  <span className="text-gold-500">MAXIMUS</span> 
+                  {eventData?.title?.[0] || "ADVOCATE"} <br />
+                  <span className="text-gold-500">{eventData?.title?.[1] || "MAXIMUS"}</span> 
                 </h1>
               </div>
               
@@ -180,10 +266,14 @@ export default function AdvocateMaximusPage() {
             
             <div className="max-w-5xl space-y-8 sm:space-y-12">
               <div className="space-y-6 sm:space-y-10">
-                <p className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-white/95 font-light leading-[1.05] tracking-tight max-w-4xl">
-                  India's first Arb-Med competition, <br className="hidden lg:block" /> 
-                  <span className="text-white/40 italic">redefining advocacy</span> for the modern dispute era.
-                </p>
+                <div className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-white/95 font-light leading-[1.05] tracking-tight max-w-4xl space-y-4">
+                  {eventData?.heroDescription?.map((para, i) => (
+                    <p key={i}>{para}</p>
+                  )) || (
+                    <p>India's first Arb-Med competition, <br className="hidden lg:block" /> 
+                    <span className="text-white/40 italic">redefining advocacy</span> for the modern dispute era.</p>
+                  )}
+                </div>
                 
                 {/* Redesigned Glass Badges */}
                 <div className="flex flex-wrap gap-3 sm:gap-4 pt-4">
@@ -207,7 +297,7 @@ export default function AdvocateMaximusPage() {
                   <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-gold-500/10 border border-gold-500/20">
                     <div className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
                     <span className="text-xs font-mono tracking-widest text-gold-500 uppercase font-bold">
-                      Open for Participation
+                      {eventData?.isActive ? "Open for Participation" : "Edition Concluded"}
                     </span>
                   </div>
                 </div>
@@ -220,15 +310,16 @@ export default function AdvocateMaximusPage() {
                     </a>
                   </MagneticButton>
                   
-                  <MagneticButton variant="secondary" size="lg" className="group w-full sm:w-auto px-10 py-5 sm:py-6 border border-white/20">
-                    <a 
-                      href="https://superlawyer.in/advocate-maximus-sign-up-for-the-global-arb-med-competition/" 
-                      target="_blank" 
-                      className="flex items-center justify-center gap-3 text-lg font-medium"
-                    >
-                       Partnership Inquiry <ArrowUpRight className="w-5 h-5 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
-                    </a>
-                  </MagneticButton>
+                  {eventData?.emails?.sponsor && (
+                    <MagneticButton variant="secondary" size="lg" className="group w-full sm:w-auto px-10 py-5 sm:py-6 border border-white/20">
+                      <a 
+                        href={`mailto:${eventData.emails.sponsor}`} 
+                        className="flex items-center justify-center gap-3 text-lg font-medium"
+                      >
+                         Partnership Inquiry <ArrowUpRight className="w-5 h-5 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
+                      </a>
+                    </MagneticButton>
+                  )}
                 </div>
               </div>
             </div>
@@ -249,8 +340,8 @@ export default function AdvocateMaximusPage() {
               <div className="absolute -inset-6 sm:-inset-10 bg-gold-500/5 blur-3xl rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
               <div className="relative aspect-video md:aspect-21/9 rounded-2xl sm:rounded-3xl md:rounded-[3rem] lg:rounded-[5rem] overflow-hidden bg-navy-50 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] sm:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] ring-1 ring-navy-950/5">
                 <Image 
-                  src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80"
-                  alt="Advocate Maximus Legacy"
+                  src={eventData?.visionImage?.url || "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80"}
+                  alt={eventData?.visionImage?.alt || "Advocate Maximus Vision"}
                   fill
                   className="object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
                 />
@@ -259,12 +350,14 @@ export default function AdvocateMaximusPage() {
                 {/* Bottom Left Text */}
                 <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-10 md:left-10 lg:bottom-20 lg:left-20">
                   <div className="flex flex-col gap-1 sm:gap-1.5 md:gap-2">
-                     <span className="text-[8px] sm:text-[9px] md:text-xs lg:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.4em] text-gold-500 font-bold">The Archive</span>
-                     <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-black text-white italic tracking-tighter uppercase leading-none">Established 2017</h3>
+                     <span className="text-[8px] sm:text-[9px] md:text-xs lg:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.4em] text-gold-500 font-bold">The Vision</span>
+                     <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-black text-white italic tracking-tighter uppercase leading-none">
+                        {eventData?.vision?.title || `Maximus ${eventData?.year || ''}`}
+                     </h3>
                   </div>
                 </div>
 
-                {/* Arb-Med Badge - Top Right, smaller on mobile */}
+                {/* Arb-Med Badge */}
                 <motion.div 
                    initial={{ y: 20, opacity: 0 }}
                    whileInView={{ y: 0, opacity: 1 }}
@@ -275,7 +368,7 @@ export default function AdvocateMaximusPage() {
                     <Target className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 lg:w-10 lg:h-10" />
                   </div>
                   <span className="text-xs sm:text-sm md:text-xl lg:text-3xl font-black text-navy-950 tracking-tighter italic whitespace-nowrap leading-none">Arb-Med</span>
-                  <span className="text-[5px] sm:text-[6px] md:text-[7px] lg:text-[9px] font-mono uppercase tracking-[0.25em] sm:tracking-[0.3em] text-gold-500 font-bold mt-0.5 sm:mt-1">India's First</span>
+                  <span className="text-[5px] sm:text-xs font-mono uppercase tracking-[0.3em] text-gold-500 font-bold mt-0.5 sm:mt-1">India's First</span>
                 </motion.div>
               </div>
             </FadeInUp>
@@ -284,16 +377,16 @@ export default function AdvocateMaximusPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-24 items-start">
               <div className="lg:sticky lg:top-32 space-y-12">
                 <SectionHeader 
-                  subtitle="The Legacy" 
-                  title="Globally Renowned, Locally Rooted" 
+                  subtitle={eventData?.vision?.subtitle || "The Vision"} 
+                  title={eventData?.vision?.experienceText || "Globally Renowned, Locally Rooted"} 
                 />
                 
                 {/* Decorative Pill Section to fill space */}
                 <FadeInUp delay={0.2} className="hidden lg:block">
                   <div className="grid grid-cols-2 gap-4 max-w-sm">
                     {[
-                      { label: "Founded In", value: "2017", icon: Calendar },
-                      { label: "Venue", value: "New Delhi", icon: MapPin },
+                      { label: "Dates", value: eventData?.eventDetails?.dates || "TBA", icon: Calendar },
+                      { label: "Venue", value: eventData?.eventDetails?.venue || "New Delhi", icon: MapPin },
                     ].map((item, i) => (
                       <div key={i} className="p-6 rounded-3xl bg-navy-50 border border-navy-100/50 group hover:bg-white hover:shadow-xl transition-all duration-500">
                         <item.icon className="w-5 h-5 text-gold-500 mb-3 group-hover:scale-110 transition-transform" />
@@ -307,27 +400,35 @@ export default function AdvocateMaximusPage() {
 
               <div className="space-y-8 sm:space-y-10 md:space-y-12 pt-2 sm:pt-4 lg:pt-0">
                 <div className="space-y-6 sm:space-y-7 md:space-y-8 text-base sm:text-lg md:text-xl lg:text-2xl font-light text-navy-500 leading-relaxed">
-                  <p>
-                    Advocate Maximus was born out of a vision to bridge the gap between academic learning and professional practice in the field of <span className="text-navy-950 font-medium">International Commercial Arbitration and Mediation.</span>
-                  </p>
-                  <p className="text-navy-950">
-                    Since its inception in New Delhi (2017), the competition has attracted the brightest minds from top law schools, offering a rigorous platform for testing skills in both adversarial and collaborative settings.
-                  </p>
+                  {eventData?.vision?.description?.map((para, i) => (
+                    <p key={i}>{para}</p>
+                  )) || (
+                    <>
+                      <p>
+                        Advocate Maximus was born out of a vision to bridge the gap between academic learning and professional practice in the field of <span className="text-navy-950 font-medium">International Commercial Arbitration and Mediation.</span>
+                      </p>
+                      <p className="text-navy-950">
+                        Since its inception in New Delhi (2017), the competition has attracted the brightest minds from top law schools, offering a rigorous platform for testing skills in both adversarial and collaborative settings.
+                      </p>
+                    </>
+                  )}
                 </div>
                 
-                <div className="pt-6 sm:pt-8">
-                  <a 
-                    href="https://superlawyer.in/advocate-maximus-sign-up-for-the-global-arb-med-competition/" 
-                    target="_blank" 
-                    className="group flex items-center gap-4 sm:gap-5"
-                  >
-                    <div className="h-0.5 w-12 sm:w-16 bg-gold-500 group-hover:w-20 sm:group-hover:w-24 transition-all duration-300" />
-                    <span className="text-xs sm:text-sm font-mono uppercase tracking-[0.2em] text-navy-800 group-hover:text-navy-950 font-extrabold transition-colors">
-                      Read Announcement
-                    </span>
-                    <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-gold-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
-                  </a>
-                </div>
+                {eventData?.vision?.brochurePdfUrl && (
+                  <div className="pt-6 sm:pt-8">
+                    <a 
+                      href={eventData.vision.brochurePdfUrl} 
+                      target="_blank" 
+                      className="group flex items-center gap-4 sm:gap-5"
+                    >
+                      <div className="h-0.5 w-12 sm:w-16 bg-gold-500 group-hover:w-20 sm:group-hover:w-24 transition-all duration-300" />
+                      <span className="text-xs sm:text-sm font-mono uppercase tracking-[0.2em] text-navy-800 group-hover:text-navy-950 font-extrabold transition-colors">
+                        Download Brochure
+                      </span>
+                      <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-gold-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -401,6 +502,33 @@ export default function AdvocateMaximusPage() {
         </div>
       </section>
 
+      {/* Rewards & Recognition */}
+      {rewards.length > 0 && (
+        <section className="py-24 bg-white relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+            <SectionHeader 
+              subtitle="The Stakes" 
+              title="Rewards & Recognition" 
+              center
+            />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+              {rewards.map((reward: any, i: number) => (
+                <FadeInUp key={i} delay={i * 0.1}>
+                  <div className="h-full p-8 rounded-[2.5rem] bg-navy-50 border border-navy-100/50 hover:bg-white hover:shadow-xl transition-all duration-500 group">
+                    <div className="w-12 h-12 rounded-2xl bg-gold-500/10 flex items-center justify-center text-gold-500 mb-6 group-hover:scale-110 transition-transform">
+                      <Trophy className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-bold text-navy-950 mb-2 leading-tight">{reward.text}</h3>
+                    <p className="text-sm text-navy-500 font-light">{reward.subtext}</p>
+                  </div>
+                </FadeInUp>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* YouTube Video Section */}
       <section className="py-12 sm:py-20 bg-navy-950 relative overflow-hidden dark">
         <div className="absolute inset-0 z-0">
@@ -450,6 +578,45 @@ export default function AdvocateMaximusPage() {
           </div>
         </div>
       </section>
+
+      {/* National Champions Section */}
+      {champions.length > 0 && (
+        <section className="py-24 bg-navy-950 relative overflow-hidden dark">
+          <div className="absolute inset-0 z-0 opacity-10">
+             <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-gold-500 to-transparent" />
+          </div>
+          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+            <SectionHeader 
+              subtitle="The Hall of Fame" 
+              title="National Champions" 
+              light
+            />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+              {champions.map((champ: any, i: number) => (
+                <FadeInUp key={i} delay={i * 0.1}>
+                  <div className="p-8 rounded-[3rem] bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-500">
+                    <div className="flex justify-between items-start mb-6">
+                      <span className="text-4xl font-black text-gold-500 italic tracking-tighter">{champ.year}</span>
+                      <Medal className="w-8 h-8 text-gold-500/50" />
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">Mediation Counsel</p>
+                        <p className="text-lg font-bold text-white tracking-tight">{champ.counselNames}</p>
+                      </div>
+                      <div className="pt-4 border-t border-white/5">
+                        <p className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">Mediator</p>
+                        <p className="text-lg font-bold text-white tracking-tight">{champ.mediatorName}</p>
+                      </div>
+                    </div>
+                  </div>
+                </FadeInUp>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Our Footprint Section */}
       <section className="py-16 sm:py-24 md:py-40 bg-navy-50 relative overflow-hidden">
@@ -580,6 +747,38 @@ export default function AdvocateMaximusPage() {
         </div>
       </section>
 
+      {/* Media Coverage Section */}
+      {mediaCoverage.length > 0 && (
+        <section className="py-24 bg-white relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+            <SectionHeader 
+              subtitle="The Ecosystem" 
+              title="Media & Coverage" 
+            />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+              {mediaCoverage.map((media: any, i: number) => (
+                <FadeInUp key={i} delay={i * 0.1}>
+                  <a 
+                    href={media.url} 
+                    target="_blank" 
+                    className="flex items-center justify-between p-6 rounded-2xl bg-navy-50 border border-navy-100/50 hover:bg-navy-950 hover:text-white transition-all duration-500 group"
+                  >
+                    <div className="flex flex-col">
+                      <span className="text-xs font-mono uppercase tracking-widest text-gold-500 font-bold mb-1">Featured In</span>
+                      <h4 className="text-lg font-bold italic uppercase tracking-tight">{media.name}</h4>
+                    </div>
+                    <div className="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center group-hover:border-gold-500 group-hover:bg-gold-500 group-hover:text-navy-950 transition-all">
+                      <ArrowUpRight className="w-5 h-5" />
+                    </div>
+                  </a>
+                </FadeInUp>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Strategic Partners Section */}
       {partners.length > 0 && (
         <section className="py-24 bg-white relative overflow-hidden">
@@ -609,12 +808,16 @@ export default function AdvocateMaximusPage() {
                       className="relative h-16 md:h-24 w-40 md:w-56 md:grayscale hover:grayscale-0 transition-all duration-500 md:opacity-60 hover:opacity-100 hover:scale-110 flex flex-col items-center justify-center group"
                     >
                       <div className="relative h-16 md:h-20 w-full">
-                        <Image
-                          src={partner.url}
-                          alt={partner.title || "Partner Logo"}
-                          fill
-                          className="object-contain"
-                        />
+                        {partner.url ? (
+                          <Image
+                            src={partner.url}
+                            alt={partner.title || "Partner Logo"}
+                            fill
+                            className="object-contain"
+                          />
+                        ) : (
+                          <ImageIcon className="w-12 h-12 opacity-5 text-navy-950" />
+                        )}
                       </div>
                       {partner.title && (
                         <p className="mt-4 text-[9px] font-mono uppercase tracking-widest text-navy-950/40 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">

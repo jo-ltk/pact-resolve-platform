@@ -18,9 +18,14 @@ import {
   Users,
   LayoutGrid,
   ExternalLink,
-  Settings
+  Settings,
+  Calendar,
+  Shield,
+  Trophy,
+  Star
 } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -55,14 +60,16 @@ export default function AdvocateMaximusAdminPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Strategic Partners State
+  // Expanded State for "Complete Access"
   const [partners, setPartners] = useState<ConclaveHighlight[]>([]);
+  const [gallery, setGallery] = useState<any[]>([]);
+  const [champions, setChampions] = useState<any[]>([]);
+  const [rewards, setRewards] = useState<any[]>([]);
+  const [mediaCoverage, setMediaCoverage] = useState<any[]>([]);
+  
   const [isPartnerDialogOpen, setIsPartnerDialogOpen] = useState(false);
   const [editingPartnerIndex, setEditingPartnerIndex] = useState<number | null>(null);
   const [tempPartner, setTempPartner] = useState<ConclaveHighlight>({ url: "", title: "", description: "" });
-
-  // Gallery State (Memories)
-  const [gallery, setGallery] = useState<any[]>([]);
 
   useEffect(() => {
     fetchEvent();
@@ -75,11 +82,13 @@ export default function AdvocateMaximusAdminPage() {
       const result = await res.json();
       
       if (result.success && result.data && result.data.length > 0) {
-        // Find active event or take the latest
         const activeEvent = result.data.find((e: MCIEvent) => e.isActive) || result.data[0];
         setEventData(activeEvent);
         setPartners(activeEvent.strategicPartners || []);
         setGallery(activeEvent.gallery || []);
+        setChampions(activeEvent.champions || []);
+        setRewards(activeEvent.rewards || []);
+        setMediaCoverage(activeEvent.mediaCoverage || []);
       }
     } catch (e) {
       toast.error("Failed to fetch event data");
@@ -97,6 +106,9 @@ export default function AdvocateMaximusAdminPage() {
         ...updates,
         strategicPartners: updates?.partners || partners,
         gallery: updates?.gallery || gallery,
+        champions: updates?.champions || champions,
+        rewards: updates?.rewards || rewards,
+        mediaCoverage: updates?.mediaCoverage || mediaCoverage,
         updatedAt: new Date()
       };
 
@@ -112,10 +124,12 @@ export default function AdvocateMaximusAdminPage() {
       const result = await res.json();
       if (result.success) {
         toast.success("Changes published successfully!");
-        // Update local state
         setEventData(payload);
         if (updates?.partners) setPartners(updates.partners);
         if (updates?.gallery) setGallery(updates.gallery);
+        if (updates?.champions) setChampions(updates.champions);
+        if (updates?.rewards) setRewards(updates.rewards);
+        if (updates?.mediaCoverage) setMediaCoverage(updates.mediaCoverage);
       } else {
         toast.error(result.error || "Failed to save changes");
       }
@@ -289,7 +303,7 @@ export default function AdvocateMaximusAdminPage() {
             </div>
           </div>
           
-          <div className="flex flex-col gap-3 w-full md:w-auto">
+          <div className="flex flex-col gap-3 w-full md:w-auto mt-6 md:mt-0">
             <Button 
               onClick={() => handleSaveAll()} 
               disabled={isSaving}
@@ -298,7 +312,44 @@ export default function AdvocateMaximusAdminPage() {
               {isSaving ? <Loader2 className="w-5 h-5 mr-3 animate-spin" /> : <Save className="w-5 h-5 mr-3" />}
               Publish Changes
             </Button>
-            <p className="text-xs text-center text-white/40  uppercase tracking-tighter">
+            
+            <Button 
+              onClick={async () => {
+                const newVal = !eventData.isShut;
+                setEventData({...eventData, isShut: newVal});
+                await handleSaveAll({ isShut: newVal });
+              }}
+              className={cn(
+                "rounded-2xl px-10 h-14 font-black uppercase tracking-widest text-xs shadow-2xl transition-all border-none",
+                eventData.isShut 
+                  ? "bg-linear-to-r from-amber-500 to-orange-600 text-navy-950 hover:scale-[1.02]" 
+                  : "bg-linear-to-r from-red-500 to-rose-700 text-white hover:scale-[1.02]"
+              )}
+            >
+              {eventData.isShut ? "Commit to Live Site" : "Enable Draft Mode"}
+            </Button>
+            
+            <div className="flex items-center justify-between p-3 bg-white/10 rounded-2xl border border-white/10 mt-2 hover:bg-white/15 transition-all">
+              <span className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] ml-1">Featured Active Status</span>
+              <button 
+                onClick={async () => {
+                  const newVal = !eventData.isActive;
+                  setEventData({...eventData, isActive: newVal});
+                  await handleSaveAll({ isActive: newVal });
+                }}
+                className={cn(
+                  "relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none",
+                  eventData.isActive ? "bg-emerald-500" : "bg-gray-700"
+                )}
+              >
+                <span className={cn(
+                  "inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm",
+                  eventData.isActive ? "translate-x-6" : "translate-x-1"
+                )} />
+              </button>
+            </div>
+
+            <p className="text-xs text-center text-white/40 uppercase tracking-tighter mt-2">
               Connected to MongoDB Atlas & Vercel
             </p>
           </div>
@@ -306,19 +357,24 @@ export default function AdvocateMaximusAdminPage() {
       </div>
 
       <Tabs defaultValue="partners" className="space-y-8">
-        <TabsList className="bg-navy-50 p-1.5 rounded-2xl h-14 border border-navy-100 flex items-stretch max-w-2xl">
+        <TabsList className="bg-navy-50 p-1.5 rounded-2xl h-14 border border-navy-100 flex items-stretch max-w-4xl">
           <TabsTrigger value="partners" className="grow rounded-xl font-bold uppercase tracking-widest text-xs data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
-            <Users className="w-4 h-4 mr-2" /> Strategic Partners
+            <Users className="w-4 h-4 mr-2" /> Partners
           </TabsTrigger>
           <TabsTrigger value="identity" className="grow rounded-xl font-bold uppercase tracking-widest text-xs data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
-            <Settings className="w-4 h-4 mr-2" /> Event Identity
+            <Settings className="w-4 h-4 mr-2" /> Identity
+          </TabsTrigger>
+          <TabsTrigger value="details" className="grow rounded-xl font-bold uppercase tracking-widest text-xs data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
+            <LayoutGrid className="w-4 h-4 mr-2" /> Details
+          </TabsTrigger>
+          <TabsTrigger value="social" className="grow rounded-xl font-bold uppercase tracking-widest text-xs data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
+            <Sparkles className="w-4 h-4 mr-2" /> Social
           </TabsTrigger>
           <TabsTrigger value="gallery" className="grow rounded-xl font-bold uppercase tracking-widest text-xs data-[state=active]:bg-white data-[state=active]:text-emerald-600 data-[state=active]:shadow-sm">
-            <LayoutGrid className="w-4 h-4 mr-2" /> Memories
+            <ImageIcon className="w-4 h-4 mr-2" /> Memories
           </TabsTrigger>
         </TabsList>
 
-        {/* SECTION: STRATEGIC PARTNERS */}
         <TabsContent value="partners" className="space-y-6 outline-none">
           <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-white border rounded-4xl p-6 shadow-sm">
             <div className="flex items-center gap-6">
@@ -381,9 +437,8 @@ export default function AdvocateMaximusAdminPage() {
                         <Button size="icon" variant="ghost" className="w-7 h-7" onClick={() => movePartner(index, 'up')} disabled={index === 0}><ChevronUp className="w-3 h-3" /></Button>
                         <Button size="icon" variant="ghost" className="w-7 h-7" onClick={() => movePartner(index, 'down')} disabled={index === partners.length - 1}><ChevronDown className="w-3 h-3" /></Button>
                       </div>
-                      <Button variant="ghost" size="sm" className="text-[9px] font-bold text-emerald-600 uppercase" onClick={() => editPartner(index)}>Configure</Button>
                     </CardFooter>
-                  </Card>
+                    </Card>
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -397,7 +452,6 @@ export default function AdvocateMaximusAdminPage() {
           </div>
         </TabsContent>
 
-        {/* SECTION: EVENT IDENTITY */}
         <TabsContent value="identity" className="space-y-6 outline-none">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <Card className="lg:col-span-2 rounded-4xl border-none shadow-sm p-8 space-y-8 bg-white">
@@ -423,7 +477,7 @@ export default function AdvocateMaximusAdminPage() {
                </div>
 
                <div className="space-y-4">
-                  <Label className="text-navy-950 font-bold ml-1 italic">Title Construction</Label>
+                  <Label className="text-navy-950 font-bold ml-1 italic">Main Title Lines</Label>
                   <div className="grid grid-cols-2 gap-4">
                      <Input value={eventData.title[0]} onChange={e => {
                        const t = [...eventData.title]; t[0] = e.target.value; setEventData({...eventData, title: t});
@@ -434,50 +488,272 @@ export default function AdvocateMaximusAdminPage() {
                   </div>
                </div>
 
+               <div className="space-y-4">
+                  <Label className="text-navy-950 font-bold ml-1 italic">Hero Description Paragraphs</Label>
+                  <Textarea 
+                    value={eventData.heroDescription?.join("\n\n")} 
+                    onChange={e => setEventData({...eventData, heroDescription: e.target.value.split("\n\n")})}
+                    className="rounded-2xl min-h-[150px] bg-gray-50/50"
+                    placeholder="Enter paragraphs separated by empty lines..."
+                  />
+               </div>
+
                <div className="space-y-4 pt-4 border-t">
-                  <h3 className="font-black text-xs uppercase tracking-widest text-emerald-600">Visual Core</h3>
-                  <div className="grid grid-cols-2 gap-8">
+                  <h3 className="font-black text-xs uppercase tracking-widest text-emerald-600">Visual Identity</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div className="space-y-2">
-                      <Label className="text-xs font-bold text-navy-400 uppercase tracking-tighter">Hero Background</Label>
+                      <Label className="text-xs font-bold text-navy-400 uppercase tracking-tighter">Hero Image</Label>
                       <ImageUpload value={eventData.heroImage?.url} onChange={url => setEventData({...eventData, heroImage: {url, alt: "Hero"}})} />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-xs font-bold text-navy-400 uppercase tracking-tighter">Legacy Poster</Label>
+                      <Label className="text-xs font-bold text-navy-400 uppercase tracking-tighter">Vision Image</Label>
                       <ImageUpload value={eventData.visionImage?.url} onChange={url => setEventData({...eventData, visionImage: {url, alt: "Poster"}})} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs font-bold text-navy-400 uppercase tracking-tighter">Competition Image</Label>
+                      <ImageUpload value={eventData.competitionImage?.url} onChange={url => setEventData({...eventData, competitionImage: {url, alt: "Competition"}})} />
                     </div>
                   </div>
                </div>
             </Card>
 
             <div className="space-y-6">
-               <Card className="rounded-4xl border-none shadow-sm p-8 bg-navy-950 text-white relative overflow-hidden">
-                  <div className="relative z-10 space-y-4">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center">
-                       <Sparkles className="w-6 h-6 text-emerald-500" />
-                    </div>
-                    <h3 className="text-2xl font-black italic tracking-tighter uppercase leading-none">Global Status</h3>
-                    <p className="text-white/40 text-sm leading-relaxed">
-                      Only the active edition will be showcased on the primary event landing page. Ensure all assets are high-resolution.
-                    </p>
-                    <div className="pt-4 flex items-center gap-4">
-                       <div className="grow h-12 bg-white/5 rounded-2xl flex items-center px-4 border border-white/10">
-                          <span className=" text-xs font-bold text-emerald-500 uppercase tracking-widest">Active Status</span>
-                          <div className="ml-auto w-4 h-4 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] animate-pulse" />
-                       </div>
-                    </div>
-                  </div>
-               </Card>
-
-               <div className="p-8 bg-emerald-50 rounded-4xl border border-emerald-100 flex items-start gap-4">
-                  <div className="w-10 h-10 shrink-0 bg-emerald-500 rounded-xl flex items-center justify-center text-white shadow-lg">
-                    <ExternalLink className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-emerald-950 text-sm">Frontend Link</h4>
-                    <p className="text-xs text-emerald-700/60 mt-1">Live at: mediation.com/events/advocate-maximus</p>
-                  </div>
-               </div>
+              <div className="p-8 bg-emerald-50 rounded-[2.5rem] border border-emerald-100 flex items-start gap-5 group hover:bg-emerald-100/50 transition-all">
+                <div className="w-12 h-12 shrink-0 bg-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-emerald-200 group-hover:scale-110 transition-transform">
+                  <ExternalLink className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="font-black text-emerald-950 text-xs uppercase tracking-widest mb-1">Production Endpoint</h4>
+                  <p className="text-sm text-emerald-700/80 font-medium">
+                    {typeof window !== "undefined" ? window.location.origin : "https://thepact.in"}/events/advocate-maximus
+                  </p>
+                </div>
+              </div>
             </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="details" className="space-y-6 outline-none">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <Card className="rounded-4xl border-none shadow-sm p-8 space-y-6 bg-white">
+              <h3 className="font-black text-xl italic uppercase tracking-tighter text-navy-950 flex items-center gap-3">
+                <Calendar className="w-6 h-6 text-emerald-600" /> Key Event Details
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Dates</Label>
+                  <Input value={eventData.eventDetails?.dates} onChange={e => setEventData({...eventData, eventDetails: {...eventData.eventDetails, dates: e.target.value}})} className="rounded-xl h-11" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Venue</Label>
+                  <Input value={eventData.eventDetails?.venue} onChange={e => setEventData({...eventData, eventDetails: {...eventData.eventDetails, venue: e.target.value}})} className="rounded-xl h-11" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Hosts</Label>
+                  <Input value={eventData.eventDetails?.hosts} onChange={e => setEventData({...eventData, eventDetails: {...eventData.eventDetails, hosts: e.target.value}})} className="rounded-xl h-11" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Sponsors</Label>
+                  <Input value={eventData.eventDetails?.sponsors} onChange={e => setEventData({...eventData, eventDetails: {...eventData.eventDetails, sponsors: e.target.value}})} className="rounded-xl h-11" />
+                </div>
+              </div>
+
+              <div className="pt-6 border-t space-y-6">
+                <h3 className="font-black text-xl italic uppercase tracking-tighter text-navy-950 flex items-center gap-3">
+                  <Shield className="w-6 h-6 text-emerald-600" /> Contact Emails
+                </h3>
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Sign Up Email</Label>
+                    <Input value={eventData.emails?.signUp} onChange={e => setEventData({...eventData, emails: {...eventData.emails, signUp: e.target.value}})} className="rounded-xl h-11" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Sponsor Email</Label>
+                    <Input value={eventData.emails?.sponsor} onChange={e => setEventData({...eventData, emails: {...eventData.emails, sponsor: e.target.value}})} className="rounded-xl h-11" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">General Inquiry</Label>
+                    <Input value={eventData.emails?.general} onChange={e => setEventData({...eventData, emails: {...eventData.emails, general: e.target.value}})} className="rounded-xl h-11" />
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="rounded-4xl border-none shadow-sm p-8 space-y-6 bg-white">
+              <h3 className="font-black text-xl italic uppercase tracking-tighter text-navy-950 flex items-center gap-3">
+                <Sparkles className="w-6 h-6 text-emerald-600" /> The Vision & Experience
+              </h3>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Vision Subtitle</Label>
+                    <Input value={eventData.vision?.subtitle} onChange={e => setEventData({...eventData, vision: {...eventData.vision, subtitle: e.target.value}})} className="rounded-xl h-11" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Vision Title</Label>
+                    <Input value={eventData.vision?.title} onChange={e => setEventData({...eventData, vision: {...eventData.vision, title: e.target.value}})} className="rounded-xl h-11" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Vision Description</Label>
+                  <Textarea 
+                    value={eventData.vision?.description?.join("\n\n")} 
+                    onChange={e => setEventData({...eventData, vision: {...eventData.vision, description: e.target.value.split("\n\n")}})}
+                    className="rounded-xl min-h-[120px]"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Experience Text (Hero)</Label>
+                  <Input value={eventData.vision?.experienceText} onChange={e => setEventData({...eventData, vision: {...eventData.vision, experienceText: e.target.value}})} className="rounded-xl h-11" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-400">Brochure PDF URL</Label>
+                  <Input value={eventData.vision?.brochurePdfUrl} onChange={e => setEventData({...eventData, vision: {...eventData.vision, brochurePdfUrl: e.target.value}})} className="rounded-xl h-11" />
+                </div>
+              </div>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="social" className="space-y-8 outline-none">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <Card className="rounded-4xl border-none shadow-sm p-8 space-y-6 bg-white">
+              <div className="flex justify-between items-center">
+                <h3 className="font-black text-xl italic uppercase tracking-tighter text-navy-950 flex items-center gap-3">
+                  <Trophy className="w-6 h-6 text-emerald-600" /> National Champions
+                </h3>
+                <Button 
+                  size="sm" 
+                  onClick={() => {
+                    const newC = [...champions, { year: "2024", counselNames: "", mediatorName: "" }];
+                    setChampions(newC);
+                  }}
+                  variant="outline" 
+                  className="rounded-xl border-emerald-500/30 text-emerald-600 font-bold"
+                >
+                  <Plus className="w-4 h-4 mr-2" /> Add Year
+                </Button>
+              </div>
+
+              <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                {champions.map((champ, idx) => (
+                  <div key={idx} className="p-4 rounded-2xl bg-gray-50 border border-navy-100 flex items-start gap-4 hover:border-emerald-500/30 transition-all">
+                    <div className="space-y-4 flex-1">
+                      <div className="grid grid-cols-3 gap-3">
+                        <div className="space-y-1">
+                          <Label className="text-[10px] font-bold uppercase text-navy-400 ml-1">Year</Label>
+                          <Input value={champ.year} onChange={e => {
+                            const newC = [...champions]; newC[idx].year = e.target.value; setChampions(newC);
+                          }} className="h-9 rounded-lg" />
+                        </div>
+                        <div className="col-span-2 space-y-1">
+                          <Label className="text-[10px] font-bold uppercase text-navy-400 ml-1">National Counsel Champions</Label>
+                          <Input value={champ.counselNames} onChange={e => {
+                            const newC = [...champions]; newC[idx].counselNames = e.target.value; setChampions(newC);
+                          }} className="h-9 rounded-lg" />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-bold uppercase text-navy-400 ml-1">National Mediator Champion</Label>
+                        <Input value={champ.mediatorName} onChange={e => {
+                          const newC = [...champions]; newC[idx].mediatorName = e.target.value; setChampions(newC);
+                        }} className="h-9 rounded-lg" />
+                      </div>
+                    </div>
+                    <Button 
+                      size="icon" 
+                      variant="ghost" 
+                      onClick={() => setChampions(champions.filter((_, i) => i !== idx))}
+                      className="text-red-500 hover:bg-red-50 rounded-xl mt-6"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            <Card className="rounded-4xl border-none shadow-sm p-8 space-y-6 bg-white shrink-0">
+              <div className="flex justify-between items-center">
+                <h3 className="font-black text-xl italic uppercase tracking-tighter text-navy-950 flex items-center gap-3">
+                  <Star className="w-6 h-6 text-emerald-600" /> Rewards & Recognition
+                </h3>
+                <Button 
+                  size="sm" 
+                  onClick={() => {
+                    const newR = [...rewards, { text: "", subtext: "" }];
+                    setRewards(newR);
+                  }}
+                  variant="outline" 
+                   className="rounded-xl border-emerald-500/30 text-emerald-600 font-bold"
+                >
+                  <Plus className="w-4 h-4 mr-2" /> Add Reward
+                </Button>
+              </div>
+
+              <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                {rewards.map((reward, idx) => (
+                  <div key={idx} className="p-4 rounded-2xl bg-gray-50 border border-navy-100 flex items-start gap-4">
+                    <div className="flex-1 space-y-3">
+                        <Input value={reward.text} onChange={e => {
+                          const newR = [...rewards]; newR[idx].text = e.target.value; setRewards(newR);
+                        }} className="h-9 rounded-lg" placeholder="e.g. Internship" />
+                        <Input value={reward.subtext} onChange={e => {
+                          const newR = [...rewards]; newR[idx].subtext = e.target.value; setRewards(newR);
+                        }} className="h-9 rounded-lg" placeholder="e.g. At JSA" />
+                    </div>
+                    <Button 
+                      size="icon" 
+                      variant="ghost" 
+                      onClick={() => setRewards(rewards.filter((_, i) => i !== idx))}
+                      className="text-red-500 hover:bg-red-50 rounded-xl"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            <Card className="col-span-full rounded-4xl border-none shadow-sm p-8 space-y-6 bg-white shrink-0">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-black text-xl italic uppercase tracking-tighter text-navy-950 flex items-center gap-3">
+                    <LayoutGrid className="w-6 h-6 text-emerald-600" /> Media & Coverage
+                  </h3>
+                  <Button 
+                    size="sm" 
+                    onClick={() => {
+                      const newM = [...mediaCoverage, { name: "", url: "" }];
+                      setMediaCoverage(newM);
+                    }}
+                    variant="outline" 
+                    className="rounded-xl border-emerald-500/30 text-emerald-600 font-bold"
+                  >
+                    <Plus className="w-4 h-4 mr-2" /> Add Link
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {mediaCoverage.map((media, idx) => (
+                    <div key={idx} className="p-4 rounded-2xl bg-navy-50/50 border border-navy-100/50 flex flex-col gap-3">
+                        <Input value={media.name} onChange={e => {
+                          const newM = [...mediaCoverage]; newM[idx].name = e.target.value; setMediaCoverage(newM);
+                        }} className="h-10 bg-white font-bold" placeholder="Source Name" />
+                        <Input value={media.url} onChange={e => {
+                          const newM = [...mediaCoverage]; newM[idx].url = e.target.value; setMediaCoverage(newM);
+                        }} className="h-10 bg-white" placeholder="URL" />
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          onClick={() => setMediaCoverage(mediaCoverage.filter((_, i) => i !== idx))}
+                          className="text-red-500 self-end"
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" /> Remove
+                        </Button>
+                    </div>
+                  ))}
+                </div>
+            </Card>
           </div>
         </TabsContent>
 
@@ -485,7 +761,7 @@ export default function AdvocateMaximusAdminPage() {
            <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-white border rounded-4xl p-6 shadow-sm">
               <div className="flex items-center gap-6">
                   <div className="flex items-center gap-3 px-4 py-2 bg-blue-500/10 rounded-2xl border border-blue-500/20 text-blue-600 font-bold text-sm">
-                      <LayoutGrid className="w-4 h-4" /> Memories & Archival
+                      <ImageIcon className="w-4 h-4" /> Memories & Archival
                   </div>
                   <div className="flex flex-col text-left">
                     <h3 className="text-xl font-black text-navy-950 italic uppercase leading-none">Event Gallery</h3>
@@ -496,7 +772,6 @@ export default function AdvocateMaximusAdminPage() {
                 onClick={() => {
                   const newG = [...gallery, { url: "", title: "", description: "", order: gallery.length + 1 }];
                   setGallery(newG);
-                  handleSaveAll({ gallery: newG });
                 }} 
                 variant="outline" 
                 className="rounded-2xl h-12 px-6 border-2 border-dashed border-blue-500/30 text-blue-600 hover:bg-blue-500/5 hover:border-blue-50 transition-all font-bold"
@@ -515,7 +790,6 @@ export default function AdvocateMaximusAdminPage() {
                           const newG = [...gallery]; 
                           newG[idx].url = url; 
                           setGallery(newG); 
-                          handleSaveAll({ gallery: newG });
                         }} 
                       />
                    </div>
@@ -528,73 +802,33 @@ export default function AdvocateMaximusAdminPage() {
                             size="icon" 
                             variant="ghost" 
                             className="w-9 h-9 text-red-500 hover:bg-red-50 rounded-xl transition-colors" 
-                            onClick={() => {
-                              const newG = gallery.filter((_, i) => i !== idx); 
-                              setGallery(newG); 
-                              handleSaveAll({ gallery: newG });
-                            }}
+                            onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
                           >
                            <Trash2 className="w-4 h-4" />
                          </Button>
                       </div>
                       
                       <div className="space-y-4">
-                         <div className="grid grid-cols-1 gap-4">
-                            <div className="space-y-1.5">
-                               <Label className="text-xs font-black uppercase text-navy-400 tracking-widest ml-1">Title / Caption</Label>
-                               <Input 
-                                 value={item.title} 
-                                 onChange={e => {
-                                   const newG = [...gallery]; newG[idx].title = e.target.value; setGallery(newG);
-                                 }} 
-                                 className="h-11 text-sm rounded-2xl bg-gray-50/50 border-navy-100 focus:ring-emerald-500" 
-                                 placeholder="e.g. Opening Ceremony" 
-                               />
-                            </div>
-                         </div>
-                         <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-1.5">
-                               <Label className="text-xs font-black uppercase text-navy-400 tracking-widest ml-1">Archive Order</Label>
-                               <Input 
-                                 type="number" 
-                                 value={item.order} 
-                                 onChange={e => {
-                                   const newG = [...gallery]; newG[idx].order = parseInt(e.target.value); setGallery(newG);
-                                 }} 
-                                 className="h-11 text-sm rounded-2xl bg-gray-50/50 border-navy-100" 
-                               />
-                            </div>
-                            <div className="flex items-end pb-0.5">
-                               <Button 
-                                  variant="ghost" 
-                                  className="w-full h-11 rounded-2xl text-xs font-bold uppercase tracking-widest text-emerald-600 border border-emerald-100 hover:bg-emerald-50"
-                                  onClick={() => handleSaveAll()}
-                               >
-                                  Save Frame
-                               </Button>
-                            </div>
-                         </div>
-                         <div className="space-y-1.5">
-                            <Label className="text-xs font-black uppercase text-navy-400 tracking-widest ml-1">Context / Description</Label>
-                            <Input 
-                               value={item.description} 
-                               onChange={e => {
-                                 const newG = [...gallery]; newG[idx].description = e.target.value; setGallery(newG);
-                               }} 
-                               className="h-11 text-sm rounded-2xl bg-gray-50/50 border-navy-100" 
-                               placeholder="What makes this moment special?" 
-                            />
-                         </div>
+                         <Input 
+                            value={item.title} 
+                            onChange={e => {
+                               const newG = [...gallery]; newG[idx].title = e.target.value; setGallery(newG);
+                            }} 
+                            className="h-11 text-sm rounded-2xl bg-gray-50/50 border-navy-100" 
+                            placeholder="Title / Caption" 
+                         />
+                         <Input 
+                            value={item.description} 
+                            onChange={e => {
+                               const newG = [...gallery]; newG[idx].description = e.target.value; setGallery(newG);
+                            }} 
+                            className="h-11 text-sm rounded-2xl bg-gray-50/50 border-navy-100" 
+                            placeholder="Description" 
+                         />
                       </div>
                    </div>
                 </Card>
               ))}
-              {gallery.length === 0 && (
-                <div className="col-span-full py-20 bg-gray-50/50 rounded-4xl border-2 border-dashed flex flex-col items-center text-muted-foreground">
-                   <LayoutGrid className="w-12 h-12 mb-4 opacity-10" />
-                   <p className="font-medium">The vault is currently empty.</p>
-                </div>
-              )}
            </div>
         </TabsContent>
       </Tabs>

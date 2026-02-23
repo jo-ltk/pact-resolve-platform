@@ -12,6 +12,7 @@ export function Navbar() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
+  const [advocateMaximusHidden, setAdvocateMaximusHidden] = useState(false);
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith("/admin");
 
@@ -24,6 +25,26 @@ export function Navbar() {
     } else {
       document.body.style.overflow = "unset";
     }
+    
+    const checkMaximusStatus = async () => {
+      try {
+        const res = await fetch("/api/content/advocate-maximus-event?all=true", { cache: 'no-store' });
+        if (res.ok) {
+          const result = await res.json();
+          if (result.success && result.data && result.data.length > 0) {
+            const activeEvent = result.data.find((e: any) => e.isActive) || result.data[0];
+            if (activeEvent.isShut) {
+              setAdvocateMaximusHidden(true);
+            } else {
+              setAdvocateMaximusHidden(false);
+            }
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch Advocate Maximus status", e);
+      }
+    };
+    checkMaximusStatus();
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -69,7 +90,7 @@ export function Navbar() {
         { label: "Mediation Championship India", href: "/events/mci" },
         { label: "Mission Mediation Conclave", href: "/events/mmc" },
         { label: "National ImPACT Awards", href: "/events/niaam" },
-        { label: "Advocate Maximus", href: "/events/advocate-maximus" },
+        ...(advocateMaximusHidden ? [] : [{ label: "Advocate Maximus", href: "/events/advocate-maximus" }]),
         { label: "Events & Projects", href: "/events/projects" },
       ]
     },

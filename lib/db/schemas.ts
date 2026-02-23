@@ -272,6 +272,8 @@ export interface MCIEvent extends BaseDocument {
   year: number;
   /** Whether this is the active/current event */
   isActive: boolean;
+  /** Whether the public page is shut/maintenance mode */
+  isShut?: boolean;
 }
 
 // ============================================================================
