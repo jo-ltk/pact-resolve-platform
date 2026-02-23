@@ -60,6 +60,14 @@ const eventCategories = [
     link: "/admin/events/projects",
     color: "text-amber-500",
     bg: "bg-amber-500/10"
+  },
+  {
+    title: "Archived Projects",
+    description: "Manage legacy/archived projects section on the Events & Projects page.",
+    icon: Calendar,
+    link: "/admin/events/archived",
+    color: "text-rose-500",
+    bg: "bg-rose-500/10"
   }
 ];
 

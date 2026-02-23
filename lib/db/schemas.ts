@@ -837,6 +837,26 @@ export interface ProjectUpdate extends BaseDocument {
   isActive: boolean;
 }
 
+/** Archived Project (Legacy Projects) */
+export interface ArchivedProject extends BaseDocument {
+  /** Project title */
+  title: string;
+  /** Location and year (e.g., "Mumbai, 2025") */
+  location: string;
+  /** Description of the project */
+  description: string;
+  /** Link to project/details */
+  link: string;
+  /** Category: Webinar, Workshop, Bootcamp, etc. */
+  category: string;
+  /** Featured image URL */
+  image: string;
+  /** Display order */
+  order: number;
+  /** Whether this project is visible */
+  isActive: boolean;
+}
+
 // ============================================================================
 // COLLECTION NAMES
 // ============================================================================
@@ -884,6 +904,8 @@ export const COLLECTIONS = {
   PLEDGE_SIGNATORIES: "pledgeSignatories",
   // Project Updates (Watch Out For)
   PROJECT_UPDATES: "projectUpdates",
+  // Archived Projects (Legacy)
+  ARCHIVED_PROJECTS: "archivedProjects",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];

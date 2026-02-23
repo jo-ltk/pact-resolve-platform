@@ -47,7 +47,7 @@ import { Footer } from "@/components/footer";
 import { MagneticButton } from "@/components/magnetic-button";
 import { Collaborators } from "@/components/sections/home/collaborators";
 import { cn } from "@/lib/utils";
-import { ProjectUpdate } from "@/lib/db/schemas";
+import { ProjectUpdate, ArchivedProject } from "@/lib/db/schemas";
 
 const SectionHeader = ({ subtitle, title, description, light = false, center = false }: { subtitle: string, title: string, description?: string, light?: boolean, center?: boolean }) => (
   <FadeInUp className={cn("mb-12 md:mb-20", center ? "flex flex-col items-center text-center" : "")}>
@@ -163,32 +163,45 @@ const defaultUpdates = [
 
 export default function ProjectsPage() {
   const [projectUpdates, setProjectUpdates] = useState<ProjectUpdate[]>([]);
+  const [archivedProjects, setArchivedProjects] = useState<ArchivedProject[]>([]);
   const [isLoadingUpdates, setIsLoadingUpdates] = useState(true);
 
   useEffect(() => {
-    async function fetchProjectUpdates() {
+    async function fetchData() {
       try {
-        // Fetch only active updates for public page (no ?all=true)
-        const res = await fetch("/api/content/project-updates", { cache: 'no-store' });
-        const result = await res.json();
+        // Fetch project updates
+        const updatesRes = await fetch("/api/content/project-updates", { cache: 'no-store' });
+        const updatesResult = await updatesRes.json();
         
-        if (result.success && result.data && result.data.length > 0) {
-          setProjectUpdates(result.data);
+        if (updatesResult.success && updatesResult.data && updatesResult.data.length > 0) {
+          setProjectUpdates(updatesResult.data);
         } else {
           setProjectUpdates(defaultUpdates as ProjectUpdate[]);
         }
+
+        // Fetch archived projects
+        const archivesRes = await fetch("/api/content/archived-projects", { cache: 'no-store' });
+        const archivesResult = await archivesRes.json();
+        
+        if (archivesResult.success && archivesResult.data && archivesResult.data.length > 0) {
+          setArchivedProjects(archivesResult.data);
+        } else {
+          setArchivedProjects(archives as ArchivedProject[]);
+        }
       } catch (error) {
-        console.error("Failed to fetch project updates:", error);
+        console.error("Failed to fetch data:", error);
         setProjectUpdates(defaultUpdates as ProjectUpdate[]);
+        setArchivedProjects(archives as ArchivedProject[]);
       } finally {
         setIsLoadingUpdates(false);
       }
     }
 
-    fetchProjectUpdates();
+    fetchData();
   }, []);
 
   const displayUpdates = projectUpdates.length > 0 ? projectUpdates : defaultUpdates;
+  const displayArchives = archivedProjects.length > 0 ? archivedProjects : archives;
 
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-white text-navy-950">
@@ -387,8 +400,8 @@ export default function ProjectsPage() {
             <SectionHeader subtitle="Legacy" title="Archived Projects" center />
             
             <div className="space-y-6 max-w-6xl mx-auto">
-                {archives.map((item, i) => (
-                  <FadeInUp key={i} delay={i * 0.05}>
+                {displayArchives.map((item: any, i: number) => (
+                  <FadeInUp key={item._id || i} delay={i * 0.05}>
                     <div className="group relative flex flex-col md:flex-row gap-8 items-center p-6 md:p-8 rounded-4xl bg-white border border-navy-100/80 shadow-xs hover:border-gold-500/30 hover:shadow-xl transition-all duration-500 overflow-hidden">
                         {/* Compact Image */}
                         <div className="w-full md:w-56 h-40 relative rounded-xl overflow-hidden shrink-0">
