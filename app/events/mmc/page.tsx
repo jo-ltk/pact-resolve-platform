@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { ConclaveEvent } from "@/lib/db/schemas";
+import Link from "next/link";
+import { ConclaveEvent, ConclaveHighlight } from "@/lib/db/schemas";
 import { 
   Users, 
   Mail, 
@@ -30,7 +31,9 @@ import {
   Ticket,
   ChevronRight,
   ExternalLink,
-  MoreHorizontal
+  MoreHorizontal,
+  Play,
+  ArrowUpRight
 } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -69,7 +72,8 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
           word.toLowerCase() === 'conclave' || 
           word.toLowerCase() === 'practice' || 
           word.toLowerCase() === 'mission' ||
-          word.toLowerCase() === 'participate?' ? "text-gold-500 italic font-medium" : ""
+          word.toLowerCase() === 'participate?' ||
+          word.toLowerCase() === 'participating' ? "text-gold-500 italic font-medium" : ""
         )}>
           {word}{' '}
         </span>
@@ -85,6 +89,7 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
 
 export default function MMCPage() {
   const [eventData, setEventData] = useState<ConclaveEvent | null>(null);
+  const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
     async function fetchEvent() {
@@ -110,12 +115,12 @@ export default function MMCPage() {
   ];
 
   const highlights = eventData?.highlights?.length ? eventData.highlights : [
-    { url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80", title: "Event Poster 2025", description: "Original Campaign Poster for the 2025 Mission Mediation Conclave." },
-    { url: "https://images.unsplash.com/photo-1515168816513-4896b9f0d1a9?auto=format&fit=crop&q=80", title: "Audience Engagement", description: "Mission Mediation Conclave 2025 was held on 9 November at India International Centre." }, 
-    { url: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&q=80", title: "Keynote Address", description: "Headline sponsors Samvād: Partners and Dua Associates." },
-    { url: "https://images.unsplash.com/photo-1523287562758-66c7fc58967f?auto=format&fit=crop&q=80", title: "Interactive Session", description: "Engaging discussions between stakeholders and the audience." },
-    { url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80", title: "Panel Discussion", description: "Expert insights on the future of mediation in India." },
-    { url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80", title: "Networking Break", description: "Stakeholders connecting during the afternoon session." }
+    { thumbnailUrl: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80", sessionTitle: "Are Mediators Actually Mediating?", speakerName: "Bill Marsh & Chitra Narayan", youtubeUrl: "https://www.youtube.com/live/2AFA_Jdv7mA" },
+    { thumbnailUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80", sessionTitle: "Are Lawyers Relevant in Mediation?", speakerName: "Ekta Bahl & Geoff Sharp", youtubeUrl: "https://www.youtube.com/watch?v=yFby7ZLlkAg" },
+    { thumbnailUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80", sessionTitle: "Building Trust in Private Mediation", speakerName: "Jawad A J & Jonathan Lloyd-Jones", youtubeUrl: "https://www.youtube.com/watch?v=stg6rttI2kg" },
+    { thumbnailUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80", sessionTitle: "Commercial Mediation Works", speakerName: "Jeff Kichaven & Nisshant Laroia", youtubeUrl: "https://www.youtube.com/watch?v=rYI4_PgBitE" },
+    { thumbnailUrl: "https://images.unsplash.com/photo-1515168816513-4896b9f0d1a9?auto=format&fit=crop&q=80", sessionTitle: "Can you Mediate without Lawyers?", speakerName: "Jonathan Rodrigues & Laila Ollapally", youtubeUrl: "https://www.youtube.com/watch?v=B8PZuN-f6n4" },
+    { thumbnailUrl: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&q=80", sessionTitle: "Mediation in India", speakerName: "Attorney General R. Venkataramani", youtubeUrl: "https://www.youtube.com/watch?v=eJZeUtoIBpQ" }
   ];
 
   const coverage = eventData?.coverage?.length ? eventData.coverage : [
@@ -374,8 +379,8 @@ export default function MMCPage() {
         
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
           <SectionHeader 
-            subtitle={eventData?.participation?.subtitle || "Participation"} 
-            title={eventData?.participation?.title || "Who Should Participate?"} 
+            subtitle={eventData?.participation?.subtitle || "Expand Your Network"} 
+            title={eventData?.participation?.title || "Who Is Participating"} 
             center 
           />
           
@@ -471,68 +476,90 @@ export default function MMCPage() {
             description={eventData?.highlightsDescription || "Mission Mediation Conclave 2025 was held on 9 November at India International Centre, New Delhi, with Samvād: Partners and Dua Associates as Headline Sponsors."}
           />
           
-          <div className="flex flex-col gap-12">
-            {/* Poster Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-              <FadeInUp className="lg:col-span-3 aspect-video relative rounded-4xl overflow-hidden border border-white/10 shadow-2xl group">
-                <Image 
-                  src={highlights[0]?.url || "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&q=80"}
-                  alt={highlights[0]?.title || "Poster of Speakers and Sponsors"}
-                  fill
-                  className="object-cover transition-transform duration-2000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-transparent to-transparent opacity-60" />
-                <div className="absolute bottom-10 left-10">
-                   <p className="text-gold-500  text-xs tracking-[0.4em] uppercase font-bold mb-2">Original Campaign</p>
-                   <h3 className="text-4xl font-bold italic tracking-tighter">{highlights[0]?.title || "Event Poster 2025"}</h3>
-                </div>
-              </FadeInUp>
-              
-              <div className="lg:col-span-2 grid grid-cols-1 gap-8">
-                {[
-                  highlights[1] || { url: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80", title: "Frame 2025 - 01" },
-                  highlights[2] || { url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80", title: "Frame 2025 - 02" }
-                ].map((item, i) => (
-                   <FadeInUp key={i} className="aspect-square lg:aspect-auto relative rounded-4xl overflow-hidden border border-white/5 shadow-2xl group">
-                      <Image 
-                        src={item.url}
-                        alt={item.title || `MMC Gallery Image ${i + 1}`}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            {highlights.slice(0, visibleCount).map((item, i) => (
+              <FadeInUp key={i}>
+                <Link
+                  href={item.youtubeUrl || "#"}
+                  target="_blank"
+                  className="group flex flex-col h-full rounded-[2.5rem] bg-white/5 border border-white/10 overflow-hidden hover:border-gold-500/30 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                >
+                  {/* Image Area */}
+                  <div className="relative aspect-video w-full overflow-hidden bg-navy-900/40">
+                    {item.thumbnailUrl ? (
+                      <Image
+                        src={item.thumbnailUrl}
+                        alt={item.sessionTitle || "MMC Session"}
                         fill
+                        unoptimized={true}
                         className="object-cover transition-transform duration-1000 group-hover:scale-110"
                       />
-                      <div className="absolute inset-x-0 bottom-0 p-6 bg-linear-to-t from-navy-950/80 to-transparent">
-                        <span className="text-xs  text-gold-500 uppercase tracking-widest font-bold">{item.title || `Frame 2025 - 0${i + 1}`}</span>
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Play className="w-12 h-12 text-white/5" />
                       </div>
-                   </FadeInUp>
-                ))}
-              </div>
-            </div>
-            
-            {/* Carousel of Images from MMC 2025 */}
-            <div className="w-full">
-              <Carousel
-                opts={{ align: "start", loop: true }}
-                plugins={[Autoplay({ delay: 3500 })]}
-                className="w-full relative"
-              >
-                <CarouselContent className="-ml-4">
-                  {highlights.map((item, i) => (
-                    <CarouselItem key={i} className="pl-4 basis-3/4 md:basis-1/4">
-                       <div className="aspect-square relative rounded-3xl overflow-hidden opacity-50 hover:opacity-100 transition-opacity cursor-pointer group">
-                         <Image 
-                           src={item.url}
-                           alt={`MMC ${eventData?.year || 2025} Archive ${i + 1}`}
-                           fill
-                           className="object-cover transition-transform group-hover:scale-110"
-                         />
-                         <div className="absolute inset-0 bg-navy-950/20 group-hover:bg-transparent transition-colors" />
-                       </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
-            </div>
+                    )}
+                    <div className="absolute inset-0 bg-navy-950/40 group-hover:bg-navy-950/20 transition-colors duration-500" />
+                    
+                    {/* Floating Identity */}
+                    <div className="absolute top-6 left-6 z-10">
+                      <div className="px-4 py-1.5 rounded-full bg-navy-950/90 text-[10px] font-bold text-gold-500 border border-gold-500/20 backdrop-blur-xl shadow-lg">
+                        MMC SESSION
+                      </div>
+                    </div>
+
+                    {/* Play Button Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-full bg-gold-500 text-navy-950 flex items-center justify-center shadow-2xl translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                        <Play className="w-7 h-7 fill-navy-950 ml-1" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content Area */}
+                  <div className="p-8 md:p-10 flex flex-col flex-1 bg-white">
+                    <div className="mb-4 sm:mb-6">
+                      <span className="text-[10px] uppercase tracking-[0.3em] text-gold-600 font-bold">
+                        {eventData?.year || 2025} HIGHLIGHT
+                      </span>
+                    </div>
+                    
+                    <h3 className="text-xl sm:text-2xl font-medium text-navy-950 mb-4 group-hover:text-gold-500 transition-colors leading-tight">
+                      {item.sessionTitle || "Untitled Discussion"}
+                    </h3>
+                    
+                    <div className="mt-auto pt-6 border-t border-navy-100 flex items-center justify-between">
+                      <div className="flex flex-col">
+                        <span className="text-[9px] uppercase tracking-widest text-navy-950/30 font-bold mb-1">Speaker</span>
+                        <p className="text-navy-950 text-sm font-medium truncate max-w-[200px]">
+                          {item.speakerName || "Mission Mediation"}
+                        </p>
+                      </div>
+                      <div className="w-10 h-10 rounded-xl bg-navy-50 flex items-center justify-center group-hover:bg-gold-500 group-hover:text-white transition-all">
+                        <ArrowUpRight className="w-5 h-5 text-navy-950/20 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </FadeInUp>
+            ))}
           </div>
+
+          {/* Show More Button */}
+          {highlights.length > visibleCount && (
+            <div className="mt-16 md:mt-24 flex justify-center">
+              <MagneticButton 
+                onClick={() => setVisibleCount(prev => prev + 3)}
+                variant="secondary" 
+                size="lg" 
+                className="group px-12 py-5 border border-white/20 text-white hover:border-gold-500/50"
+              >
+                <span className="flex items-center gap-3 text-lg">
+                  Show More Highlights <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </MagneticButton>
+            </div>
+          )}
         </div>
       </section>
 

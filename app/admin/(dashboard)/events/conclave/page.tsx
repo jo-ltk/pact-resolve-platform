@@ -53,7 +53,7 @@ export default function ConclaveHighlightsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [tempItem, setTempItem] = useState<ConclaveHighlight>({ url: "", title: "", description: "" });
+  const [tempItem, setTempItem] = useState<ConclaveHighlight>({ thumbnailUrl: "", sessionTitle: "", speakerName: "", youtubeUrl: "" });
 
   // Guest State
   const [guests, setGuests] = useState<ConclaveGuest[]>([]);
@@ -91,8 +91,8 @@ export default function ConclaveHighlightsPage() {
   });
 
   const [participationContent, setParticipationContent] = useState({
-    subtitle: "Participation",
-    title: "Who Should Participate?",
+    subtitle: "Expand Your Network",
+    title: "Who Is Participating",
     description: "A multi-disciplinary gathering bringing together the most influential voices in the mediation ecosystem."
   });
 
@@ -100,12 +100,9 @@ export default function ConclaveHighlightsPage() {
 
   // Fallback data matching the public website
   const fallbackHighlights: ConclaveHighlight[] = [
-    { url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80", title: "Event Poster 2025", description: "Original Campaign Poster for the 2025 Mission Mediation Conclave." },
-    { url: "https://images.unsplash.com/photo-1515168816513-4896b9f0d1a9?auto=format&fit=crop&q=80", title: "Audience Engagement", description: "Mission Mediation Conclave 2025 was held on 9 November at India International Centre." }, 
-    { url: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&q=80", title: "Keynote Address", description: "Headline sponsors Samvād: Partners and Dua Associates." },
-    { url: "https://images.unsplash.com/photo-1523287562758-66c7fc58967f?auto=format&fit=crop&q=80", title: "Interactive Session", description: "Engaging discussions between stakeholders and the audience." },
-    { url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80", title: "Panel Discussion", description: "Expert insights on the future of mediation in India." },
-    { url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80", title: "Networking Break", description: "Stakeholders connecting during the afternoon session." }
+    { thumbnailUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80", sessionTitle: "Are Mediators Actually Mediating?", speakerName: "Bill Marsh & Chitra Narayan", youtubeUrl: "https://www.youtube.com/live/2AFA_Jdv7mA" },
+    { thumbnailUrl: "https://images.unsplash.com/photo-1515168816513-4896b9f0d1a9?auto=format&fit=crop&q=80", sessionTitle: "Are Lawyers Relevant in Mediation?", speakerName: "Ekta Bahl & Geoff Sharp", youtubeUrl: "https://www.youtube.com/watch?v=yFby7ZLlkAg" }, 
+    { thumbnailUrl: "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&q=80", sessionTitle: "Building Trust in Private Mediation", speakerName: "Jawad A J & Jonathan Lloyd-Jones", youtubeUrl: "https://www.youtube.com/watch?v=stg6rttI2kg" }
   ];
 
   const fallbackGuests: ConclaveGuest[] = [
@@ -266,7 +263,7 @@ export default function ConclaveHighlightsPage() {
   // --- HIGHLIGHTS LOGIC ---
   const addHighlightItem = () => {
     setEditingIndex(null);
-    setTempItem({ url: "", title: "", description: "" });
+    setTempItem({ thumbnailUrl: "", sessionTitle: "", speakerName: "", youtubeUrl: "" });
     setIsDialogOpen(true);
   };
 
@@ -581,11 +578,11 @@ export default function ConclaveHighlightsPage() {
                 <Card className="group relative h-full flex flex-col bg-white border-none shadow-sm hover:shadow-xl transition-all duration-300 rounded-3xl overflow-hidden border border-navy-50/50">
                   {/* Image Container */}
                   <div className="relative aspect-video overflow-hidden bg-muted">
-                    {item.url ? (
+                    {item.thumbnailUrl ? (
                       <div className="relative w-full h-full">
                         <Image 
-                          src={item.url} 
-                          alt={item.title || "Highlight image"} 
+                          src={item.thumbnailUrl} 
+                          alt={item.sessionTitle || "Highlight image"} 
                           fill
                           className="object-cover transition-transform duration-500 group-hover:scale-110" 
                         />
@@ -628,11 +625,12 @@ export default function ConclaveHighlightsPage() {
                   <CardContent className="p-6 flex-1 space-y-3">
                     <div className="flex justify-between items-start gap-4">
                       <h3 className="font-bold text-lg text-navy-950 line-clamp-1">
-                        {item.title || "Untitled Moment"}
+                        {item.sessionTitle || "Untitled Session"}
                       </h3>
                     </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed h-10">
-                      {item.description || "No description provided."}
+                    <p className="text-xs font-bold text-amber-600 uppercase tracking-widest">{item.speakerName || "Speaker name"}</p>
+                    <p className="text-xs text-muted-foreground line-clamp-1 truncate">
+                      {item.youtubeUrl || "No YouTube link"}
                     </p>
                   </CardContent>
 
@@ -826,30 +824,39 @@ export default function ConclaveHighlightsPage() {
 
           <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-none">
             <div className="space-y-4">
-               <Label className="text-sm font-bold text-navy-950 ml-1">Highlight Photo</Label>
+               <Label className="text-sm font-bold text-navy-950 ml-1">Thumbnail Photo</Label>
                <ImageUpload 
-                value={tempItem.url} 
-                onChange={(url) => setTempItem({ ...tempItem, url })} 
+                value={tempItem.thumbnailUrl} 
+                onChange={(thumbnailUrl) => setTempItem({ ...tempItem, thumbnailUrl })} 
               />
             </div>
 
             <div className="space-y-6">
               <div className="space-y-2">
-                <Label className="text-sm font-bold text-navy-950 ml-1">Title</Label>
+                <Label className="text-sm font-bold text-navy-950 ml-1">Title of Session</Label>
                 <Input 
-                  value={tempItem.title} 
-                  onChange={e => setTempItem({ ...tempItem, title: e.target.value })} 
+                  value={tempItem.sessionTitle} 
+                  onChange={e => setTempItem({ ...tempItem, sessionTitle: e.target.value })} 
                   className="rounded-2xl h-12 border-navy-100 focus:ring-amber-500 focus:border-amber-500 bg-gray-50/50"
                   placeholder="e.g. Inaugural Ceremony"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-sm font-bold text-navy-950 ml-1">Description / Context</Label>
-                <Textarea 
-                  value={tempItem.description} 
-                  onChange={e => setTempItem({ ...tempItem, description: e.target.value })} 
-                  className="rounded-2xl min-h-[140px] border-navy-100 focus:ring-amber-500 focus:border-amber-500 resize-none bg-gray-50/50 p-4"
-                  placeholder="Describe the significance of this moment..."
+                <Label className="text-sm font-bold text-navy-950 ml-1">Name of Speaker</Label>
+                <Input 
+                  value={tempItem.speakerName} 
+                  onChange={e => setTempItem({ ...tempItem, speakerName: e.target.value })} 
+                  className="rounded-2xl h-12 border-navy-100 focus:ring-amber-500 focus:border-amber-500 bg-gray-50/50"
+                  placeholder="e.g. Bill Marsh"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-bold text-navy-950 ml-1">YouTube Post Link</Label>
+                <Input 
+                  value={tempItem.youtubeUrl} 
+                  onChange={e => setTempItem({ ...tempItem, youtubeUrl: e.target.value })} 
+                  className="rounded-2xl h-12 border-navy-100 focus:ring-amber-500 focus:border-amber-500 bg-gray-50/50"
+                  placeholder="https://youtube.com/..."
                 />
               </div>
             </div>
@@ -937,9 +944,9 @@ export default function ConclaveHighlightsPage() {
             <Sparkles className="w-10 h-10 text-white" />
         </div>
         <div>
-            <h3 className="text-2xl font-black italic text-amber-900 mb-2 tracking-tight uppercase">Visual Strategy Guide</h3>
+            <h3 className="text-2xl font-black italic text-amber-900 mb-2 tracking-tight uppercase">Highlight Strategy Guide</h3>
             <p className="text-amber-800/80 leading-relaxed max-w-3xl font-medium">
-                The Conclave Highlights section is a cinematic gallery on the public website. For the best impact, ensure titles are high-level and descriptions are concise. High-resolution landscape (16:9) images work best for this layout.
+                The Conclave Highlights section is now modeled after the Podcast format. Use this area to link YouTube recordings of sessions. Provide the session title, the speaker's name, and the YouTube URL. The thumbnail should be a high-quality 16:9 frame.
             </p>
         </div>
         <div className="ml-auto flex items-center gap-3">

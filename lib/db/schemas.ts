@@ -285,9 +285,16 @@ export interface ConclaveGuest {
 }
 
 export interface ConclaveHighlight {
-  url: string;
+  // Legacy fields (used by Advocate Maximus & NIAAM)
+  url?: string;
   title?: string;
   description?: string;
+
+  // New fields (used by MMC YouTube Highlights)
+  thumbnailUrl?: string;
+  sessionTitle?: string;
+  speakerName?: string;
+  youtubeUrl?: string;
 }
 
 export interface ConclaveCoverage {
