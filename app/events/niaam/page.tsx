@@ -118,7 +118,7 @@ const AwardCard = ({ awardee, image }: { awardee: AwardRecipient, image: string 
                   </div>
                   
                   <div className="space-y-3">
-                    <h3 className="text-xl sm:text-2xl font-bold text-navy-950 tracking-tight leading-[1.1] group-hover:text-gold-600 transition-all duration-500 uppercase italic px-2 wrap-break-word">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-navy-950 tracking-tight leading-[1.1] group-hover:text-gold-600 transition-all duration-500 uppercase italic px-2 break-words">
                        {awardee.name}
                     </h3>
                     <div className="inline-flex items-center px-4 py-1 rounded-full bg-navy-50/50 border border-navy-100/50 text-[9px] sm:text-xs text-navy-950/50  uppercase tracking-[0.15em] group-hover:border-gold-500/30 group-hover:bg-gold-500/5 group-hover:text-gold-700 transition-all duration-500">
@@ -330,19 +330,29 @@ export default function NIAAMPage() {
                 Honouring Excellence
               </span>
             </div>
-            <h1 className="page-title text-[12vw] sm:text-[10vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-16 select-none italic uppercase">
-              NATIONAL <br />
-              IMPACT <br />
-              <span className="text-gold-500">AWARDS</span> 
+            <h1 className="page-title text-[10vw] sm:text-[9vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-16 select-none italic uppercase">
+              {eventData?.heroTitleLines?.length ? (
+                eventData.heroTitleLines.map((line, idx) => (
+                  <React.Fragment key={idx}>
+                    {line} {idx < eventData.heroTitleLines!.length - 1 && <br />}
+                  </React.Fragment>
+                ))
+              ) : (
+                <>
+                  NATIONAL <br />
+                  IMPACT <br />
+                  <span className="text-gold-500">AWARDS</span>
+                </>
+              )}
             </h1>
             
             <div className="max-w-5xl space-y-12">
               <div className="space-y-8">
                 <p className="text-2xl sm:text-3xl md:text-5xl text-white/95 font-light leading-[1.1] tracking-tight">
-                  A prestigious platform built to honour individuals who have meaningfully strengthened the growth of mediation in India.
+                  {eventData?.heroDescription || "A prestigious platform built to honour individuals who have meaningfully strengthened the growth of mediation in India."}
                 </p>
                 <p className="text-xl md:text-2xl text-white/70 font-light max-w-3xl leading-relaxed">
-                  Through advocacy, institution-building, education and practice leadership, these awardees define the benchmark of excellence.
+                  {eventData?.heroDescriptionExtra || "Through advocacy, institution-building, education and practice leadership, these awardees define the benchmark of excellence."}
                 </p>
 
                 <div className="flex flex-wrap gap-6 pt-12">
@@ -371,10 +381,10 @@ export default function NIAAMPage() {
 
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
           <SectionHeader 
-            subtitle="The Benchmark" 
-            title="About the ImPACT Awards" 
+            subtitle={eventData?.aboutSubtitle || "The Benchmark"} 
+            title={eventData?.aboutTitle || "About the ImPACT Awards"} 
             center
-            description="The National ImPACT Awards for Advancement of Mediation in India recognizes extraordinary contributions across four core pillars of the mediation ecosystem."
+            description={eventData?.aboutDescription || "The National ImPACT Awards for Advancement of Mediation in India recognizes extraordinary contributions across four core pillars of the mediation ecosystem."}
           />
 
           <div className="flex flex-col gap-8 sm:gap-10 md:gap-12 lg:gap-16">
@@ -473,12 +483,12 @@ export default function NIAAMPage() {
           <div className="max-w-4xl mx-auto rounded-3xl sm:rounded-[4rem] bg-white/5 backdrop-blur-xl border border-white/10 p-10 sm:p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
               <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 blur-3xl rounded-full" />
               <FadeInUp>
-                 <SectionHeader subtitle="Upcoming Edition" title="NIAAM 2026" light center />
+                  <SectionHeader subtitle={eventData?.upcomingSubtitle || "Upcoming Edition"} title={eventData?.upcomingTitle || "NIAAM 2026"} light center />
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pt-8">
                     {[
-                      { label: "Dates", value: "To Be Announced", icon: Calendar },
-                      { label: "Venue", value: "To Be Announced", icon: MapPin },
-                      { label: "Awardees", value: "To Be Announced", icon: Trophy }
+                      { label: "Dates", value: eventData?.upcomingDates || "To Be Announced", icon: Calendar },
+                      { label: "Venue", value: eventData?.upcomingVenue || "To Be Announced", icon: MapPin },
+                      { label: "Awardees", value: eventData?.upcomingAwardees || "To Be Announced", icon: Trophy }
                     ].map((info) => (
                       <div key={info.label} className="flex flex-col items-center gap-4 group">
                          <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center text-gold-500 border border-white/10 group-hover:scale-110 transition-transform">
@@ -512,7 +522,7 @@ export default function NIAAMPage() {
                 <StaggerItem key={i}>
                   <AwardCard 
                     awardee={awardee} 
-                    image={getCertificateImage(awardee.name)}
+                    image={awardee.image || getCertificateImage(awardee.name)}
                   />
                 </StaggerItem>
             ))}
@@ -554,7 +564,7 @@ export default function NIAAMPage() {
                         <button className="w-full text-left group/image relative outline-hidden cursor-pointer">
                           <div className="relative h-full w-full rounded-2xl sm:rounded-4xl overflow-hidden border border-navy-100/10 bg-white shadow-2xl transition-all duration-700 group-hover:shadow-gold-500/10 group-hover:border-gold-500/20">
                             <Image 
-                              src={item.url}
+                              src={item.url || ""}
                               alt={item.title || `Ceremony Moment ${i + 1}`}
                               fill
                               className="object-cover transition-transform duration-2000 group-hover/image:scale-105"
@@ -583,7 +593,7 @@ export default function NIAAMPage() {
                         </DialogClose>
 
                           <Image 
-                            src={item.url}
+                            src={item.url || ""}
                             alt={item.title || `Ceremony Moment ${i + 1}`}
                             fill
                             className="object-cover transition-transform duration-1000 group-hover:modal:scale-105"

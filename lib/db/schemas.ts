@@ -352,11 +352,33 @@ export interface AwardRecipient {
   city: string;
   category: string;
   year: string;
+  image?: string;
 }
 
 export interface NationalImpactAward extends BaseDocument {
   year: number;
   isActive: boolean;
+  
+  // Hero Section
+  heroSubtitle?: string;
+  heroTitleLines?: string[];
+  heroDescription?: string;
+  heroDescriptionExtra?: string;
+  heroImage?: ImageData;
+
+  // About Section
+  aboutSubtitle?: string;
+  aboutTitle?: string;
+  aboutDescription?: string;
+  aboutImage?: ImageData;
+
+  // Upcoming Edition
+  upcomingTitle?: string;
+  upcomingSubtitle?: string;
+  upcomingDates?: string;
+  upcomingVenue?: string;
+  upcomingAwardees?: string;
+
   recipients: AwardRecipient[];
   gallery: ConclaveHighlight[];
 }
