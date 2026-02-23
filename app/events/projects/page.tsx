@@ -163,7 +163,7 @@ export default function ProjectsPage() {
             <div className="max-w-5xl space-y-12">
               <div className="space-y-8">
                 <p className="text-2xl sm:text-3xl md:text-5xl text-white/95 font-light leading-[1.1] tracking-tight">
-                  All initiatives curated, co-hosted, or supported by PACT sitting under our broader mission.
+                  Participate in Boot Camps, Workshops, Conferences, Quizzes and Research Studies curated and supported by PACT
                 </p>
                 <p className="text-xl md:text-2xl text-white/70 font-light max-w-3xl leading-relaxed">
                   We seek to mainstream mediation, build professional capacity, and empower individuals with collaborative dispute resolution skills.
