@@ -395,7 +395,7 @@ export default function ArchivedProjectsPage() {
 
       {/* Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] overflow-y-auto p-0 rounded-4xl border-none shadow-2xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 rounded-full">
+        <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] overflow-y-auto p-0 rounded-2xl border-none shadow-2xl">
           <div className="bg-navy-950 p-8 text-white shrink-0">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold flex items-center gap-3">
