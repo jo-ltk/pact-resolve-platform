@@ -524,7 +524,7 @@ export default function MCIPage() {
                 year: "2024",
                 date: "September 13-15",
                 location: "Ahmedabad",
-                venue: "Gujarat National Law University",
+                venue: "Gujarat International Maritime Arbitration Centre",
                 actions: [
                   { label: "MCI Movie 2024", icon: Zap },
                   { label: "Mentors Frame", icon: Users2 },
@@ -535,7 +535,7 @@ export default function MCIPage() {
                 year: "2023",
                 date: "September 8-10",
                 location: "Ahmedabad",
-                venue: "Adani Institute of Infrastructure",
+                venue: "Gujarat National Law University",
                 actions: [
                   { label: "Mentors Frame", icon: Users2 },
                   { label: "Partners Picture", icon: Briefcase },
