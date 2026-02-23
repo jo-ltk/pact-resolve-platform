@@ -261,7 +261,7 @@ export default function MCIPage() {
       <section className="py-12 sm:py-16 md:py-20 lg:py-32 bg-navy-950 relative overflow-hidden dark">
         <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[300px] sm:w-[400px] md:w-[600px] h-[300px] sm:h-[400px] md:h-[600px] bg-gold-500/5 blur-[120px] rounded-full pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24">
-          <SectionHeader subtitle="Champions" title="National Mediation Champions" center light />
+          <SectionHeader subtitle="Know Your Champions" title="National Mediation Champions" center light />
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {[
