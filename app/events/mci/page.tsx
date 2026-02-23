@@ -499,35 +499,7 @@ export default function MCIPage() {
         </div>
       </section>
 
-      {/* Call to Action Section */}
-      <section className="py-12 sm:py-16 md:py-24 lg:py-40 bg-navy-950 text-white relative overflow-hidden dark">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(191,154,102,0.1),transparent_70%)]" />
-        <div className="absolute -top-24 -right-24 w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 bg-gold-500/10 blur-[120px] rounded-full" />
-        
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10">
-          <FadeInUp>
-            <SectionHeader subtitle="Get Involved" title="Apply for MCI 2026" light center />
-            <div className="flex flex-col items-center gap-8 sm:gap-12 md:gap-16">
-               <MagneticButton variant="primary" size="lg" className="w-full sm:w-auto px-8 sm:px-12 md:px-16 py-4 sm:py-5 md:py-6 group">
-                  <a href="#" className="flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base md:text-lg">
-                    <Download className="w-5 h-5 sm:w-6 sm:h-6" />
-                    Download Rulebook
-                  </a>
-               </MagneticButton>
-               
-               <div className="space-y-3 sm:space-y-4 md:space-y-6">
-                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light italic text-white/70">Stay Updated — Apply for Early-Bird Rates</p>
-                 <a 
-                   href="mailto:official@mediationchampionship.com" 
-                   className="text-sm sm:text-lg md:text-2xl lg:text-5xl font-light text-white hover:text-gold-500 transition-colors underline decoration-gold-500/20 underline-offset-4 sm:underline-offset-8 md:underline-offset-12 decoration-1 break-all sm:break-normal block"
-                 >
-                    official@mediationchampionship.com
-                 </a>
-               </div>
-            </div>
-          </FadeInUp>
-        </div>
-      </section>
+
 
       {/* Past Editions Section */}
       <section className="py-12 sm:py-16 md:py-24 lg:py-40 bg-white relative">
