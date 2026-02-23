@@ -358,10 +358,7 @@ export default function MCIPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-navy-950/10 to-transparent" />
                 
                 {/* MCL Badge - Top Right */}
-                <div className="absolute top-3 right-3 sm:top-6 sm:right-6 md:top-8 md:right-8 w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 rounded-full bg-navy-950 flex flex-col items-center justify-center text-center shadow-xl sm:shadow-2xl border-2 sm:border-3 md:border-4 border-gold-500/30">
-                   <span className="text-gold-500 font-bold text-xs sm:text-sm md:text-xl leading-none">MCL</span>
-                   <span className="text-[4.5px] sm:text-[5px] md:text-[7px] text-white/40 uppercase tracking-[0.25em] sm:tracking-[0.4em] font-bold mt-0.5 sm:mt-1">Champions</span>
-                </div>
+
               </div>
             </FadeInUp>
 
