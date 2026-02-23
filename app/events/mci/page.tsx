@@ -47,6 +47,7 @@ import { Footer } from "@/components/footer";
 import { MagneticButton } from "@/components/magnetic-button";
 import { Collaborators } from "@/components/sections/home/collaborators";
 import { cn } from "@/lib/utils";
+import { MCISignupModal } from "@/components/sections/mci/signup-modal";
 
 // --- Reusable Section Header ---
 const SectionHeader = ({ subtitle, title, description, light = false, center = false }: { subtitle: string, title: string, description?: string, light?: boolean, center?: boolean }) => (
@@ -77,6 +78,7 @@ const SectionHeader = ({ subtitle, title, description, light = false, center = f
 
 export default function MCIPage() {
   const [eventData, setEventData] = useState<MCIEvent | null>(null);
+  const [showSignupModal, setShowSignupModal] = useState(false);
 
   useEffect(() => {
     async function fetchEvent() {
@@ -205,10 +207,15 @@ export default function MCIPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-8 sm:pt-12">
-                  <MagneticButton variant="primary" size="lg" className="group w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5">
-                    <a href="mailto:official@mediationchampionship.com" className="flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-lg">
+                  <MagneticButton 
+                    variant="primary" 
+                    size="lg" 
+                    className="group w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5"
+                    onClick={() => setShowSignupModal(true)}
+                  >
+                    <div className="flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-lg cursor-pointer">
                        Sign Up as Challenger <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
-                    </a>
+                    </div>
                   </MagneticButton>
                   <MagneticButton variant="secondary" size="lg" className="group w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5">
                     <a href="mailto:official@thepact.in" className="flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-lg">
@@ -799,6 +806,12 @@ export default function MCIPage() {
       <div className="bg-white -mt-4 sm:-mt-6 md:-mt-8 lg:-mt-12 mb-8 sm:mb-12 md:mb-16 lg:mb-24">
         <Collaborators />
       </div>
+
+      <AnimatePresence>
+        {showSignupModal && (
+          <MCISignupModal onClose={() => setShowSignupModal(false)} />
+        )}
+      </AnimatePresence>
 
       <Footer />
     </main>
