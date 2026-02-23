@@ -50,13 +50,13 @@ import { cn } from "@/lib/utils";
 import { MCISignupModal } from "@/components/sections/mci/signup-modal";
 
 // --- Reusable Section Header ---
-const SectionHeader = ({ subtitle, title, description, light = false, center = false }: { subtitle: string, title: string, description?: string, light?: boolean, center?: boolean }) => (
+const SectionHeader = ({ subtitle, title, description, light = false, center = false, titleClassName }: { subtitle: string, title: string, description?: string, light?: boolean, center?: boolean, titleClassName?: string }) => (
   <FadeInUp className={cn("mb-8 sm:mb-12 md:mb-20", center ? "flex flex-col items-center text-center" : "")}>
     <div className="inline-flex items-center gap-2 sm:gap-4 mb-3 sm:mb-6 opacity-80">
       <div className={cn("h-px w-6 sm:w-8 md:w-12 bg-gold-500", light ? "bg-gold-500" : "bg-gold-500/50")} />
       <span className={cn("text-xs sm:text-[11px] md:text-xs  tracking-[0.2em] sm:tracking-[0.4em] uppercase font-bold", light ? "text-gold-500" : "text-navy-950/60")}>{subtitle}</span>
     </div>
-    <h2 className={cn("text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-[5rem] font-light tracking-tight mb-4 sm:mb-6 md:mb-8 leading-[1.1] sm:leading-[0.95]", light ? "text-white" : "text-navy-950")}>
+    <h2 className={cn("text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-[5rem] font-light tracking-tight mb-4 sm:mb-6 md:mb-8 leading-[1.1] sm:leading-[0.95]", light ? "text-white" : "text-navy-950", titleClassName)}>
       {title.split(' ').map((word, i) => (
         <span key={i} className={cn(
           word.toLowerCase() === 'champions' || 
@@ -340,6 +340,7 @@ export default function MCIPage() {
               subtitle="The Vision" 
               title="Globally Unique, Exceptionally Indian" 
               center
+              titleClassName="lg:whitespace-nowrap"
             />
           </div>
 
