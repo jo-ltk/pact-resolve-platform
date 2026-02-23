@@ -362,44 +362,14 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Our Footprint & Legacy Section */}
-      <section id="archives" className="py-24 md:py-40 bg-navy-50 relative overflow-hidden">
+      {/* Legacy Section */}
+      <section id="archives" className="py-24 md:py-32 bg-navy-50 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_70%_30%,rgba(191,154,102,0.05),transparent_60%)] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
-          <SectionHeader 
-            subtitle="The Impact" 
-            title="Our Footprint" 
-            center 
-            description="Across a decade of advocacy, PACT has built a diverse ecosystem of practitioners and institutions."
-          />
+          <SectionHeader subtitle="Legacy" title="Archived Projects" center />
           
-          {/* Global Impact Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-32">
-            {[
-              { label: "Workshop Hours", value: "2500+", icon: PlayCircle, desc: "Dedicated training sessions across 20+ cities and online platforms." },
-              { label: "Global Partners", value: "80+", icon: Globe, desc: "Universities, law firms, and international ADR bodies in collaboration." },
-              { label: "Professionals Trained", value: "5000+", icon: Users, desc: "Empowering the next generation of dispute resolution leaders." }
-            ].map((stat, i) => (
-              <FadeInUp key={i} delay={i * 0.1}>
-                <div className="group relative p-10 rounded-[3rem] bg-white border border-navy-100 shadow-sm hover:shadow-2xl transition-all duration-700">
-                  <div className="w-14 h-14 rounded-2xl bg-navy-50 flex items-center justify-center text-gold-500 mb-8 group-hover:bg-navy-950 group-hover:text-white group-hover:rotate-6 transition-all duration-500">
-                    <stat.icon className="w-6 h-6" />
-                  </div>
-                  <div className="mb-4">
-                    <span className="text-5xl font-black italic text-navy-950 tracking-tighter block group-hover:text-gold-500 transition-colors">{stat.value}</span>
-                    <span className="text-xs uppercase tracking-[0.2em] text-gold-500 font-semibold">{stat.label}</span>
-                  </div>
-                  <p className="text-navy-950/40 text-xs font-light leading-relaxed">{stat.desc}</p>
-                </div>
-              </FadeInUp>
-            ))}
-          </div>
-
-          <div className="pt-24 border-t border-navy-100/50">
-            <SectionHeader subtitle="Legacy" title="Archived Projects" center />
-            
-            <div className="space-y-6 max-w-6xl mx-auto">
+          <div className="space-y-6 max-w-6xl mx-auto">
                 {displayArchives.map((item: any, i: number) => (
                   <FadeInUp key={item._id || i} delay={i * 0.05}>
                     <div className="group relative flex flex-col md:flex-row gap-8 items-center p-6 md:p-8 rounded-4xl bg-white border border-navy-100/80 shadow-xs hover:border-gold-500/30 hover:shadow-xl transition-all duration-500 overflow-hidden">
@@ -452,14 +422,13 @@ export default function ProjectsPage() {
                   </FadeInUp>
                 ))}
             </div>
-          </div>
         </div>
       </section>
 
       {/* Ceremonial Gallery - verified images */}
       <section className="py-16 md:py-24 bg-white border-t border-navy-100/50">
         <div className="max-w-7xl mx-auto mb-16 px-6 md:px-12 lg:px-24">
-          <SectionHeader subtitle="Moments" title="Ceremonial Gallery" center />
+          <SectionHeader subtitle="Moments" title="Gallery" center />
         </div>
         
         <div className="w-full">
