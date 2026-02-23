@@ -299,8 +299,40 @@ export interface ConclaveCoverage {
 export interface ConclaveEvent extends BaseDocument {
   year: number;
   isActive: boolean;
+  
+  // Hero Section
+  subtitle?: string;
+  titleLines?: string[];
+  description?: string;
+  heroImage?: ImageData;
+
+  // Event Details
+  eventDetails?: {
+    dates: string;
+    venue: string;
+    hosts: string;
+    sponsors: string;
+  };
+
+  // Vision Section
+  vision?: {
+    subtitle: string;
+    title: string;
+    description: string;
+    image: ImageData;
+    badgeText: string;
+  };
+
+  // Participation Section
+  participation?: {
+    subtitle: string;
+    title: string;
+    description: string;
+  };
+
   guestsOfHonour: ConclaveGuest[];
   highlights: ConclaveHighlight[];
+  highlightsDescription?: string;
   coverage: ConclaveCoverage[];
 }
 

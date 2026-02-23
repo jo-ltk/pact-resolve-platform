@@ -17,7 +17,8 @@ import {
   Sparkles,
   Trophy,
   Newspaper,
-  ExternalLink
+  ExternalLink,
+  Calendar
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -65,6 +66,37 @@ export default function ConclaveHighlightsPage() {
   const [isCoverageDialogOpen, setIsCoverageDialogOpen] = useState(false);
   const [editingCoverageIndex, setEditingCoverageIndex] = useState<number | null>(null);
   const [tempCoverage, setTempCoverage] = useState<ConclaveCoverage>({ source: "", headline: "", link: "" });
+
+  // Page Content State
+  const [heroContent, setHeroContent] = useState({
+    subtitle: "The Stakeholder Gathering",
+    titleLines: ["MISSION", "MEDIATION", "CONCLAVE"],
+    description: "The second edition of this unique gathering of mediation stakeholders will once again feature real case studies, practical insights and evidence-driven conversations on mediation as a practice and profession in India.",
+    heroImage: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80"
+  });
+
+  const [eventDetails, setEventDetails] = useState({
+    dates: "More Details Soon",
+    venue: "More Details Soon",
+    hosts: "More Details Soon",
+    sponsors: "More Details Soon"
+  });
+
+  const [visionContent, setVisionContent] = useState({
+    subtitle: "The Concept",
+    title: "Mediation in Practice",
+    description: "The Mission Mediation Conclave is a gathering that is open to every stakeholder involved in the practice and profession of Mediation.",
+    image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80",
+    badgeText: "Conclave"
+  });
+
+  const [participationContent, setParticipationContent] = useState({
+    subtitle: "Participation",
+    title: "Who Should Participate?",
+    description: "A multi-disciplinary gathering bringing together the most influential voices in the mediation ecosystem."
+  });
+
+  const [highlightsDescription, setHighlightsDescription] = useState("Mission Mediation Conclave 2025 was held on 9 November at India International Centre, New Delhi, with Samvād: Partners and Dua Associates as Headline Sponsors.");
 
   // Fallback data matching the public website
   const fallbackHighlights: ConclaveHighlight[] = [
@@ -121,6 +153,27 @@ export default function ConclaveHighlightsPage() {
         setHighlights(activeEvent.highlights?.length > 0 ? activeEvent.highlights : fallbackHighlights);
         setGuests(activeEvent.guestsOfHonour?.length > 0 ? activeEvent.guestsOfHonour : fallbackGuests);
         setCoverage(activeEvent.coverage?.length > 0 ? activeEvent.coverage : fallbackCoverage);
+        
+        // Populate Page Content
+        if (activeEvent.subtitle) setHeroContent(prev => ({ ...prev, subtitle: activeEvent.subtitle }));
+        if (activeEvent.titleLines) setHeroContent(prev => ({ ...prev, titleLines: activeEvent.titleLines }));
+        if (activeEvent.description) setHeroContent(prev => ({ ...prev, description: activeEvent.description }));
+        if (activeEvent.heroImage?.url) setHeroContent(prev => ({ ...prev, heroImage: activeEvent.heroImage.url }));
+        
+        if (activeEvent.eventDetails) setEventDetails(activeEvent.eventDetails);
+        
+        if (activeEvent.vision) {
+          setVisionContent({
+            subtitle: activeEvent.vision.subtitle,
+            title: activeEvent.vision.title,
+            description: activeEvent.vision.description,
+            image: activeEvent.vision.image.url,
+            badgeText: activeEvent.vision.badgeText
+          });
+        }
+        
+        if (activeEvent.participation) setParticipationContent(activeEvent.participation);
+        if (activeEvent.highlightsDescription) setHighlightsDescription(activeEvent.highlightsDescription);
       } else {
         setHighlights(fallbackHighlights);
         setGuests(fallbackGuests);
@@ -146,9 +199,48 @@ export default function ConclaveHighlightsPage() {
       const highlightsToSave = data?.newHighlights || highlights;
       const coverageToSave = data?.newCoverage || coverage;
       
-      const payload = isNew 
-        ? { year: new Date().getFullYear(), isActive: true, guestsOfHonour: guestsToSave, highlights: highlightsToSave, coverage: coverageToSave }
-        : { ...eventData, highlights: highlightsToSave, guestsOfHonour: guestsToSave, coverage: coverageToSave };
+      const payload: any = isNew 
+        ? { 
+            year: new Date().getFullYear(), 
+            isActive: true, 
+            guestsOfHonour: guestsToSave, 
+            highlights: highlightsToSave, 
+            coverage: coverageToSave,
+            subtitle: heroContent.subtitle,
+            titleLines: heroContent.titleLines,
+            description: heroContent.description,
+            heroImage: { url: heroContent.heroImage, alt: "Hero Image" },
+            eventDetails,
+            vision: {
+              subtitle: visionContent.subtitle,
+              title: visionContent.title,
+              description: visionContent.description,
+              image: { url: visionContent.image, alt: "Vision Image" },
+              badgeText: visionContent.badgeText
+            },
+            participation: participationContent,
+            highlightsDescription
+          }
+        : { 
+            ...eventData, 
+            highlights: highlightsToSave, 
+            guestsOfHonour: guestsToSave, 
+            coverage: coverageToSave,
+            subtitle: heroContent.subtitle,
+            titleLines: heroContent.titleLines,
+            description: heroContent.description,
+            heroImage: { url: heroContent.heroImage, alt: "Hero Image" },
+            eventDetails,
+            vision: {
+              subtitle: visionContent.subtitle,
+              title: visionContent.title,
+              description: visionContent.description,
+              image: { url: visionContent.image, alt: "Vision Image" },
+              badgeText: visionContent.badgeText
+            },
+            participation: participationContent,
+            highlightsDescription
+          };
 
       const res = await fetch("/api/content/conclave-event", {
         method,
@@ -333,7 +425,123 @@ export default function ConclaveHighlightsPage() {
         </div>
       </div>
 
-      {/* SECTION 1: HIGHLIGHTS */}
+      {/* SECTION 0: PAGE CONTENT & HERO */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left: Hero & Details */}
+        <div className="space-y-8">
+          <Card className="rounded-4xl border-none shadow-sm overflow-hidden bg-white">
+            <div className="bg-navy-950 p-6 text-white flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <LayoutGrid className="w-5 h-5 text-amber-500" />
+                <h2 className="font-bold italic uppercase tracking-tighter">Hero Configuration</h2>
+              </div>
+            </div>
+            <CardContent className="p-8 space-y-6">
+               <div className="space-y-4">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Hero Image</Label>
+                  <ImageUpload value={heroContent.heroImage} onChange={url => setHeroContent({...heroContent, heroImage: url})} />
+               </div>
+               <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Subtitle</Label>
+                    <Input value={heroContent.subtitle} onChange={e => setHeroContent({...heroContent, subtitle: e.target.value})} className="rounded-xl" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Title Lines (Comma separated)</Label>
+                    <Input value={heroContent.titleLines.join(", ")} onChange={e => setHeroContent({...heroContent, titleLines: e.target.value.split(",").map(t => t.trim())})} className="rounded-xl" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Hero Description</Label>
+                    <Textarea value={heroContent.description} onChange={e => setHeroContent({...heroContent, description: e.target.value})} className="rounded-xl min-h-[120px]" />
+                  </div>
+               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-4xl border-none shadow-sm overflow-hidden bg-white">
+            <div className="bg-amber-600 p-6 text-white flex items-center gap-3">
+              <Calendar className="w-5 h-5" />
+              <h2 className="font-bold italic uppercase tracking-tighter">Event Details (2026)</h2>
+            </div>
+            <CardContent className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Dates</Label>
+                  <Input value={eventDetails.dates} onChange={e => setEventDetails({...eventDetails, dates: e.target.value})} className="rounded-xl" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Venue</Label>
+                  <Input value={eventDetails.venue} onChange={e => setEventDetails({...eventDetails, venue: e.target.value})} className="rounded-xl" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Hosts</Label>
+                  <Input value={eventDetails.hosts} onChange={e => setEventDetails({...eventDetails, hosts: e.target.value})} className="rounded-xl" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Sponsors</Label>
+                  <Input value={eventDetails.sponsors} onChange={e => setEventDetails({...eventDetails, sponsors: e.target.value})} className="rounded-xl" />
+                </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right: Vision & Participation */}
+        <div className="space-y-8">
+          <Card className="rounded-4xl border-none shadow-sm overflow-hidden bg-white">
+            <div className="bg-blue-900 p-6 text-white flex items-center gap-3">
+              <Sparkles className="w-5 h-5 text-blue-400" />
+              <h2 className="font-bold italic uppercase tracking-tighter">Vision Section</h2>
+            </div>
+            <CardContent className="p-8 space-y-6">
+                <div className="space-y-4">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Vision Image</Label>
+                  <ImageUpload value={visionContent.image} onChange={url => setVisionContent({...visionContent, image: url})} />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Subtitle</Label>
+                    <Input value={visionContent.subtitle} onChange={e => setVisionContent({...visionContent, subtitle: e.target.value})} className="rounded-xl" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Badge Text</Label>
+                    <Input value={visionContent.badgeText} onChange={e => setVisionContent({...visionContent, badgeText: e.target.value})} className="rounded-xl" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Title</Label>
+                  <Input value={visionContent.title} onChange={e => setVisionContent({...visionContent, title: e.target.value})} className="rounded-xl" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Description Paragraph</Label>
+                  <Textarea value={visionContent.description} onChange={e => setVisionContent({...visionContent, description: e.target.value})} className="rounded-xl min-h-[100px]" />
+                </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-4xl border-none shadow-sm overflow-hidden bg-white">
+            <div className="bg-emerald-900 p-6 text-white flex items-center gap-3">
+              <Trophy className="w-5 h-5 text-emerald-400" />
+              <h2 className="font-bold italic uppercase tracking-tighter">Participation Section</h2>
+            </div>
+            <CardContent className="p-8 space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Subtitle</Label>
+                  <Input value={participationContent.subtitle} onChange={e => setParticipationContent({...participationContent, subtitle: e.target.value})} className="rounded-xl" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Title</Label>
+                  <Input value={participationContent.title} onChange={e => setParticipationContent({...participationContent, title: e.target.value})} className="rounded-xl" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-navy-900/40">Description</Label>
+                  <Textarea value={participationContent.description} onChange={e => setParticipationContent({...participationContent, description: e.target.value})} className="rounded-xl min-h-[80px]" />
+                </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      <div className="h-px bg-navy-100 w-full" />
+
       <div className="space-y-6">
         {/* Stats & Actions Bar */}
         <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-white border rounded-4xl p-6 shadow-sm">

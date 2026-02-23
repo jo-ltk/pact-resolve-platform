@@ -144,7 +144,7 @@ export default function MMCPage() {
       <section className="relative min-h-[90vh] flex items-center pt-24 pb-12 md:pt-28 md:pb-16 bg-navy-950 overflow-hidden dark">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80"
+            src={eventData?.heroImage?.url || "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80"}
             alt="MMC Header"
             fill
             className="object-cover opacity-30 scale-105"
@@ -163,27 +163,35 @@ export default function MMCPage() {
             <div className="flex items-center gap-3 mb-8">
               <div className="h-px w-12 bg-gold-500" />
               <span className="text-gold-500  text-xs tracking-[0.4em] uppercase font-bold">
-                The Stakeholder Gathering
+                {eventData?.subtitle || "The Stakeholder Gathering"}
               </span>
             </div>
             <h1 className="page-title text-[12vw] sm:text-[10vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-16 select-none italic uppercase">
-              MISSION <br />
-              <span className="text-gold-500">MEDIATION</span> <br />
-              CONCLAVE
+              {eventData?.titleLines?.map((line, i) => (
+                <React.Fragment key={i}>
+                  {line} <br />
+                </React.Fragment>
+              )) || (
+                <>
+                  MISSION <br />
+                  <span className="text-gold-500">MEDIATION</span> <br />
+                  CONCLAVE
+                </>
+              )}
             </h1>
             
             <div className="max-w-5xl space-y-12">
               <div className="space-y-8">
                 <p className="text-2xl sm:text-3xl md:text-5xl text-white/95 font-light leading-[1.1] tracking-tight">
-                  The second edition of this unique gathering of mediation stakeholders will once again feature real case studies, practical insights and evidence-driven conversations on mediation as a practice and profession in India.
+                  {eventData?.description || "The second edition of this unique gathering of mediation stakeholders will once again feature real case studies, practical insights and evidence-driven conversations on mediation as a practice and profession in India."}
                 </p>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-12 pt-8 sm:pt-12 border-t border-white/10">
                    {[
-                     { label: "2026 Dates", icon: Calendar, value: "More Details Soon", color: "text-gold-500" },
-                     { label: "2026 Venue", icon: MapPin, value: "More Details Soon", color: "text-gold-500" },
-                     { label: "2026 Hosts", icon: Users, value: "More Details Soon", color: "text-white/40" },
-                     { label: "2026 Sponsors", icon: MoreHorizontal, value: "More Details Soon", color: "text-white/40" }
+                     { label: "Dates", icon: Calendar, value: eventData?.eventDetails?.dates || "More Details Soon", color: "text-gold-500" },
+                     { label: "Venue", icon: MapPin, value: eventData?.eventDetails?.venue || "More Details Soon", color: "text-gold-500" },
+                     { label: "Hosts", icon: Users, value: eventData?.eventDetails?.hosts || "More Details Soon", color: "text-white/40" },
+                     { label: "Sponsors", icon: MoreHorizontal, value: eventData?.eventDetails?.sponsors || "More Details Soon", color: "text-white/40" }
                    ].map((item, i) => (
                      <div key={i} className="flex flex-col gap-2 sm:gap-3 group/item">
                         <span className="text-[9px] sm:text-xs  text-white/50 uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold">{item.label}</span>
@@ -223,8 +231,8 @@ export default function MMCPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
           <div className="flex flex-col items-center text-center mb-12 md:mb-16">
             <SectionHeader 
-              subtitle="The Concept" 
-              title="Mediation in Practice" 
+              subtitle={eventData?.vision?.subtitle || "The Concept"} 
+              title={eventData?.vision?.title || "Mediation in Practice"} 
               center
             />
           </div>
@@ -235,17 +243,17 @@ export default function MMCPage() {
               <div className="absolute -inset-6 sm:-inset-10 bg-gold-500/5 blur-3xl rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
               <div className="relative aspect-video md:aspect-21/9 rounded-2xl sm:rounded-3xl md:rounded-[3rem] lg:rounded-[4rem] overflow-hidden bg-navy-50 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] sm:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] ring-1 ring-navy-950/5">
                 <Image 
-                  src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80"
+                  src={eventData?.vision?.image?.url || "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80"}
                   alt="Conversations at MMC"
                   fill
                   className="object-cover transition-transform duration-2000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-navy-950/10 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-navy-950/60 via-navy-950/10 to-transparent" />
                 
                 {/* MMC Badge - Top Right */}
                 <div className="absolute top-3 right-3 sm:top-6 sm:right-6 md:top-8 md:right-8 w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 rounded-full bg-navy-950 flex flex-col items-center justify-center text-center shadow-xl sm:shadow-2xl border-2 sm:border-3 md:border-4 border-gold-500/30">
                    <span className="text-gold-500 font-bold text-xs sm:text-sm md:text-xl leading-none">MMC</span>
-                   <span className="text-[4.5px] sm:text-[5px] md:text-[7px] text-white/40 uppercase tracking-[0.25em] sm:tracking-[0.4em] font-bold mt-0.5 sm:mt-1">Conclave</span>
+                   <span className="text-[4.5px] sm:text-[5px] md:text-[7px] text-white/40 uppercase tracking-[0.25em] sm:tracking-[0.4em] font-bold mt-0.5 sm:mt-1">{eventData?.vision?.badgeText || "Conclave"}</span>
                 </div>
               </div>
             </FadeInUp>
@@ -259,7 +267,7 @@ export default function MMCPage() {
                 className="relative md:ml-12 lg:ml-16 p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-2xl md:rounded-3xl bg-white backdrop-blur-xl border border-navy-950/10 shadow-2xl max-w-full sm:max-w-[320px] md:max-w-[360px]"
               >
                 <div className="flex items-center gap-3 sm:gap-4 text-left">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-950 shadow-lg shrink-0">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-linear-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-950 shadow-lg shrink-0">
                     <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
                   </div>
                   <div>
@@ -275,7 +283,7 @@ export default function MMCPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-20 items-start">
                 <div className="space-y-4 sm:space-y-6">
                   <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-navy-950 font-light leading-snug tracking-tight">
-                    The Mission Mediation Conclave is a gathering that is open to every stakeholder involved in the practice and profession of Mediation.
+                    {eventData?.vision?.description || "The Mission Mediation Conclave is a gathering that is open to every stakeholder involved in the practice and profession of Mediation."}
                   </p>
                   <div className="h-px w-16 sm:w-20 bg-gold-500" />
                 </div>
@@ -365,7 +373,11 @@ export default function MMCPage() {
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 -z-10" />
         
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
-          <SectionHeader subtitle="Participation" title="Who Should Participate?" center />
+          <SectionHeader 
+            subtitle={eventData?.participation?.subtitle || "Participation"} 
+            title={eventData?.participation?.title || "Who Should Participate?"} 
+            center 
+          />
           
           <div className="space-y-24">
             {/* Stakeholder Grid */}
@@ -373,7 +385,11 @@ export default function MMCPage() {
               <FadeInUp className="flex flex-col items-center text-center">
                 <div className="space-y-6">
                   <p className="text-xl md:text-2xl text-navy-950/50 font-light max-w-3xl leading-relaxed">
-                    A multi-disciplinary gathering bringing together the most influential voices <br className="hidden md:block" /> in the mediation ecosystem.
+                    {eventData?.participation?.description || (
+                      <>
+                        A multi-disciplinary gathering bringing together the most influential voices <br className="hidden md:block" /> in the mediation ecosystem.
+                      </>
+                    )}
                   </p>
                 </div>
               </FadeInUp>
@@ -449,10 +465,10 @@ export default function MMCPage() {
       <section className="py-16 md:py-24 bg-navy-950 text-white overflow-hidden dark">
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
           <SectionHeader 
-            subtitle="The 2025 Collection" 
-            title="Highlights – 2025" 
+            subtitle={eventData?.highlightsDescription ? `The ${eventData.year} Collection` : "The 2025 Collection"} 
+            title={eventData?.highlightsDescription ? `Highlights – ${eventData.year}` : "Highlights – 2025"} 
             light
-            description="Mission Mediation Conclave 2025 was held on 9 November at India International Centre, New Delhi, with Samvād: Partners and Dua Associates as Headline Sponsors."
+            description={eventData?.highlightsDescription || "Mission Mediation Conclave 2025 was held on 9 November at India International Centre, New Delhi, with Samvād: Partners and Dua Associates as Headline Sponsors."}
           />
           
           <div className="flex flex-col gap-12">
