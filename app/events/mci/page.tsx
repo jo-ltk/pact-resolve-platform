@@ -451,35 +451,7 @@ export default function MCIPage() {
                 </div>
              </FadeInUp>
 
-             {/* Top Feature Image - Expansive & Cinematic */}
-             <FadeInUp className="relative group">
-                <div className="absolute -inset-6 sm:-inset-10 bg-gold-500/5 blur-3xl rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="relative aspect-video md:aspect-21/9 rounded-2xl sm:rounded-3xl md:rounded-[3rem] lg:rounded-[4rem] overflow-hidden bg-navy-50 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] md:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] ring-1 ring-navy-950/5">
-                  <Image 
-                    src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80"
-                    alt="7 Rounds of MCI"
-                    fill
-                    className="object-cover transition-transform duration-2000 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-navy-950/60 via-navy-950/10 to-transparent" />
-                  
-                  {/* Floating Number Overlay */}
-                  <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-16 md:left-16 flex items-end gap-3 sm:gap-4 md:gap-6 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
-                    <span className="text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[10rem] font-bold leading-none tracking-tighter italic opacity-80 decoration-gold-500 underline decoration-2 sm:decoration-4 underline-offset-4 sm:underline-offset-8">07</span>
-                    <div className="pb-2 sm:pb-3 md:pb-4">
-                      <p className="text-[8px] sm:text-[9px] md:text-xs lg:text-xs  uppercase tracking-[0.3em] sm:tracking-[0.5em] font-bold text-gold-500 mb-1 sm:mb-2">Competition Structure</p>
-                      <h3 className="text-base sm:text-xl md:text-2xl lg:text-4xl font-light tracking-tighter uppercase italic leading-none">Immersive <br />Challenges</h3>
-                    </div>
-                  </div>
 
-                  {/* Glass Play Badge */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
-                     <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full bg-gold-500 flex items-center justify-center text-navy-950 shadow-xl">
-                        <Zap className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 fill-current" />
-                     </div>
-                  </div>
-                </div>
-             </FadeInUp>
              
              {/* Premium Rewards Grid */}
              <div className="relative">
