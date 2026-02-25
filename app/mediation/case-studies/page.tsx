@@ -146,7 +146,7 @@ const CaseHero = () => (
           </span>
           <div className="h-px w-8 md:w-12 bg-gold-500" />
         </div>
-        <h1 className="page-title text-4xl xs:text-5xl sm:text-7xl md:text-[8rem] font-bold text-white tracking-tighter leading-[0.9] md:leading-[0.8] mb-8 md:mb-12 select-none italic">
+        <h1 className="page-title text-4xl xs:text-5xl sm:text-7xl md:text-[8rem] font-bold text-white tracking-tighter leading-[0.9] md:leading-[0.8] mb-8 md:mb-12 select-none">
           CASE STUDIES
         </h1>
         <div className="max-w-4xl mx-auto">
@@ -283,8 +283,8 @@ export default function CaseStudiesPage() {
                       <section className="bg-navy-950 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
                          <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                          <h4 className="text-xs font-bold text-white/30 uppercase tracking-[.2em] mb-8">The Solution</h4>
-                         <p className="text-lg md:text-2xl font-light text-white/90 leading-relaxed italic">
-                            "{cases[selectedCase].solution}"
+                         <p className="text-lg md:text-2xl font-light text-white/90 leading-relaxed">
+                            {cases[selectedCase].solution}
                          </p>
                       </section>
  
@@ -312,7 +312,7 @@ export default function CaseStudiesPage() {
                    </div>
 
                    <div className="mt-16 pt-8 border-t border-navy-50">
-                      <p className="text-[11px] text-navy-950/30 italic">
+                      <p className="text-[11px] text-navy-950/30">
                          *Identities and specific details have been anonymized to protect party confidentiality while preserving the core strategic elements of the resolution.
                       </p>
                    </div>
