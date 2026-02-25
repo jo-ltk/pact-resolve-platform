@@ -93,12 +93,12 @@ const WhyMediateHero = () => (
     
     <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24 w-full">
       <FadeInUp>
-        <div className="flex items-center gap-3 mb-4 sm:mb-6 md:mb-8">
-          <div className="h-px w-8 md:w-12 bg-gold-500" />
-          <span className="text-gold-500  text-xs md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase">
-            Mediation / Why Mediate
-          </span>
-        </div>
+<div className="flex items-center gap-3 mb-4 sm:mb-6 md:mb-8">
+  <div className="h-px w-8 md:w-12 bg-gold-500" />
+  <span className="text-gold-500  text-xs md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase">
+    Your Power – Your Choice – Your Settlements
+  </span>
+</div>
         <h1 className="page-title text-4xl xs:text-5xl sm:text-7xl md:text-[8rem] font-bold text-white tracking-tighter leading-[0.9] md:leading-[0.8] mb-8 md:mb-12 select-none italic">
           WHY MEDIATE
         </h1>
@@ -108,7 +108,7 @@ const WhyMediateHero = () => (
               A trendsetter in Mediation Process Design, PACT relies on bespoke case management, quality mediators and best practices for client satisfaction.
             </p>
             <div className="h-px w-full bg-white/10" />
-            <p className="text-base md:text-lg text-white/70 font-light max-w-xl leading-relaxed">
+<p className="text-base md:text-lg text-white/70 font-light max-w-xl leading-relaxed">
               Mediation is an effective conflict resolution mechanism that prioritises efficiency, autonomy and confidentiality. It reduces procedural delays, limits adversarial confrontation, and facilitates consensus-driven outcomes. With the support of an impartial mediator, parties can explore practical solutions, protect ongoing relationships, and achieve outcomes that works for everyone involved.
             </p>
           </div>
@@ -116,13 +116,13 @@ const WhyMediateHero = () => (
             <div className="absolute -inset-4 bg-white/5 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             <div className="relative p-10 rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm">
               <p className="text-xl text-white/70 font-light leading-relaxed">
-                "With the support of an impartial mediator, parties can explore practical solutions, protect ongoing relationships, and achieve outcomes that work for everyone involved."
+                With the support of an impartial mediator, parties can explore practical solutions, protect ongoing relationships, and achieve outcomes that work for everyone involved.
               </p>
               <div className="mt-8 flex items-center gap-4">
                 <div className="h-10 w-10 rounded-full bg-gold-500/20 flex items-center justify-center">
                   <Globe className="w-5 h-5 text-gold-500" />
                 </div>
-                <span className="text-xs  text-white/40 uppercase tracking-widest">Global Standards of Practice</span>
+<span className="text-xs  text-white/40 uppercase tracking-widest">The PACT Promise</span>
               </div>
             </div>
           </div>
