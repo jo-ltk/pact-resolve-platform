@@ -410,8 +410,8 @@ const CHECKLIST_MODAL_DATA = [
     title: "Orientation & Invitation",
     subtitle: "Bridging the Divide Neutrally",
     icon: MessageSquare,
-    summary: "Inviting the other side doesn't have to be adversarial. PACT acts as a neutral convenor to bridge the communication gap without compromising your position.",
-    pointsTitle: "Checklist Points",
+    summary: "Mediation doesn’t summon or force, but voluntarily invites both sides to the table. PACT Mediation Convenors employ a diverse range of approaches to reach out and invite parties to the table, while preserving its neutrality and your privacy.",
+    pointsTitle: "What We Do:",
     points: [
       "Free Mediation Orientation for both parties.",
       "Neutral outreach to explain process benefits.",
