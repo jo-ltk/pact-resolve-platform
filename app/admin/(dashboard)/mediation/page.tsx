@@ -35,7 +35,7 @@ export default function MediationDashboard() {
       bg: "bg-emerald-50/50"
     },
     {
-      title: "Mediator Panel",
+      title: "Experienced Neutrals",
       description: "Update neutral panel experts and mediator profiles.",
       icon: Users,
       link: "/admin/mediation/mediator-panel",

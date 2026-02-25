@@ -31,7 +31,7 @@ const mediationSections = [
   },
   {
     id: "02",
-    title: "Mediator Panel",
+    title: "Experienced Neutrals",
     subtitle: "Expertise",
     description: "Accredited professionals with diverse expertise across commercial, corporate, civil, and institutional disputes.",
     href: "/mediation/mediator-panel",

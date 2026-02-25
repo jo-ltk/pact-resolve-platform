@@ -87,7 +87,7 @@ export default function MediatorPanelAdminPage() {
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Mediation Dashboard
           </Link>
           <h1 className="text-3xl font-bold flex items-center gap-3">
-            <Users className="w-8 h-8 text-accent" /> Mediator Panel
+            <Users className="w-8 h-8 text-accent" /> Experienced Neutrals
           </h1>
           <p className="text-muted-foreground">Update neutral panel experts. (Linked to Global Panel Members)</p>
         </div>
