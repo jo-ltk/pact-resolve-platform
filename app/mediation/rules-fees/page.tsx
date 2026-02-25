@@ -94,17 +94,11 @@ const RulesSection = () => {
             />
             <div className="absolute inset-0 bg-linear-to-t from-navy-950/60 via-transparent to-transparent opacity-60" />
             
-            <div className="absolute top-10 right-10 md:top-20 md:right-20">
-               <div className="px-6 py-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl">
-                  <span className="text-white text-xs md:text-xs  tracking-widest uppercase font-bold">
-                    Regulated Framework
-                  </span>
-               </div>
-            </div>
+
             
             <div className="absolute bottom-10 left-10 md:bottom-20 md:left-20 max-w-md">
                <p className="text-white/90 text-lg md:text-xl font-light leading-relaxed">
-                 "Our rules ensure a safe harbor for dialogue, governed by global neutrality standards."
+                 Our rules ensure a safe harbor for dialogue, governed by global neutrality standards.
                </p>
             </div>
           </div>
@@ -146,12 +140,12 @@ const RulesSection = () => {
 
 const FeesSection = () => {
   const fees = [
-    { title: "Convening Fees", desc: "Clarity on when administrative and coordination costs are initiated in the process." },
+    { title: "All-Inclusive", desc: "Clarity on administrative, convening fees and stage-wise fee structure for the entire mediation experience" },
     { title: "Pre-Mediation", desc: "Transparent breakdown of sessions and process design costs before joint meetings." },
-    { title: "Fee Split", desc: "Understanding the standard cost-sharing models between parties for neutrality." },
-    { title: "No Hidden Costs", desc: "Fixed and predictable schedules ensuring financial transparency at every step." },
+    { title: "Fee Split", desc: "Fees are usually split equally between all sides unless otherwise (explicitly) agreed upon by parties involved" },
+    { title: "No Hidden Costs", desc: "Clearly defined protocols for fee adjustments in cases whether mediation is terminated pre-maturely" },
     { title: "Refund Policy", desc: "Clearly defined protocols for fee adjustments in cases of early resolution." },
-    { title: "Performance Advance", desc: "Commitment-based pre-paid model to ensure uninterrupted professional service." }
+    { title: "Pre-Paid", desc: "Fees are pre-paid, fixed and predictable ensuring financial transparency at every step of the process" }
   ];
 
   return (
@@ -170,21 +164,11 @@ const FeesSection = () => {
             />
             <div className="absolute inset-0 bg-linear-to-t from-navy-950/80 via-transparent to-transparent opacity-80" />
             
-            <div className="absolute top-10 right-10 md:top-20 md:right-20">
-               <div className="px-6 py-4 bg-white/5 backdrop-blur-xl border border-white/20 rounded-2xl">
-                  <span className="text-gold-500 text-xs md:text-xs  tracking-widest uppercase font-bold">
-                    Fiscal Clarity
-                  </span>
-               </div>
-            </div>
-            
-            <div className="absolute bottom-10 left-10 md:bottom-20 md:left-20 max-w-xl">
-               <span className="text-gold-500  text-xs uppercase tracking-widest block mb-4">Standard Policy</span>
-               <h3 className="text-3xl md:text-5xl font-bold text-white tracking-tighter italic uppercase mb-4">Predictable Value</h3>
-               <p className="text-white/90 text-lg md:text-xl font-light leading-relaxed">
-                 "Our fee structure is designed to reflect value and ensure that costs are never a barrier to resolution."
-               </p>
-            </div>
+             <div className="absolute bottom-10 left-10 md:bottom-20 md:left-20 max-w-xl">
+                <p className="text-white/90 text-lg md:text-xl font-light leading-relaxed">
+                  Our fee structure is designed to reflect value and ensure that costs are never a barrier to resolution.
+                </p>
+             </div>
           </div>
         </FadeInUp>
 
@@ -194,7 +178,7 @@ const FeesSection = () => {
             <SectionHeader 
               subtitle="Financial Transparency" 
               title="The Mediation Fee"
-              description="A clear, predictable framework for project investments and dispute resolution costs."
+              description="A clear and bespoke fee framework so you know exactly what you are investing in"
               light
             />
             <div className="mt-8">
@@ -207,7 +191,7 @@ const FeesSection = () => {
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
             {fees.map((fee, i) => (
               <FadeInUp key={i} delay={i * 0.1}>
-                <div className="p-10 rounded-[2.5rem] bg-white/[0.03] border border-white/10 hover:border-gold-500/40 hover:bg-white/[0.07] transition-all duration-700 group">
+                <div className="p-10 rounded-[2.5rem] bg-white/3 border border-white/10 hover:border-gold-500/40 hover:bg-white/[0.07] transition-all duration-700 group">
                   <div className="w-12 h-12 rounded-xl bg-white/5 text-gold-500 flex items-center justify-center mb-6 group-hover:bg-white group-hover:text-navy-950 group-hover:scale-110 transition-all border border-white/5 shadow-sm">
                     <Scale className="w-6 h-6" />
                   </div>
