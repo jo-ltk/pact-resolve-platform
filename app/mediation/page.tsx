@@ -89,7 +89,7 @@ export default function MediationPage() {
               </h1>
               
               <p className="text-lg md:text-xl text-white/60 font-light leading-relaxed max-w-3xl mx-auto">
-                A trendsetter in Mediation Process Design, PACT relies on bespoke case management, quality mediators and best practices for client satisfaction. We provide a neutral sanctuary for difficult conversations, merging institutional rigour with party-centric flexibility.
+                Explore the benefits of Private Institutional Mediation, including process design, rules, bespoke fee structures, panel of mediators and more.
               </p>
             </FadeInUp>
           </div>
@@ -189,7 +189,7 @@ export default function MediationPage() {
             
             <div className="mt-12 text-center">
               <p className="text-white/30 text-sm font-light uppercase tracking-widest">
-                PACT • Peacekeeping and Conflict Resolution Trust
+                Leading Mediation in India since 2015
               </p>
             </div>
           </div>
