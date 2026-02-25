@@ -426,7 +426,7 @@ const Checklist = () => {
     <section className="pt-16 pb-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24 text-center">
         <SectionHeader 
-          subtitle="Write to us: mediation@thepact.in" 
+          subtitle="Try Mediation Today" 
           title="Check If Mediation Makes Sense"
           center
         />
