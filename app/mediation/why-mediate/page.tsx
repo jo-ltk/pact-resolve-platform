@@ -394,13 +394,13 @@ const CHECKLIST_MODAL_DATA = [
     subtitle: "Measuring ROI on Resolution",
     icon: Briefcase,
     summary: "It’s not just commercials and time, parties in dispute often fail to factor in mental, social, emotional, professional, physiological and psychological costs to pursuing litigation. Now, compare this with mediation, and you will know if it makes sense or not.",
-    pointsTitle: "Checklist Points",
+    pointsTitle: "Choose Mediation If You Prefer:",
     points: [
-      "The cost of litigation exceeds the dispute value.",
-      "You need to maintain a future commercial relationship.",
-      "Confidentiality is critical to protect brand reputation.",
-      "Resolution is required within weeks, not years.",
-      "The dispute is locking up critical resources or capital."
+      "A private dialogue and confidential agreement",
+      "Deescalating the dispute rather than escalating",
+      "A time-efficient and cost-effective resolution",
+      "Safeguarding reputation over pursuing retribution",
+      "Maintaining personal and business relationships"
     ],
     highlight: "Typical PACT Mediations conclude 10x faster and at 30% of the cost of traditional legal proceedings.",
     benefitIcon: Timer,
