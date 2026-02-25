@@ -440,7 +440,7 @@ const Checklist = () => {
         <div className="max-w-5xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             "First, check if your case is Legally Fit for Mediation?",
-            "Next, assess if your case makes business sense?",
+            "Next, assess if mediation makes business sense for your dispute",
             "Finally, Invite the other side to a Mediation orientation with PACT?"
           ].map((item, i) => (
             <motion.div 
