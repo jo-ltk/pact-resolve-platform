@@ -3,26 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { 
   Plus, 
-  Search, 
   MoreHorizontal, 
-  Edit, 
-  Trash2, 
-  X,
   Sparkles as SparklesIcon,
   Loader2,
-  ArrowLeft
 } from "lucide-react";
 import * as LucideIcons from "lucide-react";
-import Link from "next/link";
 import { toast } from "sonner";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,7 +18,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -49,7 +34,7 @@ import { useAuth } from "@/lib/context/AuthContext";
 import { MediationWhyPoint } from "@/lib/db/schemas";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export default function WhyPointsAdminPage() {
+export function WhyPointsTable() {
   const { token } = useAuth();
   const [items, setItems] = useState<MediationWhyPoint[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -109,22 +94,14 @@ export default function WhyPointsAdminPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="space-y-4">
-          <Link href="/admin/mediation" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-accent hover:text-accent/80 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
-          </Link>
-          <h1 className="text-3xl font-bold text-navy-950 flex items-center gap-3">
-            <SparklesIcon className="w-8 h-8 text-accent" />
-            Why Mediate Points
-          </h1>
-        </div>
-        <Button onClick={openCreateDialog} className="rounded-xl px-6 w-full md:w-auto self-end md:self-auto"><Plus className="w-4 h-4 mr-2" /> Add Point</Button>
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-bold text-navy-950">Mediation Points</h2>
+        <Button onClick={openCreateDialog} size="sm" className="rounded-xl px-4"><Plus className="w-4 h-4 mr-2" /> Add Point</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading ? (
-          Array.from({ length: 6 }).map((_, i) => (
+          Array.from({ length: 3 }).map((_, i) => (
             <Card key={i} className="rounded-3xl overflow-hidden border-none shadow-sm h-64">
               <Skeleton className="h-full w-full" />
             </Card>
@@ -132,7 +109,7 @@ export default function WhyPointsAdminPage() {
         ) : items.length === 0 ? (
           <div className="col-span-full py-20 text-center bg-white rounded-3xl border-2 border-dashed border-navy-100">
             <SparklesIcon className="w-12 h-12 text-navy-200 mx-auto mb-4" />
-            <p className="text-navy-950/40 font-medium">No points added yet. Start by adding your first advantage point.</p>
+            <p className="text-navy-950/40 font-medium">No points added yet.</p>
           </div>
         ) : items.map((item) => (
           <Card key={(item._id as any).toString()} className="group hover:shadow-xl transition-all duration-500 rounded-4xl border-none shadow-sm overflow-hidden bg-white">

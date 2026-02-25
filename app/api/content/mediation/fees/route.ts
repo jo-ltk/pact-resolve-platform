@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     const result = await collection.insertOne(newItem as MediationFee);
     
     revalidatePath("/mediation/rules-fees");
-    revalidatePath("/admin/mediation/fees");
+    revalidatePath("/admin/mediation/rules-fees");
 
     // Audit Log
     if (userId) {
@@ -78,7 +78,7 @@ export async function PUT(request: NextRequest) {
     );
     
     revalidatePath("/mediation/rules-fees");
-    revalidatePath("/admin/mediation/fees");
+    revalidatePath("/admin/mediation/rules-fees");
 
     // Audit Log
     if (userId) {
@@ -112,7 +112,7 @@ export async function DELETE(request: NextRequest) {
     await collection.deleteOne({ _id: new ObjectId(id) });
     
     revalidatePath("/mediation/rules-fees");
-    revalidatePath("/admin/mediation/fees");
+    revalidatePath("/admin/mediation/rules-fees");
 
     // Audit Log
     if (userId) {

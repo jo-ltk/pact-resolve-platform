@@ -134,21 +134,7 @@ const WhyMediateHero = () => (
 );
 
 const PuzzlePieces = () => {
-  const [points, setPoints] = useState<any[]>(PUZZLE_PIECES_FALLBACK);
-
-  React.useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch("/api/content/mediation/why-points", {
-          cache: "no-store",
-          headers: { "Cache-Control": "no-cache", "Pragma": "no-cache" }
-        });
-        const json = await res.json();
-        if (json.success && json.data?.length > 0) setPoints(json.data);
-      } catch (e) { console.error("Error fetching why-points:", e); }
-    }
-    fetchData();
-  }, []);
+  const points = PUZZLE_PIECES_FALLBACK;
 
   return (
     <section className="pt-12 pb-16 sm:pt-16 sm:pb-24 md:pb-40 bg-white relative overflow-hidden">
@@ -238,28 +224,7 @@ const PuzzlePieces = () => {
 
 const PactProvides = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [steps, setSteps] = useState<any[]>(RESOLUTION_STEPS_FALLBACK);
-
-  React.useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch("/api/content/mediation/resolution-steps", {
-          cache: "no-store",
-          headers: { "Cache-Control": "no-cache", "Pragma": "no-cache" }
-        });
-        const json = await res.json();
-        // Use duration from fallback if not provided by API
-        if (json.success && json.data?.length > 0) {
-          const merged = json.data.map((step: any, idx: number) => ({
-            ...step,
-            duration: step.duration || RESOLUTION_STEPS_FALLBACK[idx]?.duration || "TBD"
-          }));
-          setSteps(merged);
-        }
-      } catch (e) { console.error("Error fetching resolution-steps:", e); }
-    }
-    fetchData();
-  }, []);
+  const steps = RESOLUTION_STEPS_FALLBACK;
 
   return (
     <section className="py-16 sm:py-24 bg-navy-950 text-white relative overflow-hidden">
@@ -367,6 +332,7 @@ const PactProvides = () => {
     </section>
   );
 };
+
 
 const CHECKLIST_MODAL_DATA = [
   {

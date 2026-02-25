@@ -77,26 +77,25 @@ const PanelHero = () => (
 );
 
 const GallerySection = () => {
-  // Sample data - User will manage this for backend access
   const members = [
     {
       name: "Jonathan Rodrigues",
-      expertise: "Commercial & Civil Mediation",
+      role: "Commercial & Civil Mediation",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80",
     },
     {
       name: "Kurian Joseph",
-      expertise: "Retd. Judge, Supreme Court of India",
+      role: "Retd. Judge, Supreme Court of India",
       image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80",
     },
     {
       name: "Gita Mittal",
-      expertise: "Retd. Judge, Chief Justice (JKHC)",
+      role: "Retd. Judge, Chief Justice (JKHC)",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80",
     },
     {
       name: "Ekta Bahl",
-      expertise: "Corporate & Commercial Law",
+      role: "Corporate & Commercial Law",
       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80",
     }
   ];
@@ -122,7 +121,7 @@ const GallerySection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group flex flex-col overflow-hidden rounded-[2.5rem] bg-navy-50/50 border border-navy-100/50"
+              className="group flex flex-col overflow-hidden rounded-[2.5rem] bg-navy-50/50 border border-navy-100/50 h-full"
             >
               <div className="relative h-[450px] w-full overflow-hidden">
                 <Image
@@ -138,19 +137,18 @@ const GallerySection = () => {
                   </button>
                 </div>
               </div>
-              <div className="p-8 text-center bg-white border-t border-navy-50">
+              <div className="p-8 text-center bg-white border-t border-navy-50 flex-1 flex flex-col justify-center">
                 <h3 className="text-2xl font-light text-navy-950 mb-1">{member.name}</h3>
-                <p className="text-xs text-navy-950/40  tracking-widest uppercase">{member.expertise}</p>
+                <p className="text-xs text-navy-950/40  tracking-widest uppercase">{member.role}</p>
               </div>
             </motion.div>
           ))}
-          
-         
         </div>
       </div>
     </section>
   );
 };
+
 
 export default function MediatorPanelPage() {
   return (

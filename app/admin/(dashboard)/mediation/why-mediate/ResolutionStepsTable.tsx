@@ -3,26 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { 
   Plus, 
-  Search, 
   MoreHorizontal, 
-  Edit, 
-  Trash2, 
   Clock,
-  ArrowLeft,
   Loader2,
   X
 } from "lucide-react";
 import * as LucideIcons from "lucide-react";
-import Link from "next/link";
 import { toast } from "sonner";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,9 +33,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/context/AuthContext";
 import { MediationResolutionStep } from "@/lib/db/schemas";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export default function ResolutionStepsAdminPage() {
+export function ResolutionStepsTable() {
   const { token } = useAuth();
   const [items, setItems] = useState<MediationResolutionStep[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -108,38 +94,28 @@ export default function ResolutionStepsAdminPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="space-y-4">
-          <Link href="/admin/mediation" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-accent hover:text-accent/80 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
-          </Link>
-          <h1 className="text-3xl font-bold text-navy-950 flex items-center gap-3">
-            <Clock className="w-8 h-8 text-accent" />
-            Resolution Steps
-          </h1>
-        </div>
-        <Button onClick={openCreateDialog} className="rounded-xl px-6 w-full md:w-auto self-end md:self-auto"><Plus className="w-4 h-4 mr-2" /> Add Step</Button>
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-bold text-navy-950">Resolution Roadmap</h2>
+        <Button onClick={openCreateDialog} size="sm" className="rounded-xl px-4"><Plus className="w-4 h-4 mr-2" /> Add Step</Button>
       </div>
 
       <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-linear-to-b before:from-transparent before:via-navy-100 before:to-transparent">
         {isLoading ? (
-          Array.from({ length: 4 }).map((_, i) => (
+          Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
                <Skeleton className="w-full h-32 rounded-3xl" />
             </div>
           ))
         ) : items.length === 0 ? (
-          <div className="py-20 text-center bg-white rounded-3xl border-2 border-dashed border-navy-100 relative z-10 mx-auto max-w-2xl">
+          <div className="py-20 text-center bg-white rounded-3xl border-2 border-dashed border-navy-100 relative z-10 mx-auto max-w-2xl w-full">
             <Clock className="w-12 h-12 text-navy-200 mx-auto mb-4" />
-            <p className="text-navy-950/40 font-medium">No steps defined. Add the first step to your resolution roadmap.</p>
+            <p className="text-navy-950/40 font-medium">No steps defined yet.</p>
           </div>
         ) : items.map((item, i) => (
-          <div key={(item._id as any).toString()} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-            {/* Dot */}
+          <div key={(item._id as any).toString()} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active w-full">
             <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-accent text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 absolute left-0 md:left-1/2 -translate-x-1/2 z-10 transition-transform group-hover:scale-125 duration-300">
                <span className="font-bold text-xs">{item.order}</span>
             </div>
-            {/* Card */}
             <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-3xl bg-white border border-navy-50 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-accent/20 group-hover:-translate-y-1 relative">
                 <div className="flex items-center justify-between mb-2">
                    <div className="flex items-center gap-3">

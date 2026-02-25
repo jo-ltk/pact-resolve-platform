@@ -55,7 +55,7 @@ const RulesHero = () => (
           </span>
         </div>
         <h1 className="page-title text-4xl xs:text-5xl sm:text-7xl md:text-[8rem] font-bold text-white tracking-tighter leading-[0.9] md:leading-[0.8] mb-8 md:mb-12 select-none italic">
-          RULES & FEE
+          RULES & FEES
         </h1>
         <div className="max-w-4xl">
            <p className="text-lg sm:text-2xl md:text-3xl text-white/90 font-light leading-snug tracking-tight mb-8">
@@ -71,14 +71,21 @@ const RulesHero = () => (
 );
 
 const RulesSection = () => {
-  const rules = [
-    { title: "Mediator Selection", desc: "Transparent appointment and replacement protocols ensuring neutral expertise." },
-    { title: "Process Design", desc: "Customized pre-mediation frameworks tailored to the specific nature of the dispute." },
-    { title: "Confidentiality", desc: "Absolute privacy protections for all communications, documents, and proceedings." },
-    { title: "Legal Counsel", desc: "Clearly defined roles for lawyers and experts to foster a collaborative environment." },
-    { title: "Settlement Drafting", desc: "Precision in documenting agreements for enforceability under the Mediation Act." },
-    { title: "Termination", desc: "Structured timelines and voluntary exit protocols for efficiency and control." }
-  ];
+  const [rules, setRules] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetch("/api/content/mediation/rules")
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) setRules(data.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  if (loading) return null;
+  if (rules.length === 0) return null;
 
   return (
     <section className="py-24 md:py-40 bg-white">
@@ -93,8 +100,6 @@ const RulesSection = () => {
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-linear-to-t from-navy-950/60 via-transparent to-transparent opacity-60" />
-            
-
             
             <div className="absolute bottom-10 left-10 md:bottom-20 md:left-20 max-w-md">
                <p className="text-white/90 text-lg md:text-xl font-light leading-relaxed">
@@ -122,12 +127,12 @@ const RulesSection = () => {
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
             {rules.map((rule, i) => (
               <FadeInUp key={i} delay={i * 0.1}>
-                <div className="p-10 rounded-[2.5rem] bg-navy-50/50 border border-transparent hover:border-gold-500/20 hover:bg-white hover:shadow-xl transition-all duration-500 group">
+                <div className="p-10 rounded-[2.5rem] bg-navy-50/50 border border-transparent hover:border-gold-500/20 hover:bg-white hover:shadow-xl transition-all duration-500 group h-full">
                   <div className="w-12 h-12 rounded-xl bg-white text-gold-500 flex items-center justify-center mb-6 group-hover:bg-navy-950 group-hover:scale-110 transition-all shadow-sm">
                     <ShieldCheck className="w-6 h-6" />
                   </div>
-                  <h4 className="text-xl font-bold text-navy-950 mb-4 uppercase italic tracking-tight">{rule.title}</h4>
-                  <p className="text-navy-950/50 text-sm font-light leading-relaxed">{rule.desc}</p>
+                  <h4 className="text-xl font-bold text-navy-950 mb-4 italic tracking-tight">{rule.title}</h4>
+                  <p className="text-navy-950/50 text-sm font-light leading-relaxed">{rule.description}</p>
                 </div>
               </FadeInUp>
             ))}
@@ -139,14 +144,21 @@ const RulesSection = () => {
 };
 
 const FeesSection = () => {
-  const fees = [
-    { title: "All-Inclusive", desc: "Clarity on administrative, convening fees and stage-wise fee structure for the entire mediation experience" },
-    { title: "Pre-Mediation", desc: "Transparent breakdown of sessions and process design costs before joint meetings." },
-    { title: "Fee Split", desc: "Fees are usually split equally between all sides unless otherwise (explicitly) agreed upon by parties involved" },
-    { title: "No Hidden Costs", desc: "Clearly defined protocols for fee adjustments in cases whether mediation is terminated pre-maturely" },
-    { title: "Refund Policy", desc: "Clearly defined protocols for fee adjustments in cases of early resolution." },
-    { title: "Pre-Paid", desc: "Fees are pre-paid, fixed and predictable ensuring financial transparency at every step of the process" }
-  ];
+  const [fees, setFees] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetch("/api/content/mediation/fees")
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) setFees(data.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  if (loading) return null;
+  if (fees.length === 0) return null;
 
   return (
     <section className="py-24 md:py-40 bg-navy-950 text-white relative overflow-hidden dark">
@@ -166,7 +178,7 @@ const FeesSection = () => {
             
              <div className="absolute bottom-10 left-10 md:bottom-20 md:left-20 max-w-xl">
                 <p className="text-white/90 text-lg md:text-xl font-light leading-relaxed">
-                  Our fee structure is designed to reflect value and ensure that costs are never a barrier to resolution.
+                   Our fee structure is designed to reflect value and ensure that costs are never a barrier to resolution.
                 </p>
              </div>
           </div>
@@ -191,12 +203,19 @@ const FeesSection = () => {
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
             {fees.map((fee, i) => (
               <FadeInUp key={i} delay={i * 0.1}>
-                <div className="p-10 rounded-[2.5rem] bg-white/3 border border-white/10 hover:border-gold-500/40 hover:bg-white/[0.07] transition-all duration-700 group">
+                <div className="p-10 rounded-[2.5rem] bg-white/3 border border-white/10 hover:border-gold-500/40 hover:bg-white/[0.07] transition-all duration-700 group h-full">
                   <div className="w-12 h-12 rounded-xl bg-white/5 text-gold-500 flex items-center justify-center mb-6 group-hover:bg-white group-hover:text-navy-950 group-hover:scale-110 transition-all border border-white/5 shadow-sm">
                     <Scale className="w-6 h-6" />
                   </div>
-                  <h4 className="text-xl font-bold text-white mb-4 uppercase italic tracking-tight group-hover:text-gold-500 transition-colors">{fee.title}</h4>
-                  <p className="text-white/40 text-sm font-light leading-relaxed group-hover:text-white/60 transition-colors">{fee.desc}</p>
+                  <h4 className="text-xl font-bold text-white mb-2 italic tracking-tight group-hover:text-gold-500 transition-colors">
+                    {fee.title}
+                  </h4>
+                  <div className="text-3xl font-light text-gold-500 tracking-tighter mb-4 opacity-80">
+                    {fee.price}
+                  </div>
+                  <p className="text-white/40 text-sm font-light leading-relaxed group-hover:text-white/60 transition-colors">
+                    {fee.description}
+                  </p>
                 </div>
               </FadeInUp>
             ))}
@@ -218,3 +237,4 @@ export default function RulesFeesPage() {
     </main>
   );
 }
+

@@ -19,36 +19,28 @@ import { Button } from "@/components/ui/button";
 export default function MediationDashboard() {
   const sections = [
     {
-      title: "Why Mediate Points",
-      description: "Manage the PACT Advantage multi-point content shown on the Why Mediate page.",
+      title: "Why Mediate",
+      description: "Manage advantage points and resolution roadmap steps for the Why Mediate page.",
       icon: Sparkles,
-      link: "/admin/mediation/why-points",
+      link: "/admin/mediation/why-mediate",
       color: "text-amber-600",
       bg: "bg-amber-50/50"
     },
     {
-      title: "Resolution Steps",
-      description: "Edit the 'Total Commitment to Efficient Resolution' roadmap and procedural steps.",
-      icon: Clock,
-      link: "/admin/mediation/resolution-steps",
-      color: "text-blue-600",
-      bg: "bg-blue-50/50"
-    },
-    {
-      title: "Mediation Rules",
-      description: "Update the procedural integrity rules and governance framework.",
-      icon: ShieldCheck,
-      link: "/admin/mediation/rules",
+      title: "Rules & Fees",
+      description: "Manage procedural rules, governance framework, and transparent fee structures.",
+      icon: Scale,
+      link: "/admin/mediation/rules-fees",
       color: "text-emerald-600",
       bg: "bg-emerald-50/50"
     },
     {
-      title: "Mediation Fees",
-      description: "Manage transparent fee structures, convening fees, and financial policies.",
-      icon: Scale,
-      link: "/admin/mediation/fees",
-      color: "text-purple-600",
-      bg: "bg-purple-50/50"
+      title: "Mediator Panel",
+      description: "Update neutral panel experts and mediator profiles.",
+      icon: Users,
+      link: "/admin/mediation/mediator-panel",
+      color: "text-blue-600",
+      bg: "bg-blue-50/50"
     },
     {
       title: "Case Studies",
@@ -57,14 +49,6 @@ export default function MediationDashboard() {
       link: "/admin/mediation/case-studies",
       color: "text-rose-600",
       bg: "bg-rose-50/50"
-    },
-    {
-      title: "Mediator Panel",
-      description: "Update neutral panel experts. (Linked to Global Panel Members)",
-      icon: Users,
-      link: "/admin/home-page/panel-members",
-      color: "text-navy-600",
-      bg: "bg-navy-50/50"
     }
   ];
 

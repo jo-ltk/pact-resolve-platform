@@ -3,15 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { 
   Plus, 
-  Search, 
   MoreHorizontal, 
-  Edit, 
-  Trash2, 
   ShieldCheck,
   Loader2,
-  ArrowLeft
 } from "lucide-react";
-import Link from "next/link";
 import { toast } from "sonner";
 import {
   Table,
@@ -45,7 +40,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/context/AuthContext";
 import { MediationRule } from "@/lib/db/schemas";
 
-export default function RulesAdminPage() {
+export function RulesTable() {
   const { token } = useAuth();
   const [items, setItems] = useState<MediationRule[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -58,7 +53,10 @@ export default function RulesAdminPage() {
   async function fetchItems() {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/content/mediation/rules?all=true");
+      const response = await fetch(`/api/content/mediation/rules?all=true&t=${Date.now()}`, {
+        cache: "no-store",
+        headers: { "Cache-Control": "no-cache", "Pragma": "no-cache" }
+      });
       const result = await response.json();
       if (result.success) setItems(result.data || []);
     } catch (error) { toast.error("Fetch failed"); }
@@ -105,47 +103,42 @@ export default function RulesAdminPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="space-y-4">
-          <Link href="/admin/mediation" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-accent hover:text-accent/80 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
-          </Link>
-          <h1 className="text-3xl font-bold text-navy-950 flex items-center gap-3">
-            <ShieldCheck className="w-8 h-8 text-accent" />
-            Mediation Rules
-          </h1>
-        </div>
-        <Button onClick={openCreateDialog} className="rounded-xl px-6 w-full md:w-auto self-end md:self-auto"><Plus className="w-4 h-4 mr-2" /> Add Rule</Button>
+      <div className="flex justify-end items-center mb-6">
+        <Button onClick={openCreateDialog} size="sm" className="rounded-xl px-4"><Plus className="w-4 h-4 mr-2" /> Add Rule</Button>
       </div>
 
       <Card className="border-none shadow-sm rounded-3xl overflow-hidden">
-        <CardContent className="p-6">
+        <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="w-[80px]">Order</TableHead>
+              <TableRow className="bg-navy-50/50 hover:bg-navy-50/50 border-none">
+                <TableHead className="w-[80px] pl-6">Order</TableHead>
                 <TableHead>Title</TableHead>
                 <TableHead>Description</TableHead>
                 <TableHead className="w-[100px]">Status</TableHead>
-                <TableHead className="text-right w-[80px]">Actions</TableHead>
+                <TableHead className="text-right pr-6">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading ? (
                 Array.from({ length: 3 }).map((_, i) => (
-                  <TableRow key={i}><TableCell colSpan={5}><Skeleton className="h-10 w-full" /></TableCell></TableRow>
+                  <TableRow key={i}><TableCell colSpan={5} className="p-4"><Skeleton className="h-10 w-full" /></TableCell></TableRow>
                 ))
+              ) : items.length === 0 ? (
+                <TableRow>
+                   <TableCell colSpan={5} className="text-center py-10 text-muted-foreground font-medium">No rules added yet.</TableCell>
+                </TableRow>
               ) : items.map((item) => (
-                <TableRow key={(item._id as any).toString()}>
-                  <TableCell>{item.order}</TableCell>
-                  <TableCell className="font-semibold">{item.title}</TableCell>
-                  <TableCell className="text-muted-foreground truncate max-w-xs">{item.description}</TableCell>
-                  <TableCell><Badge variant={item.isActive ? "success" : "secondary"}>{item.isActive ? "Active" : "Hidden"}</Badge></TableCell>
-                  <TableCell className="text-right">
+                <TableRow key={(item._id as any).toString()} className="hover:bg-navy-50/30 transition-colors border-navy-50">
+                  <TableCell className="pl-6 font-medium text-navy-400">{item.order}</TableCell>
+                  <TableCell className="font-bold text-navy-950">{item.title}</TableCell>
+                  <TableCell className="text-muted-foreground font-light max-w-md truncate">{item.description}</TableCell>
+                  <TableCell><Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-bold tracking-wider">{item.isActive ? "Active" : "Hidden"}</Badge></TableCell>
+                  <TableCell className="text-right pr-6">
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreHorizontal className="w-4 h-4" /></Button></DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => { setEditingItem(item); setIsDialogOpen(true); }}>Edit</DropdownMenuItem>
+                      <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-8 w-8 rounded-full"><MoreHorizontal className="w-4 h-4" /></Button></DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="rounded-xl">
+                        <DropdownMenuItem onClick={() => { setEditingItem(item); setIsDialogOpen(true); }}>Edit Rule</DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleDelete((item._id as any).toString())} className="text-red-500">Delete</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -170,7 +163,7 @@ export default function RulesAdminPage() {
               </div>
               <div className="space-y-2">
                 <Label>Description</Label>
-                <Textarea value={editingItem?.description || ""} onChange={(e) => setEditingItem(prev => ({ ...prev!, description: e.target.value }))} required />
+                <Textarea value={editingItem?.description || ""} onChange={(e) => setEditingItem(prev => ({ ...prev!, description: e.target.value }))} required className="min-h-[120px]" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -185,7 +178,7 @@ export default function RulesAdminPage() {
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-              <Button type="submit" disabled={isSaving}>{isSaving && <Loader2 className="w-4 h-4 animate-spin mr-2" />}Save</Button>
+              <Button type="submit" disabled={isSaving} className="bg-navy-950 text-white">{isSaving && <Loader2 className="w-4 h-4 animate-spin mr-2" />}Save Rule</Button>
             </DialogFooter>
           </form>
         </DialogContent>

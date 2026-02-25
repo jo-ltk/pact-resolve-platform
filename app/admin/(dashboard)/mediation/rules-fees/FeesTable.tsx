@@ -3,24 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { 
   Plus, 
-  Search, 
   MoreHorizontal, 
-  Edit, 
-  Trash2, 
   Scale,
   Loader2,
-  ArrowLeft
 } from "lucide-react";
-import Link from "next/link";
 import { toast } from "sonner";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,7 +32,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/context/AuthContext";
 import { MediationFee } from "@/lib/db/schemas";
 
-export default function FeesAdminPage() {
+export function FeesTable() {
   const { token } = useAuth();
   const [items, setItems] = useState<MediationFee[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -58,7 +45,10 @@ export default function FeesAdminPage() {
   async function fetchItems() {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/content/mediation/fees?all=true");
+      const response = await fetch(`/api/content/mediation/fees?all=true&t=${Date.now()}`, {
+        cache: "no-store",
+        headers: { "Cache-Control": "no-cache", "Pragma": "no-cache" }
+      });
       const result = await response.json();
       if (result.success) setItems(result.data || []);
     } catch (error) { toast.error("Fetch failed"); }
@@ -105,17 +95,8 @@ export default function FeesAdminPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="space-y-4">
-          <Link href="/admin/mediation" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-accent hover:text-accent/80 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
-          </Link>
-          <h1 className="text-3xl font-bold text-navy-950 flex items-center gap-3">
-            <Scale className="w-8 h-8 text-accent" />
-            Mediation Fees
-          </h1>
-        </div>
-        <Button onClick={openCreateDialog} className="rounded-xl px-6 w-full md:w-auto self-end md:self-auto"><Plus className="w-4 h-4 mr-2" /> Add Fee</Button>
+      <div className="flex justify-end items-center mb-6">
+        <Button onClick={openCreateDialog} size="sm" className="rounded-xl px-4"><Plus className="w-4 h-4 mr-2" /> Add Fee Item</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -143,7 +124,7 @@ export default function FeesAdminPage() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="rounded-xl">
-                    <DropdownMenuItem onClick={() => { setEditingItem(item); setIsDialogOpen(true); }}>Edit</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => { setEditingItem(item); setIsDialogOpen(true); }}>Edit Fee</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleDelete((item._id as any).toString())} className="text-red-500">Delete</DropdownMenuItem>
                   </DropdownMenuContent>
                </DropdownMenu>
@@ -154,7 +135,7 @@ export default function FeesAdminPage() {
                     <span className=" text-xs uppercase tracking-widest text-accent font-bold group-hover:text-accent/80">Fee Item #{item.order}</span>
                     <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase">{item.isActive ? "Active" : "Hidden"}</Badge>
                   </div>
-                  <h3 className="text-2xl font-bold text-navy-950 uppercase italic tracking-tight mb-4 group-hover:text-accent transition-colors">{item.title}</h3>
+                  <h3 className="text-2xl font-bold text-navy-950 mb-4 group-hover:text-accent transition-colors">{item.title}</h3>
                   <div className="text-4xl font-light text-navy-950 tracking-tighter mb-4">
                      {item.price}
                   </div>
