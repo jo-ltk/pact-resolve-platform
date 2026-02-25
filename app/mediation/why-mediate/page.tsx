@@ -53,8 +53,8 @@ const PUZZLE_PIECES_FALLBACK = [
 const RESOLUTION_STEPS_FALLBACK = [
   { title: "CONVENING", label: "Meetings to Rebuild Relationships", duration: "1 WEEK", description: "PACT accelerates structured and confidential meetings, preserving privacy and confidentiality from the get go. Clear procedural guidelines are established at the outset.", iconName: "Users" },
   { title: "COACHING", label: "Parties to follow Collaborative Standards", duration: "1-2 WEEKS", description: "The Mediation Convenor assists parties and counsel in developing a collaborative approach in their communications.", iconName: "MessageSquare" },
-  { title: "FACILITATING", label: "Communication and Identifying Interests", duration: "3-4 WEEKS", description: "The Mediator facilitates discussions to identify underlying interests of the parties. Legal, commercial and relational concerns are explored.", iconName: "Scale" },
-  { title: "EVALUATING", label: "Options and Alternatives", duration: "1 WEEK", description: "The mediator supports parties in evaluating options against objective standards and practical alternatives.", iconName: "Briefcase" },
+  { title: "MEDIATOR SELECTION", label: "Mediator Selection", duration: "1 WEEK", description: "The Mediator facilitates discussions to identify underlying interests of the parties. Legal, commercial and relational concerns are explored.", iconName: "Scale" },
+  { title: "THE MEDIATION SESSION", label: "The Mediation Session", duration: "4-6 WEEKS", description: "The mediator supports parties in evaluating options against objective standards and practical alternatives.", iconName: "Briefcase" },
   { title: "CONSTRUCTING", label: "Commitment-Based Solutions", duration: "1-2 WEEKS", description: "The mediator assists parties in developing clear and workable solutions. Agreements are based on voluntary and informed commitments.", iconName: "Building2" },
   { title: "CLOSING", label: "Closing the Process", duration: "1 WEEK", description: "The mediation concludes with a structured review of outcomes. Agreements are confirmed for shared understanding.", iconName: "Lock" }
 ];
