@@ -102,7 +102,7 @@ export default function ResolutionStepsAdminPage() {
   };
 
   const openCreateDialog = () => {
-    setEditingItem({ title: "", label: "", description: "", iconName: "ArrowRight", order: items.length + 1, isActive: true });
+    setEditingItem({ title: "", label: "", duration: "1 WEEK", description: "", iconName: "ArrowRight", order: items.length + 1, isActive: true });
     setIsDialogOpen(true);
   };
 
@@ -164,8 +164,9 @@ export default function ResolutionStepsAdminPage() {
                       </DropdownMenu>
                    </div>
                 </div>
-                <div className="mb-3">
-                   <span className="text-xs  uppercase tracking-[0.2em] text-accent font-bold px-2 py-0.5 rounded bg-accent/5">{item.label}</span>
+                <div className="mb-3 flex items-center gap-2">
+                   <span className="text-xs uppercase tracking-[0.2em] text-accent font-bold px-2 py-0.5 rounded bg-accent/5">{item.label}</span>
+                   {item.duration && <span className="text-xs font-bold text-navy-950/40">⏳ {item.duration}</span>}
                 </div>
                 <p className="text-sm text-navy-950/60 font-light leading-relaxed line-clamp-2">{item.description}</p>
             </div>
@@ -189,6 +190,10 @@ export default function ResolutionStepsAdminPage() {
                   <Label>Short Label</Label>
                   <Input value={editingItem?.label || ""} onChange={(e) => setEditingItem(prev => ({ ...prev!, label: e.target.value }))} required />
                 </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Estimated Time / Duration (e.g. "1 WEEK")</Label>
+                <Input value={editingItem?.duration || ""} onChange={(e) => setEditingItem(prev => ({ ...prev!, duration: e.target.value }))} placeholder="1 WEEK" />
               </div>
               <div className="space-y-2">
                 <Label>Description</Label>

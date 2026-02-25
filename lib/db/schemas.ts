@@ -417,6 +417,7 @@ export interface MediationWhyPoint extends BaseDocument {
 export interface MediationResolutionStep extends BaseDocument {
   title: string;
   label: string;
+  duration?: string;
   description: string;
   iconName: string;
   order: number;

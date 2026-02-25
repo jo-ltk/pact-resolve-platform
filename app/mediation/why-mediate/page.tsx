@@ -243,7 +243,10 @@ const PactProvides = () => {
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/api/content/mediation/resolution-steps");
+        const res = await fetch("/api/content/mediation/resolution-steps", {
+          cache: "no-store",
+          headers: { "Cache-Control": "no-cache", "Pragma": "no-cache" }
+        });
         const json = await res.json();
         // Use duration from fallback if not provided by API
         if (json.success && json.data?.length > 0) {
