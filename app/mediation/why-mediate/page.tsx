@@ -373,15 +373,19 @@ const CHECKLIST_MODAL_DATA = [
     title: "Legal Fitness Assessment",
     subtitle: "Navigating Statutory Readiness",
     icon: Scale,
-    summary: "Most civil and commercial disputes are legally fit for mediation. Under Section 89 of the CPC and various international frameworks, courts actively encourage mediation for civil matters.",
+    summary: "Most civil and commercial disputes in India are legally fit for Mediation as statutorily prescribed by The Mediation Act, 2023. (Check Section 6 of Act and consult PACT for disputes that are not legally fit and practically unsuitable for Mediation)",
+    pointsTitle: "Commonly Mediated Disputes",
     points: [
       "Commercial & Contractual Disputes",
       "Intellectual Property & Licensing Matters",
       "Family & Succession Arrangements",
-      "Workplace & Employment Issues",
-      "Real Estate & Rental Disagreements"
+      "Real Estate & Construction Disputes",
+      "IBC-related Disputes",
+      "Community Conflicts",
+      "Employment Disputes",
+      "Insurance and Banking"
     ],
-    highlight: "Mediation is legally recognized and any settlement reached is as binding as a court decree in most jurisdictions.",
+    highlight: "Mediation is legally recognised and any settlement reached is as binding as a court decree as per Section 27 of Mediation Act, 2023.",
     benefitIcon: ShieldCheck,
     stat: { label: "Success Rate", value: "85%+" }
   },
@@ -390,6 +394,7 @@ const CHECKLIST_MODAL_DATA = [
     subtitle: "Measuring ROI on Resolution",
     icon: Briefcase,
     summary: "In business, time is capital. Mediation makes commercial sense when the cost of litigation and the risk of public exposure outweigh the benefits of a court trial.",
+    pointsTitle: "Checklist Points",
     points: [
       "The cost of litigation exceeds the dispute value.",
       "You need to maintain a future commercial relationship.",
@@ -406,6 +411,7 @@ const CHECKLIST_MODAL_DATA = [
     subtitle: "Bridging the Divide Neutrally",
     icon: MessageSquare,
     summary: "Inviting the other side doesn't have to be adversarial. PACT acts as a neutral convenor to bridge the communication gap without compromising your position.",
+    pointsTitle: "Checklist Points",
     points: [
       "Free Mediation Orientation for both parties.",
       "Neutral outreach to explain process benefits.",
@@ -528,12 +534,14 @@ const Checklist = () => {
                    <div className="mb-12">
                       <p className="text-navy-950/40  text-xs tracking-widest uppercase mb-4">The Assessment</p>
                       <h3 className="text-2xl md:text-3xl font-light text-navy-950 tracking-tight leading-snug mb-8 bg-navy-50/50 p-6 rounded-2xl border border-navy-100/50">
-                         "{CHECKLIST_MODAL_DATA[selectedIdx].summary}"
+                         {CHECKLIST_MODAL_DATA[selectedIdx].summary}
                       </h3>
                    </div>
 
                    <section className="mb-12">
-                      <h4 className="text-xs font-bold text-navy-950/40 uppercase tracking-[.2em] mb-8 border-b border-navy-50 pb-4">Checklist Points</h4>
+                      <h4 className="text-xs font-bold text-navy-950/40 uppercase tracking-[.2em] mb-8 border-b border-navy-50 pb-4">
+                        {CHECKLIST_MODAL_DATA[selectedIdx].pointsTitle}
+                      </h4>
                       <ul className="grid grid-cols-1 gap-5">
                          {CHECKLIST_MODAL_DATA[selectedIdx].points.map((text, idx) => (
                            <motion.li 
