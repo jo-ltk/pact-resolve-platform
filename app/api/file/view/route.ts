@@ -17,18 +17,27 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "No path provided" }, { status: 400 });
     }
 
-    // Use the explicitly signed download URL from Cloudinary API
-    // This is the most robust way to access restricted assets from the backend
-    const signedUrl = cloudinary.utils.private_download_url(path, "pdf", {
+    // For 'raw' resources like PDFs, the extension is part of the public_id itself
+    // We shouldn't provide it again in the format parameter
+    const signedUrl = cloudinary.utils.private_download_url(path, "", {
       resource_type: "raw",
       attachment: false,
     });
+    
+    // Fallback: If it's a public file, we can also use the secure_url directly
+    // but we'll try the signed one first without the double extension.
 
     // Fetch the file from Cloudinary in the backend
-    const response = await fetch(signedUrl);
+    let response = await fetch(signedUrl);
+
+    // If signed URL fails, try a direct secure URL (works for public assets)
+    if (!response.ok) {
+      const publicUrl = cloudinary.url(path, { resource_type: "raw", secure: true });
+      response = await fetch(publicUrl);
+    }
 
     if (!response.ok) {
-      console.error(`Proxy fetch failed: ${response.status} ${response.statusText}`);
+      console.error(`Proxy fetch failed for path: ${path}. Status: ${response.status}`);
       return NextResponse.json({ error: "Failed to fetch file from storage" }, { status: response.status });
     }
 

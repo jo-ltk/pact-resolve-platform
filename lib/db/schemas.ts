@@ -439,6 +439,12 @@ export interface MediationFee extends BaseDocument {
   isActive: boolean;
 }
 
+export interface RulesFeesSettings extends BaseDocument {
+  rulesPdfUrl: string;
+  feesPdfUrl: string;
+  isActive: boolean;
+}
+
 // ============================================================================
 // 11. ACADEMY CONTENT
 // ============================================================================
@@ -907,6 +913,7 @@ export const COLLECTIONS = {
   PROJECT_UPDATES: "projectUpdates",
   // Archived Projects (Legacy)
   ARCHIVED_PROJECTS: "archivedProjects",
+  MEDIATION_RULES_FEES_SETTINGS: "mediationRulesFeesSettings",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];
