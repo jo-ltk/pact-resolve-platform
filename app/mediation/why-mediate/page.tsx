@@ -393,7 +393,7 @@ const CHECKLIST_MODAL_DATA = [
     title: "Business Sense Analysis",
     subtitle: "Measuring ROI on Resolution",
     icon: Briefcase,
-    summary: "In business, time is capital. Mediation makes commercial sense when the cost of litigation and the risk of public exposure outweigh the benefits of a court trial.",
+    summary: "It’s not just commercials and time, parties in dispute often fail to factor in mental, social, emotional, professional, physiological and psychological costs to pursuing litigation. Now, compare this with mediation, and you will know if it makes sense or not.",
     pointsTitle: "Checklist Points",
     points: [
       "The cost of litigation exceeds the dispute value.",
