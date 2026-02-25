@@ -39,8 +39,9 @@ const getIcon = (iconName: string) => {
 // --- Fallback Data ---
 const PUZZLE_PIECES_FALLBACK = [
   { title: "Engage Your Own Neutral Mediator", desc: "Curate and appoint qualified professionals who embody absolute neutrality.", iconName: "Users" },
-  { title: "Participate Freely and Voluntarily", desc: "Retain complete autonomy with a process driven by sincere engagement.", iconName: "Handshake" },
+  { title: "Participate Freely & Voluntarily", desc: "Retain complete autonomy with a process driven by sincere engagement.", iconName: "Handshake" },
   { title: "Keep Conversations Confidential", desc: "A secure environment protected under strict institutional and legal safeguards.", iconName: "Lock" },
+  { title: "Choose Your Own Private Venue", desc: "Select a comfortable and discreet location that suits the preferences of all participants.", iconName: "Home" },
   { title: "Select Your Mode of Communication", desc: "Adapt the dialogue process to fit the unique communication styles of all parties.", iconName: "MessageSquare" },
   { title: "Decide on a Convenient Time & Date", desc: "Coordinate sessions around your timeline to ensure focused and productive progress.", iconName: "Calendar" },
   { title: "Design Your Own Comfortable Process", desc: "Experience a bespoke resolution framework tailored to your specific case dynamics.", iconName: "Sparkles" },
@@ -138,7 +139,10 @@ const PuzzlePieces = () => {
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/api/content/mediation/why-points");
+        const res = await fetch("/api/content/mediation/why-points", {
+          cache: "no-store",
+          headers: { "Cache-Control": "no-cache", "Pragma": "no-cache" }
+        });
         const json = await res.json();
         if (json.success && json.data?.length > 0) setPoints(json.data);
       } catch (e) { console.error("Error fetching why-points:", e); }
@@ -196,6 +200,36 @@ const PuzzlePieces = () => {
               </div>
             </motion.div>
           ))}
+          {points.length % 3 === 1 && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="md:col-span-2 lg:col-span-2 flex flex-col items-center justify-center text-center px-4 md:px-12 py-12 h-full"
+            >
+              <div className="w-12 h-12 rounded-full bg-gold-50/50 flex items-center justify-center mb-6 border border-gold-500/20">
+                <Sparkles className="w-5 h-5 text-gold-500 animate-pulse" />
+              </div>
+              <h3 className="text-2xl md:text-4xl font-light text-navy-950 tracking-tighter leading-tight italic mb-6">
+                Ready to Resolve?
+              </h3>
+              <p className="text-base md:text-xl text-navy-950/50 font-light max-w-xl mx-auto leading-relaxed mb-8">
+                Join hundreds of businesses that have partnered with PACT to design a comfortable, confidential, and effective dispute resolution process.
+              </p>
+              <a 
+                href="mailto:mediation@thepact.in"
+                className="group flex flex-col items-center gap-2"
+              >
+                <span className="text-xs font-bold uppercase tracking-widest text-navy-950/60 group-hover:text-gold-600 transition-colors duration-300">
+                  Contact Our Experts
+                </span>
+                <div className="w-8 h-8 rounded-full border border-navy-100 flex items-center justify-center group-hover:bg-gold-500 group-hover:border-gold-500 group-hover:text-white transition-all duration-300">
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </a>
+            </motion.div>
+          )}
         </div>
       </div>
     </section>

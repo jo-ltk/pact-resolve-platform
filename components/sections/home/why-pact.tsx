@@ -35,7 +35,7 @@ export function WhyPact() {
         const result = await res.json();
         if (result.success && result.data?.length > 0) {
           setSections(result.data);
-          setActiveTab(result.data[0]._id);
+          setActiveTab(result.data[0]._id?.toString() || "");
         }
       } catch (error) {
         console.error("Failed to fetch why-pact sections", error);
@@ -46,7 +46,7 @@ export function WhyPact() {
     fetchSections();
   }, []);
 
-  const activeContent = sections.find(s => s._id === activeTab);
+  const activeContent = sections.find(s => s._id?.toString() === activeTab);
 
   if (isLoading) return <div className="py-24 bg-navy-950 px-6"><Skeleton className="h-[500px] w-full max-w-7xl mx-auto rounded-4xl bg-white/5" /></div>;
   if (sections.length === 0) return null;
@@ -76,12 +76,12 @@ export function WhyPact() {
           <div className="space-y-3">
             {sections.map((section) => {
               const Icon = iconMap[section.iconName] || Shield;
-              const isActive = activeTab === section._id;
+              const isActive = activeTab === section._id?.toString();
               
               return (
                 <button
                   key={section._id?.toString()}
-                  onClick={() => setActiveTab(section._id)}
+                  onClick={() => setActiveTab(section._id?.toString() || "")}
                   className={cn(
                     "w-full text-left p-6 rounded-2xl transition-all duration-500 group relative overflow-hidden",
                     isActive 
