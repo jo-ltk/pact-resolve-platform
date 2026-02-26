@@ -865,6 +865,23 @@ export interface ArchivedProject extends BaseDocument {
 }
 
 // ============================================================================
+// 20. WORKBOOK GALLERY (Mediation Simplified Gallery)
+// ============================================================================
+
+export interface WorkbookGalleryImage extends BaseDocument {
+  /** The gallery image */
+  image: ImageData;
+  /** Optional title for the image */
+  title?: string;
+  /** Optional caption or alt text */
+  caption?: string;
+  /** Display order */
+  order: number;
+  /** Whether this image is visible */
+  isActive: boolean;
+}
+
+// ============================================================================
 // COLLECTION NAMES
 // ============================================================================
 
@@ -914,6 +931,8 @@ export const COLLECTIONS = {
   // Archived Projects (Legacy)
   ARCHIVED_PROJECTS: "archivedProjects",
   MEDIATION_RULES_FEES_SETTINGS: "mediationRulesFeesSettings",
+  // Workbook Gallery
+  WORKBOOK_GALLERY: "workbookGallery",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];

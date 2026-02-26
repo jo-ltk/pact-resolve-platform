@@ -61,15 +61,17 @@ const STATIC_REVIEWS = [
 
 export default function MediationSimplifiedPage() {
   const [reviews, setReviews] = useState<any[]>(STATIC_REVIEWS);
+  const [galleryImages, setGalleryImages] = useState<any[]>([]);
 
   useEffect(() => {
-    async function fetchReviews() {
+    async function fetchData() {
       try {
-        const res = await fetch("/api/content/testimonials?page=simplified");
-        const result = await res.json();
-        if (result.success && result.data && result.data.length > 0) {
+        // Fetch Reviews
+        const resReviews = await fetch("/api/content/testimonials?page=simplified");
+        const resultReviews = await resReviews.json();
+        if (resultReviews.success && resultReviews.data && resultReviews.data.length > 0) {
           // Map database format to component format
-          const mappedReviews = result.data.map((item: any) => ({
+          const mappedReviews = resultReviews.data.map((item: any) => ({
             name: item.name,
             role: item.title,
             quote: item.quote,
@@ -78,11 +80,18 @@ export default function MediationSimplifiedPage() {
           }));
           setReviews(mappedReviews);
         }
+
+        // Fetch Gallery
+        const resGallery = await fetch("/api/content/workbook-gallery");
+        const resultGallery = await resGallery.json();
+        if (resultGallery.success && resultGallery.data && resultGallery.data.length > 0) {
+          setGalleryImages(resultGallery.data);
+        }
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        console.error("Error fetching data:", error);
       }
     }
-    fetchReviews();
+    fetchData();
   }, []);
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-background">
@@ -310,18 +319,37 @@ export default function MediationSimplifiedPage() {
                 className="w-full"
               >
                 <CarouselContent className="-ml-4 md:-ml-6">
-                  {[1, 2, 3, 4, 5, 6].map((_, index) => (
+                  {(galleryImages.length > 0 ? galleryImages : [1, 2, 3, 4, 5, 6]).map((item, index) => (
                     <CarouselItem key={index} className="pl-4 md:pl-6 md:basis-1/2 lg:basis-1/3">
-                      <div className="relative aspect-3/2 rounded-3xl overflow-hidden group shadow-xl border border-navy-100 bg-navy-100">
-                        <Image
-                          src={index % 2 === 0 ? "/assets/img/testimonials/corporate-boardroom.png" : "/assets/img/testimonials/arbitration-chamber.png"}
-                          alt={`Gallery Image ${index + 1}`}
-                          fill
-                          className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-navy-950/20 group-hover:bg-navy-950/0 transition-colors duration-500" />
+                      <div className="flex flex-col h-full">
+                        <div className="relative aspect-3/2 rounded-3xl overflow-hidden group shadow-xl border border-navy-100 bg-navy-100">
+                          <Image
+                            src={item.image?.url || (index % 2 === 0 ? "/assets/img/testimonials/corporate-boardroom.png" : "/assets/img/testimonials/arbitration-chamber.png")}
+                            alt={item.image?.alt || item.caption || `Gallery Image ${index + 1}`}
+                            fill
+                            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-navy-950/20 group-hover:bg-navy-950/0 transition-colors duration-500" />
+                          <div className="absolute inset-0 border-2 border-transparent group-hover:border-gold-500/30 rounded-3xl transition-all duration-500 pointer-events-none" />
+                        </div>
                         
-                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-gold-500/30 rounded-3xl transition-all duration-500 pointer-events-none" />
+                        {item.title || item.caption ? (
+                          <div className="mt-6 px-2">
+                             {item.title && (
+                               <p className="text-navy-950 font-bold text-sm tracking-tight mb-1">
+                                 {item.title}
+                               </p>
+                             )}
+                             {item.caption && (
+                               <div className="flex items-center gap-3">
+                                 <div className="h-px w-4 bg-gold-500/50" />
+                                 <p className="text-navy-950/60 text-[13px] font-medium tracking-wide italic leading-relaxed">
+                                   {item.caption}
+                                 </p>
+                               </div>
+                             )}
+                          </div>
+                        ) : null}
                       </div>
                     </CarouselItem>
                   ))}
