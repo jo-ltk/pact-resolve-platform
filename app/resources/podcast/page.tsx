@@ -47,78 +47,7 @@ const whySubscribe = [
   },
 ];
 
-const season1Episodes = [
-  {
-    number: 1,
-    title: "Are Mediators Actually Mediating?",
-    guests: "Bill Marsh & Chitra Narayan",
-    theme: "Mediation Practice",
-    youtubeUrl: "https://www.youtube.com/live/2AFA_Jdv7mA",
-  },
-  {
-    number: 2,
-    title: "Are Mediators Actually Mediating?",
-    guests: "Nadja Alexander & JP Sengh",
-    theme: "Mediation Practice",
-    youtubeUrl: "https://www.youtube.com/watch?v=8zSPXC4OshE",
-  },
-  {
-    number: 3,
-    title: "Are Lawyers Relevant in Mediation?",
-    guests: "Ekta Bahl & Geoff Sharp",
-    theme: "Lawyer's Role",
-    youtubeUrl: "https://www.youtube.com/watch?v=yFby7ZLlkAg",
-  },
-  {
-    number: 4,
-    title: "Are Lawyers Relevant in Mediation?",
-    guests: "Tat Lim & Raj R. Panchmatia",
-    theme: "Lawyer's Role",
-    youtubeUrl: "https://www.youtube.com/watch?v=v2HQx611mT0",
-  },
-  {
-    number: 5,
-    title: "Building Trust in Private Mediation",
-    guests: "Jawad A J & Jonathan Lloyd-Jones",
-    theme: "Trust Building",
-    youtubeUrl: "https://www.youtube.com/watch?v=stg6rttI2kg",
-  },
-  {
-    number: 6,
-    title: "Commercial Mediation Works (Case Study)",
-    guests: "Jeff Kichaven & Nisshant Laroia",
-    theme: "Case Study",
-    youtubeUrl: "https://www.youtube.com/watch?v=rYI4_PgBitE",
-  },
-  {
-    number: 7,
-    title: "Can you Mediate without Lawyers?",
-    guests: "Jonathan Rodrigues & Laila Ollapally",
-    theme: "Party Representation",
-    youtubeUrl: "https://www.youtube.com/watch?v=B8PZuN-f6n4",
-  },
-  {
-    number: 8,
-    title: "Private Mediation Essentials: Self-determination",
-    guests: "Joel Lee & Jonathan Rodrigues",
-    theme: "Core Principles",
-    youtubeUrl: "https://www.youtube.com/watch?v=yvIci9WuZzc",
-  },
-  {
-    number: 9,
-    title: "Mediation in India",
-    guests: "Attorney General for India R. Venkataramani & Soni Singh",
-    theme: "Indian Context",
-    youtubeUrl: "https://www.youtube.com/watch?v=eJZeUtoIBpQ",
-  },
-  {
-    number: 10,
-    title: "Mediation Essentials: Confidentiality",
-    guests: "Sudhanshu Batra & Jonathan Rodrigues",
-    theme: "Core Principles",
-    youtubeUrl: "https://www.youtube.com/live/jiRvEzdDepM",
-  },
-];
+
 
 export default function PodcastPage() {
   const [episodes, setEpisodes] = useState<ResourceItem[]>([]);
@@ -156,26 +85,10 @@ export default function PodcastPage() {
   );
 
   const pastEpisodes = useMemo(() => {
-    const source = episodes.length > 0
-      ? episodes
-          .filter((e) => !e.isFeatured && e.category !== "hero-banner")
-          .sort((a, b) => (a.order || 0) - (b.order || 0))
-      : season1Episodes.map((episode) => ({
-          ...episode,
-          order: episode.number,
-          image: "/assets/img/podcast-thumb-dummy.png",
-          subtitle: episode.guests,
-          author: episode.guests,
-          category: episode.theme,
-          url: episode.youtubeUrl,
-          type: "podcast" as const,
-          isActive: true,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        } as ResourceItem));
-
-    return source;
-  }, [episodes]);
+    return episodes
+      .filter((e) => e.category !== "hero-banner" && !upcomingEpisodes.some(u => (u._id as any).toString() === (e._id as any).toString()))
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+  }, [episodes, upcomingEpisodes]);
 
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-background">

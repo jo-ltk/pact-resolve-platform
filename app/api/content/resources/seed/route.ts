@@ -249,6 +249,20 @@ const podcastEpisodes: Partial<ResourceItem>[] = [
   },
   {
     type: "podcast",
+    title: "Are Mediators Actually Mediating?",
+    subtitle: "Nadja Alexander & JP Sengh",
+    author: "Jonathan Rodrigues",
+    category: "Mediation Practice",
+    description: "A candid discussion about what really happens behind closed mediation doors.",
+    url: "https://www.youtube.com/watch?v=8zSPXC4OshE",
+    publication: "Mission Mediation Podcast",
+    date: "2024",
+    order: 2,
+    isActive: true,
+    isFeatured: true
+  },
+  {
+    type: "podcast",
     title: "Are Lawyers Relevant in Mediation?",
     subtitle: "Ekta Bahl & Geoff Sharp",
     author: "Jonathan Rodrigues",
@@ -257,9 +271,21 @@ const podcastEpisodes: Partial<ResourceItem>[] = [
     url: "https://www.youtube.com/watch?v=yFby7ZLlkAg",
     publication: "Mission Mediation Podcast",
     date: "2024",
-    order: 2,
-    isActive: true,
-    isFeatured: true
+    order: 3,
+    isActive: true
+  },
+  {
+    type: "podcast",
+    title: "Are Lawyers Relevant in Mediation?",
+    subtitle: "Tat Lim & Raj R. Panchmatia",
+    author: "Jonathan Rodrigues",
+    category: "Lawyer's Role",
+    description: "Exploring the role of lawyers in the mediation process.",
+    url: "https://www.youtube.com/watch?v=v2HQx611mT0",
+    publication: "Mission Mediation Podcast",
+    date: "2024",
+    order: 4,
+    isActive: true
   },
   {
     type: "podcast",
@@ -271,7 +297,7 @@ const podcastEpisodes: Partial<ResourceItem>[] = [
     url: "https://www.youtube.com/watch?v=stg6rttI2kg",
     publication: "Mission Mediation Podcast",
     date: "2024",
-    order: 3,
+    order: 5,
     isActive: true
   },
   {
@@ -284,7 +310,7 @@ const podcastEpisodes: Partial<ResourceItem>[] = [
     url: "https://www.youtube.com/watch?v=rYI4_PgBitE",
     publication: "Mission Mediation Podcast",
     date: "2024",
-    order: 4,
+    order: 6,
     isActive: true
   },
   {
@@ -297,7 +323,7 @@ const podcastEpisodes: Partial<ResourceItem>[] = [
     url: "https://www.youtube.com/watch?v=B8PZuN-f6n4",
     publication: "Mission Mediation Podcast",
     date: "2024",
-    order: 5,
+    order: 7,
     isActive: true
   },
   {
@@ -310,7 +336,7 @@ const podcastEpisodes: Partial<ResourceItem>[] = [
     url: "https://www.youtube.com/watch?v=yvIci9WuZzc",
     publication: "Mission Mediation Podcast",
     date: "2024",
-    order: 6,
+    order: 8,
     isActive: true
   },
   {
@@ -323,7 +349,7 @@ const podcastEpisodes: Partial<ResourceItem>[] = [
     url: "https://www.youtube.com/watch?v=eJZeUtoIBpQ",
     publication: "Mission Mediation Podcast",
     date: "2024",
-    order: 7,
+    order: 9,
     isActive: true
   },
   {
@@ -336,7 +362,7 @@ const podcastEpisodes: Partial<ResourceItem>[] = [
     url: "https://www.youtube.com/live/jiRvEzdDepM",
     publication: "Mission Mediation Podcast",
     date: "2024",
-    order: 8,
+    order: 10,
     isActive: true
   },
 ];

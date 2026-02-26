@@ -881,6 +881,24 @@ export interface WorkbookGalleryImage extends BaseDocument {
   isActive: boolean;
 }
 
+export interface WorkbookFeature extends BaseDocument {
+  /** Feature text */
+  text: string;
+  /** Display order */
+  order: number;
+  /** Whether visible */
+  isActive: boolean;
+}
+
+export interface WorkbookChapter extends BaseDocument {
+  /** Chapter title */
+  title: string;
+  /** Display order */
+  order: number;
+  /** Whether visible */
+  isActive: boolean;
+}
+
 // ============================================================================
 // COLLECTION NAMES
 // ============================================================================
@@ -933,6 +951,8 @@ export const COLLECTIONS = {
   MEDIATION_RULES_FEES_SETTINGS: "mediationRulesFeesSettings",
   // Workbook Gallery
   WORKBOOK_GALLERY: "workbookGallery",
+  WORKBOOK_FEATURES: "workbookFeatures",
+  WORKBOOK_CHAPTERS: "workbookChapters",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];
