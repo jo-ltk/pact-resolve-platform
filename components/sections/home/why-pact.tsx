@@ -8,7 +8,8 @@ import {
   BookOpen, 
   Users, 
   Scale, 
-  ChevronRight,
+  ArrowRight,
+  ScrollText,
   LucideIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -20,18 +21,19 @@ const iconMap: Record<string, LucideIcon> = {
   Globe,
   BookOpen,
   Users,
-  Scale
+  Scale,
+  ScrollText
 };
 
 export function WhyPact() {
   const fallbackSections = [
     {
       _id: "fallback-1" as any,
-      label: "Global Standards",
-      iconName: "Globe",
-      title: "Elevating Mediation to Global Standards",
-      description: "Our frameworks are built upon internationally recognized principles, ensuring that every mediated outcome is robust, equitable, and enforceable across multiple jurisdictions.",
-      cta: "Explore Our Standards",
+      label: "Mediation Practice Protocols",
+      iconName: "Shield",
+      title: "Mediation Practice Protocols",
+      description: "PACT operates in alignment with internationally recognised mediation practice protocols and upholds the principles of voluntariness, neutrality, confidentiality, and party autonomy. All PACT mediations are conducted in strict adherence to The Mediation Act, 2023, ensuring legal validity, ethical integrity, and global best-practice standards.",
+      cta: "Standards of Practice",
       order: 1,
       isActive: true,
       createdAt: new Date(),
@@ -39,11 +41,11 @@ export function WhyPact() {
     },
     {
       _id: "fallback-2" as any,
-      label: "Expert Neutrals",
-      iconName: "Users",
-      title: "A Roster of Distinguished Neutrals",
-      description: "Access an elite panel of mediators, arbitrators, and technical experts. Our neutrals are rigorously vetted to guarantee the highest caliber of professional conflict resolution.",
-      cta: "Meet The Panel",
+      label: "IMI QAP Mediation Advocacy",
+      iconName: "ScrollText",
+      title: "IMI QAP Mediation Advocacy",
+      description: "PACT has been recognised by the International Mediation Institute (IMI) for its QAP-certified Mediation Advocacy, reflecting excellence in neutrality, ethical representation, and professional competence. This recognition affirms PACT's commitment to international quality standards and mediation advocacy within the mediation ecosystem.",
+      cta: "Our Certifications",
       order: 2,
       isActive: true,
       createdAt: new Date(),
@@ -51,12 +53,36 @@ export function WhyPact() {
     },
     {
       _id: "fallback-3" as any,
-      label: "Institutional Trust",
-      iconName: "Shield",
-      title: "Anchored in Institutional Trust",
-      description: "As a trusted partner to law firms, enterprises, and governments, PACT provides the secure harbor needed to resolve sensitive, high-value disputes confidentially.",
-      cta: "Learn About PACT",
+      label: "International Collaborations",
+      iconName: "Globe",
+      title: "International Collaborations",
+      description: "PACT has actively collaborated with leading institutions – International Mediation Institute (Europe/Global), Maxwell Mediators (Asia Pacific), Mediate.com (USA) to advance mediation practice, capacity building, and cross-border dispute resolution. These collaborations reflect PACT's global outlook, commitment to knowledge exchange and visibility within the mediation community.",
+      cta: "Global Network",
       order: 3,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      _id: "fallback-4" as any,
+      label: "Mediation Simplified",
+      iconName: "BookOpen",
+      title: "Mediation Simplified",
+      description: "Mediation Simplified has made mediation accessible and practical for professionals, students, and disputants alike. By demystifying concepts and offering clear frameworks, the book, authored and curated by Jonathan Rodrigues and Nisshant Laroia, has contributed to greater awareness, informed practice, and wider adoption of mediation as an effective dispute resolution mechanism.",
+      cta: "Get the Book",
+      order: 4,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      _id: "fallback-5" as any,
+      label: "Mediation Clauses",
+      iconName: "ScrollText",
+      title: "Mediation Clauses",
+      description: "The mediation clauses endorsed by PACT, as an institutionalised mediation service provider, promote early, structured, and confidential dispute resolution. Designed to align with international best practices and the Mediation Act, 2023, these clauses provide parties with clarity, procedural certainty, and enforceable pathways to effective mediation.",
+      cta: "View Clauses",
+      order: 5,
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date()
@@ -96,28 +122,27 @@ export function WhyPact() {
   if (sections.length === 0) return null;
 
   return (
-    <section className="py-16 md:py-24 bg-navy-950 relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] bg-gold-500/5 rounded-full blur-[100px]" />
-      </div>
+    <section className="py-24 bg-navy-950 relative overflow-hidden">
+      {/* Background Decorative Elements */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 blur-[120px] rounded-full -z-10" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gold-500/5 blur-[120px] rounded-full -z-10" />
 
-      <div className="max-w-8xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
-        <div className="mb-12 md:mb-16">
-          <div className="inline-flex items-center gap-3 mb-4">
-             <div className="h-px w-8 bg-gold-500" />
-             <p className="text-gold-500  text-xs uppercase tracking-[0.3em] font-medium">Why PACT</p>
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+        {/* Header Section */}
+        <div className="mb-20">
+          <div className="inline-flex items-center gap-4 mb-6 opacity-60">
+            <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white">Why PACT</span>
+            <div className="h-px w-12 bg-gold-500/50" />
           </div>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight text-white mb-6">
-            Building Trusted <span className="text-gold-500 italic">Foundations</span>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight text-white mb-8 leading-tight">
+            Committed to the highest <br className="hidden md:block" />
+            <span className="text-gold-500 font-medium italic">standards</span> of training and services
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-12 lg:gap-20 items-start">
-          
-          {/* Tabs Navigation */}
-          <div className="space-y-3">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_2fr] gap-x-12 items-center">
+          {/* Navigation Sidebar */}
+          <div className="flex flex-col gap-2 relative z-10 py-8">
             {sections.map((section) => {
               const Icon = iconMap[section.iconName] || Shield;
               const isActive = activeTab === section._id?.toString();
@@ -127,71 +152,71 @@ export function WhyPact() {
                   key={section._id?.toString()}
                   onClick={() => setActiveTab(section._id?.toString() || "")}
                   className={cn(
-                    "w-full text-left p-6 rounded-2xl transition-all duration-500 group relative overflow-hidden",
+                    "group relative flex items-center justify-between text-left px-8 py-6 rounded-xl transition-all duration-300",
                     isActive 
-                      ? "bg-white/5 border border-white/10 shadow-2xl" 
-                      : "hover:bg-white/[0.02] border border-transparent"
+                      ? "text-gold-500 bg-white/5" 
+                      : "text-white/40 hover:text-white/70 hover:bg-white/5"
                   )}
                 >
-                  <div className="flex items-center gap-4 relative z-10">
-                    <div className={cn(
-                      "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-500",
-                      isActive ? "bg-gold-500 text-navy-950" : "bg-white/5 text-white/40 group-hover:text-white"
-                    )}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <span className={cn(
-                      "font-medium tracking-tight text-sm md:text-base transition-colors duration-500",
-                      isActive ? "text-white" : "text-white/40 group-hover:text-white/60"
-                    )}>
-                      {section.label}
-                    </span>
+                  <div className="flex items-center gap-6">
+                    <Icon className={cn(
+                      "w-5 h-5 transition-colors duration-300",
+                      isActive ? "text-gold-500" : "text-white/20 group-hover:text-white/40"
+                    )} />
+                    <span className="text-lg font-light tracking-wide">{section.label}</span>
                   </div>
+                  
                   {isActive && (
-                    <motion.div 
-                      layoutId="active-indicator"
-                      className="absolute left-0 top-0 bottom-0 w-1 bg-gold-500"
-                    />
+                    <motion.div
+                      layoutId="arrow"
+                      initial={{ x: -10, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 hidden lg:block"
+                    >
+                      <div className="w-6 h-6 bg-navy-950 border-t border-r border-gold-500/50 rotate-45 transform" />
+                    </motion.div>
                   )}
                 </button>
               );
             })}
           </div>
 
+          {/* Vertical Divider Line */}
+          <div className="hidden lg:block relative h-[400px]">
+            <div className="w-px h-full bg-white/10" />
+          </div>
+
           {/* Content Area */}
-          <div className="min-h-[400px] flex flex-col justify-center">
+          <div className="relative min-h-[300px] lg:pl-12 py-8 lg:py-0">
             <AnimatePresence mode="wait">
               {activeContent && (
                 <motion.div
                   key={activeContent._id?.toString()}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.5 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                   className="space-y-8"
                 >
                   <div className="space-y-6">
-                    <h3 className="text-3xl md:text-5xl font-light text-white tracking-tight leading-tight">
+                    <h3 className="text-3xl md:text-4xl font-light tracking-tight text-white leading-tight">
                       {activeContent.title}
                     </h3>
-                    <p className="text-white/60 font-light text-lg md:text-xl leading-relaxed max-w-2xl">
+                    <p className="text-xl md:text-2xl text-white/60 leading-relaxed font-light">
                       {activeContent.description}
                     </p>
-                  </div>
-
-                  <div className="pt-8 border-t border-white/5">
-                    <button className="group flex items-center gap-3 text-gold-500 font-medium tracking-wide hover:text-gold-400 transition-colors">
-                      {activeContent.cta || "Learn More"}
-                      <div className="w-8 h-8 rounded-full border border-gold-500/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                        <ChevronRight className="w-4 h-4" />
-                      </div>
+                    
+                    <button className="group mt-8 flex items-center gap-4 text-gold-500 font-mono text-[10px] uppercase tracking-[0.3em] hover:text-white transition-colors duration-300">
+                      <span className="border-b border-gold-500/30 pb-1 group-hover:border-white transition-colors">
+                        {activeContent.cta || "Learn More"}
+                      </span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </button>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-
         </div>
       </div>
     </section>
