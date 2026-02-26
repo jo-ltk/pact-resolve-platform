@@ -51,6 +51,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/context/AuthContext";
 import { type EcosystemTeamMember, type EcosystemTeamCategory } from "@/lib/db/schemas";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 
 const CATEGORIES: { value: EcosystemTeamCategory; label: string }[] = [
   { value: "managing-partner", label: "Managing Partners" },
@@ -389,18 +390,13 @@ export default function EcosystemTeamAdminPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Photo URL</Label>
-                  <div className="relative">
-                    <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
-                    <Input 
-                      value={editingItem?.image || ""} 
-                      onChange={(e) => setEditingItem(prev => ({ ...prev!, image: e.target.value }))} 
-                      className="pl-10 h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20 text-sm font-medium"
-                      placeholder="https://images.unsplash.com/..."
-                      required 
-                    />
-                  </div>
+                <div className="space-y-2 col-span-2">
+                  <ImageUpload
+                    label="Profile Photo"
+                    description="Upload a PNG, JPG, or WebP image (max 5MB)"
+                    value={editingItem?.image || ""}
+                    onChange={(url) => setEditingItem(prev => ({ ...prev!, image: url }))}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">LinkedIn Handle / URL</Label>

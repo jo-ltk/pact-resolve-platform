@@ -48,6 +48,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/lib/context/AuthContext";
 import { type EcosystemPartner, type EcosystemPartnerCategory } from "@/lib/db/schemas";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 
 const CATEGORIES: { value: EcosystemPartnerCategory; label: string }[] = [
   { value: "strategic", label: "Strategic Partnerships" },
@@ -356,17 +357,12 @@ export default function EcosystemPartnersAdminPage() {
               </div>
 
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Logo URL</Label>
-                <div className="relative">
-                  <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
-                  <Input 
-                    value={editingItem?.logo || ""} 
-                    onChange={(e) => setEditingItem(prev => ({ ...prev!, logo: e.target.value }))} 
-                    className="pl-10 h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                    placeholder="/partners/..."
-                    required 
-                  />
-                </div>
+                <ImageUpload
+                  label="Partner Logo"
+                  description="Upload a PNG, JPG, or WebP image (max 5MB)"
+                  value={editingItem?.logo || ""}
+                  onChange={(url) => setEditingItem(prev => ({ ...prev!, logo: url }))}
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-6 pt-4 border-t border-navy-50">

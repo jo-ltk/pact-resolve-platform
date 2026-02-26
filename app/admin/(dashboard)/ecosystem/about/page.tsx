@@ -46,6 +46,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/context/AuthContext";
 import { type EcosystemAward } from "@/lib/db/schemas";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 
 export default function EcosystemAwardsAdminPage() {
   const { token } = useAuth();
@@ -299,18 +300,12 @@ export default function EcosystemAwardsAdminPage() {
               </div>
 
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Image URL</Label>
-                <div className="flex gap-4">
-                  <div className="relative flex-1">
-                    <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
-                    <Input 
-                      value={editingItem?.image || ""} 
-                      onChange={(e) => setEditingItem(prev => ({ ...prev!, image: e.target.value }))} 
-                      className="pl-10 h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                      placeholder="https://cloudinary.com/..."
-                    />
-                  </div>
-                </div>
+                <ImageUpload
+                  label="Award Image"
+                  description="Upload a PNG, JPG, or WebP image (max 5MB)"
+                  value={editingItem?.image || ""}
+                  onChange={(url) => setEditingItem(prev => ({ ...prev!, image: url }))}
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-6 pt-4 border-t border-navy-50">
