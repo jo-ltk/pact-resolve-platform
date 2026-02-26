@@ -7,6 +7,13 @@ import { Linkedin } from "lucide-react";
 import type { PanelMember } from "@/lib/db/schemas";
 
 export function PanelNeutrals() {
+  const fallbackMembers: PanelMember[] = [
+    { _id: "fallback-1" as any, name: "Justice A.K. Sikri", role: "Former Judge, Supreme Court of India", image: { url: "/panel/dummy1.jpg", alt: "Justice A.K. Sikri" }, order: 1, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+    { _id: "fallback-2" as any, name: "Sriram Panchu", role: "Senior Advocate & Mediator", image: { url: "/panel/dummy2.jpg", alt: "Sriram Panchu" }, order: 2, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+    { _id: "fallback-3" as any, name: "Laila Ollapally", role: "Founder, CAMP", image: { url: "/panel/dummy3.jpg", alt: "Laila Ollapally" }, order: 3, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+    { _id: "fallback-4" as any, name: "Tara Ollapally", role: "Mediator, CAMP", image: { url: "/panel/dummy4.jpg", alt: "Tara Ollapally" }, order: 4, isActive: true, createdAt: new Date(), updatedAt: new Date() }
+  ];
+
   const [members, setMembers] = useState<PanelMember[]>([]);
 
   useEffect(() => {
@@ -14,11 +21,14 @@ export function PanelNeutrals() {
       try {
         const res = await fetch("/api/content/panel-members", { cache: "no-store" });
         const data = await res.json();
-        if (data.success) {
+        if (data.success && data.data && data.data.length > 0) {
           setMembers(data.data);
+        } else {
+          setMembers(fallbackMembers);
         }
       } catch (error) {
         console.error("Failed to fetch panel members", error);
+        setMembers(fallbackMembers);
       }
     }
     fetchMembers();

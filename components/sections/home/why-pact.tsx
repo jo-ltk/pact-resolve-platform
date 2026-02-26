@@ -24,6 +24,45 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export function WhyPact() {
+  const fallbackSections = [
+    {
+      _id: "fallback-1" as any,
+      label: "Global Standards",
+      iconName: "Globe",
+      title: "Elevating Mediation to Global Standards",
+      description: "Our frameworks are built upon internationally recognized principles, ensuring that every mediated outcome is robust, equitable, and enforceable across multiple jurisdictions.",
+      cta: "Explore Our Standards",
+      order: 1,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      _id: "fallback-2" as any,
+      label: "Expert Neutrals",
+      iconName: "Users",
+      title: "A Roster of Distinguished Neutrals",
+      description: "Access an elite panel of mediators, arbitrators, and technical experts. Our neutrals are rigorously vetted to guarantee the highest caliber of professional conflict resolution.",
+      cta: "Meet The Panel",
+      order: 2,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      _id: "fallback-3" as any,
+      label: "Institutional Trust",
+      iconName: "Shield",
+      title: "Anchored in Institutional Trust",
+      description: "As a trusted partner to law firms, enterprises, and governments, PACT provides the secure harbor needed to resolve sensitive, high-value disputes confidentially.",
+      cta: "Learn About PACT",
+      order: 3,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+  ];
+
   const [sections, setSections] = useState<WhyPactPoint[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("");
@@ -33,12 +72,17 @@ export function WhyPact() {
       try {
         const res = await fetch("/api/content/why-pact");
         const result = await res.json();
-        if (result.success && result.data?.length > 0) {
+        if (result.success && result.data && result.data.length > 0) {
           setSections(result.data);
           setActiveTab(result.data[0]._id?.toString() || "");
+        } else {
+          setSections(fallbackSections);
+          setActiveTab(fallbackSections[0]._id.toString());
         }
       } catch (error) {
         console.error("Failed to fetch why-pact sections", error);
+        setSections(fallbackSections);
+        setActiveTab(fallbackSections[0]._id.toString());
       } finally {
         setIsLoading(false);
       }

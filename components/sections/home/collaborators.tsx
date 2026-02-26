@@ -6,6 +6,12 @@ import { motion } from "framer-motion";
 import { Partner } from "@/lib/db/schemas";
 
 export function Collaborators() {
+  const fallbackPartners: Partner[] = [
+    { _id: "fallback-part-1" as any, name: "Partner 1", logo: { url: "/logo_dark.png", alt: "Partner 1" }, category: "strategic", order: 1, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+    { _id: "fallback-part-2" as any, name: "Partner 2", logo: { url: "/logo_dark.png", alt: "Partner 2" }, category: "strategic", order: 2, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+    { _id: "fallback-part-3" as any, name: "Partner 3", logo: { url: "/logo_dark.png", alt: "Partner 3" }, category: "strategic", order: 3, isActive: true, createdAt: new Date(), updatedAt: new Date() }
+  ];
+
   const [partners, setPartners] = useState<Partner[]>([]);
   const marqueeDurationSeconds = 50;
 
@@ -14,11 +20,14 @@ export function Collaborators() {
       try {
         const res = await fetch("/api/content/partners");
         const data = await res.json();
-        if (data.success) {
+        if (data.success && data.data && data.data.length > 0) {
           setPartners(data.data);
+        } else {
+          setPartners(fallbackPartners);
         }
       } catch (error) {
         console.error("Failed to fetch partners", error);
+        setPartners(fallbackPartners);
       }
     }
     fetchPartners();
@@ -35,7 +44,7 @@ export function Collaborators() {
   return (
     <section className="pt-6 md:pt-12 pb-4 md:pb-6 bg-white relative overflow-hidden">
       {/* Subtle grid background */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[40px_40px]" />
       
       {/* Soft gradient overlays for seamless infinity effect */}
       <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-linear-to-r from-white to-transparent z-20" />
@@ -46,7 +55,7 @@ export function Collaborators() {
           <h2 className="text-xs  uppercase tracking-[0.5em] text-gold-600 mb-2">
             Strategic Partners
           </h2>
-          <div className="h-[1px] w-full bg-linear-to-r from-transparent via-gold-400 to-transparent mx-auto" />
+          <div className="h-px w-full bg-linear-to-r from-transparent via-gold-400 to-transparent mx-auto" />
         </div>
         
         <h3 className="text-2xl md:text-4xl font-extralight text-navy-950 tracking-tighter">

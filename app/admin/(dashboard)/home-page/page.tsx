@@ -55,7 +55,7 @@ export default function HomepageDashboard() {
       bg: "bg-amber-50/50"
     },
     {
-      title: "Trusted to Deliver",
+      title: "PACT Testimonials",
       description: "Manage PACT Testimonials — quotes, card images, profile pictures, and star ratings.",
       icon: MessageSquareQuote,
       link: "/admin/home-page/testimonials",

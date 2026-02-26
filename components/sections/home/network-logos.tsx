@@ -5,6 +5,14 @@ import { FadeIn, FadeInUp } from "@/components/motion-wrapper";
 import { NetworkLogo } from "@/lib/db/schemas";
 
 export function NetworkLogos() {
+  const fallbackNetworks = [
+    { _id: "fallback-1" as any, name: "GAADR", order: 1, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+    { _id: "fallback-2" as any, name: "MCI", order: 2, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+    { _id: "fallback-3" as any, name: "Podcast", order: 3, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+    { _id: "fallback-4" as any, name: "Advocate Maximus", order: 4, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+    { _id: "fallback-5" as any, name: "ODRC", order: 5, isActive: true, createdAt: new Date(), updatedAt: new Date() }
+  ];
+
   const [networks, setNetworks] = useState<NetworkLogo[]>([]);
 
   useEffect(() => {
@@ -12,9 +20,14 @@ export function NetworkLogos() {
       try {
         const res = await fetch("/api/content/network-logos");
         const result = await res.json();
-        if (result.success) setNetworks(result.data || []);
+        if (result.success && result.data && result.data.length > 0) {
+          setNetworks(result.data);
+        } else {
+          setNetworks(fallbackNetworks);
+        }
       } catch (error) {
         console.error("Failed to fetch networks", error);
+        setNetworks(fallbackNetworks);
       }
     }
     fetchNetworks();

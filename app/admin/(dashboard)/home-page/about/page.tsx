@@ -17,12 +17,14 @@ const defaultSettings: Partial<AboutPactSettings> = {
   title: "About PACT",
   subtitle1: "Chapter One",
   subtitle2: "The Legacy",
-  description: "Founded on the principles of excellence and innovation...",
+  description: "Founded on the principles of excellence and innovation, PACT has transformed the landscape of mediation. Our journey is a testament to the power of collaborative conflict resolution.",
   stats: [
-    { label: "Trained Users", value: "17,000+", order: 1 },
-    { label: "Mediated Hours", value: "8,600+", order: 2 },
+    { label: "Cases Resolved", value: "2500+", order: 1 },
+    { label: "Success Rate", value: "98%", order: 2 },
+    { label: "Global Chapters", value: "15+", order: 3 },
+    { label: "Trained Neutrals", value: "5000+", order: 4 },
   ],
-  journeyImage: { url: "/images/pact-journey.png", alt: "PACT Journey" },
+  journeyImage: { url: "/images/pact-journey.png", alt: "Journey with The PACT" },
   journeyLabel: "Interactive Timeline 2015 - 2026",
   isActive: true,
 };

@@ -20,7 +20,20 @@ export async function GET(request: NextRequest) {
     const collection = db.collection<Testimonial>(COLLECTIONS.TESTIMONIALS);
 
     const query: any = isAdmin ? {} : { isActive: true };
-    if (page) {
+    if (page === "homepage") {
+      query.$or = [
+        { page: "homepage" },
+        { page: "both" },
+        { page: { $exists: false } },
+        { page: null },
+        { page: "" },
+      ];
+    } else if (page === "simplified") {
+      query.$or = [
+        { page: "simplified" },
+        { page: "both" },
+      ];
+    } else if (page) {
       query.page = page;
     }
 

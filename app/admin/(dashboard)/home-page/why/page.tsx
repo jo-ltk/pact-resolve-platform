@@ -95,6 +95,8 @@ export default function WhyPactAdmin() {
             <TableBody>
               {isLoading ? (
                 <TableRow><TableCell colSpan={5} className="text-center py-10"><Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" /></TableCell></TableRow>
+              ) : data.length === 0 ? (
+                <TableRow><TableCell colSpan={5} className="text-center py-10 text-muted-foreground">No tabs yet. Click "Add Tab" to get started.</TableCell></TableRow>
               ) : data.map((item) => (
                 <TableRow key={item._id?.toString()}>
                   <TableCell>{item.order}</TableCell>

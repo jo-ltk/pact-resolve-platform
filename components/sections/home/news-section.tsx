@@ -87,6 +87,48 @@ function NewsSkeleton() {
 }
 
 export function NewsSection() {
+  const fallbackNews: NewsItem[] = [
+    {
+      _id: "fallback-news-1" as any,
+      title: "The Future of Commercial Mediation in 2026",
+      type: "Article",
+      date: "MARCH 15, 2026",
+      link: "#",
+      image: { url: "", alt: "" },
+      order: 1,
+      isActive: true,
+      isFeatured: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      _id: "fallback-news-2" as any,
+      title: "PACT Announces New Strategic Partnership",
+      type: "Press Release",
+      date: "FEBRUARY 28, 2026",
+      link: "#",
+      image: { url: "", alt: "" },
+      order: 2,
+      isActive: true,
+      isFeatured: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      _id: "fallback-news-3" as any,
+      title: "Mastering Negotiation Dynamics",
+      type: "Blog",
+      date: "JANUARY 10, 2026",
+      link: "#",
+      image: { url: "", alt: "" },
+      order: 3,
+      isActive: true,
+      isFeatured: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+  ];
+
   const [news, setNews] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -95,11 +137,14 @@ export function NewsSection() {
       try {
         const response = await fetch("/api/content/news");
         const result = await response.json();
-        if (result.success && Array.isArray(result.data)) {
+        if (result.success && Array.isArray(result.data) && result.data.length > 0) {
           setNews(result.data);
+        } else {
+          setNews(fallbackNews);
         }
       } catch (error) {
         console.error("Failed to fetch news:", error);
+        setNews(fallbackNews);
       } finally {
         setIsLoading(false);
       }
@@ -108,8 +153,11 @@ export function NewsSection() {
     fetchNews();
   }, []);
 
-  // Don't show section while loading or if no news
-  if (isLoading || news.length === 0) {
+  if (isLoading) {
+    return null;
+  }
+  
+  if (news.length === 0) {
     return null;
   }
 

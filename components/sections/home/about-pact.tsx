@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { History } from "lucide-react";
+import { FadeIn, FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
+import { useEffect, useState } from "react";
 import { AboutPactSettings } from "@/lib/db/schemas";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -17,6 +18,24 @@ export function AboutPact() {
         const result = await res.json();
         if (result.success && result.data) {
           setSettings(result.data);
+        } else {
+            setSettings({
+              title: "About PACT",
+              subtitle1: "Chapter One",
+              subtitle2: "The Legacy",
+              description: "Founded on the principles of excellence and innovation, PACT has transformed the landscape of mediation. Our journey is a testament to the power of collaborative conflict resolution.",
+              stats: [
+                { label: "Cases Resolved", value: "2500+", order: 1 },
+                { label: "Success Rate", value: "98%", order: 2 },
+                { label: "Global Chapters", value: "15+", order: 3 },
+                { label: "Trained Neutrals", value: "5000+", order: 4 },
+              ],
+              journeyImage: { url: "/images/pact-journey.png", alt: "Journey with The PACT" },
+              journeyLabel: "Interactive Timeline 2015 - 2026",
+              isActive: true,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            } as any);
         }
       } catch (error) {
         console.error("Failed to fetch about settings", error);
@@ -33,90 +52,65 @@ export function AboutPact() {
   return (
     <section className="relative py-16 md:py-24 bg-navy-950 overflow-hidden">
       {/* Background radial glow */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[120px] -mr-64 -mt-64" />
-      
-      <div className="max-w-8xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
-          
-          {/* Left Side: Content */}
-          <div className="lg:w-1/2 space-y-10">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="space-y-6"
-            >
-              <div className="inline-flex items-center gap-4">
-                <div className="h-px w-8 bg-gold-500" />
-                <p className="text-gold-500  text-xs uppercase tracking-[0.4em] font-medium">
-                  {settings.subtitle1} <span className="text-white/40 ml-2">— {settings.subtitle2}</span>
-                </p>
-              </div>
-              
-              <h2 className="text-4xl md:text-7xl font-light tracking-tight text-white leading-[1.1]">
-                {settings.title.split(' ').map((word, i) => (
-                  <span key={i} className={word.toUpperCase() === "PACT" ? "text-gold-500 font-medium" : ""}>
-                    {word}{' '}
-                  </span>
-                ))}
-              </h2>
-              
-              <p className="text-white/60 font-light text-lg md:text-xl leading-relaxed max-w-xl">
-                {settings.description}
-              </p>
-            </motion.div>
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-500/10 blur-[120px] rounded-full -z-10" />
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-gold-500/5 blur-[120px] rounded-full -z-10" />
 
-            {/* Dynamic Stats Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 md:gap-12 pt-4 border-t border-white/10">
-              {settings.stats?.sort((a,b) => (a.order || 0) - (b.order || 0)).map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 * i, duration: 0.6 }}
-                >
-                  <p className="text-2xl md:text-4xl font-light text-white mb-2">{stat.value}</p>
-                  <p className="text-white/30  text-[10px] uppercase tracking-widest leading-tight">
-                    {stat.label}
-                  </p>
-                </motion.div>
-              ))}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+        {/* Header Section */}
+        <FadeInUp className="text-center mb-16 md:mb-20 space-y-6">
+          <div className="inline-flex items-center gap-4 opacity-40">
+            <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white">{settings.subtitle1}</span>
+            <div className="h-px w-8 md:w-12 bg-white/30" />
+            <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white">{settings.subtitle2}</span>
+          </div>
+          
+          <h2 className="text-4xl md:text-7xl font-light tracking-tight text-white leading-[1.1]">
+            {settings.title.split(' ').map((word, i) => (
+              <span key={i} className={word.toUpperCase() === "PACT" ? "text-gold-500 font-medium" : ""}>
+                {word}{' '}
+              </span>
+            ))}
+          </h2>
+          
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-white/60 leading-relaxed font-light">
+            {settings.description}
+          </p>
+        </FadeInUp>
+
+        {/* Stats Section */}
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-24 pb-12 border-b border-white/5">
+          {settings.stats?.sort((a,b) => (a.order || 0) - (b.order || 0)).map((stat, i) => (
+            <StaggerItem key={i} className="text-center space-y-2 group">
+              <span className="block text-3xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">{stat.value}</span>
+              <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-white/40">{stat.label}</span>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+
+        {/* The Massive Journey Display */}
+        <FadeIn className="relative group -mx-6 md:mx-0" delay={0.2}>
+          <div className="absolute -inset-1 bg-linear-to-r from-gold-500/20 via-blue-500/20 to-gold-500/20 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-500 hidden md:block"></div>
+          <div className="relative bg-black rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-y md:border border-white/10">
+            <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-transparent via-transparent to-black/40 pointer-events-none" />
+            <Image
+              src={settings.journeyImage?.url || "/images/pact-journey.png"}
+              alt={settings.journeyImage?.alt || settings.journeyLabel || "Journey with The PACT"}
+              width={1920}
+              height={1080}
+              className="w-full h-auto object-cover transform transition duration-700 md:group-hover:scale-[1.01]"
+              priority
+            />
+          </div>
+          
+          {/* Subtle Float Label */}
+          <div className="absolute -top-4 -right-4 bg-navy-950 border border-white/10 px-6 py-3 rounded-full shadow-xl hidden md:block">
+            <div className="flex items-center gap-3">
+              <History className="w-4 h-4 text-gold-500" />
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/80">{settings.journeyLabel}</span>
             </div>
           </div>
+        </FadeIn>
 
-          {/* Right Side: Timeline/Visual */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="lg:w-1/2 relative group"
-          >
-            <div className="relative aspect-16/10 rounded-4xl overflow-hidden border border-white/10 p-2 bg-white/5 backdrop-blur-sm">
-              <div className="relative w-full h-full rounded-3xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-1000">
-                <Image
-                  src={settings.journeyImage.url}
-                  alt={settings.journeyImage.alt || settings.journeyLabel}
-                  fill
-                  className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-transparent to-transparent opacity-60" />
-              </div>
-            </div>
-            
-            {/* Label Badge */}
-            <div className="absolute -bottom-6 right-6 md:right-12">
-              <div className="bg-gold-500 px-8 py-4 rounded-2xl shadow-2xl relative">
-                <div className="absolute top-2 left-2 w-1.5 h-1.5 rounded-full bg-navy-950/20" />
-                <p className="text-navy-950 font-medium tracking-tight whitespace-nowrap">
-                  {settings.journeyLabel}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
       </div>
     </section>
   );

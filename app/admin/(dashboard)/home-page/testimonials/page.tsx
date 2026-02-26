@@ -18,6 +18,12 @@ import { ImageUpload } from "@/components/admin/ImageUpload";
 import { useAuth } from "@/lib/context/AuthContext";
 import { Testimonial } from "@/lib/db/schemas";
 
+const PAGE_OPTIONS = [
+  { value: "homepage", label: "Homepage – Trusted to Deliver" },
+  { value: "simplified", label: "Mediation Simplified page" },
+  { value: "both", label: "Both pages" },
+];
+
 const EMPTY_TESTIMONIAL: Partial<Testimonial> = {
   name: "",
   title: "",
@@ -28,6 +34,7 @@ const EMPTY_TESTIMONIAL: Partial<Testimonial> = {
   profileImage: { url: "", alt: "" },
   order: 1,
   isActive: true,
+  page: "homepage",
 };
 
 export default function TestimonialsAdminPage() {
@@ -320,8 +327,21 @@ export default function TestimonialsAdminPage() {
                 />
               </div>
 
-              {/* Order + Active */}
+              {/* Page + Order */}
               <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Appears On *</Label>
+                  <select
+                    value={editingItem?.page ?? "homepage"}
+                    onChange={(e) => setField("page", e.target.value as any)}
+                    className="w-full rounded-xl h-11 border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring"
+                    required
+                  >
+                    {PAGE_OPTIONS.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
+                  </select>
+                </div>
                 <div className="space-y-2">
                   <Label>Display Order</Label>
                   <Input
@@ -331,13 +351,15 @@ export default function TestimonialsAdminPage() {
                     className="rounded-xl h-11"
                   />
                 </div>
-                <div className="flex items-center space-x-2 pt-8">
-                  <Switch
-                    checked={editingItem?.isActive ?? true}
-                    onCheckedChange={(checked) => setField("isActive", checked)}
-                  />
-                  <Label>Active / Visible</Label>
-                </div>
+              </div>
+
+              {/* Active toggle */}
+              <div className="flex items-center space-x-2">
+                <Switch
+                  checked={editingItem?.isActive ?? true}
+                  onCheckedChange={(checked) => setField("isActive", checked)}
+                />
+                <Label>Active / Visible</Label>
               </div>
 
               {/* Card Background Image */}
