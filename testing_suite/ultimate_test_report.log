@@ -1,0 +1,35 @@
+==================================================
+   INITIATING ULTIMATE CYBERSECURITY & LOGIC TEST 
+==================================================
+
+-> [SETUP] Creating Test Accounts...
+   [+] Admin and Standard User accounts created and authenticated.
+
+==================================================
+🛡️ SCENARIO 1: Privilege Escalation (The 'Nosy User')
+==================================================
+   ✅ PASS: Standard user was correctly blocked with status 403.
+
+==================================================
+🔄 SCENARIO 2: End-to-End Logical Integrity (CRUD Cycle)
+==================================================
+   ✅ CREATE: Successfully inserted new event into database.
+   ✅ READ: Verified the inserted event exists via GET.
+   ✅ UPDATE: Successfully pushed a title modification request.
+   ✅ DELETE: Successfully deleted the event from the database.
+   ✅ CRUD COMPLETE: The event was proven to be fully erased.
+
+==================================================
+🚦 SCENARIO 3: Rate Limiting & DoS Stress Test
+==================================================
+   -> Firing 500 concurrent requests at the server instantly...
+   [+] Execution Time: 10572ms
+   [+] Processed (200 OK): 500
+   [+] Rate Limited (429): 0
+   [+] Crashed/Timeout (500s): 0
+
+   ⚠️ WARNING: Your server successfully handled 500 requests simultaneously without crashing (Strong CPU!), but you have ZERO rate-limiting implemented. A bot could easily abuse this and raise your database query costs.
+
+==================================================
+             TESTING SUITE COMPLETE
+==================================================

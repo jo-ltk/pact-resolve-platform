@@ -1,0 +1,1304 @@
+{
+  "generatedAt": "2026-02-27T20:33:04.901Z",
+  "totalEndpointsTested": 162,
+  "passed": 161,
+  "failed": 1,
+  "results": [
+    {
+      "endpoint": "/api/audit-logs",
+      "method": "GET",
+      "statusCode": 401,
+      "durationMs": 471,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/auth/login",
+      "method": "POST",
+      "statusCode": 400,
+      "durationMs": 248,
+      "result": "Passed (Validation/Not Found)",
+      "notes": "Validation/Not Found (400) - Working route"
+    },
+    {
+      "endpoint": "/api/auth/profile",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 997,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/auth/signup",
+      "method": "POST",
+      "statusCode": 400,
+      "durationMs": 370,
+      "result": "Passed (Validation/Not Found)",
+      "notes": "Validation/Not Found (400) - Working route"
+    },
+    {
+      "endpoint": "/api/content/about-pact",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 94,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/about-pact",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 28,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/courses",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 594,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/academy/courses",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/courses",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 11,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/courses",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 11,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/faculty",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 498,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/academy/faculty",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 9,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/faculty",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 11,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/faculty",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 15,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/modules",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 448,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/academy/modules",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 12,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/modules",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 18,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/modules",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 11,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/partners",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 414,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/academy/partners",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/partners",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 8,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/partners",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/academy/seed",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 295,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/academy/seed",
+      "method": "POST",
+      "statusCode": 200,
+      "durationMs": 440,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/advocate-maximus-event",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 55,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/advocate-maximus-event",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/advocate-maximus-event",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/advocate-maximus-event",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/archived-projects",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 348,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/archived-projects",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/archived-projects",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/archived-projects",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/awards-event",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 74,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/awards-event",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/awards-event",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/awards-event",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/clauses-essentials",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 249,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/clauses-essentials",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/clauses-essentials",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/clauses-essentials",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/clauses-essentials/seed",
+      "method": "POST",
+      "statusCode": 200,
+      "durationMs": 275,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/conclave-event",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 53,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/conclave-event",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 5,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/conclave-event",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 5,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/conclave-event",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 5,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/awards",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 61,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/awards",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 5,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/awards",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 8,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/awards",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/partners",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 59,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/partners",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 5,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/partners",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/partners",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/pledge/signatories",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 60,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/pledge/signatories",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/pledge/signatories",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/pledge/signatories",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 5,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/seed",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 206,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/seed",
+      "method": "POST",
+      "statusCode": 200,
+      "durationMs": 308,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/team",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 265,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/team",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/team",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 8,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/ecosystem/team",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 8,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/externship",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 175,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/externship",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 11,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/footer",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 314,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/footer",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/general-event",
+      "method": "GET",
+      "statusCode": 404,
+      "durationMs": 288,
+      "result": "Passed (Validation/Not Found)",
+      "notes": "Validation/Not Found (404) - Working route"
+    },
+    {
+      "endpoint": "/api/content/general-event",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 12,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/general-event",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 8,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/general-event",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 9,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/global-settings",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 112,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/global-settings",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 13,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/hero-slides",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 77,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/hero-slides",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 14,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/hero-slides",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 12,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/hero-slides",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 11,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mci-event",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 67,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/mci-event",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 13,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mci-event",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 12,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mci-event",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mci-signup",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 1260,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/mci-signup",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 59,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/case-studies",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 213,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/mediation/case-studies",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 13,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/case-studies",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 12,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/case-studies",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 15,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/fees",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 165,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/mediation/fees",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 11,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/fees",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 11,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/fees",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 9,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/resolution-steps",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 438,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/mediation/resolution-steps",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/resolution-steps",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 14,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/resolution-steps",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 12,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/rules",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 167,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/mediation/rules",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/rules",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/rules",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 8,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/rules-fees-settings",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 139,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/mediation/rules-fees-settings",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/why-points",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 319,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/mediation/why-points",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/why-points",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 12,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/mediation/why-points",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 17,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/network-logos",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 67,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/network-logos",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 9,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/network-logos",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 8,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/network-logos",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 9,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/news",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 65,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/news",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 8,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/news",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 15,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/news",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/nmr-content",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 377,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/nmr-content",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/nmr-content",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/nmr-content",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 9,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/nmr-content/seed",
+      "method": "POST",
+      "statusCode": 200,
+      "durationMs": 267,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/panel-members",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 76,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/panel-members",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 8,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/panel-members",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/panel-members",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/partners",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 68,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/partners",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 18,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/partners",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 12,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/partners",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 12,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/pledge",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 236,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/pledge",
+      "method": "POST",
+      "statusCode": 500,
+      "durationMs": 266,
+      "result": "Failed",
+      "notes": "Failed with status 500"
+    },
+    {
+      "endpoint": "/api/content/project-updates",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 264,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/project-updates",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/project-updates",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/project-updates",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/resources",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 264,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/resources",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/resources",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 9,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/resources",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 10,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/resources/seed",
+      "method": "POST",
+      "statusCode": 200,
+      "durationMs": 310,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/testimonials",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 62,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/testimonials",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/testimonials",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/testimonials",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/testimonials/seed",
+      "method": "POST",
+      "statusCode": 200,
+      "durationMs": 309,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/why-pact",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 74,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/why-pact",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/why-pact",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/why-pact",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/workbook-chapters",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 755,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/workbook-chapters",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 5,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/workbook-chapters",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/workbook-chapters",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/workbook-features",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 459,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/workbook-features",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/workbook-features",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 9,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/workbook-features",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 15,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/workbook-gallery",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 262,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/content/workbook-gallery",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 11,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/workbook-gallery",
+      "method": "PUT",
+      "statusCode": 401,
+      "durationMs": 8,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/workbook-gallery",
+      "method": "DELETE",
+      "statusCode": 401,
+      "durationMs": 7,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    },
+    {
+      "endpoint": "/api/content/workbook-gallery/seed",
+      "method": "POST",
+      "statusCode": 200,
+      "durationMs": 280,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/file/view",
+      "method": "GET",
+      "statusCode": 400,
+      "durationMs": 138,
+      "result": "Passed (Validation/Not Found)",
+      "notes": "Validation/Not Found (400) - Working route"
+    },
+    {
+      "endpoint": "/api/health",
+      "method": "GET",
+      "statusCode": 200,
+      "durationMs": 465,
+      "result": "Passed",
+      "notes": "Success"
+    },
+    {
+      "endpoint": "/api/upload",
+      "method": "POST",
+      "statusCode": 401,
+      "durationMs": 6,
+      "result": "Passed (Protected)",
+      "notes": "Requires Authentication - Expected behavior"
+    }
+  ]
+}
