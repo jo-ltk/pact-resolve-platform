@@ -206,11 +206,12 @@ export interface MCIGalleryImage {
   order: number;
 }
 
-/** Media coverage entry */
 export interface MCIMediaCoverage {
-  name: string;
-  fontStyle: string;
-  url?: string;
+  id?: string;
+  publication: string;
+  headline: string;
+  url: string;
+  order?: number;
 }
 
 /** Reward/benefit entry */

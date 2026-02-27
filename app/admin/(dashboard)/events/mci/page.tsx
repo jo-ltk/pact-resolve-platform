@@ -50,15 +50,19 @@ export default function MCIManagementPage() {
   const [eventData, setEventData] = useState<MCIEvent | null>(null);
   const [gallery, setGallery] = useState<Array<{ id: string; url: string; title: string; description: string; order: number }>>([]);
   const [partners, setPartners] = useState<Array<{ id: string; name: string; logo: string; order: number }>>([]);
+  const [press, setPress] = useState<Array<{ id: string; publication: string; headline: string; url: string; order: number }>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<'gallery' | 'partners'>('gallery');
+  const [activeTab, setActiveTab] = useState<'gallery' | 'partners' | 'press'>('gallery');
   
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isPartnerDialogOpen, setIsPartnerDialogOpen] = useState(false);
+  const [isPressDialogOpen, setIsPressDialogOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [tempItem, setTempItem] = useState<{ url: string; title: string; description: string; order: number }>({ url: "", title: "", description: "", order: 0 });
   const [tempPartner, setTempPartner] = useState<{ name: string; logo: string; order: number }>({ name: "", logo: "", order: 0 });
+  const [tempPress, setTempPress] = useState<{ publication: string; headline: string; url: string; order: number }>({ publication: "", headline: "", url: "", order: 0 });
+
 
   // Fallback images matching the public website for initial setup
   const fallbackGallery = [
@@ -100,6 +104,39 @@ export default function MCIManagementPage() {
     }
   ];
 
+  const fallbackPress = [
+    {
+      publication: "SCC Online",
+      headline: "Live: PACT, SAM & GNLU Mediation Championship India 2023",
+      url: "https://www.scconline.com/blog/post/2023/09/08/live-pact-sam-gnlu-mediation-championship-india-2023/"
+    },
+    {
+      publication: "Bar & Bench",
+      headline: "Legal League Consulting joins The PACT in hosting India's League of Mediation Champions at GNLU",
+      url: "https://www.barandbench.com/news/corporate/legal-league-consulting-joins-the-pact-in-hosting-indias-league-of-mediation-champions-at-gnlu"
+    },
+    {
+      publication: "SCC Blog",
+      headline: "SAM and GNLU join The PACT to further Mission Mediation in India",
+      url: "https://blog.scconline.gen.in/post/2023/09/04/sam-and-gnlu-join-the-pact-to-further-mission-mediation-in-india/"
+    },
+    {
+      publication: "Bar & Bench",
+      headline: "GIMAC, GNLU and The PACT to host Mediation Championship India 2024",
+      url: "https://www.barandbench.com/Law-School/gimac-gnlu-and-the-pact-to-host-mediation-championship-india-2024"
+    },
+    {
+      publication: "LiveLaw",
+      headline: "Mediation Championship India 2024: GIMAC & The PACT",
+      url: "https://www.livelaw.in/lawschool/mediation-championship-india-gimac-the-pact-mediation-268982"
+    },
+    {
+      publication: "Lexology",
+      headline: "Partnerships & Sponsors for Mediation Championship India 2024",
+      url: "https://www.lexology.com/library/detail.aspx?g=2af664c4-1152-41ef-aae5-86aae73229be"
+    }
+  ].map((p, i) => ({ ...p, order: i + 1 }));
+
   useEffect(() => { fetchEvent(); }, []);
 
   async function fetchEvent() {
@@ -133,29 +170,43 @@ export default function MCIManagementPage() {
               id: item.id || `partner-${idx}-${Date.now()}`
             }));
           setPartners(partnersWithIds);
+
+          // Set Press
+          const pressWithIds = (activeEvent.mediaCoverage && activeEvent.mediaCoverage.length > 0 ? activeEvent.mediaCoverage : fallbackPress)
+            .map((item: any, idx: number) => ({
+              ...item,
+              id: item.id || `press-${idx}-${Date.now()}`
+            }));
+          setPress(pressWithIds);
         } else {
           setGallery(fallbackGallery.map((item, idx) => ({ ...item, id: `fallback-${idx}` })));
           setPartners([]);
+          setPress(fallbackPress.map((item, idx) => ({ ...item, id: `fallback-press-${idx}` })));
         }
       } else {
         setGallery(fallbackGallery.map((item, idx) => ({ ...item, id: `fallback-${idx}` })));
         setPartners([]);
+        setPress(fallbackPress.map((item, idx) => ({ ...item, id: `fallback-press-${idx}` })));
       }
     } catch (e) { 
       setGallery(fallbackGallery.map((item, idx) => ({ ...item, id: `fallback-${idx}` })));
       setPartners([]);
+      setPress(fallbackPress.map((item, idx) => ({ ...item, id: `fallback-press-${idx}` })));
+
       toast.error("Database connection issue. Showing default data."); 
     }
     finally { setIsLoading(false); }
   }
 
-  const handleSave = async (overrideGallery?: any[], overridePartners?: any[]) => {
+  const handleSave = async (overrideGallery?: any[], overridePartners?: any[], overridePress?: any[]) => {
     setIsSaving(true);
     try {
       const gList = overrideGallery || gallery;
       const pList = overridePartners || partners;
+      const pressList = overridePress || press;
       const galleryToSave = gList.map(({ id, ...rest }) => rest);
       const partnersToSave = pList.map(({ id, ...rest }) => rest);
+      const pressToSave = pressList.map(({ id, ...rest }) => rest);
 
       const method = (eventData && eventData._id) ? "PUT" : "POST";
       const payload = (eventData && eventData._id) 
@@ -163,7 +214,8 @@ export default function MCIManagementPage() {
             ...eventData, 
             isActive: true, 
             gallery: galleryToSave,
-            mentoringPartners: partnersToSave
+            mentoringPartners: partnersToSave,
+            mediaCoverage: pressToSave
           }
         : {
             year: new Date().getFullYear(),
@@ -171,7 +223,8 @@ export default function MCIManagementPage() {
             subtitle: "India's Premier Mediation Competition",
             isActive: true,
             gallery: galleryToSave,
-            mentoringPartners: partnersToSave
+            mentoringPartners: partnersToSave,
+            mediaCoverage: pressToSave
           };
 
       console.log(`[Admin] Saving MCI Event (${method})`, payload);
@@ -291,8 +344,52 @@ export default function MCIManagementPage() {
     [newPartners[index], newPartners[newIndex]] = [newPartners[newIndex], newPartners[index]];
     newPartners.forEach((item, i) => item.order = i + 1);
     setPartners(newPartners);
-    await handleSave(gallery, newPartners);
+    await handleSave(gallery, newPartners, press);
   };
+
+  // --- Press Actions ---
+  const addPressItem = () => {
+    setEditingIndex(null);
+    setTempPress({ publication: "", headline: "", url: "", order: press.length + 1 });
+    setIsPressDialogOpen(true);
+  };
+
+  const openPressEditDialog = (index: number) => {
+    setEditingIndex(index);
+    setTempPress({ ...press[index] });
+    setIsPressDialogOpen(true);
+  };
+
+  const savePressTempItem = async () => {
+    const newPress = [...press];
+    if (editingIndex !== null) {
+      newPress[editingIndex] = { ...tempPress, id: press[editingIndex].id };
+    } else {
+      newPress.push({ ...tempPress, id: `new-press-${Date.now()}` });
+    }
+    setPress(newPress);
+    setIsPressDialogOpen(false);
+    await handleSave(gallery, partners, newPress);
+  };
+
+  const removePressItem = async (index: number) => {
+    const newPress = press.filter((_, i) => i !== index)
+      .map((item, i) => ({ ...item, order: i + 1 }));
+    setPress(newPress);
+    await handleSave(gallery, partners, newPress);
+  };
+
+  const movePressItem = async (index: number, direction: 'up' | 'down') => {
+    if (direction === 'up' && index === 0) return;
+    if (direction === 'down' && index === press.length - 1) return;
+    const newPress = [...press];
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    [newPress[index], newPress[newIndex]] = [newPress[newIndex], newPress[index]];
+    newPress.forEach((item, i) => item.order = i + 1);
+    setPress(newPress);
+    await handleSave(gallery, partners, newPress);
+  };
+
 
   if (isLoading) {
     return (
@@ -361,6 +458,15 @@ export default function MCIManagementPage() {
           )}
         >
           <LayoutGrid className="w-4 h-4" /> Mentoring Partners
+        </button>
+        <button 
+          onClick={() => setActiveTab('press')}
+          className={cn(
+            "flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all",
+            activeTab === 'press' ? "bg-navy-950 text-white shadow-lg" : "text-navy-950/40 hover:text-navy-950"
+          )}
+        >
+          <Info className="w-4 h-4" /> Media Coverage
         </button>
       </div>
 
@@ -524,6 +630,85 @@ export default function MCIManagementPage() {
           </div>
         </div>
       )}
+      {activeTab === 'press' && (
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-white dark:bg-navy-900/50 backdrop-blur-md border rounded-3xl p-6 shadow-sm">
+            <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3 px-4 py-2 bg-rose-500/10 rounded-2xl border border-rose-500/20">
+                    <Info className="w-5 h-5 text-rose-600" />
+                    <span className="font-bold text-rose-900 dark:text-rose-100">{press.length} <span className="font-medium opacity-60">Articles</span></span>
+                </div>
+            </div>
+            
+            <div className="flex gap-2">
+              <Button onClick={() => handleSave()} disabled={isSaving} className="rounded-2xl h-12 px-6 bg-navy-950 hover:bg-navy-900 text-white font-bold">
+                {isSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                Publish Coverage
+              </Button>
+              <Button onClick={addPressItem} variant="outline" className="rounded-2xl h-12 px-6 border-2 border-dashed border-rose-500/30 text-rose-600 hover:bg-rose-50/50 hover:border-rose-500 transition-all font-bold">
+                <Plus className="w-5 h-5 mr-2" /> Add Media Article
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence mode="popLayout">
+              {press.map((item, index) => (
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  key={item.id}
+                  className="h-full"
+                >
+                  <Card className="group relative h-full flex flex-col bg-white dark:bg-navy-900 border-none shadow-sm hover:shadow-xl transition-all duration-300 rounded-3xl overflow-hidden border border-navy-50/50 p-6 space-y-4">
+                    <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                      <Button size="icon" variant="secondary" className="w-7 h-7 rounded-lg" onClick={() => openPressEditDialog(index)}>
+                        <Edit className="w-3.5 h-3.5" />
+                      </Button>
+                      <Button size="icon" variant="destructive" className="w-7 h-7 rounded-lg" onClick={() => removePressItem(index)}>
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                    
+                    <div>
+                      <span className="text-xs font-bold tracking-widest uppercase text-navy-950/40">
+                        {item.publication || "Unknown Publication"}
+                      </span>
+                      <h3 className="text-lg font-medium text-navy-950 mt-2 line-clamp-3">
+                        {item.headline || "Untitled Article"}
+                      </h3>
+                      <Link href={item.url} target="_blank" className="text-xs text-rose-600 mt-2 block hover:underline line-clamp-1">
+                        {item.url}
+                      </Link>
+                    </div>
+
+                    <div className="flex justify-between items-center border-t border-navy-50/50 pt-4 mt-auto">
+                      <div className="flex gap-1">
+                        <Button size="icon" variant="ghost" className="w-6 h-6" onClick={() => movePressItem(index, 'up')} disabled={index === 0}>
+                          <ChevronUp className="w-3.5 h-3.5" />
+                        </Button>
+                        <Button size="icon" variant="ghost" className="w-6 h-6" onClick={() => movePressItem(index, 'down')} disabled={index === press.length - 1}>
+                          <ChevronDown className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            
+            <button 
+                onClick={addPressItem}
+                className="h-full min-h-[200px] flex flex-col items-center justify-center bg-gray-50/50 dark:bg-navy-900/20 border-2 border-dashed border-navy-100 dark:border-navy-800 rounded-3xl p-4 hover:border-rose-500/30 group"
+            >
+                <Plus className="w-8 h-8 text-rose-500 mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-bold text-navy-950/40 uppercase">Add Article</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Gallery Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -581,6 +766,35 @@ export default function MCIManagementPage() {
           <DialogFooter className="p-8 bg-gray-50 flex justify-end gap-3">
             <Button variant="ghost" onClick={() => setIsPartnerDialogOpen(false)}>Cancel</Button>
             <Button onClick={savePartnerTempItem} className="bg-navy-950 text-white font-bold">Add Partner</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      {/* Press Dialog */}
+      <Dialog open={isPressDialogOpen} onOpenChange={setIsPressDialogOpen}>
+        <DialogContent className="max-w-md w-[95vw] p-0 overflow-hidden rounded-4xl border-none bg-white">
+          <div className="bg-navy-950 p-8 text-white">
+            <DialogTitle className="text-xl font-bold flex items-center gap-3">
+              <Info className="w-6 h-6 text-rose-400" />
+              {editingIndex !== null ? "Edit Article" : "Add Article"}
+            </DialogTitle>
+          </div>
+          <div className="p-8 space-y-6">
+            <div className="space-y-2">
+              <Label>Publication Name</Label>
+              <Input value={tempPress.publication} onChange={e => setTempPress({ ...tempPress, publication: e.target.value })} placeholder="e.g. SCC Online" />
+            </div>
+            <div className="space-y-2">
+              <Label>Headline / Title</Label>
+              <Textarea value={tempPress.headline} onChange={e => setTempPress({ ...tempPress, headline: e.target.value })} placeholder="e.g. Law School Hosts Mediation Championship..." className="resize-none" />
+            </div>
+            <div className="space-y-2">
+              <Label>Article URL</Label>
+              <Input type="url" value={tempPress.url} onChange={e => setTempPress({ ...tempPress, url: e.target.value })} placeholder="https://..." />
+            </div>
+          </div>
+          <DialogFooter className="p-8 bg-gray-50 flex justify-end gap-3">
+            <Button variant="ghost" onClick={() => setIsPressDialogOpen(false)}>Cancel</Button>
+            <Button onClick={savePressTempItem} className="bg-navy-950 text-white font-bold">Save Article</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
