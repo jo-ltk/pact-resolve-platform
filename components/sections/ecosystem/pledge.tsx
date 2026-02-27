@@ -225,7 +225,7 @@ export function PledgeSection() {
                     <div className="grow space-y-4 relative z-10 w-full">
                       <div className="space-y-1">
                         <span className="text-xs  uppercase tracking-[0.5em] text-gold-500/60 font-bold">Edge {i + 1}</span>
-                        <h4 className="text-xl md:text-2xl font-light text-navy-950 tracking-tighter leading-tight italic group-hover:text-gold-500 transition-colors duration-500 uppercase">
+                        <h4 className="text-xl md:text-2xl font-light text-navy-950 tracking-tighter leading-tight italic group-hover:text-gold-500 transition-colors duration-500 uppercase whitespace-nowrap">
                           {benefit.title}
                         </h4>
                       </div>
