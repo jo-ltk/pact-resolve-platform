@@ -131,7 +131,7 @@ export function WhyPact() {
         {/* Header Section */}
         <div className="mb-20">
           <div className="inline-flex items-center gap-4 mb-6 opacity-60">
-            <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white">Why PACT</span>
+            <span className="text-sm font-mono tracking-[0.4em] uppercase text-white">Why PACT</span>
             <div className="h-px w-12 bg-gold-500/50" />
           </div>
           <h2 className="text-4xl md:text-6xl font-light tracking-tight text-white mb-8 leading-tight">
@@ -206,7 +206,7 @@ export function WhyPact() {
                       {activeContent.description}
                     </p>
                     
-                    <button className="group mt-8 flex items-center gap-4 text-gold-500 font-mono text-[10px] uppercase tracking-[0.3em] hover:text-white transition-colors duration-300">
+                    <button className="group mt-8 flex items-center gap-4 text-gold-500 font-mono text-sm uppercase tracking-[0.3em] hover:text-white transition-colors duration-300">
                       <span className="border-b border-gold-500/30 pb-1 group-hover:border-white transition-colors">
                         {activeContent.cta || "Learn More"}
                       </span>

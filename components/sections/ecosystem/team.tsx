@@ -100,7 +100,7 @@ function ProfileModal({ member, onClose }: { member: EcosystemTeamMember | null,
           <div className="flex-1 p-8 md:p-16 flex flex-col justify-center">
             <div className="space-y-6">
               <div className="space-y-2">
-                <span className="text-gold-500 text-[10px] uppercase tracking-[0.4em] font-bold">
+                <span className="text-gold-500 text-sm uppercase tracking-[0.4em] font-bold">
                   {member.category.split('-').join(' ')}
                 </span>
                 <h3 className="text-4xl md:text-5xl font-light text-navy-950 tracking-tight leading-none uppercase">
@@ -228,7 +228,7 @@ export function TeamSection() {
                           <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
                           
                           <div className="absolute bottom-8 left-8 right-8 p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                             <p className="text-white text-[10px] uppercase font-bold tracking-widest text-center">Click to view full bio</p>
+                             <p className="text-white text-sm uppercase font-bold tracking-widest text-center">Click to view full bio</p>
                           </div>
                         </div>
                       </div>
@@ -361,7 +361,7 @@ export function TeamSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 pb-24 border-b border-navy-50">
           <div>
              <h3 className="text-xl uppercase tracking-[0.3em] text-navy-950/30 mb-2 text-center md:text-left">Strategic Mentors</h3>
-             <p className="text-[10px] text-navy-950/20 uppercase tracking-widest font-black mb-10 text-center md:text-left">Click name to view profile</p>
+             <p className="text-sm text-navy-950/20 uppercase tracking-widest font-black mb-10 text-center md:text-left">Click name to view profile</p>
             <div className="space-y-2">
               {mentors.map((m: any, i: number) => (
                 <div 
@@ -399,7 +399,7 @@ export function TeamSection() {
           
           <div>
              <h3 className="text-xl uppercase tracking-[0.3em] text-navy-950/30 mb-2 text-center md:text-left">Featured Experts</h3>
-             <p className="text-[10px] text-navy-950/20 uppercase tracking-widest font-black mb-10 text-center md:text-left">Click name to view profile</p>
+             <p className="text-sm text-navy-950/20 uppercase tracking-widest font-black mb-10 text-center md:text-left">Click name to view profile</p>
              <div className="space-y-2">
                {mediators.map((m: any, i: number) => (
                  <div 

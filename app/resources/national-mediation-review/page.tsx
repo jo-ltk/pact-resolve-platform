@@ -263,7 +263,7 @@ export default function NationalMediationReviewPage() {
                     <Sparkles className="w-20 h-20 text-navy-950" />
                   </div>
 
-                  <p className="text-navy-950/40 text-[10px] uppercase tracking-[0.3em] font-black mb-6">
+                  <p className="text-navy-950/40 text-sm uppercase tracking-[0.3em] font-black mb-6">
                     {detail.label}
                   </p>
 

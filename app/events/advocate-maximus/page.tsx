@@ -602,11 +602,11 @@ export default function AdvocateMaximusPage() {
                     </div>
                     <div className="space-y-4">
                       <div>
-                        <p className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">Mediation Counsel</p>
+                        <p className="text-sm font-mono uppercase tracking-widest text-white/40 mb-1">Mediation Counsel</p>
                         <p className="text-lg font-bold text-white tracking-tight">{champ.counselNames}</p>
                       </div>
                       <div className="pt-4 border-t border-white/5">
-                        <p className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">Mediator</p>
+                        <p className="text-sm font-mono uppercase tracking-widest text-white/40 mb-1">Mediator</p>
                         <p className="text-lg font-bold text-white tracking-tight">{champ.mediatorName}</p>
                       </div>
                     </div>

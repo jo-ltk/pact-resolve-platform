@@ -218,7 +218,7 @@ export default function MediationSimplifiedPage() {
                   <div className="absolute -top-6 -right-6 w-24 h-24 bg-gold-500 rounded-full flex items-center justify-center shadow-xl">
                     <div className="text-center text-navy-950 font-bold">
                       <span className="text-2xl block">1st</span>
-                      <span className="text-[10px] uppercase tracking-wider opacity-60">In India</span>
+                      <span className="text-sm uppercase tracking-wider opacity-60">In India</span>
                     </div>
                   </div>
                 </div>
@@ -337,7 +337,7 @@ export default function MediationSimplifiedPage() {
                   </div>
                   <div className="mt-8 pt-6 border-t border-white/5">
                     <p className="text-white font-bold">{review.name}</p>
-                    <p className="text-gold-500/50 text-[10px] uppercase tracking-widest mt-1">{review.role}</p>
+                    <p className="text-gold-500/50 text-sm uppercase tracking-widest mt-1">{review.role}</p>
                   </div>
                 </motion.div>
               ))}

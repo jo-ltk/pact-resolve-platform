@@ -192,7 +192,7 @@ export default function PublicationsAdminPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Badge className="bg-violet-500/10 text-violet-600 border-violet-500/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+            <Badge className="bg-violet-500/10 text-violet-600 border-violet-500/20 px-3 py-1 rounded-full text-sm font-black uppercase tracking-widest">
               {items.length} Total
             </Badge>
           </div>

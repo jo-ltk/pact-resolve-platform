@@ -59,9 +59,9 @@ export function AboutPact() {
         {/* Header Section */}
         <FadeInUp className="text-center mb-16 md:mb-20 space-y-6">
           <div className="inline-flex items-center gap-4 opacity-40">
-            <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white">{settings.subtitle1}</span>
+            <span className="text-sm font-mono tracking-[0.4em] uppercase text-white">{settings.subtitle1}</span>
             <div className="h-px w-8 md:w-12 bg-white/30" />
-            <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white">{settings.subtitle2}</span>
+            <span className="text-sm font-mono tracking-[0.4em] uppercase text-white">{settings.subtitle2}</span>
           </div>
           
           <h2 className="text-4xl md:text-7xl font-light tracking-tight text-white leading-[1.1]">
@@ -82,7 +82,7 @@ export function AboutPact() {
           {settings.stats?.sort((a,b) => (a.order || 0) - (b.order || 0)).map((stat, i) => (
             <StaggerItem key={i} className="text-center space-y-2 group">
               <span className="block text-3xl md:text-5xl font-light text-white group-hover:text-gold-500 transition-colors duration-300">{stat.value}</span>
-              <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-white/40">{stat.label}</span>
+              <span className="text-[9px] md:text-sm font-mono uppercase tracking-widest text-white/40">{stat.label}</span>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -106,7 +106,7 @@ export function AboutPact() {
           <div className="absolute -top-4 -right-4 bg-navy-950 border border-white/10 px-6 py-3 rounded-full shadow-xl hidden md:block">
             <div className="flex items-center gap-3">
               <History className="w-4 h-4 text-gold-500" />
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/80">{settings.journeyLabel}</span>
+              <span className="text-sm font-mono uppercase tracking-[0.2em] text-white/80">{settings.journeyLabel}</span>
             </div>
           </div>
         </FadeIn>

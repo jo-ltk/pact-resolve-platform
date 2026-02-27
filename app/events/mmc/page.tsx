@@ -503,7 +503,7 @@ export default function MMCPage() {
                     
                     {/* Floating Identity */}
                     <div className="absolute top-6 left-6 z-10">
-                      <div className="px-4 py-1.5 rounded-full bg-navy-950/90 text-[10px] font-bold text-gold-500 border border-gold-500/20 backdrop-blur-xl shadow-lg">
+                      <div className="px-4 py-1.5 rounded-full bg-navy-950/90 text-sm font-bold text-gold-500 border border-gold-500/20 backdrop-blur-xl shadow-lg">
                         MMC SESSION
                       </div>
                     </div>
@@ -519,7 +519,7 @@ export default function MMCPage() {
                   {/* Content Area */}
                   <div className="p-8 md:p-10 flex flex-col flex-1 bg-white">
                     <div className="mb-4 sm:mb-6">
-                      <span className="text-[10px] uppercase tracking-[0.3em] text-gold-600 font-bold">
+                      <span className="text-sm uppercase tracking-[0.3em] text-gold-600 font-bold">
                         {eventData?.year || 2025} HIGHLIGHT
                       </span>
                     </div>

@@ -198,7 +198,7 @@ export default function PodcastAdminPage() {
             </div>
             
             {items.find(i => i.category === "hero-banner") && (
-               <Badge className="bg-gold-500/10 text-gold-600 border-gold-500/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+               <Badge className="bg-gold-500/10 text-gold-600 border-gold-500/20 px-3 py-1 rounded-full text-sm font-black uppercase tracking-widest">
                  Live on Website
                </Badge>
             )}
@@ -206,7 +206,7 @@ export default function PodcastAdminPage() {
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 items-start">
             <div className="space-y-5 w-full max-w-2xl mx-auto xl:mx-0">
-               <Label className="text-[10px] uppercase tracking-[0.2em] font-black text-navy-950/40 ml-1">Podcast Hero Image</Label>
+               <Label className="text-sm uppercase tracking-[0.2em] font-black text-navy-950/40 ml-1">Podcast Hero Image</Label>
                <ImageUpload 
                   value={items.find(i => i.category === "hero-banner")?.image || "/assets/img/podcast-hero.png"}
                   onChange={async (url) => {
@@ -297,7 +297,7 @@ export default function PodcastAdminPage() {
             </div>
             
             <div className="flex items-center gap-2">
-               <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+               <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 px-3 py-1 rounded-full text-sm font-black uppercase tracking-widest">
                  Featured Section
                </Badge>
             </div>
@@ -312,11 +312,11 @@ export default function PodcastAdminPage() {
               return (
                 <div key={pos} className="space-y-4">
                   <div className="flex items-center justify-between px-1">
-                    <Label className="text-[10px] uppercase tracking-[0.2em] font-black text-navy-950/40">Episode Slot {pos}</Label>
+                    <Label className="text-sm uppercase tracking-[0.2em] font-black text-navy-950/40">Episode Slot {pos}</Label>
                     {episode && (
                       <button 
                         onClick={() => openEditDialog(episode)}
-                        className="text-[10px] font-bold text-primary hover:underline uppercase tracking-widest"
+                        className="text-sm font-bold text-primary hover:underline uppercase tracking-widest"
                       >
                         Edit Details
                       </button>
@@ -366,7 +366,7 @@ export default function PodcastAdminPage() {
                   {episode && (
                     <div className="px-1">
                       <p className="text-sm font-bold text-navy-950 truncate">{episode.title}</p>
-                      <p className="text-[10px] text-navy-950/40 uppercase font-black tracking-widest mt-0.5">{episode.category || "Season 2"}</p>
+                      <p className="text-sm text-navy-950/40 uppercase font-black tracking-widest mt-0.5">{episode.category || "Season 2"}</p>
                     </div>
                   )}
                 </div>
@@ -466,7 +466,7 @@ export default function PodcastAdminPage() {
                           </span>
                         )}
                         {item.category && (
-                          <Badge variant="outline" className="w-fit text-[10px] uppercase font-bold tracking-widest">
+                          <Badge variant="outline" className="w-fit text-sm uppercase font-bold tracking-widest">
                             {item.category}
                           </Badge>
                         )}

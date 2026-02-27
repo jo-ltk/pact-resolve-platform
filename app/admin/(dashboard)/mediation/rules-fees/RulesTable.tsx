@@ -133,7 +133,7 @@ export function RulesTable() {
                   <TableCell className="pl-6 font-medium text-navy-400">{item.order}</TableCell>
                   <TableCell className="font-bold text-navy-950">{item.title}</TableCell>
                   <TableCell className="text-muted-foreground font-light max-w-md truncate">{item.description}</TableCell>
-                  <TableCell><Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] uppercase font-bold tracking-wider">{item.isActive ? "Active" : "Hidden"}</Badge></TableCell>
+                  <TableCell><Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-sm uppercase font-bold tracking-wider">{item.isActive ? "Active" : "Hidden"}</Badge></TableCell>
                   <TableCell className="text-right pr-6">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-8 w-8 rounded-full"><MoreHorizontal className="w-4 h-4" /></Button></DropdownMenuTrigger>

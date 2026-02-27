@@ -347,7 +347,7 @@ export function AboutUs() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             <div className="lg:col-span-5 space-y-8">
               <FadeInUp>
-                <div className="inline-flex items-center gap-3 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-600 font-bold text-[10px] uppercase tracking-widest mb-4">
+                <div className="inline-flex items-center gap-3 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-600 font-bold text-sm uppercase tracking-widest mb-4">
                   Community
                 </div>
                 <h2 className="text-4xl md:text-6xl font-light text-navy-950 tracking-tighter leading-none mb-6">

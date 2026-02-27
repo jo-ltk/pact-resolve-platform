@@ -384,7 +384,7 @@ export default function ClausesToolkitsPage() {
                         <motion.span 
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
-                          className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] uppercase font-bold tracking-widest"
+                          className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm uppercase font-bold tracking-widest"
                         >
                           Requirement {activeEssential + 1}
                         </motion.span>

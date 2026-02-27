@@ -245,7 +245,7 @@ export function PledgeSection() {
       <div className="py-16 bg-navy-50/30 border-y border-navy-100/50">
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 text-center">
             <h4 className="text-xl uppercase tracking-[0.3em] text-navy-950 font-light italic">The League of <span className="text-gold-500 font-medium lowercase">Leaders</span></h4>
-            <p className="text-[10px] uppercase tracking-widest text-navy-950/40 mt-2">New Signatories Being Verified Monthly</p>
+            <p className="text-sm uppercase tracking-widest text-navy-950/40 mt-2">New Signatories Being Verified Monthly</p>
         </div>
       </div>
 
@@ -584,13 +584,13 @@ export function PledgeSection() {
                                             {logoFile && (
                                               <div className="flex items-center justify-center gap-2 text-green-600 mb-1">
                                                 <Check className="w-3 h-3 stroke-[3px]" />
-                                                <span className="text-[10px] font-bold uppercase tracking-widest">Selected</span>
+                                                <span className="text-sm font-bold uppercase tracking-widest">Selected</span>
                                               </div>
                                             )}
                                             <p className="text-sm font-bold text-navy-950 uppercase tracking-widest max-w-[200px] truncate">
                                                {logoFile ? logoFile.name : "Upload Organisation Logo"}
                                             </p>
-                                            <p className="text-[10px] text-navy-950/40 uppercase tracking-widest mt-1">
+                                            <p className="text-sm text-navy-950/40 uppercase tracking-widest mt-1">
                                                {logoFile ? `${(logoFile.size / 1024).toFixed(1)} KB` : "PNG, JPG or SVG (Max 2MB)"}
                                             </p>
                                          </div>
@@ -727,7 +727,7 @@ export function PledgeSection() {
             <div className="text-center space-y-8">
               <div className="inline-flex items-center gap-4">
                 <div className="h-px w-8 bg-gold-500/30" />
-                <span className="text-[10px] uppercase tracking-[0.6em] text-gold-600 font-black">Member Registry</span>
+                <span className="text-sm uppercase tracking-[0.6em] text-gold-600 font-black">Member Registry</span>
                 <div className="h-px w-8 bg-gold-500/30" />
               </div>
               
@@ -776,7 +776,7 @@ export function PledgeSection() {
                           <h4 className="text-xl font-bold text-navy-950 uppercase tracking-tight italic group-hover:text-gold-600 transition-colors duration-500">
                             {sig.name}
                           </h4>
-                          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gold-500/60 flex items-center justify-center gap-3">
+                          <p className="text-sm font-black uppercase tracking-[0.4em] text-gold-500/60 flex items-center justify-center gap-3">
                             <span className="h-px w-3 bg-gold-500/20" />
                             {sig.sector}
                             <span className="h-px w-3 bg-gold-500/20" />
@@ -792,7 +792,7 @@ export function PledgeSection() {
             <div className="pt-24 border-t border-navy-50 text-center">
                <div className="inline-flex items-center gap-6 px-8 py-4 rounded-full bg-navy-50/50 border border-navy-100 group cursor-default">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-navy-950/40 group-hover:text-navy-950 transition-colors">
+                  <span className="text-sm font-bold uppercase tracking-[0.3em] text-navy-950/40 group-hover:text-navy-950 transition-colors">
                     Registry updated monthly • next verification cycle: march 2026
                   </span>
                </div>

@@ -149,11 +149,11 @@ export default function NmrAdminPage() {
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent border-navy-50">
-                <TableHead className="w-[100px] text-[10px] font-black uppercase tracking-widest text-navy-950/40 pl-6">Order</TableHead>
-                <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Visuals</TableHead>
-                <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Label & Content</TableHead>
-                <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
-                <TableHead className="text-right pr-6 text-[10px] font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
+                <TableHead className="w-[100px] text-sm font-black uppercase tracking-widest text-navy-950/40 pl-6">Order</TableHead>
+                <TableHead className="text-sm font-black uppercase tracking-widest text-navy-950/40">Visuals</TableHead>
+                <TableHead className="text-sm font-black uppercase tracking-widest text-navy-950/40">Label & Content</TableHead>
+                <TableHead className="text-sm font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
+                <TableHead className="text-right pr-6 text-sm font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -183,12 +183,12 @@ export default function NmrAdminPage() {
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-0.5">{item.label}</span>
+                      <span className="text-sm font-black uppercase tracking-widest text-indigo-600 mb-0.5">{item.label}</span>
                       <span className="font-bold text-navy-950">{item.value}</span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] px-3 font-black uppercase tracking-widest h-6">
+                    <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-sm px-3 font-black uppercase tracking-widest h-6">
                       {item.isActive ? "Active" : "Hidden"}
                     </Badge>
                   </TableCell>
@@ -247,7 +247,7 @@ export default function NmrAdminPage() {
                     value={editingItem?.image?.url || ""} 
                     onChange={(url) => setEditingItem(prev => ({ ...prev!, image: { url, alt: editingItem?.label || "" } }))} 
                   />
-                  <p className="text-[10px] text-muted-foreground ml-1 font-medium">Use for Portrait photos or Theme banners</p>
+                  <p className="text-sm text-muted-foreground ml-1 font-medium">Use for Portrait photos or Theme banners</p>
                 </div>
                 <div className="space-y-3">
                   <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Partner Logo (Optional)</Label>
@@ -255,14 +255,14 @@ export default function NmrAdminPage() {
                     value={editingItem?.logo?.url || ""} 
                     onChange={(url) => setEditingItem(prev => ({ ...prev!, logo: { url, alt: editingItem?.label || "" } }))} 
                   />
-                  <p className="text-[10px] text-muted-foreground ml-1 font-medium">Use for Institutional Partner logos</p>
+                  <p className="text-sm text-muted-foreground ml-1 font-medium">Use for Institutional Partner logos</p>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-2xl bg-navy-50/50 gap-4">
                 <div className="space-y-1">
                   <Label className="text-sm font-bold text-navy-950">Active Status</Label>
-                  <p className="text-[10px] md:text-xs text-muted-foreground font-medium">Show this section on the live page</p>
+                  <p className="text-sm md:text-xs text-muted-foreground font-medium">Show this section on the live page</p>
                 </div>
                 <Switch 
                   checked={editingItem?.isActive || false} 

@@ -87,7 +87,7 @@ export function FileUpload({
       <div className="flex justify-between items-end">
         <div className="space-y-1">
           {label && (
-            <Label className="text-[10px] uppercase tracking-[0.2em] font-black text-navy-950/40 ml-1">
+            <Label className="text-sm uppercase tracking-[0.2em] font-black text-navy-950/40 ml-1">
               {label}
             </Label>
           )}

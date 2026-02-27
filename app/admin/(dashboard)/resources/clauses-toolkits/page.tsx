@@ -273,11 +273,11 @@ export default function ClausesToolkitsAdminPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent border-navy-50">
-                    <TableHead className="w-[100px] text-[10px] font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
-                    <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Image</TableHead>
-                    <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Essential Item</TableHead>
-                    <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
-                    <TableHead className="text-right pr-8 text-[10px] font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
+                    <TableHead className="w-[100px] text-sm font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
+                    <TableHead className="text-sm font-black uppercase tracking-widest text-navy-950/40">Image</TableHead>
+                    <TableHead className="text-sm font-black uppercase tracking-widest text-navy-950/40">Essential Item</TableHead>
+                    <TableHead className="text-sm font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
+                    <TableHead className="text-right pr-8 text-sm font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -304,7 +304,7 @@ export default function ClausesToolkitsAdminPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] px-3 font-black uppercase tracking-widest">
+                        <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-sm px-3 font-black uppercase tracking-widest">
                           {item.isActive ? "Active" : "Hidden"}
                         </Badge>
                       </TableCell>
@@ -332,11 +332,11 @@ export default function ClausesToolkitsAdminPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent border-navy-50">
-                    <TableHead className="w-[100px] text-[10px] font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
-                    <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Toolkit Info</TableHead>
-                    <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Source / Link</TableHead>
-                    <TableHead className="text-[10px] font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
-                    <TableHead className="text-right pr-8 text-[10px] font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
+                    <TableHead className="w-[100px] text-sm font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
+                    <TableHead className="text-sm font-black uppercase tracking-widest text-navy-950/40">Toolkit Info</TableHead>
+                    <TableHead className="text-sm font-black uppercase tracking-widest text-navy-950/40">Source / Link</TableHead>
+                    <TableHead className="text-sm font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
+                    <TableHead className="text-right pr-8 text-sm font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -355,14 +355,14 @@ export default function ClausesToolkitsAdminPage() {
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-col">
-                           <span className="text-xs font-medium uppercase tracking-widest text-[10px] text-amber-600 mb-0.5">{item.publication || item.subtitle || "PACT"}</span>
+                           <span className="text-xs font-medium uppercase tracking-widest text-sm text-amber-600 mb-0.5">{item.publication || item.subtitle || "PACT"}</span>
                            <Button variant="link" className="p-0 h-auto text-xs text-blue-500 justify-start" asChild>
                               <a href={item.url} target="_blank"><ExternalLink className="w-3 h-3 mr-1" /> View Resource</a>
                            </Button>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-[10px] px-3 font-black uppercase tracking-widest">
+                        <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-sm px-3 font-black uppercase tracking-widest">
                           {item.isActive ? "Active" : "Hidden"}
                         </Badge>
                       </TableCell>

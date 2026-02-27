@@ -330,7 +330,7 @@ export default function AdvocateMaximusAdminPage() {
             </Button>
             
             <div className="flex items-center justify-between p-3 bg-white/10 rounded-2xl border border-white/10 mt-2 hover:bg-white/15 transition-all">
-              <span className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] ml-1">Featured Active Status</span>
+              <span className="text-sm font-black text-emerald-400 uppercase tracking-[0.2em] ml-1">Featured Active Status</span>
               <button 
                 onClick={async () => {
                   const newVal = !eventData.isActive;
@@ -641,20 +641,20 @@ export default function AdvocateMaximusAdminPage() {
                     <div className="space-y-4 flex-1">
                       <div className="grid grid-cols-3 gap-3">
                         <div className="space-y-1">
-                          <Label className="text-[10px] font-bold uppercase text-navy-400 ml-1">Year</Label>
+                          <Label className="text-sm font-bold uppercase text-navy-400 ml-1">Year</Label>
                           <Input value={champ.year} onChange={e => {
                             const newC = [...champions]; newC[idx].year = e.target.value; setChampions(newC);
                           }} className="h-9 rounded-lg" />
                         </div>
                         <div className="col-span-2 space-y-1">
-                          <Label className="text-[10px] font-bold uppercase text-navy-400 ml-1">National Counsel Champions</Label>
+                          <Label className="text-sm font-bold uppercase text-navy-400 ml-1">National Counsel Champions</Label>
                           <Input value={champ.counselNames} onChange={e => {
                             const newC = [...champions]; newC[idx].counselNames = e.target.value; setChampions(newC);
                           }} className="h-9 rounded-lg" />
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <Label className="text-[10px] font-bold uppercase text-navy-400 ml-1">National Mediator Champion</Label>
+                        <Label className="text-sm font-bold uppercase text-navy-400 ml-1">National Mediator Champion</Label>
                         <Input value={champ.mediatorName} onChange={e => {
                           const newC = [...champions]; newC[idx].mediatorName = e.target.value; setChampions(newC);
                         }} className="h-9 rounded-lg" />

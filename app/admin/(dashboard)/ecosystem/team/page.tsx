@@ -374,7 +374,7 @@ export default function EcosystemTeamAdminPage() {
                 <div className="flex justify-between items-center ml-1">
                   <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40">Profile / Biography (Aim for 100-150 words)</Label>
                   <span className={cn(
-                    "text-[10px] font-bold px-2 py-1 rounded-md tracking-widest uppercase",
+                    "text-sm font-bold px-2 py-1 rounded-md tracking-widest uppercase",
                     (editingItem?.bio?.split(/\s+/).filter(Boolean).length || 0) > 150 ? "bg-red-50 text-red-500" : 
                     (editingItem?.bio?.split(/\s+/).filter(Boolean).length || 0) >= 100 ? "bg-green-50 text-green-600" : "bg-navy-50 text-navy-400"
                   )}>

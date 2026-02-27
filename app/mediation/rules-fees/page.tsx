@@ -19,7 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const SectionHeader = ({ subtitle, title, description, light = false, center = false }: { subtitle: string, title: string, description?: string, light?: boolean, center?: boolean }) => (
   <FadeInUp className={cn("mb-8 md:mb-16", center ? "flex flex-col items-center text-center" : "")}>
     <div className="inline-flex items-center gap-4 mb-4 opacity-70 border-b border-gold-500/30 pb-2">
-      <span className={cn("text-[10px] md:text-xs tracking-[0.2em] font-bold", light ? "text-white" : "text-navy-950/80")}>
+      <span className={cn("text-sm md:text-xs tracking-[0.2em] font-bold", light ? "text-white" : "text-navy-950/80")}>
         {subtitle}
       </span>
     </div>
@@ -51,7 +51,7 @@ const RulesHero = () => (
       <FadeInUp>
         <div className="flex items-center gap-3 mb-4 sm:mb-6 md:mb-8">
           <div className="h-px w-8 md:w-12 bg-gold-500" />
-          <span className="text-gold-500 text-[10px] md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase font-medium">
+          <span className="text-gold-500 text-sm md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase font-medium">
             – Standards and Transparency Guaranteed
           </span>
         </div>

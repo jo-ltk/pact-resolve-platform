@@ -93,7 +93,7 @@ export function ExternshipFormModal({ onClose }: ExternshipFormModalProps) {
           ) : (
             <div className="space-y-10">
               <div className="space-y-2">
-                <span className="text-gold-500 text-[10px] uppercase tracking-[0.4em] font-bold">
+                <span className="text-gold-500 text-sm uppercase tracking-[0.4em] font-bold">
                   Externship Program
                 </span>
                 <h3 className="text-4xl font-light text-navy-950 tracking-tight leading-none uppercase">
@@ -106,7 +106,7 @@ export function ExternshipFormModal({ onClose }: ExternshipFormModalProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Name */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <User className="w-3 h-3" /> Full Name
                     </label>
                     <input 
@@ -120,7 +120,7 @@ export function ExternshipFormModal({ onClose }: ExternshipFormModalProps) {
 
                   {/* Email */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <Mail className="w-3 h-3" /> Email Address
                     </label>
                     <input 
@@ -134,7 +134,7 @@ export function ExternshipFormModal({ onClose }: ExternshipFormModalProps) {
 
                   {/* Phone */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <Phone className="w-3 h-3" /> Phone Number
                     </label>
                     <input 
@@ -148,7 +148,7 @@ export function ExternshipFormModal({ onClose }: ExternshipFormModalProps) {
 
                   {/* Location */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <MapPin className="w-3 h-3" /> Current Location
                     </label>
                     <input 
@@ -165,7 +165,7 @@ export function ExternshipFormModal({ onClose }: ExternshipFormModalProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Resume */}
                   <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 flex items-center gap-2">
                       <FileText className="w-3 h-3" /> Resume (PDF)
                     </label>
                     <div 
@@ -186,7 +186,7 @@ export function ExternshipFormModal({ onClose }: ExternshipFormModalProps) {
                         <>
                           <CheckCircle2 className="w-6 h-6 text-gold-500 mb-2" />
                           <p className="text-xs text-navy-950 font-medium truncate w-full px-4">{files.resume.name}</p>
-                          <p className="text-[10px] text-navy-950/40 mt-1 uppercase tracking-tighter">Click to change</p>
+                          <p className="text-sm text-navy-950/40 mt-1 uppercase tracking-tighter">Click to change</p>
                         </>
                       ) : (
                         <>
@@ -199,7 +199,7 @@ export function ExternshipFormModal({ onClose }: ExternshipFormModalProps) {
 
                   {/* Cover Letter */}
                   <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 flex items-center gap-2">
                       <FileText className="w-3 h-3" /> Covering Letter (PDF)
                     </label>
                     <div 
@@ -220,7 +220,7 @@ export function ExternshipFormModal({ onClose }: ExternshipFormModalProps) {
                         <>
                           <CheckCircle2 className="w-6 h-6 text-gold-500 mb-2" />
                           <p className="text-xs text-navy-950 font-medium truncate w-full px-4">{files.coverLetter.name}</p>
-                          <p className="text-[10px] text-navy-950/40 mt-1 uppercase tracking-tighter">Click to change</p>
+                          <p className="text-sm text-navy-950/40 mt-1 uppercase tracking-tighter">Click to change</p>
                         </>
                       ) : (
                         <>
@@ -249,7 +249,7 @@ export function ExternshipFormModal({ onClose }: ExternshipFormModalProps) {
                     </>
                   )}
                 </button>
-                <p className="text-[10px] text-center text-navy-950/30 uppercase tracking-widest">
+                <p className="text-sm text-center text-navy-950/30 uppercase tracking-widest">
                   Secure submission to official@thepact.in
                 </p>
               </form>

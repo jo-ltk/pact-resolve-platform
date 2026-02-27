@@ -358,7 +358,7 @@ export default function PledgeSignatoriesAdminPage() {
                          <Input 
                             value={editingItem.logo} 
                             onChange={(e) => setEditingItem(prev => ({ ...prev!, logo: e.target.value }))} 
-                            className="h-9 px-4 rounded-full bg-white border-navy-100 text-[10px] w-full mt-2"
+                            className="h-9 px-4 rounded-full bg-white border-navy-100 text-sm w-full mt-2"
                             placeholder="Or paste URL..."
                          />
                       )}

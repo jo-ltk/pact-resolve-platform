@@ -502,7 +502,7 @@ export default function MediationSimplifiedAdminPage() {
                   </div>
                   <div className="p-5">
                     <div className="flex items-center gap-3 mb-2">
-                       <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-600 text-[10px] font-black flex items-center justify-center uppercase">{item.order}</span>
+                       <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-600 text-sm font-black flex items-center justify-center uppercase">{item.order}</span>
                        <p className="text-sm font-bold text-navy-950 truncate">{item.title || "Untitled Fragment"}</p>
                     </div>
                     <p className="text-xs text-navy-950/40 truncate italic h-4">{item.caption || "No description provided"}</p>

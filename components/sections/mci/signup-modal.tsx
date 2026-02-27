@@ -93,7 +93,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
           ) : (
             <div className="space-y-10">
               <div className="space-y-2">
-                <span className="text-gold-500 text-[10px] uppercase tracking-[0.4em] font-bold">
+                <span className="text-gold-500 text-sm uppercase tracking-[0.4em] font-bold">
                   Challenger Registration
                 </span>
                 <h3 className="text-4xl font-light text-navy-950 tracking-tight leading-none uppercase">
@@ -106,7 +106,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Name */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <User className="w-3 h-3" /> Name
                     </label>
                     <input 
@@ -120,7 +120,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
 
                   {/* University */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <GraduationCap className="w-3 h-3" /> University
                     </label>
                     <input 
@@ -134,7 +134,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
 
                   {/* Year of Study */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <Briefcase className="w-3 h-3" /> Year of Study
                     </label>
                     <input 
@@ -148,7 +148,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
 
                   {/* Category */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <User className="w-3 h-3" /> Category
                     </label>
                     <select 
@@ -164,7 +164,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
 
                   {/* LinkedIn */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <Link2 className="w-3 h-3" /> LinkedIn Handle
                     </label>
                     <input 
@@ -178,7 +178,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
 
                   {/* Email */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <Mail className="w-3 h-3" /> Email Address
                     </label>
                     <input 
@@ -192,7 +192,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
 
                   {/* Phone */}
                   <div className="space-y-2 group">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                       <Phone className="w-3 h-3" /> WhatsApp Number
                     </label>
                     <input 
@@ -207,7 +207,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
 
                 {/* Resume / History Text */}
                 <div className="space-y-2 group">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
+                  <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 group-focus-within:text-gold-500 transition-colors flex items-center gap-2">
                     <History className="w-3 h-3" /> Mediation Resume & Competition History
                   </label>
                   <textarea 
@@ -223,7 +223,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Resume PDF */}
                   <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 flex items-center gap-2">
                       <Upload className="w-3 h-3" /> Mediation Resume (PDF)
                     </label>
                     <div 
@@ -256,7 +256,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
 
                   {/* Certificates PDF */}
                   <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-navy-950/40 flex items-center gap-2">
+                    <label className="text-sm uppercase tracking-widest font-bold text-navy-950/40 flex items-center gap-2">
                       <FileCheck className="w-3 h-3" /> Past Certificates (PDF)
                     </label>
                     <div 
@@ -305,7 +305,7 @@ export function MCISignupModal({ onClose }: MCISignupModalProps) {
                     </>
                   )}
                 </button>
-                <p className="text-[10px] text-center text-navy-950/30 uppercase tracking-widest">
+                <p className="text-sm text-center text-navy-950/30 uppercase tracking-widest">
                   Secure submission to official@mediationchampionship.com
                 </p>
               </form>

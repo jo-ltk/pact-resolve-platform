@@ -144,7 +144,7 @@ export default function BlogPage() {
                         <div className="p-8 flex flex-col flex-1 relative">
                           <div className="flex items-center justify-between mb-6">
                             <div className="px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20">
-                              <span className="text-[10px] font-black uppercase tracking-widest text-gold-600">
+                              <span className="text-sm font-black uppercase tracking-widest text-gold-600">
                                 {blog.category || "Article"}
                               </span>
                             </div>
@@ -157,9 +157,9 @@ export default function BlogPage() {
                           
                           <div className="mt-auto pt-6 border-t border-navy-50 flex items-end justify-between">
                             <div className="min-w-0">
-                               <p className="text-navy-950/40 text-[10px] font-black uppercase tracking-widest mb-1">Author</p>
+                               <p className="text-navy-950/40 text-sm font-black uppercase tracking-widest mb-1">Author</p>
                                <p className="text-navy-950 font-bold text-sm truncate">{blog.author || "Jonathan Rodrigues"}</p>
-                               <p className="text-gold-500/70 text-[10px] font-medium uppercase tracking-[0.15em] mt-0.5">{blog.publication || blog.subtitle}</p>
+                               <p className="text-gold-500/70 text-sm font-medium uppercase tracking-[0.15em] mt-0.5">{blog.publication || blog.subtitle}</p>
                             </div>
                             
                             {blog.logo ? (
