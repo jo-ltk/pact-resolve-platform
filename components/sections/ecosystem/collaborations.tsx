@@ -15,7 +15,7 @@ const strategicPartnersFallback = [
     name: "IMI – International Mediation Institute",
     region: "Europe / International",
     description: "PACT is recognised for its Quality Assessment Programme (QAP) for Mediation Advocacy Accreditation by the IMI. By partnering with IMI, PACT is committed to capacity-building and upskilling of meditation lawyers in India.",
-    logo: "/partners/imi.jpg"
+    logo: "/partners/imi-full.jpg"
   },
   {
     name: "Mediate.com",
@@ -192,7 +192,7 @@ export function Collaborations() {
             {displayStrategic.map((partner, i) => (
               <FadeInUp key={i} delay={i * 0.1}>
                 <div className="group h-full bg-white px-8 py-10 rounded-4xl border border-gray-50 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.03)] flex flex-col items-start text-left hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.06)] transition-all duration-700">
-                  <div className="h-16 w-full relative mb-10">
+                  <div className="h-28 w-full relative mb-10">
                      <Image 
                         src={(partner as any).logo || "/partners/placeholder.png"} 
                         alt={partner.name} 
