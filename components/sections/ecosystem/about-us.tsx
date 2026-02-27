@@ -153,7 +153,7 @@ export function AboutUs() {
         </div>
       </section>
 
-      {/* What We Do */}
+      {/* Our Mission Mediation */}
       <section className="pt-8 pb-16 sm:pb-24 md:pb-32 bg-white relative overflow-hidden">
         {/* Dynamic Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
@@ -169,7 +169,7 @@ export function AboutUs() {
                 <span className="text-xs md:text-xs  tracking-[0.4em] uppercase text-navy-950/60 font-bold">Our Reach</span>
               </div>
               <h2 className="text-4xl sm:text-5xl md:text-[5.5rem] font-extralight tracking-tight text-navy-950 mb-8 leading-[0.95]">
-                What We <span className="italic font-medium text-gold-500">Do</span>
+                Our Mission <span className="italic font-medium text-gold-500">Mediation</span>
               </h2>
               <div className="h-px w-24 bg-gold-500/30 mx-auto mb-8" />
               <p className="text-lg sm:text-xl md:text-2xl text-navy-950/40 font-light max-w-3xl mx-auto leading-relaxed tracking-tight">
