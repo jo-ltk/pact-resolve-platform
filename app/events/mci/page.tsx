@@ -632,28 +632,56 @@ export default function MCIPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24">
           <SectionHeader subtitle="Press" title="Media Coverage" center />
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 sm:gap-x-8 md:gap-x-12 gap-y-8 sm:gap-y-12 md:gap-y-16 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
             {[
-              { name: "Bar and Bench", font: "font-serif" },
-              { name: "Live Law", font: "font-sans font-bold" },
-              { name: "SCC Online", font: "font-serif italic" },
-              { name: "Lawctopus", font: "font-sans font-black tracking-tighter" },
-              { name: "Law Beat", font: "font-serif font-bold uppercase" },
-              { name: "Bar Bulletin", font: "font-sans tracking-tight" },
-              { name: "Law Bhoomi", font: "font-serif italic font-bold" },
-              { name: "Law Chakra", font: "font-sans font-medium" }
-            ].map((press) => (
-               <div key={press.name} className="flex items-center justify-center group cursor-default">
-                  <div className="text-center relative">
-                    <span className={cn(
-                      "text-sm sm:text-base md:text-xl lg:text-3xl text-navy-950/20 group-hover:text-navy-950 transition-all duration-700 ease-in-out select-none block",
-                      press.font
-                    )}>
-                      {press.name}
-                    </span>
-                    <div className="absolute -bottom-2 sm:-bottom-3 md:-bottom-4 left-1/2 -translate-x-1/2 w-0 h-px bg-gold-500 group-hover:w-full transition-all duration-500 opacity-50" />
-                  </div>
-               </div>
+              {
+                publication: "SCC Online",
+                headline: "Live: PACT, SAM & GNLU Mediation Championship India 2023",
+                url: "https://www.scconline.com/blog/post/2023/09/08/live-pact-sam-gnlu-mediation-championship-india-2023/"
+              },
+              {
+                publication: "Bar & Bench",
+                headline: "Legal League Consulting joins The PACT in hosting India's League of Mediation Champions at GNLU",
+                url: "https://www.barandbench.com/news/corporate/legal-league-consulting-joins-the-pact-in-hosting-indias-league-of-mediation-champions-at-gnlu"
+              },
+              {
+                publication: "SCC Blog",
+                headline: "SAM and GNLU join The PACT to further Mission Mediation in India",
+                url: "https://blog.scconline.gen.in/post/2023/09/04/sam-and-gnlu-join-the-pact-to-further-mission-mediation-in-india/"
+              },
+              {
+                publication: "Bar & Bench",
+                headline: "GIMAC, GNLU and The PACT to host Mediation Championship India 2024",
+                url: "https://www.barandbench.com/Law-School/gimac-gnlu-and-the-pact-to-host-mediation-championship-india-2024"
+              },
+              {
+                publication: "LiveLaw",
+                headline: "Mediation Championship India 2024: GIMAC & The PACT",
+                url: "https://www.livelaw.in/lawschool/mediation-championship-india-gimac-the-pact-mediation-268982"
+              },
+              {
+                publication: "Lexology",
+                headline: "Partnerships & Sponsors for Mediation Championship India 2024",
+                url: "https://www.lexology.com/library/detail.aspx?g=2af664c4-1152-41ef-aae5-86aae73229be"
+              }
+            ].map((item, i) => (
+              <a 
+                key={i} 
+                href={item.url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group block p-6 sm:p-8 rounded-2xl border border-navy-100/50 hover:border-gold-500/30 bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-navy-950/40 group-hover:text-gold-500 transition-colors">
+                    {item.publication}
+                  </span>
+                  <ArrowRight className="w-5 h-5 text-navy-950/20 group-hover:text-gold-500 -rotate-45 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 shrink-0 ml-4" />
+                </div>
+                <h3 className="text-lg sm:text-xl font-medium text-navy-950 leading-snug group-hover:text-navy-800 transition-colors line-clamp-3">
+                  {item.headline}
+                </h3>
+              </a>
             ))}
           </div>
         </div>
