@@ -14,7 +14,12 @@ const signupSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const userId = request.headers.get("x-user-id");
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (e) {
+      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
     
     // Validation
     const validation = signupSchema.safeParse(body);

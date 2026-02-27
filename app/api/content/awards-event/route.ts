@@ -22,8 +22,8 @@ export async function GET(request: NextRequest) {
     const db = await getDb();
     const collection = db.collection<NationalImpactAward>(COLLECTIONS.NATIONAL_IMPACT_AWARDS);
     
-    // Get specific event by ID
     if (id) {
+      if (!ObjectId.isValid(id)) return NextResponse.json({ success: false, error: "Invalid ID format" }, { status: 400 });
       const event = await collection.findOne({ _id: new ObjectId(id) });
       if (!event) {
         return NextResponse.json(

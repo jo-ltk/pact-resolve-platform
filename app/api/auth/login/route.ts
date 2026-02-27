@@ -11,9 +11,17 @@ const loginSchema = z.object({
 
 export async function POST(request: NextRequest) {
   let step = "parsing-body";
+  let body;
+  try {
+    body = await request.json();
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Invalid JSON format in request body" },
+      { status: 400 }
+    );
+  }
   
   try {
-    const body = await request.json();
     step = "validating";
     
     // Pre-process email before validation

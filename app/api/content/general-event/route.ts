@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
     const collection = db.collection<MCIEvent>(COLLECTIONS.GENERAL_EVENTS);
     
     if (id) {
+      if (!ObjectId.isValid(id)) return NextResponse.json({ success: false, error: "Invalid ID format" }, { status: 400 });
       // Get specific event by ID
       const event = await collection.findOne({ _id: new ObjectId(id) });
       if (!event) {

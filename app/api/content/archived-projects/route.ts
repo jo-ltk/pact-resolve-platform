@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
     const collection = db.collection<ArchivedProject>(COLLECTIONS.ARCHIVED_PROJECTS);
     
     if (id) {
+      if (!ObjectId.isValid(id)) return NextResponse.json({ success: false, error: "Invalid ID format" }, { status: 400 });
       const project = await collection.findOne({ _id: new ObjectId(id) });
       if (!project) {
         return NextResponse.json({ success: false, error: "Archived project not found" }, { status: 404 });

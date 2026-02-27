@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
     const collection = db.collection<MCIEvent>(COLLECTIONS.MCI_EVENTS);
     
     if (id) {
+      if (!ObjectId.isValid(id)) return NextResponse.json({ success: false, error: "Invalid ID format" }, { status: 400 });
       const event = await collection.findOne({ _id: new ObjectId(id) });
       if (!event) return NextResponse.json({ success: false, error: "MCI event not found" }, { status: 404 });
       return NextResponse.json({ success: true, data: event });

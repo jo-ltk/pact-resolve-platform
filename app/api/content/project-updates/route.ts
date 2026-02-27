@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
     const collection = db.collection<ProjectUpdate>(COLLECTIONS.PROJECT_UPDATES);
     
     if (id) {
+      if (!ObjectId.isValid(id)) return NextResponse.json({ success: false, error: "Invalid ID format" }, { status: 400 });
       // Get specific update by ID
       const update = await collection.findOne({ _id: new ObjectId(id) });
       if (!update) {

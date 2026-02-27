@@ -34,10 +34,11 @@ export async function POST(request: NextRequest) {
     
   } catch (error: any) {
     console.error("Error receiving pledge:", error);
+    const isParseError = error.message?.toLowerCase().includes("parse") || error.message?.includes("multipart") || error.name === 'TypeError';
     return NextResponse.json({ 
       success: false, 
       error: "Failed to process pledge submission" 
-    }, { status: 500 });
+    }, { status: isParseError ? 400 : 500 });
   }
 }
 
