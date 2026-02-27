@@ -262,6 +262,12 @@ export interface MCIEvent extends BaseDocument {
   rewards: MCIReward[];
   /** Strategic partners for Advocate Maximus */
   strategicPartners?: ConclaveHighlight[];
+  /** Mentoring partners for MCI */
+  mentoringPartners?: {
+    name: string;
+    logo: string;
+    order: number;
+  }[];
   /** Hero background image */
   heroImage: ImageData;
   /** Vision section image */

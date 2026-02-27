@@ -84,7 +84,7 @@ export default function MCIPage() {
     async function fetchEvent() {
       try {
         console.log("Fetching MCI event data...");
-        const res = await fetch("/api/content/mci-event");
+        const res = await fetch("/api/content/mci-event", { cache: 'no-store' });
         const result = await res.json();
         console.log("MCI API Result:", result);
         
@@ -423,15 +423,35 @@ export default function MCIPage() {
             description="Over the years, we have been supported by a celebrated pool of law firms and organizations that have rewarded the top performers with internships, besides on-site mentoring during MCI."
           />
           
-          <StaggerContainer className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-              <StaggerItem key={i}>
-                <div className="h-16 sm:h-20 md:h-24 lg:h-32 rounded-xl sm:rounded-2xl md:rounded-3xl border border-white/5 bg-white/2 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 md:p-8 group hover:border-gold-500/30 hover:bg-white/5 transition-all duration-500">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
+            {(eventData?.mentoringPartners && eventData.mentoringPartners.length > 0) ? (
+              (() => {
+                console.log("Rendering MCI Partners:", eventData.mentoringPartners.length);
+                return eventData.mentoringPartners.sort((a, b) => (a.order || 0) - (b.order || 0)).map((partner, i) => (
+                  <div key={i} className="h-20 sm:h-24 md:h-28 lg:h-36 rounded-2xl sm:rounded-3xl border border-white/10 bg-white shadow-xl flex flex-col items-center justify-center p-3 sm:p-5 md:p-6 group hover:border-gold-500/50 hover:scale-105 transition-all duration-500 overflow-hidden relative">
+                    <div className="relative w-full h-12 sm:h-16 md:h-20">
+                      <Image 
+                        src={partner.logo} 
+                        alt={partner.name}
+                        fill
+                        className="object-contain transition-all duration-500"
+                        unoptimized
+                      />
+                    </div>
+                    <div className="mt-2 text-[8px] sm:text-[10px] font-bold uppercase tracking-tighter text-navy-950/40 line-clamp-1 text-center">
+                      {partner.name}
+                    </div>
+                  </div>
+                ));
+              })()
+            ) : (
+              [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+                <div key={i} className="h-16 sm:h-20 md:h-24 lg:h-32 rounded-xl sm:rounded-2xl md:rounded-3xl border border-white/5 bg-white/2 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 md:p-8 group hover:border-gold-500/30 hover:bg-white/5 transition-all duration-500">
                   <div className="w-full h-full bg-white/5 rounded-lg sm:rounded-xl animate-pulse group-hover:animate-none group-hover:bg-gold-500/10 transition-colors" />
                 </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+              ))
+            )}
+          </div>
         </div>
       </section>
 

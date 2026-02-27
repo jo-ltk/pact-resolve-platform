@@ -45,15 +45,20 @@ import { MCIEvent } from "@/lib/db/schemas";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function MCIGalleryPage() {
+export default function MCIManagementPage() {
   const { token } = useAuth();
   const [eventData, setEventData] = useState<MCIEvent | null>(null);
   const [gallery, setGallery] = useState<Array<{ id: string; url: string; title: string; description: string; order: number }>>([]);
+  const [partners, setPartners] = useState<Array<{ id: string; name: string; logo: string; order: number }>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState<'gallery' | 'partners'>('gallery');
+  
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isPartnerDialogOpen, setIsPartnerDialogOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [tempItem, setTempItem] = useState<{ url: string; title: string; description: string; order: number }>({ url: "", title: "", description: "", order: 0 });
+  const [tempPartner, setTempPartner] = useState<{ name: string; logo: string; order: number }>({ name: "", logo: "", order: 0 });
 
   // Fallback images matching the public website for initial setup
   const fallbackGallery = [
@@ -112,39 +117,64 @@ export default function MCIGalleryPage() {
         
         if (activeEvent) {
           setEventData(activeEvent);
+          
+          // Set Gallery
           const galleryWithIds = (activeEvent.gallery && activeEvent.gallery.length > 0 ? activeEvent.gallery : fallbackGallery)
             .map((item: any, idx: number) => ({
               ...item,
               id: item.id || `item-${idx}-${Date.now()}`
             }));
           setGallery(galleryWithIds);
+
+          // Set Partners
+          const partnersWithIds = (activeEvent.mentoringPartners || [])
+            .map((item: any, idx: number) => ({
+              ...item,
+              id: item.id || `partner-${idx}-${Date.now()}`
+            }));
+          setPartners(partnersWithIds);
         } else {
           setGallery(fallbackGallery.map((item, idx) => ({ ...item, id: `fallback-${idx}` })));
+          setPartners([]);
         }
       } else {
         setGallery(fallbackGallery.map((item, idx) => ({ ...item, id: `fallback-${idx}` })));
+        setPartners([]);
       }
     } catch (e) { 
       setGallery(fallbackGallery.map((item, idx) => ({ ...item, id: `fallback-${idx}` })));
-      toast.error("Database connection issue. Showing default images."); 
+      setPartners([]);
+      toast.error("Database connection issue. Showing default data."); 
     }
     finally { setIsLoading(false); }
   }
 
-  const handleSave = async () => {
+  const handleSave = async (overrideGallery?: any[], overridePartners?: any[]) => {
     setIsSaving(true);
     try {
-      const galleryToSave = gallery.map(({ ...rest }) => rest);
+      const gList = overrideGallery || gallery;
+      const pList = overridePartners || partners;
+      const galleryToSave = gList.map(({ id, ...rest }) => rest);
+      const partnersToSave = pList.map(({ id, ...rest }) => rest);
+
       const method = (eventData && eventData._id) ? "PUT" : "POST";
       const payload = (eventData && eventData._id) 
-        ? { _id: eventData._id, isActive: true, gallery: galleryToSave }
+        ? { 
+            ...eventData, 
+            isActive: true, 
+            gallery: galleryToSave,
+            mentoringPartners: partnersToSave
+          }
         : {
             year: new Date().getFullYear(),
             title: ["Mediation", "Champions", "League"],
             subtitle: "India's Premier Mediation Competition",
             isActive: true,
-            gallery: galleryToSave
+            gallery: galleryToSave,
+            mentoringPartners: partnersToSave
           };
+
+      console.log(`[Admin] Saving MCI Event (${method})`, payload);
 
       const res = await fetch("/api/content/mci-event", {
         method: method,
@@ -153,9 +183,21 @@ export default function MCIGalleryPage() {
       });
       
       const result = await res.json();
+      console.log(`[Admin] Save result:`, result);
+
       if (result.success) {
-        toast.success("Gallery published successfully!");
-        fetchEvent();
+        toast.success("MCI Event updated successfully!");
+        // Refresh event data to ensure state is in sync
+        const freshRes = await fetch("/api/content/mci-event?all=true", { cache: 'no-store' });
+        const freshData = await freshRes.json();
+        if (freshData.success) {
+          const items = Array.isArray(freshData.data) ? freshData.data : [freshData.data];
+          const activeEvent = items.find((e: MCIEvent) => e.isActive) || items[0];
+          if (activeEvent) {
+             setEventData(activeEvent);
+             toast.success("Data verified and synced.");
+          }
+        }
       } else {
         toast.error(result.error || "Save failed");
       }
@@ -166,6 +208,7 @@ export default function MCIGalleryPage() {
     }
   };
 
+  // --- Gallery Actions ---
   const addGalleryItem = () => {
     setEditingIndex(null);
     setTempItem({ url: "", title: "", description: "", order: gallery.length + 1 });
@@ -178,7 +221,7 @@ export default function MCIGalleryPage() {
     setIsDialogOpen(true);
   };
 
-  const saveTempItem = () => {
+  const saveGalleryTempItem = async () => {
     const newGallery = [...gallery];
     if (editingIndex !== null) {
       newGallery[editingIndex] = { ...tempItem, id: gallery[editingIndex].id };
@@ -187,82 +230,75 @@ export default function MCIGalleryPage() {
     }
     setGallery(newGallery);
     setIsDialogOpen(false);
-    toast.info("Changes staged. Click Publish to save to website.");
+    await handleSave(newGallery, partners);
   };
 
   const removeGalleryItem = async (index: number) => {
     const newGallery = gallery.filter((_, i) => i !== index)
       .map((item, i) => ({ ...item, order: i + 1 }));
-    
     setGallery(newGallery);
-    toast.success("Card removed from view");
-
-    // Persist to API immediately as requested by user
-    if (eventData?._id) {
-      try {
-        const galleryToSave = newGallery.map(({ ...rest }) => rest);
-        const res = await fetch("/api/content/mci-event", {
-          method: "PUT",
-          headers: { 
-            "Content-Type": "application/json", 
-            "Authorization": `Bearer ${token}` 
-          },
-          body: JSON.stringify({ 
-            _id: eventData._id, 
-            gallery: galleryToSave 
-          })
-        });
-        
-        const result = await res.json();
-        if (result.success) {
-          toast.success("Server updated successfully");
-        } else {
-          toast.error("Failed to update server, but card removed locally");
-        }
-      } catch (error) {
-        console.error("Delete sync error:", error);
-        toast.error("Network error: Deletion not saved to server");
-      }
-    }
+    await handleSave(newGallery, partners);
   };
 
-  const updateGalleryItem = (index: number, field: string, value: any) => {
-    const newGallery = [...gallery];
-    newGallery[index] = { ...newGallery[index], [field]: value };
-    setGallery(newGallery);
-  };
-
-  const moveItem = async (index: number, direction: 'up' | 'down') => {
+  const moveGalleryItem = async (index: number, direction: 'up' | 'down') => {
     if (direction === 'up' && index === 0) return;
     if (direction === 'down' && index === gallery.length - 1) return;
-    
     const newGallery = [...gallery];
     const newIndex = direction === 'up' ? index - 1 : index + 1;
     [newGallery[index], newGallery[newIndex]] = [newGallery[newIndex], newGallery[index]];
     newGallery.forEach((item, i) => item.order = i + 1);
-    
     setGallery(newGallery);
+    await handleSave(newGallery, partners);
+  };
 
-    // Persist order to API
-    if (eventData?._id) {
-      try {
-        const galleryToSave = newGallery.map(({ ...rest }) => rest);
-        await fetch("/api/content/mci-event", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-          body: JSON.stringify({ _id: eventData._id, gallery: galleryToSave })
-        });
-      } catch (e) {
-        console.error("Order sync error:", e);
-      }
+  // --- Partner Actions ---
+  const addPartnerItem = () => {
+    setEditingIndex(null);
+    setTempPartner({ name: "", logo: "", order: partners.length + 1 });
+    setIsPartnerDialogOpen(true);
+  };
+
+  const openPartnerEditDialog = (index: number) => {
+    setEditingIndex(index);
+    setTempPartner({ ...partners[index] });
+    setIsPartnerDialogOpen(true);
+  };
+
+  const savePartnerTempItem = async () => {
+    const newPartners = [...partners];
+    if (editingIndex !== null) {
+      newPartners[editingIndex] = { ...tempPartner, id: partners[editingIndex].id };
+    } else {
+      newPartners.push({ ...tempPartner, id: `new-p-${Date.now()}` });
     }
+    setPartners(newPartners);
+    setIsPartnerDialogOpen(false);
+    await handleSave(gallery, newPartners);
+  };
+
+  const removePartnerItem = async (index: number) => {
+    const newPartners = partners.filter((_, i) => i !== index)
+      .map((item, i) => ({ ...item, order: i + 1 }));
+    setPartners(newPartners);
+    await handleSave(gallery, newPartners);
+  };
+
+  const movePartnerItem = async (index: number, direction: 'up' | 'down') => {
+    if (direction === 'up' && index === 0) return;
+    if (direction === 'down' && index === partners.length - 1) return;
+    const newPartners = [...partners];
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    [newPartners[index], newPartners[newIndex]] = [newPartners[newIndex], newPartners[index]];
+    newPartners.forEach((item, i) => item.order = i + 1);
+    setPartners(newPartners);
+    await handleSave(gallery, newPartners);
   };
 
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <Loader2 className="w-12 h-12 animate-spin text-amber-500" />
-        <p className="text-muted-foreground animate-pulse font-medium">Curating your memories...</p>
+        <p className="text-muted-foreground animate-pulse font-medium">Loading MCI data...</p>
       </div>
     );
   }
@@ -282,249 +318,272 @@ export default function MCIGalleryPage() {
             <div className="space-y-1">
               <h1 className="page-title text-4xl md:text-5xl font-black tracking-tighter italic flex items-center gap-4">
                 <Trophy className="w-10 h-10 text-amber-500" /> 
-                MCL MEMORIES
+                MCI EVENT HUB
               </h1>
               <p className="text-white/60 text-lg font-light max-w-xl">
-                Redefinition of excellence. Curate the visual journey of the Mediation Champions League.
+                Manage the visual journey and strategic partnerships for the Mediation Champions League.
               </p>
             </div>
           </div>
           
           <div className="flex flex-col gap-3 w-full md:w-auto">
             <Button 
-              onClick={handleSave} 
+              onClick={() => handleSave()} 
               disabled={isSaving}
               className="rounded-2xl px-10 h-14 bg-amber-600 hover:bg-amber-500 text-white font-bold text-lg shadow-xl shadow-amber-900/40 border-none transition-all hover:scale-105 active:scale-95"
             >
               {isSaving ? <Loader2 className="w-5 h-5 mr-3 animate-spin" /> : <Save className="w-5 h-5 mr-3" />}
-              Publish Gallery
+              Publish Changes
             </Button>
-            <p className="text-xs text-center text-white/40  uppercase tracking-tighter">
+            <p className="text-xs text-center text-white/40 uppercase tracking-tighter">
               {eventData ? `Linked to ${eventData.year} Edition` : "Draft Mode"}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Stats & Actions Bar */}
-      <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-white dark:bg-navy-900/50 backdrop-blur-md border rounded-3xl p-6 shadow-sm">
-        <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3 px-4 py-2 bg-amber-500/10 rounded-2xl border border-amber-500/20">
-                <LayoutGrid className="w-5 h-5 text-amber-600" />
-                <span className="font-bold text-amber-900 dark:text-amber-100">{gallery.length} <span className="font-medium opacity-60">Photos</span></span>
-            </div>
-            {eventData?.isActive && (
-                <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-emerald-600 font-bold text-sm">
-                    <Sparkles className="w-4 h-4 fill-current" /> Live on Website
-                </div>
-            )}
-        </div>
-        
-          <Button onClick={addGalleryItem} variant="outline" className="rounded-2xl h-12 px-6 border-2 border-dashed border-amber-500/30 text-amber-600 hover:bg-amber-500/5 hover:border-amber-500 transition-all font-bold">
-            <Plus className="w-5 h-5 mr-2" /> Append New Memory
-          </Button>
-      </div>
-
-      {/* Redisgned Gallery Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <AnimatePresence mode="popLayout">
-          {gallery.map((photo, index) => (
-            <motion.div 
-              layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
-              key={photo.id}
-              className="h-full"
-            >
-              <Card className="group relative h-full flex flex-col bg-white dark:bg-navy-900 border-none shadow-sm hover:shadow-xl transition-all duration-300 rounded-3xl overflow-hidden border border-navy-50/50">
-                {/* Image Container */}
-                <div className="relative aspect-video overflow-hidden bg-muted">
-                  {photo.url ? (
-                    <div className="relative w-full h-full">
-                      <Image 
-                        src={photo.url} 
-                        alt={photo.title || "Gallery image"} 
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110" 
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-navy-50/50">
-                      <ImageIcon className="w-12 h-12 opacity-20" />
-                    </div>
-                  )}
-                  
-                  {/* Overlays */}
-                  <div className="absolute inset-0 bg-linear-to-t from-navy-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* Action Buttons (Overlay) */}
-                  <div className="absolute top-4 right-4 flex gap-2 translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <Button 
-                      size="icon" 
-                      variant="secondary" 
-                      className="w-9 h-9 rounded-xl bg-white/90 backdrop-blur shadow-lg hover:bg-white" 
-                      onClick={() => openEditDialog(index)}
-                    >
-                      <Edit className="w-4 h-4 text-navy-950" />
-                    </Button>
-                    <Button 
-                      size="icon" 
-                      variant="destructive" 
-                      className="w-9 h-9 rounded-xl shadow-lg" 
-                      onClick={() => removeGalleryItem(index)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-
-                  {/* Order Badge */}
-                  <div className="absolute bottom-4 left-4 px-3 py-1 bg-amber-500 text-white rounded-lg text-xs font-bold shadow-lg">
-                    #{index + 1}
-                  </div>
-                </div>
-
-                <CardContent className="p-6 flex-1 space-y-3">
-                  <div className="flex justify-between items-start gap-4">
-                    <h3 className="font-bold text-lg text-navy-950 dark:text-white line-clamp-1">
-                      {photo.title || "Untitled Memory"}
-                    </h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed h-10">
-                    {photo.description || "No description provided."}
-                  </p>
-                </CardContent>
-
-                <CardFooter className="p-4 pt-0 flex justify-between items-center border-t border-navy-50/50 mt-auto">
-                    <div className="flex gap-1">
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="w-8 h-8 rounded-lg text-muted-foreground hover:text-navy-950 hover:bg-navy-50" 
-                        onClick={() => moveItem(index, 'up')} 
-                        disabled={index === 0}
-                      >
-                        <ChevronUp className="w-4 h-4" />
-                      </Button>
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="w-8 h-8 rounded-lg text-muted-foreground hover:text-navy-950 hover:bg-navy-50" 
-                        onClick={() => moveItem(index, 'down')} 
-                        disabled={index === gallery.length - 1}
-                      >
-                        <ChevronDown className="w-4 h-4" />
-                      </Button>
-                    </div>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-[11px] font-bold uppercase tracking-wider text-amber-600 hover:text-amber-700 hover:bg-amber-50 rounded-xl h-8"
-                      onClick={() => openEditDialog(index)}
-                    >
-                      Configure Details
-                    </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        
-        {/* Add Empty State Card */}
+      {/* Tabs Switcher */}
+      <div className="flex p-1 bg-white dark:bg-navy-900/50 border rounded-2xl w-full sm:w-fit mx-auto">
         <button 
-            onClick={addGalleryItem}
-            className="flex flex-col items-center justify-center bg-gray-50/50 dark:bg-navy-900/20 border-2 border-dashed border-navy-100 dark:border-navy-800 rounded-3xl p-12 hover:bg-amber-50/50 hover:border-amber-500/30 transition-all group min-h-[350px]"
+          onClick={() => setActiveTab('gallery')}
+          className={cn(
+            "flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all",
+            activeTab === 'gallery' ? "bg-navy-950 text-white shadow-lg" : "text-navy-950/40 hover:text-navy-950"
+          )}
         >
-            <div className="w-16 h-16 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Plus className="w-8 h-8 text-amber-500" />
-            </div>
-            <h3 className="text-lg font-bold text-navy-950 dark:text-white mb-1">Add Memory</h3>
-            <p className="text-xs text-muted-foreground text-center">Capture a new moment for the gallery</p>
+          <ImageIcon className="w-4 h-4" /> Gallery
+        </button>
+        <button 
+          onClick={() => setActiveTab('partners')}
+          className={cn(
+            "flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all",
+            activeTab === 'partners' ? "bg-navy-950 text-white shadow-lg" : "text-navy-950/40 hover:text-navy-950"
+          )}
+        >
+          <LayoutGrid className="w-4 h-4" /> Mentoring Partners
         </button>
       </div>
 
-      {/* Edit Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-4xl w-[95vw] md:w-full p-0 overflow-hidden rounded-4xl border-none shadow-2xl flex flex-col bg-white">
-          <div className="bg-navy-950 p-8 text-white shrink-0">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-bold flex items-center gap-3">
-                <ImageIcon className="w-6 h-6 text-amber-500" />
-                {editingIndex !== null ? "Edit Memory" : "Add New Memory"}
-              </DialogTitle>
-              <DialogDescription className="text-navy-200 italic">
-                Provide details for this visual memory. Ensure high-quality imagery is used.
-              </DialogDescription>
-            </DialogHeader>
+      {activeTab === 'gallery' ? (
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-white dark:bg-navy-900/50 backdrop-blur-md border rounded-3xl p-6 shadow-sm">
+            <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3 px-4 py-2 bg-amber-500/10 rounded-2xl border border-amber-500/20">
+                    <LayoutGrid className="w-5 h-5 text-amber-600" />
+                    <span className="font-bold text-amber-900 dark:text-amber-100">{gallery.length} <span className="font-medium opacity-60">Photos</span></span>
+                </div>
+                {eventData?.isActive && (
+                    <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-emerald-600 font-bold text-sm">
+                        <Sparkles className="w-4 h-4 fill-current" /> Live on Website
+                    </div>
+                )}
+            </div>
+            
+            <div className="flex gap-2">
+              <Button onClick={() => handleSave()} disabled={isSaving} className="rounded-2xl h-12 px-6 bg-navy-950 hover:bg-navy-900 text-white font-bold">
+                {isSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                Publish Gallery
+              </Button>
+              <Button onClick={addGalleryItem} variant="outline" className="rounded-2xl h-12 px-6 border-2 border-dashed border-amber-500/30 text-amber-600 hover:bg-amber-50/50 hover:border-amber-500 transition-all font-bold">
+                <Plus className="w-5 h-5 mr-2" /> Append New Memory
+              </Button>
+            </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-              <div className="space-y-4">
-                 <Label className="text-sm font-bold text-navy-950 ml-1 italic">Memory Photo</Label>
-                 <ImageUpload 
-                  value={tempItem.url} 
-                  onChange={(url) => setTempItem({ ...tempItem, url })} 
-                />
-                <p className="text-xs text-muted-foreground italic px-1">Tip: Landscape (16:9) images work best.</p>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence mode="popLayout">
+              {gallery.map((photo, index) => (
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  key={photo.id}
+                  className="h-full"
+                >
+                  <Card className="group relative h-full flex flex-col bg-white dark:bg-navy-900 border-none shadow-sm hover:shadow-xl transition-all duration-300 rounded-3xl overflow-hidden border border-navy-50/50">
+                    <div className="relative aspect-video overflow-hidden bg-muted">
+                      {photo.url ? (
+                        <Image src={photo.url} alt={photo.title} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-navy-50/50">
+                          <ImageIcon className="w-12 h-12 opacity-20" />
+                        </div>
+                      )}
+                      
+                      <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <Button size="icon" variant="secondary" className="w-9 h-9 rounded-xl bg-white/90" onClick={() => openEditDialog(index)}>
+                          <Edit className="w-4 h-4 text-navy-950" />
+                        </Button>
+                        <Button size="icon" variant="destructive" className="w-9 h-9 rounded-xl" onClick={() => removeGalleryItem(index)}>
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
 
-              <div className="space-y-6">
+                      <div className="absolute bottom-4 left-4 px-3 py-1 bg-amber-500 text-white rounded-lg text-xs font-bold">
+                        #{index + 1}
+                      </div>
+                    </div>
+
+                    <CardContent className="p-6 flex-1 space-y-3">
+                      <h3 className="font-bold text-lg text-navy-950 dark:text-white line-clamp-1">{photo.title || "Untitled Memory"}</h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed h-10">{photo.description || "No description provided."}</p>
+                    </CardContent>
+
+                    <CardFooter className="p-4 pt-0 flex justify-between items-center border-t mt-auto">
+                        <div className="flex gap-1">
+                          <Button size="icon" variant="ghost" onClick={() => moveGalleryItem(index, 'up')} disabled={index === 0}>
+                            <ChevronUp className="w-4 h-4" />
+                          </Button>
+                          <Button size="icon" variant="ghost" onClick={() => moveGalleryItem(index, 'down')} disabled={index === gallery.length - 1}>
+                            <ChevronDown className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <Button variant="ghost" size="sm" className="text-[11px] font-bold uppercase text-amber-600 hover:bg-amber-50 rounded-xl h-8" onClick={() => openEditDialog(index)}>
+                          Edit
+                        </Button>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-white dark:bg-navy-900/50 backdrop-blur-md border rounded-3xl p-6 shadow-sm">
+            <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3 px-4 py-2 bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
+                    <LayoutGrid className="w-5 h-5 text-indigo-600" />
+                    <span className="font-bold text-indigo-900 dark:text-indigo-100">{partners.length} <span className="font-medium opacity-60">Logos</span></span>
+                </div>
+            </div>
+            
+            <div className="flex gap-2">
+              <Button onClick={() => handleSave()} disabled={isSaving} className="rounded-2xl h-12 px-6 bg-navy-950 hover:bg-navy-900 text-white font-bold">
+                {isSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                Publish Partners
+              </Button>
+              <Button onClick={addPartnerItem} variant="outline" className="rounded-2xl h-12 px-6 border-2 border-dashed border-indigo-500/30 text-indigo-600 hover:bg-indigo-50/50 hover:border-indigo-500 transition-all font-bold">
+                <Plus className="w-5 h-5 mr-2" /> Add Mentoring Partner
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <AnimatePresence mode="popLayout">
+              {partners.map((partner, index) => (
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  key={partner.id}
+                >
+                  <Card className="group relative bg-white dark:bg-navy-900 border-none shadow-sm hover:shadow-xl transition-all duration-300 rounded-3xl overflow-hidden border border-navy-50/50 p-4">
+                    <div className="aspect-square relative mb-4 bg-gray-50 dark:bg-navy-950/50 rounded-2xl p-4 flex items-center justify-center overflow-hidden">
+                      {partner.logo ? (
+                        <Image src={partner.logo} alt={partner.name} fill className="object-contain transition-transform group-hover:scale-110" />
+                      ) : (
+                        <LayoutGrid className="w-8 h-8 opacity-10" />
+                      )}
+
+                      <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                        <Button size="icon" variant="secondary" className="w-7 h-7 rounded-lg" onClick={() => openPartnerEditDialog(index)}>
+                          <Edit className="w-3.5 h-3.5" />
+                        </Button>
+                        <Button size="icon" variant="destructive" className="w-7 h-7 rounded-lg" onClick={() => removePartnerItem(index)}>
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2 text-center">
+                      <p className="text-sm font-bold text-navy-950 dark:text-white line-clamp-1">{partner.name || "Unnamed Partner"}</p>
+                      <div className="flex justify-center gap-1">
+                        <Button size="icon" variant="ghost" className="w-6 h-6" onClick={() => movePartnerItem(index, 'up')} disabled={index === 0}>
+                          <ChevronUp className="w-3.5 h-3.5" />
+                        </Button>
+                        <Button size="icon" variant="ghost" className="w-6 h-6" onClick={() => movePartnerItem(index, 'down')} disabled={index === partners.length - 1}>
+                          <ChevronDown className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            
+            <button 
+                onClick={addPartnerItem}
+                className="aspect-square flex flex-col items-center justify-center bg-gray-50/50 dark:bg-navy-900/20 border-2 border-dashed border-navy-100 dark:border-navy-800 rounded-3xl p-4 hover:border-indigo-500/30 group"
+            >
+                <Plus className="w-8 h-8 text-indigo-500 mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-bold text-navy-950/40 uppercase">Add Logo</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Gallery Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-4xl w-[95vw] p-0 overflow-hidden rounded-4xl border-none bg-white">
+          <div className="bg-navy-950 p-8 text-white">
+            <DialogTitle className="text-2xl font-bold flex items-center gap-3">
+              <ImageIcon className="w-6 h-6 text-amber-500" />
+              {editingIndex !== null ? "Edit Memory" : "Add New Memory"}
+            </DialogTitle>
+          </div>
+          <div className="p-8 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <Label>Memory Image</Label>
+                <ImageUpload value={tempItem.url} onChange={(url) => setTempItem({ ...tempItem, url })} />
+              </div>
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label className="text-sm font-bold text-navy-950 ml-1 italic">Title</Label>
-                  <Input 
-                    value={tempItem.title} 
-                    onChange={e => setTempItem({ ...tempItem, title: e.target.value })} 
-                    className="rounded-2xl h-12 border-navy-100 focus:ring-amber-500 bg-gray-50/50"
-                    placeholder="e.g. Inaugural Ceremony"
-                  />
+                  <Label>Title</Label>
+                  <Input value={tempItem.title} onChange={e => setTempItem({ ...tempItem, title: e.target.value })} />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-sm font-bold text-navy-950 ml-1 italic">Description / Context</Label>
-                  <Textarea 
-                    value={tempItem.description} 
-                    onChange={e => setTempItem({ ...tempItem, description: e.target.value })} 
-                    className="rounded-2xl min-h-[160px] border-navy-100 focus:ring-amber-500 resize-none bg-gray-50/50 p-4"
-                    placeholder="Describe the significance of this moment..."
-                  />
+                  <Label>Description</Label>
+                  <Textarea value={tempItem.description} onChange={e => setTempItem({ ...tempItem, description: e.target.value })} className="min-h-[120px] resize-none" />
                 </div>
               </div>
             </div>
           </div>
-
-          <DialogFooter className="p-8 bg-gray-50/80 backdrop-blur-sm border-t flex justify-end gap-3 shrink-0">
-            <Button variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl h-12 px-8">
-              Cancel
-            </Button>
-            <Button 
-              onClick={saveTempItem}
-              className="rounded-xl h-12 px-10 bg-navy-950 hover:bg-navy-900 text-white font-bold shadow-lg shadow-navy-900/20 active:scale-95 transition-all"
-            >
-              {editingIndex !== null ? "Save Changes" : "Add to Gallery"}
-            </Button>
+          <DialogFooter className="p-8 bg-gray-50 flex justify-end gap-3">
+            <Button variant="ghost" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+            <Button onClick={saveGalleryTempItem} className="bg-navy-950 text-white">Save Changes</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Guide Card */}
-      <div className="bg-amber-50 dark:bg-amber-950/20 rounded-[2.5rem] p-10 border border-amber-200 dark:border-amber-800 flex flex-col md:flex-row items-center gap-8">
-        <div className="w-20 h-20 shrink-0 bg-amber-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-amber-500/30 rotate-3">
-            <Sparkles className="w-10 h-10 text-white" />
-        </div>
-        <div>
-            <h3 className="text-2xl font-black italic text-amber-900 dark:text-amber-100 mb-2 tracking-tight uppercase">Visual Strategy Guide</h3>
-            <p className="text-amber-800/80 dark:text-amber-200/80 leading-relaxed max-w-3xl">
-                The MCI Memories section is a cinematic carousel on the public website. For the best impact, ensure titles are high-level and descriptions are concise. High-resolution landscape (16:9) images work best for this layout.
-            </p>
-        </div>
-        <div className="ml-auto flex items-center gap-3">
-             <div className="text-right hidden md:block">
-                 <p className="text-xs font-bold text-amber-900/40 uppercase tracking-widest leading-none">Status</p>
-                 <p className="text-sm font-bold text-amber-900/80 dark:text-amber-100">Synchronized</p>
-             </div>
-             <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
-        </div>
-      </div>
+      {/* Partner Dialog */}
+      <Dialog open={isPartnerDialogOpen} onOpenChange={setIsPartnerDialogOpen}>
+        <DialogContent className="max-w-md w-[95vw] p-0 overflow-hidden rounded-4xl border-none bg-white">
+          <div className="bg-navy-950 p-8 text-white">
+            <DialogTitle className="text-xl font-bold flex items-center gap-3">
+              <LayoutGrid className="w-6 h-6 text-indigo-400" />
+              {editingIndex !== null ? "Edit Partner" : "Add Partner"}
+            </DialogTitle>
+          </div>
+          <div className="p-8 space-y-6">
+            <div className="space-y-2">
+              <Label>Partner Logo</Label>
+              <ImageUpload value={tempPartner.logo} onChange={(logo) => setTempPartner({ ...tempPartner, logo })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Organization Name</Label>
+              <Input value={tempPartner.name} onChange={e => setTempPartner({ ...tempPartner, name: e.target.value })} placeholder="e.g. Khaitan & Co" />
+            </div>
+          </div>
+          <DialogFooter className="p-8 bg-gray-50 flex justify-end gap-3">
+            <Button variant="ghost" onClick={() => setIsPartnerDialogOpen(false)}>Cancel</Button>
+            <Button onClick={savePartnerTempItem} className="bg-navy-950 text-white font-bold">Add Partner</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
