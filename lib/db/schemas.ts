@@ -741,6 +741,7 @@ export interface WhyPactPoint extends BaseDocument {
 
 export interface NetworkLogo extends BaseDocument {
   name: string;
+  logo?: ImageData;
   order: number;
   isActive: boolean;
 }

@@ -45,17 +45,25 @@ export function NetworkLogos() {
         </FadeInUp>
         
         <FadeIn className="relative w-full overflow-hidden" delay={0.2}>
-          <div className="flex animate-marquee">
+          <div className="flex animate-marquee items-center">
             {/* Multiply items to fill the track and loop smoothly */}
             {[...networks, ...networks, ...networks, ...networks].map((item, i) => (
               <div 
                 key={`${item._id}-${i}`} 
                 className="shrink-0 px-6 md:px-12 lg:px-16"
               >
-                <div className="flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity duration-500 h-16 md:h-24">
-                  <span className="text-xl md:text-3xl font-light tracking-tighter whitespace-nowrap">
-                    {item.name}
-                  </span>
+                <div className="flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity duration-500 h-16 md:h-24 grayscale hover:grayscale-0">
+                  {item.logo?.url ? (
+                    <img 
+                      src={item.logo.url} 
+                      alt={item.logo.alt || item.name} 
+                      className="h-12 md:h-16 w-auto object-contain"
+                    />
+                  ) : (
+                    <span className="text-xl md:text-3xl font-light tracking-tighter whitespace-nowrap">
+                      {item.name}
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
