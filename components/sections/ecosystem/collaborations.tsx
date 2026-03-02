@@ -8,6 +8,7 @@ import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wra
 import { EcosystemSubPageHero } from "./ecosystem-subpage-hero";
 import { cn } from "@/lib/utils";
 import { type EcosystemPartner } from "@/lib/db/schemas";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Fallback constant data based on old website/user request
 const strategicPartnersFallback = [
@@ -169,6 +170,27 @@ export function Collaborations() {
   const displayPractice = getCategoryItems("practice", practiceCollaboratorsFallback);
   const displayMentoring = getCategoryItems("mentoring", mentoringPartnersFallback);
   const displaySupporters = getCategoryItems("supporter", supportersFallback);
+  
+  const displayAcademic = getCategoryItems("academic", currentAcademicAssociations.map(name => ({ name })));
+  const displayOlder = getCategoryItems("older", olderAssociations.map(name => ({ name })));
+
+  if (loading) {
+    return (
+      <section className="bg-white py-24">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 space-y-24">
+          <div className="space-y-4">
+            <Skeleton className="h-4 w-32 rounded-full" />
+            <Skeleton className="h-16 w-3/4 rounded-2xl" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[1, 2, 3, 4].map(i => (
+              <Skeleton key={i} className="h-64 w-full rounded-4xl" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
 
   return (
@@ -203,7 +225,7 @@ export function Collaborations() {
                   </div>
                   <div className="space-y-4 grow">
                     <span className="text-xs  text-gold-500 uppercase tracking-widest font-bold block mb-3 leading-tight">{(partner as any).region}</span>
-                    <h4 className="text-lg font-bold text-navy-900 leading-tight uppercase tracking-tight mb-6">{(partner as any).name}</h4>
+                    <h4 className="text-lg font-bold text-navy-900 leading-tight tracking-tight mb-6">{(partner as any).name}</h4>
                     <p className="text-[13px] text-navy-950/30 font-light leading-relaxed">{(partner as any).description}</p>
                   </div>
                 </div>
@@ -223,7 +245,7 @@ export function Collaborations() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-16 lg:gap-32 items-center">
              <FadeInUp>
-               <h3 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Why Alliances <br /><span className="text-gold-500 italic uppercase font-bold">Matter to Us</span></h3>
+               <h3 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Why Alliances <br /><span className="text-gold-500 italic font-medium">Matter to Us</span></h3>
                <p className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-12">
                  For PACT, these alliances are not just a list of logos, they are ongoing relationships that make it possible to:
                </p>
@@ -283,7 +305,7 @@ export function Collaborations() {
                         sizes="(max-width: 768px) 100vw, 33vw"
                    />
                 </div>
-                <h4 className="text-xl font-bold text-navy-950 mb-6 uppercase tracking-tight leading-tight">{pc.name}</h4>
+                <h4 className="text-xl font-bold text-navy-950 mb-6 tracking-tight leading-tight">{pc.name}</h4>
                 <p className="text-[15px] text-navy-950/40 font-light leading-relaxed max-w-sm">{(pc as any).description}</p>
               </FadeInUp>
             ))}
@@ -312,18 +334,24 @@ export function Collaborations() {
                   <span className="text-xs  uppercase tracking-widest text-gold-500 font-bold">Current Partners</span>
                   <div className="h-px grow bg-gold-500/10" />
                 </div>
-                <div className="relative w-full overflow-hidden bg-white/50 backdrop-blur-sm rounded-4xl border border-navy-100 p-8 shadow-sm group">
+                 <div className="relative w-full overflow-hidden bg-white/50 backdrop-blur-sm rounded-4xl border border-navy-100 p-8 shadow-sm group">
                   <div className="flex flex-col gap-6">
-                    {currentAcademicAssociations.map((school, i) => (
+                    {displayAcademic.map((school, i) => (
                       <motion.div 
                         key={i} 
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.1 }}
-                        className="flex items-center gap-4 group/item"
+                        className="flex items-center gap-6 group/item"
                       >
-                        <div className="w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0 group-hover/item:scale-150 transition-transform" />
-                        <span className="text-lg font-light text-navy-950 group-hover/item:text-gold-500 transition-colors">{school}</span>
+                        <div className="relative w-12 h-12 bg-white rounded-2xl border border-navy-50 flex items-center justify-center p-2 shrink-0 group-hover/item:border-gold-500/30 transition-all">
+                             {(school as any).logo ? (
+                                <Image src={(school as any).logo} alt={school.name} fill className="object-contain p-2" />
+                             ) : (
+                                <div className="w-1.5 h-1.5 rounded-full bg-gold-500 group-hover/item:scale-150 transition-transform" />
+                             )}
+                        </div>
+                        <span className="text-lg font-light text-navy-950 group-hover/item:text-gold-500 transition-colors uppercase tracking-tight">{school.name}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -338,15 +366,23 @@ export function Collaborations() {
                 </div>
                 <div className="relative w-full overflow-hidden py-4 border-y border-navy-100/50">
                   <div className="flex whitespace-nowrap overflow-hidden">
-                    <motion.div 
+                     <motion.div 
                       animate={{ x: ["0%", "-100%"] }}
                       transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
                       className="flex gap-12 shrink-0 pr-12"
                     >
-                      {olderAssociations.map((item, i) => (
-                        <span key={i} className="text-sm  uppercase tracking-widest text-navy-950/20 hover:text-gold-500 transition-colors whitespace-nowrap cursor-default italic">
-                          {item}
-                        </span>
+                      {displayOlder.map((item, i) => (
+                        <div key={i} className="flex items-center gap-4 group/older h-8 shrink-0">
+                           {(item as any).logo ? (
+                               <div className="relative h-full w-24 grayscale opacity-30 group-hover/older:opacity-100 group-hover/older:grayscale-0 transition-all">
+                                   <Image src={(item as any).logo} alt={item.name} fill className="object-contain" />
+                               </div>
+                           ) : (
+                               <span className="text-sm uppercase tracking-widest text-navy-950/20 hover:text-gold-500 transition-colors whitespace-nowrap cursor-default italic">
+                                 {item.name}
+                               </span>
+                           )}
+                        </div>
                       ))}
                     </motion.div>
                     <motion.div 
@@ -354,10 +390,18 @@ export function Collaborations() {
                       transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
                       className="flex gap-12 shrink-0 pr-12"
                     >
-                      {olderAssociations.map((item, i) => (
-                        <span key={i} className="text-sm  uppercase tracking-widest text-navy-950/20 hover:text-gold-500 transition-colors whitespace-nowrap cursor-default italic">
-                          {item}
-                        </span>
+                      {displayOlder.map((item, i) => (
+                        <div key={i} className="flex items-center gap-4 group/older h-8 shrink-0">
+                           {(item as any).logo ? (
+                               <div className="relative h-full w-24 grayscale opacity-30 group-hover/older:opacity-100 group-hover/older:grayscale-0 transition-all">
+                                   <Image src={(item as any).logo} alt={item.name} fill className="object-contain" />
+                               </div>
+                           ) : (
+                               <span className="text-sm uppercase tracking-widest text-navy-950/20 hover:text-gold-500 transition-colors whitespace-nowrap cursor-default italic">
+                                 {item.name}
+                               </span>
+                           )}
+                        </div>
                       ))}
                     </motion.div>
                   </div>
@@ -404,7 +448,7 @@ export function Collaborations() {
       <div className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
           <div className="text-center">
-            <h3 className="text-2xl font-light text-navy-950 mb-4 uppercase tracking-tight">Mission Mediation Alliances</h3>
+            <h3 className="text-2xl font-light text-navy-950 mb-4 tracking-tight">Mission Mediation Alliances</h3>
             <p className="max-w-4xl mx-auto text-navy-950/60 text-base md:text-lg font-light leading-relaxed mb-10 italic">
               We are privileged to collaborate with some of India’s leading law firms, whose support has helped us design and deliver real-world, practice-oriented mediation experiences for students and professionals alike. These firms contribute as mentors, assessors, speakers and trainers across our initiatives. Our collaborators include:
             </p>
@@ -461,7 +505,7 @@ export function Collaborations() {
       <div className="py-16 border-t border-navy-100 bg-navy-50/30">
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
           <div className="flex flex-col items-center text-center">
-            <h3 className="text-2xl font-light text-navy-950 mb-8 uppercase tracking-tight italic">Supporting Organisations</h3>
+            <h3 className="text-2xl font-light text-navy-950 mb-8 tracking-tight italic">Supporting Organisations</h3>
             <p className="max-w-3xl text-navy-950/50 text-sm md:text-base font-light mb-12 leading-relaxed">
               Our work is also strengthened by alliances with specialised mediation and ADR institutions in India and abroad, who share their expertise, platforms, and networks to deepen the impact of #MissionMediation. Our collaborators (current / past) include:
             </p>

@@ -11,18 +11,12 @@ import {
   Loader2,
   ArrowLeft,
   Image as ImageIcon,
-  Globe
+  Globe,
+  Database,
+  Sparkles
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,14 +43,39 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/lib/context/AuthContext";
 import { type EcosystemPartner, type EcosystemPartnerCategory } from "@/lib/db/schemas";
 import { ImageUpload } from "@/components/admin/ImageUpload";
+import { motion } from "framer-motion";
 
-const CATEGORIES: { value: EcosystemPartnerCategory; label: string }[] = [
-  { value: "strategic", label: "Strategic Partnerships" },
-  { value: "practice", label: "Collaborative in Practice" },
-  { value: "academic", label: "Academic Associates" },
-  { value: "legal", label: "Legal Alliances" },
-  { value: "mission", label: "Mission Mediation" },
-  { value: "supporter", label: "Supporting Organizations" }
+const SECTIONS: { category: EcosystemPartnerCategory; label: string; description: string }[] = [
+  { 
+    category: "strategic", 
+    label: "Strategic Partnerships", 
+    description: "Key global and regional institutional partners." 
+  },
+  { 
+    category: "practice", 
+    label: "Collaborators-in-Practice", 
+    description: "Law firms and corporate organisations working on initiatives." 
+  },
+  { 
+    category: "academic", 
+    label: "Academic Associates", 
+    description: "Current university and law school partnerships." 
+  },
+  { 
+    category: "older", 
+    label: "Older Associations", 
+    description: "Past academic and institutional collaborations." 
+  },
+  { 
+    category: "mission", 
+    label: "Mission Mediation Alliances", 
+    description: "Advocacy and training alliances (mentoring partners)." 
+  },
+  { 
+    category: "supporter", 
+    label: "Supporting Organisations", 
+    description: "Specialised mediation and ADR support institutions." 
+  }
 ];
 
 export default function EcosystemPartnersAdminPage() {
@@ -66,8 +85,7 @@ export default function EcosystemPartnersAdminPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Partial<EcosystemPartner> | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [isSeeding, setIsSeeding] = useState(false);
 
   useEffect(() => { fetchItems(); }, []);
 
@@ -85,18 +103,21 @@ export default function EcosystemPartnersAdminPage() {
     finally { setIsLoading(false); }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this partner?")) return;
+  const handleSeed = async () => {
+    if (!confirm("This will replace all current partners with fallback dummy data. Continue?")) return;
+    setIsSeeding(true);
     try {
-      const response = await fetch(`/api/content/ecosystem/partners?id=${id}`, {
-        method: "DELETE",
+      const response = await fetch("/api/content/ecosystem/seed", {
+        method: "POST",
         headers: { "Authorization": `Bearer ${token}` }
       });
-      if ((await response.json()).success) {
-        toast.success("Partner deleted");
-        setItems(items.filter(i => (i._id as any).toString() !== id));
+      const result = await response.json();
+      if (result.success) {
+        toast.success("Database seeded with dummy logos");
+        fetchItems();
       }
-    } catch (error) { toast.error("Delete failed"); }
+    } catch (e) { toast.error("Seed failed"); }
+    finally { setIsSeeding(false); }
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -121,262 +142,227 @@ export default function EcosystemPartnersAdminPage() {
     finally { setIsSaving(false); }
   };
 
-  const openCreateDialog = () => {
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure?")) return;
+    try {
+      await fetch(`/api/content/ecosystem/partners?id=${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      setItems(items.filter(i => (i._id as any).toString() !== id));
+      toast.success("Deleted");
+    } catch (e) { toast.error("Delete failed"); }
+  };
+
+  const openCreateDialog = (category: EcosystemPartnerCategory) => {
     setEditingItem({ 
       name: "", 
-      category: "strategic", 
+      category, 
       logo: "", 
       region: "", 
       description: "", 
       websiteUrl: "",
-      order: items.length + 1, 
+      order: items.filter(i => i.category === category).length + 1, 
       isActive: true 
     });
     setIsDialogOpen(true);
   };
 
-  const filteredItems = items.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || item.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-
   return (
-    <div className="space-y-6 pb-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 group">
+    <div className="space-y-12 pb-24 max-w-6xl mx-auto">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="space-y-4">
           <Link href="/admin/ecosystem" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
+            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Ecosystem
           </Link>
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 border border-emerald-500/20">
-              <Handshake className="w-6 h-6" />
+            <div className="w-14 h-14 rounded-3xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 border border-emerald-500/20 shadow-inner">
+              <Handshake className="w-7 h-7" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-navy-950 tracking-tight">Collaborators & Partners</h1>
+              <h1 className="text-4xl font-bold text-navy-950 tracking-tight">Collaborators & Partners</h1>
               <p className="text-navy-950/40 text-sm font-medium uppercase tracking-widest mt-1">Manage institutional and practice partnerships</p>
             </div>
           </div>
         </div>
-        <Button onClick={openCreateDialog} className="rounded-xl px-6 h-12 bg-navy-950 hover:bg-navy-900 text-white font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-navy-950/10">
-          <Plus className="w-4 h-4 mr-2" /> Add Partner
-        </Button>
+        <div className="flex items-center gap-3">
+            <Button 
+                variant="outline" 
+                onClick={handleSeed} 
+                disabled={isSeeding}
+                className="rounded-2xl h-12 px-6 border-dashed border-navy-200 text-navy-400 hover:text-navy-600 hover:bg-navy-50"
+            >
+                {isSeeding ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Database className="w-4 h-4 mr-2" />}
+                Seed Dummy Content
+            </Button>
+        </div>
       </div>
 
-      <Card className="rounded-3xl border-none shadow-xl shadow-navy-950/5 bg-white overflow-hidden">
-        <CardContent className="p-0">
-          <div className="p-6 border-b border-navy-50 flex flex-col sm:flex-row items-center gap-4">
-            <div className="relative flex-1 max-w-sm w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
-              <Input 
-                placeholder="Search partners..." 
-                className="pl-10 h-11 bg-navy-50/50 border-none rounded-xl focus-visible:ring-primary/20"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+      {/* Grid of Sections */}
+      <div className="grid grid-cols-1 gap-12">
+        {SECTIONS.map((section) => (
+          <div key={section.category} className="space-y-6">
+            <div className="flex items-center justify-between border-b border-navy-50 pb-4">
+              <div className="space-y-1">
+                <h2 className="text-2xl sm:text-3xl font-light text-navy-950 uppercase tracking-tight flex items-center gap-3">
+                  {section.label.split(' ')[0]} <span className="font-bold text-navy-950">{section.label.split(' ').slice(1).join(' ')}</span>
+                  <Badge variant="outline" className="text-[10px] font-black tracking-[0.2em] py-0 bg-gold-500/5 text-gold-600 border-gold-500/20">{items.filter(i => i.category === section.category).length}</Badge>
+                </h2>
+                <p className="text-navy-950/40 text-[10px] font-black uppercase tracking-[0.2em]">{section.description}</p>
+              </div>
+              <Button 
+                onClick={() => openCreateDialog(section.category)} 
+                variant="ghost"
+                className="rounded-xl h-10 px-4 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 font-bold"
+              >
+                <Plus className="w-4 h-4 mr-2" /> Add {section.category === 'academic' ? 'University' : 'Partner'}
+              </Button>
             </div>
-            <div className="w-full sm:w-[240px]">
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="h-11 bg-navy-50/50 border-none rounded-xl focus:ring-primary/20">
-                  <SelectValue placeholder="All Categories" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-navy-50 shadow-2xl">
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {CATEGORIES.map(cat => (
-                    <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
 
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent border-navy-50">
-                  <TableHead className="w-[80px] text-xs font-black uppercase tracking-widest text-navy-950/40 pl-8">Order</TableHead>
-                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Partner</TableHead>
-                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Category</TableHead>
-                  <TableHead className="text-xs font-black uppercase tracking-widest text-navy-950/40">Status</TableHead>
-                  <TableHead className="text-right pr-8 text-xs font-black uppercase tracking-widest text-navy-950/40">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isLoading ? (
-                  Array.from({ length: 3 }).map((_, i) => (
-                    <TableRow key={i} className="border-navy-50/50">
-                      <TableCell colSpan={5} className="py-4 px-8"><Skeleton className="h-12 w-full rounded-xl" /></TableCell>
-                    </TableRow>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              {isLoading ? (
+                Array.from({ length: 4 }).map((_, i) => (
+                  <Skeleton key={i} className="h-48 rounded-3xl" />
+                ))
+              ) : items.filter(i => i.category === section.category).length === 0 ? (
+                <div 
+                    onClick={() => openCreateDialog(section.category)}
+                    className="col-span-full h-32 rounded-3xl border-2 border-dashed border-navy-50 flex flex-col items-center justify-center gap-2 text-navy-950/20 hover:border-emerald-200 hover:text-emerald-300 transition-all cursor-pointer group"
+                >
+                    <ImageIcon className="w-8 h-8 opacity-50 group-hover:scale-110 transition-transform" />
+                    <span className="text-sm font-bold uppercase tracking-widest">Add First Entry</span>
+                </div>
+              ) : (
+                items
+                  .filter(i => i.category === section.category)
+                  .sort((a, b) => a.order - b.order)
+                  .map((item) => (
+                    <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        key={(item._id as any).toString()} 
+                        className="group relative bg-white p-6 rounded-3xl border border-navy-50 shadow-sm hover:shadow-xl hover:shadow-navy-950/5 transition-all duration-500 overflow-hidden"
+                    >
+                        {!item.isActive && (
+                            <div className="absolute top-3 left-3 z-10">
+                                <Badge variant="secondary" className="bg-navy-950 text-white text-[8px] font-black tracking-widest px-2 py-0 border-none">HIDDEN</Badge>
+                            </div>
+                        )}
+                        
+                        <div className="h-24 w-full relative mb-6 grayscale group-hover:grayscale-0 transition-all duration-700">
+                             {item.logo ? (
+                                <img src={item.logo} alt={item.name} className="w-full h-full object-contain" />
+                             ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-navy-50 rounded-2xl">
+                                    <ImageIcon className="w-8 h-8 text-navy-200" />
+                                </div>
+                             )}
+                        </div>
+                        
+                        <div className="space-y-1">
+                            <h4 className="font-bold text-navy-950 text-xs truncate uppercase tracking-tight">{item.name}</h4>
+                            <p className="text-[10px] text-navy-950/30 truncate italic">{item.region || "No Region"}</p>
+                        </div>
+
+                        {/* Actions Overlay */}
+                        <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-10 group-hover:opacity-100 transition-opacity">
+                            <Button 
+                                variant="secondary" 
+                                size="icon" 
+                                onClick={() => { setEditingItem(item); setIsDialogOpen(true); }}
+                                className="h-8 w-8 rounded-full shadow-lg bg-white/90 backdrop-blur"
+                            >
+                                <Edit className="w-3.5 h-3.5" />
+                            </Button>
+                            <Button 
+                                variant="destructive" 
+                                size="icon" 
+                                onClick={() => handleDelete((item._id as any).toString())}
+                                className="h-8 w-8 rounded-full shadow-lg"
+                            >
+                                <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                        </div>
+                        
+                        <div className="absolute bottom-0 left-0 w-full h-1 bg-navy-100/20">
+                            <div className="h-full bg-emerald-500/30 transition-all duration-700 w-0 group-hover:w-full" />
+                        </div>
+                    </motion.div>
                   ))
-                ) : filteredItems.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="py-20 text-center">
-                      <div className="flex flex-col items-center gap-3">
-                        <Handshake className="w-12 h-12 text-navy-200" />
-                        <p className="text-navy-950/40 font-medium">No partners found</p>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ) : filteredItems.map((item) => (
-                  <TableRow key={(item._id as any).toString()} className="group hover:bg-navy-50/50 transition-colors border-navy-50/50">
-                    <TableCell className="pl-8">
-                      <span className=" text-xs font-bold text-navy-950/30">#{item.order}</span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-4">
-                        <div className="relative w-12 h-12 rounded-xl bg-navy-50 overflow-hidden flex items-center justify-center shrink-0 border border-navy-100/50">
-                          {item.logo ? (
-                            <img src={item.logo} alt={item.name} className="object-contain w-3/4 h-3/4" />
-                          ) : (
-                            <ImageIcon className="w-5 h-5 text-navy-950/20" />
-                          )}
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="font-bold text-navy-950 text-sm italic">{item.name}</span>
-                          {item.region && <span className="text-xs text-navy-950/40  uppercase tracking-widest">{item.region}</span>}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="rounded-full text-xs uppercase font-bold tracking-widest border-navy-100 text-navy-950/60 bg-white">
-                        {CATEGORIES.find(c => c.value === item.category)?.label || item.category}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={item.isActive ? "success" : "secondary"} className="rounded-full text-xs uppercase font-black tracking-widest h-6">
-                        {item.isActive ? "Active" : "Hidden"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right pr-8">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full hover:bg-white hover:shadow-sm">
-                            <MoreHorizontal className="w-4 h-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="rounded-2xl p-2 min-w-[160px] shadow-2xl border-navy-50">
-                          <DropdownMenuItem 
-                            onClick={() => { setEditingItem(item); setIsDialogOpen(true); }}
-                            className="rounded-xl flex items-center gap-3 px-3 py-2 cursor-pointer focus:bg-navy-50"
-                          >
-                            <Edit className="w-4 h-4 text-navy-950/40" />
-                            <span className="text-sm font-medium">Edit Partner</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            onClick={() => handleDelete((item._id as any).toString())}
-                            className="rounded-xl flex items-center gap-3 px-3 py-2 cursor-pointer focus:bg-red-50 text-red-600"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            <span className="text-sm font-medium">Delete Partner</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+              )}
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        ))}
+      </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl bg-white rounded-4xl p-0 overflow-hidden border-none shadow-2xl">
-          <form onSubmit={handleSave}>
-            <DialogHeader className="p-8 pb-0">
-              <DialogTitle className="text-2xl font-bold tracking-tight text-navy-950">
-                {editingItem?._id ? "Edit Partner" : "New Partner Entry"}
+        <DialogContent className="w-[95vw] sm:max-w-2xl bg-white rounded-3xl sm:rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl max-h-[90vh] flex flex-col">
+          <form onSubmit={handleSave} className="flex flex-col h-full overflow-hidden">
+            <DialogHeader className="p-6 sm:p-10 pb-4 shrink-0">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-2">
+                <Badge variant="outline" className="text-emerald-500 border-emerald-500/20 bg-emerald-50/50 uppercase font-black text-[8px] sm:text-[10px] tracking-widest">{editingItem?.category}</Badge>
+                {editingItem?._id && <Badge variant="secondary" className="text-[8px] sm:text-[10px] uppercase font-black tracking-widest">Editing Entry</Badge>}
+              </div>
+              <DialogTitle className="text-2xl sm:text-3xl font-bold tracking-tight text-navy-950">
+                {editingItem?._id ? "Review Entry" : "Create New Resource"}
               </DialogTitle>
-              <DialogDescription>
-                Fill in the details for the strategic or practice partner institutional association.
-              </DialogDescription>
             </DialogHeader>
 
-            <div className="p-8 space-y-6">
-              <div className="grid grid-cols-2 gap-6">
+            <div className="flex-1 overflow-y-auto px-6 sm:px-10 py-4 sm:py-6 space-y-6 sm:space-y-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Partner name</Label>
+                  <Label className="text-[10px] uppercase tracking-widest font-black text-navy-950/30 ml-1">Entity Name</Label>
                   <Input 
                     value={editingItem?.name || ""} 
                     onChange={(e) => setEditingItem(prev => ({ ...prev!, name: e.target.value }))} 
-                    className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                    placeholder="e.g. Cyril Amarchand Mangaldas"
+                    className="h-12 sm:h-14 rounded-2xl bg-navy-50/30 border-navy-50/50 focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500/30 font-bold"
+                    placeholder="e.g. Maxwell Mediators"
                     required 
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Category</Label>
-                  <Select 
-                    value={editingItem?.category} 
-                    onValueChange={(val: EcosystemPartnerCategory) => setEditingItem(prev => ({ ...prev!, category: val }))}
-                  >
-                    <SelectTrigger className="h-12 rounded-xl bg-navy-50/50 border-none focus:ring-primary/20">
-                      <SelectValue placeholder="Select Category" />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-xl border-navy-50 shadow-2xl">
-                      {CATEGORIES.map(cat => (
-                        <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Region / Tag</Label>
+                  <Label className="text-[10px] uppercase tracking-widest font-black text-navy-950/30 ml-1">Region / Tag</Label>
                   <Input 
                     value={editingItem?.region || ""} 
                     onChange={(e) => setEditingItem(prev => ({ ...prev!, region: e.target.value }))} 
-                    className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                    placeholder="e.g. Global Partner"
+                    className="h-12 sm:h-14 rounded-2xl bg-navy-50/30 border-navy-50/50 focus-visible:ring-emerald-500/20 font-medium"
+                    placeholder="e.g. Singapore / Asia Pacific"
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Website URL</Label>
-                  <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-950/20" />
-                    <Input 
-                      value={editingItem?.websiteUrl || ""} 
-                      onChange={(e) => setEditingItem(prev => ({ ...prev!, websiteUrl: e.target.value }))} 
-                      className="pl-10 h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                      placeholder="https://..."
-                    />
-                  </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Description / Tagline</Label>
+                <Label className="text-[10px] uppercase tracking-widest font-black text-navy-950/30 ml-1">About the Partnership</Label>
                 <Textarea 
                   value={editingItem?.description || ""} 
                   onChange={(e) => setEditingItem(prev => ({ ...prev!, description: e.target.value }))} 
-                  className="min-h-[100px] rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20 resize-none p-4"
-                  placeholder="Tell us about this partnership..."
+                  className="min-h-[100px] sm:min-h-[120px] rounded-2xl bg-navy-50/30 border-navy-50/50 focus-visible:ring-emerald-500/20 resize-none p-4 sm:p-5 text-sm font-medium leading-relaxed"
+                  placeholder="Describe the nature of this collaboration..."
                 />
               </div>
 
               <div className="space-y-2">
                 <ImageUpload
-                  label="Partner Logo"
-                  description="Upload a PNG, JPG, or WebP image (max 5MB)"
+                  label="Official Logo"
+                  description="Transparent PNG preferred for best results"
                   value={editingItem?.logo || ""}
                   onChange={(url) => setEditingItem(prev => ({ ...prev!, logo: url }))}
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-6 pt-4 border-t border-navy-50">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 pt-4 sm:pt-6 border-t border-navy-50">
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Display Order</Label>
+                  <Label className="text-[10px] uppercase tracking-widest font-black text-navy-950/30 ml-1">Sequence Order</Label>
                   <Input 
                     type="number" 
                     value={editingItem?.order || 0} 
                     onChange={(e) => setEditingItem(prev => ({ ...prev!, order: parseInt(e.target.value) }))} 
-                    className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
+                    className="h-10 sm:h-12 rounded-2xl bg-navy-50/30 border-navy-50/50"
                   />
                 </div>
-                <div className="flex items-center justify-between gap-4 px-4 h-12 rounded-xl bg-navy-50/50 mt-8">
-                  <Label className="text-xs font-bold text-navy-950/60 uppercase tracking-widest cursor-pointer" htmlFor="status-toggle">Visible Page</Label>
+                <div className="flex items-center justify-between gap-4 px-6 h-10 sm:h-12 rounded-2xl bg-navy-50/30 sm:mt-6 border border-transparent hover:border-navy-100 transition-colors">
+                  <Label className="text-[10px] font-black text-navy-950/40 uppercase tracking-widest cursor-pointer" htmlFor="status-toggle">Visible to Public</Label>
                   <Switch 
                     id="status-toggle"
                     checked={editingItem?.isActive || false} 
@@ -386,12 +372,12 @@ export default function EcosystemPartnersAdminPage() {
               </div>
             </div>
 
-            <DialogFooter className="p-8 pt-0 bg-navy-50/30">
-              <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl h-12 px-6 font-bold">
-                Cancel
+            <DialogFooter className="p-6 sm:p-10 pt-4 bg-navy-50/20 shrink-0 flex-row justify-between gap-4">
+              <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-2xl h-12 sm:h-14 px-4 sm:px-8 font-bold text-navy-950">
+                Discard
               </Button>
-              <Button type="submit" disabled={isSaving} className="rounded-xl h-12 px-8 bg-navy-950 hover:bg-navy-900 text-white font-bold transition-all shadow-lg">
-                {isSaving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : editingItem?._id ? "Update Partner" : "Create Partner"}
+              <Button type="submit" disabled={isSaving} className="rounded-2xl h-12 sm:h-14 px-6 sm:px-12 bg-navy-950 hover:bg-black text-white font-bold transition-all shadow-xl hover:translate-y-[-2px] active:translate-y-0 text-sm sm:text-base">
+                {isSaving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : editingItem?._id ? "Update Member" : "Commit to Database"}
               </Button>
             </DialogFooter>
           </form>

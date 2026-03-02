@@ -12,7 +12,8 @@ import {
   ArrowRight,
   LayoutDashboard,
   ExternalLink,
-  Sparkles
+  Sparkles,
+  Handshake
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -231,7 +232,7 @@ export default function DashboardOverview() {
               <div className="flex flex-col gap-2">
                 {[
                   { icon: ImageIcon, label: "Manage Hero Slides", href: "/admin/home-page/hero-slides" },
-                  { icon: Plus, label: "Add New Partner", href: "/admin/home-page/partners" },
+                  { icon: Handshake, label: "Manage Collaborators", href: "/admin/ecosystem/collaborators" },
                   { icon: Library, label: "View Media Library", href: "/admin/media-library" },
                   { icon: Settings, label: "Platform Settings", href: "/admin/global-settings" },
                 ].map((action, i) => (

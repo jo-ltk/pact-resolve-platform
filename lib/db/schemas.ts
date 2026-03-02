@@ -595,8 +595,10 @@ export type EcosystemPartnerCategory =
   | "strategic" 
   | "practice" 
   | "academic" 
+  | "older"
   | "legal" 
   | "mission" 
+  | "mentoring"
   | "supporter";
 
 /** Ecosystem content categories for team members */
