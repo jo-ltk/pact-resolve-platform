@@ -8,10 +8,11 @@ interface ResourceSubPageHeroProps {
   title: React.ReactNode;
   description: React.ReactNode;
   className?: string;
+  descriptionClassName?: string;
   children?: React.ReactNode;
 }
 
-export function ResourceSubPageHero({ tag, title, description, className, children }: ResourceSubPageHeroProps) {
+export function ResourceSubPageHero({ tag, title, description, className, descriptionClassName, children }: ResourceSubPageHeroProps) {
   return (
     <div className={cn("py-24 md:py-32 bg-navy-950 text-white relative overflow-hidden", className)}>
       {/* Background Ambience */}
@@ -32,7 +33,7 @@ export function ResourceSubPageHero({ tag, title, description, className, childr
             {title}
           </h1>
           
-          <p className="text-lg md:text-xl text-white/60 font-light leading-relaxed max-w-2xl mx-auto mb-10">
+          <p className={cn("text-lg md:text-xl text-white/60 font-light leading-relaxed max-w-3xl mx-auto mb-10", descriptionClassName)}>
             {description}
           </p>
           

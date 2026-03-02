@@ -85,7 +85,8 @@ export default function NationalMediationReviewPage() {
         <ResourceSubPageHero
           tag="Resources"
           title={<><span className="text-gold-500">National Mediation</span> Review</>}
-          description={<>Contemporary Trends and Themes on Mediation Practice & Profession <span className="whitespace-nowrap">in India</span></>}
+          description="Contemporary Trends and Themes on Mediation Practice & Profession in India"
+          descriptionClassName="max-w-4xl"
         />
 
         {/* Introduction Section */}
@@ -130,7 +131,7 @@ export default function NationalMediationReviewPage() {
                 >
                   <div className="h-full p-8 md:p-10 rounded-3xl bg-white border border-navy-100 hover:border-gold-500/30 hover:shadow-2xl transition-all duration-500 overflow-hidden relative">
                     {/* Gradient overlay on hover */}
-                    <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500", pillar.color)} />
+                    <div className={cn("absolute inset-0 bg-linear-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500", pillar.color)} />
                     
                     <div className="relative z-10">
                       <div className="w-16 h-16 rounded-2xl bg-navy-950 flex items-center justify-center mb-8 group-hover:bg-gold-500 transition-colors shadow-lg">
