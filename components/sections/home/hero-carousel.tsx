@@ -61,7 +61,7 @@ const fallbackSlides = [
 const luxuryEasing = [0.22, 1, 0.36, 1] as any;
 
 export function HeroCarousel() {
-  const [slides, setSlides] = React.useState<any[]>(fallbackSlides);
+  const [slides, setSlides] = React.useState<any[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   /* State for Carousel */
@@ -91,9 +91,13 @@ export function HeroCarousel() {
             title: Array.isArray(slide.title) ? slide.title : [slide.title]
           }));
           setSlides(normalized);
+        } else {
+          // Fallback if no data in DB
+          setSlides(fallbackSlides);
         }
       } catch (error) {
         console.error("Failed to fetch hero slides:", error);
+        setSlides(fallbackSlides);
       } finally {
         setIsLoading(false);
       }
@@ -122,12 +126,19 @@ export function HeroCarousel() {
     };
   }, [api]);
 
-  // Progress is now handled natively by Framer Motion transitions 
-  // to avoid high-frequency React re-renders on mobile.
-  React.useEffect(() => {
-    if (!api) return;
-    setProgress(0);
-  }, [api, current]);
+  if (isLoading) {
+    return (
+      <section className="relative h-[75vh] min-h-[500px] md:h-[calc(100vh-80px)] lg:h-[calc(100vh-88px)] w-full overflow-hidden bg-navy-950 flex items-center justify-center">
+        <div className="w-full max-w-7xl px-6 md:px-12 lg:px-24 space-y-8">
+          <div className="h-12 w-2/3 bg-white/5 animate-pulse rounded-lg" />
+          <div className="h-24 w-1/2 bg-white/5 animate-pulse rounded-lg" />
+          <div className="h-12 w-48 bg-white/5 animate-pulse rounded-full" />
+        </div>
+      </section>
+    );
+  }
+
+  if (slides.length === 0) return null;
 
   return (
     <section className="relative h-[75vh] min-h-[500px] md:h-[calc(100vh-80px)] lg:h-[calc(100vh-88px)] w-full overflow-hidden bg-navy-950">
