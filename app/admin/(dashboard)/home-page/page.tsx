@@ -78,14 +78,7 @@ export default function HomepageDashboard() {
       color: "text-indigo-600",
       bg: "bg-indigo-50/50"
     },
-    {
-      title: "Network Logos",
-      description: "Manage the scrolling network names at the bottom of the page.",
-      icon: Globe,
-      link: "/admin/home-page/network-logos",
-      color: "text-slate-600",
-      bg: "bg-slate-50/50"
-    }
+
   ];
 
   return (

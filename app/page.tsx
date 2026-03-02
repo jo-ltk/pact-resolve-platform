@@ -49,9 +49,9 @@ export default function Home() {
           <Supporters />
         </div>
         
-        <div id="network">
+{/* <div id="network">
           <NetworkLogos />
-        </div>
+        </div> */}
         
         <Footer />
       </FadeIn>
