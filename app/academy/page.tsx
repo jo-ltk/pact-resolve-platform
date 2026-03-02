@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { 
@@ -11,48 +11,54 @@ import {
   Users, 
   Mail, 
   Sparkles,
-  GraduationCap
+  GraduationCap,
+  Layers
 } from "lucide-react";
 import { GrainOverlay } from "@/components/grain-overlay";
 import { FadeIn, FadeInUp } from "@/components/motion-wrapper";
 import { Footer } from "@/components/footer";
 import { cn } from "@/lib/utils";
 
-const academyPrograms = [
-  {
-    id: "01",
-    title: "Arbitration",
-    subtitle: "Dispute Resolution",
-    description: "In-depth courses on the arbitration lifecycle, rules, and advocacy for both domestic and international dispute forums.",
-    href: "/academy/arbitration",
-    icon: Scale,
-    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80",
-    color: "from-amber-500/20 to-orange-500/20"
-  },
-  {
-    id: "02",
-    title: "Mediation",
-    subtitle: "Advocacy & Certification",
-    description: "Comprehensive training in mediation advocacy and neutral facilitation, bridging theoretical frameworks with real-world application.",
-    href: "/academy/mediation",
-    icon: Handshake,
-    image: "https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?auto=format&fit=crop&q=80",
-    color: "from-blue-500/20 to-indigo-500/20"
-  },
-  {
-    id: "03",
-    title: "Negotiation",
-    subtitle: "Strategic Skills",
-    description: "Master the psychology and strategy of successful deal-making and conflict resolution in high-stakes environments.",
-    href: "/academy/negotiation",
-    icon: MessageSquare,
-    image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80",
-    color: "from-rose-500/20 to-pink-500/20"
+interface ProgramCard {
+  _id: string;
+  cardId: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  href: string;
+  iconName: string;
+  imageUrl: string;
+  color: string;
+  isActive: boolean;
+  order: number;
+}
+
+function ProgramIcon({ name, className }: { name: string; className?: string }) {
+  const props = { className: className || "w-6 h-6" };
+  switch (name) {
+    case "Scale": return <Scale {...props} />;
+    case "Handshake": return <Handshake {...props} />;
+    case "MessageSquare": return <MessageSquare {...props} />;
+    case "GraduationCap": return <GraduationCap {...props} />;
+    case "Layers": return <Layers {...props} />;
+    default: return <GraduationCap {...props} />;
   }
-];
+}
 
 export default function AcademyPage() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [programs, setPrograms] = useState<ProgramCard[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/content/academy/programs")
+      .then((r) => r.json())
+      .then((result) => {
+        if (result.success) setPrograms(result.data || []);
+      })
+      .catch(() => {})
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-navy-950 text-white">
@@ -123,59 +129,67 @@ export default function AcademyPage() {
               </p>
             </FadeInUp>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {academyPrograms.map((program, i) => (
-                <Link 
-                  key={program.id}
-                  href={program.href}
-                  className={cn(
-                    "group relative h-[380px] md:h-[450px] rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-500 hover:border-gold-500/50 hover:shadow-2xl hover:shadow-gold-500/10 hover:-translate-y-1"
-                  )}
-                  onMouseEnter={() => setHoveredIndex(i)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                >
-                  {/* Background Image with Reveal Effect */}
-                  <div className="absolute inset-0 z-0">
-                    <Image
-                      src={program.image}
-                      alt={program.title}
-                      fill
-                      className={cn(
-                        "object-cover transition-all duration-700 opacity-30 group-hover:opacity-50 group-hover:scale-105",
-                        hoveredIndex === i ? "grayscale-0" : "grayscale"
-                      )}
-                    />
-                    <div className={cn("absolute inset-0 bg-linear-to-br transition-opacity duration-500 opacity-0 group-hover:opacity-40", program.color)} />
-                    <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-navy-950/60 to-transparent" />
-                    <div className="absolute inset-0 bg-navy-950/20 group-hover:bg-transparent transition-colors duration-500" />
-                  </div>
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="h-[450px] rounded-3xl bg-white/5 animate-pulse" />
+                ))}
+              </div>
+            ) : programs.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {programs.map((program, i) => (
+                  <Link 
+                    key={program._id}
+                    href={program.href}
+                    className={cn(
+                      "group relative h-[380px] md:h-[450px] rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-500 hover:border-gold-500/50 hover:shadow-2xl hover:shadow-gold-500/10 hover:-translate-y-1"
+                    )}
+                    onMouseEnter={() => setHoveredIndex(i)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    {/* Background Image with Reveal Effect */}
+                    <div className="absolute inset-0 z-0">
+                      <Image
+                        src={program.imageUrl}
+                        alt={program.title}
+                        fill
+                        className={cn(
+                          "object-cover transition-all duration-700 opacity-30 group-hover:opacity-50 group-hover:scale-105",
+                          hoveredIndex === i ? "grayscale-0" : "grayscale"
+                        )}
+                      />
+                      <div className={cn("absolute inset-0 bg-linear-to-br transition-opacity duration-500 opacity-0 group-hover:opacity-40", program.color)} />
+                      <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-navy-950/60 to-transparent" />
+                      <div className="absolute inset-0 bg-navy-950/20 group-hover:bg-transparent transition-colors duration-500" />
+                    </div>
 
-                  {/* Content */}
-                  <div className="relative z-10 h-full p-8 md:p-10 flex flex-col justify-between">
-                    <div className="flex justify-between items-start">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-gold-500 border border-white/10 group-hover:bg-gold-500 group-hover:text-navy-950 group-hover:scale-110 transition-all duration-300 shadow-lg">
-                          <program.icon className="w-6 h-6" />
+                    {/* Content */}
+                    <div className="relative z-10 h-full p-8 md:p-10 flex flex-col justify-between">
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-gold-500 border border-white/10 group-hover:bg-gold-500 group-hover:text-navy-950 group-hover:scale-110 transition-all duration-300 shadow-lg">
+                            <ProgramIcon name={program.iconName} className="w-6 h-6" />
+                          </div>
+                          <span className=" text-xs text-white/60 uppercase tracking-widest group-hover:text-gold-500 transition-colors hidden sm:block">{program.subtitle}</span>
                         </div>
-                        <span className=" text-xs text-white/60 uppercase tracking-widest group-hover:text-gold-500 transition-colors hidden sm:block">{program.subtitle}</span>
+                        <span className="font-serif text-5xl text-white/5 font-bold group-hover:text-white/10 transition-colors select-none">{program.cardId}</span>
                       </div>
-                      <span className="font-serif text-5xl text-white/5 font-bold group-hover:text-white/10 transition-colors select-none">{program.id}</span>
-                    </div>
 
-                    <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
-                      <h3 className="text-3xl md:text-5xl font-light text-white mb-4 group-hover:text-gold-500 transition-colors uppercase italic">{program.title}</h3>
-                      <p className="text-white/60 font-light leading-relaxed max-w-lg line-clamp-3 group-hover:text-white/90 transition-colors">
-                        {program.description}
-                      </p>
-                      
-                      <div className="mt-8 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-gold-500 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                        View Program <ArrowRight className="w-4 h-4" />
+                      <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
+                        <h3 className="text-3xl md:text-5xl font-light text-white mb-4 group-hover:text-gold-500 transition-colors uppercase italic">{program.title}</h3>
+                        <p className="text-white/60 font-light leading-relaxed max-w-lg line-clamp-3 group-hover:text-white/90 transition-colors">
+                          {program.description}
+                        </p>
+                        
+                        <div className="mt-8 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-gold-500 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                          View Program <ArrowRight className="w-4 h-4" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            ) : null}
             
             <div className="mt-12 text-center">
               <p className="text-white/30 text-sm font-light uppercase tracking-widest">
@@ -190,3 +204,4 @@ export default function AcademyPage() {
     </main>
   );
 }
+

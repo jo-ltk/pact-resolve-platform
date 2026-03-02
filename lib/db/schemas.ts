@@ -608,6 +608,30 @@ export interface AcademyPageSettings extends BaseDocument {
   isActive: boolean;
 }
 
+/** Academy landing page program card (the 3 main program tiles on /academy) */
+export interface AcademyProgramCard extends BaseDocument {
+  /** Display order (1, 2, 3) */
+  order: number;
+  /** Short numeric ID shown on the card, e.g. "01" */
+  cardId: string;
+  /** Program title, e.g. "Arbitration" */
+  title: string;
+  /** Category subtitle, e.g. "Dispute Resolution" */
+  subtitle: string;
+  /** Card description */
+  description: string;
+  /** Link destination, e.g. "/academy/arbitration" */
+  href: string;
+  /** Lucide icon name, e.g. "Scale" */
+  iconName: string;
+  /** Unsplash or CDN image URL */
+  imageUrl: string;
+  /** Tailwind gradient color classes, e.g. "from-amber-500/20 to-orange-500/20" */
+  color: string;
+  /** Whether this card is visible */
+  isActive: boolean;
+}
+
 // ============================================================================
 // 12. ECOSYSTEM CONTENT
 // ============================================================================
@@ -956,6 +980,7 @@ export const COLLECTIONS = {
   MEDIATION_RULES: "mediationRules",
   MEDIATION_FEES: "mediationFees",
   // Academy collections
+  ACADEMY_PROGRAMS: "academyPrograms",
   ACADEMY_COURSES: "academyCourses",
   ACADEMY_MODULES: "academyModules",
   ACADEMY_FACULTY: "academyFaculty",

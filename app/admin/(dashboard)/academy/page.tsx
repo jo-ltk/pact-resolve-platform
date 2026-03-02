@@ -10,7 +10,8 @@ import {
   GraduationCap,
   Database,
   Loader2,
-  CheckCircle2
+  CheckCircle2,
+  LayoutGrid
 } from "lucide-react";
 import { DashboardSectionCard } from "@/components/admin/DashboardSectionCard";
 import { FadeInUp, StaggerContainer } from "@/components/motion-wrapper";
@@ -24,6 +25,14 @@ export default function AcademyDashboard() {
   const [hasSeeded, setHasSeeded] = useState(false);
 
   const sections = [
+    {
+      title: "Program Cards",
+      description: "Manage the three tiles on the /academy landing page (Arbitration, Mediation, Negotiation) — titles, descriptions, images, and links.",
+      icon: LayoutGrid,
+      link: "/admin/academy/programs",
+      color: "text-teal-600",
+      bg: "bg-teal-50/50"
+    },
     {
       title: "Mediation",
       description: "Manage Mediation Advocacy courses, modules, faculty profiles, and certification programs.",
