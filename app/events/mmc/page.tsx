@@ -584,9 +584,18 @@ export default function MMCPage() {
                     <div className="relative h-full p-10 rounded-[2.5rem] bg-navy-50 border border-navy-100 hover:border-gold-500/50 transition-all duration-500 hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] flex flex-col items-start overflow-hidden">
                       <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
                       
-                      <div className="h-10 w-auto mb-10 flex items-center">
-                         {/* This would be the logo placeholder */}
-                         <span className="text-xs font-serif font-black tracking-tighter text-navy-950/30 group-hover:text-gold-500 transition-colors uppercase">{item.source}</span>
+                      <div className="w-full mb-8 relative flex flex-col items-start gap-4 group-hover:-translate-y-1 transition-all duration-500">
+                         <div className="relative h-12 w-28 grayscale opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all">
+                             <Image 
+                                 src={(item as any).logo || "/partners/placeholder.svg"} 
+                                 alt={item.source} 
+                                 fill 
+                                 className="object-contain object-left" 
+                             />
+                         </div>
+                         <span className="text-[11px] font-bold tracking-widest uppercase text-navy-950/40 group-hover:text-gold-500 transition-colors">
+                             {item.source}
+                         </span>
                       </div>
                       
                       <h3 className="text-2xl font-light text-navy-950 leading-tight mb-auto group-hover:text-gold-500 transition-colors">

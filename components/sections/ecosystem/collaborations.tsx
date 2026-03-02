@@ -216,7 +216,7 @@ export function Collaborations() {
                 <div className="group h-full bg-white px-8 py-10 rounded-4xl border border-gray-50 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.03)] flex flex-col items-start text-left hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.06)] transition-all duration-700">
                   <div className="h-28 w-full relative mb-10">
                      <Image 
-                        src={(partner as any).logo || "/partners/placeholder.png"} 
+                        src={(partner as any).logo || "/partners/placeholder.svg"} 
                         alt={partner.name} 
                         fill 
                         className="object-contain object-left"
@@ -298,7 +298,7 @@ export function Collaborations() {
               <FadeInUp key={i} delay={i * 0.1} className="flex flex-col items-center text-center group">
                 <div className="w-40 h-24 relative mb-10 flex items-center justify-center">
                    <Image 
-                        src={(pc as any).logo || "/partners/placeholder.png"} 
+                        src={(pc as any).logo || "/partners/placeholder.svg"} 
                         alt={pc.name} 
                         fill 
                         className="object-contain"
@@ -364,43 +364,47 @@ export function Collaborations() {
                   <span className="text-xs  uppercase tracking-widest text-navy-950/40 font-bold">Older Associations</span>
                   <div className="h-px grow bg-navy-950/5" />
                 </div>
-                <div className="relative w-full overflow-hidden py-4 border-y border-navy-100/50">
+                <div className="relative w-full overflow-hidden py-8 border-y border-navy-100/50">
                   <div className="flex whitespace-nowrap overflow-hidden">
                      <motion.div 
                       animate={{ x: ["0%", "-100%"] }}
                       transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-                      className="flex gap-12 shrink-0 pr-12"
+                      className="flex gap-16 shrink-0 pr-16 items-center"
                     >
                       {displayOlder.map((item, i) => (
-                        <div key={i} className="flex items-center gap-4 group/older h-8 shrink-0">
-                           {(item as any).logo ? (
-                               <div className="relative h-full w-24 grayscale opacity-30 group-hover/older:opacity-100 group-hover/older:grayscale-0 transition-all">
-                                   <Image src={(item as any).logo} alt={item.name} fill className="object-contain" />
-                               </div>
-                           ) : (
-                               <span className="text-sm uppercase tracking-widest text-navy-950/20 hover:text-gold-500 transition-colors whitespace-nowrap cursor-default italic">
-                                 {item.name}
-                               </span>
-                           )}
+                        <div key={i} className="flex flex-col items-center justify-center gap-4 group/older shrink-0 text-center">
+                           <div className="relative h-12 w-32 grayscale opacity-30 group-hover/older:opacity-100 group-hover/older:grayscale-0 transition-all flex items-center justify-center">
+                               <Image 
+                                   src={(item as any).logo || "/partners/placeholder.svg"} 
+                                   alt={item.name} 
+                                   fill 
+                                   className="object-contain" 
+                               />
+                           </div>
+                           <span className="text-xs uppercase tracking-widest text-navy-950/40 group-hover/older:text-gold-500 transition-colors whitespace-nowrap cursor-default font-medium">
+                             {item.name}
+                           </span>
                         </div>
                       ))}
                     </motion.div>
                     <motion.div 
                       animate={{ x: ["0%", "-100%"] }}
                       transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-                      className="flex gap-12 shrink-0 pr-12"
+                      className="flex gap-16 shrink-0 pr-16 items-center"
                     >
                       {displayOlder.map((item, i) => (
-                        <div key={i} className="flex items-center gap-4 group/older h-8 shrink-0">
-                           {(item as any).logo ? (
-                               <div className="relative h-full w-24 grayscale opacity-30 group-hover/older:opacity-100 group-hover/older:grayscale-0 transition-all">
-                                   <Image src={(item as any).logo} alt={item.name} fill className="object-contain" />
-                               </div>
-                           ) : (
-                               <span className="text-sm uppercase tracking-widest text-navy-950/20 hover:text-gold-500 transition-colors whitespace-nowrap cursor-default italic">
-                                 {item.name}
-                               </span>
-                           )}
+                        <div key={i} className="flex flex-col items-center justify-center gap-4 group/older shrink-0 text-center">
+                           <div className="relative h-12 w-32 grayscale opacity-30 group-hover/older:opacity-100 group-hover/older:grayscale-0 transition-all flex items-center justify-center">
+                               <Image 
+                                   src={(item as any).logo || "/partners/placeholder.svg"} 
+                                   alt={item.name} 
+                                   fill 
+                                   className="object-contain" 
+                               />
+                           </div>
+                           <span className="text-xs uppercase tracking-widest text-navy-950/40 group-hover/older:text-gold-500 transition-colors whitespace-nowrap cursor-default font-medium">
+                             {item.name}
+                           </span>
                         </div>
                       ))}
                     </motion.div>
@@ -463,7 +467,7 @@ export function Collaborations() {
                    {displayMentoring.map((partner, i) => (
                      <div key={i} className="h-10 w-40 relative group grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 shrink-0">
                        <Image 
-                         src={(partner as any).logo || "/partners/placeholder.png"} 
+                         src={(partner as any).logo || "/partners/placeholder.svg"} 
                          alt={partner.name} 
                          fill 
                          className="object-contain" 
@@ -483,7 +487,7 @@ export function Collaborations() {
                    {displayMentoring.map((partner, i) => (
                      <div key={i} className="h-10 w-40 relative group grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 shrink-0">
                        <Image 
-                         src={(partner as any).logo || "/partners/placeholder.png"} 
+                         src={(partner as any).logo || "/partners/placeholder.svg"} 
                          alt={partner.name} 
                          fill 
                          className="object-contain" 
