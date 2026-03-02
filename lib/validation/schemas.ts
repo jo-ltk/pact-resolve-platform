@@ -1,5 +1,18 @@
 import { z } from "zod";
 
+const imageDataSchema = z.object({
+  url: z.string().url("Invalid image URL"),
+  alt: z.string().optional().default(""),
+  width: z.number().optional(),
+  height: z.number().optional(),
+});
+
+const socialLinkSchema = z.object({
+  platform: z.enum(["facebook", "linkedin", "instagram", "youtube", "twitter", "whatsapp"]),
+  url: z.string().url("Invalid social media URL"),
+  enabled: z.boolean().default(true),
+});
+
 const contactPersonSchema = z.object({
   name: z.string().min(1, "Name is required"),
   phone: z.string().min(1, "Phone is required"),
@@ -12,6 +25,15 @@ export const globalSettingsSchema = z.object({
   contactPersons: z.array(contactPersonSchema).optional().default([]),
   address: z.string().optional(),
   companyName: z.string().optional(),
+  logo: imageDataSchema.optional(),
+  favicon: imageDataSchema.optional(),
+  socialLinks: z.array(socialLinkSchema).optional(),
+  seo: z.object({
+    title: z.string().optional().default(""),
+    description: z.string().optional().default(""),
+    keywords: z.array(z.string()).optional().default([]),
+    ogImage: imageDataSchema.optional(),
+  }).optional(),
 });
 
 

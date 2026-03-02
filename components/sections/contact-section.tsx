@@ -1,13 +1,34 @@
 "use client"
 
 import { Mail, MapPin } from "lucide-react"
-import { useState, type FormEvent } from "react"
+import { useState, useEffect, type FormEvent } from "react"
 import { MagneticButton } from "@/components/magnetic-button"
 
 export function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [settings, setSettings] = useState<any>(null)
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch("/api/content/global-settings", { cache: 'no-store' });
+        if (res.ok) {
+          const result = await res.json();
+          if (result.success && result.data) {
+            setSettings(result.data);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch contact settings", e);
+      }
+    };
+    fetchSettings();
+  }, []);
+
+  const email = settings?.email || "official@thepact.in";
+  const address = settings?.address || "Available Worldwide";
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -43,59 +64,47 @@ export function ContactSection() {
 
             <div className="space-y-4 md:space-y-8">
               <a
-                href="mailto:official@thepact.in"
+                href={`mailto:${email}`}
                 className="group block"
               >
-                <div className="mb-1 flex items-center gap-2">
+                <div className="mb-1 flex items-center gap-2 text-left">
                   <Mail className="h-3 w-3 text-foreground/60" />
                   <span className=" text-xs text-foreground/60">Email</span>
                 </div>
-                <p className="text-base text-foreground transition-colors group-hover:text-foreground/70 md:text-2xl">
-                  official@thepact.in
+                <p className="text-base text-left text-foreground transition-colors group-hover:text-foreground/70 md:text-2xl">
+                  {email}
                 </p>
               </a>
 
-              <div>
+              <div className="text-left">
                 <div className="mb-1 flex items-center gap-2">
                   <MapPin className="h-3 w-3 text-foreground/60" />
                   <span className=" text-xs text-foreground/60">Location</span>
                 </div>
-                <p className="text-base text-foreground md:text-2xl">Available Worldwide</p>
+                <p className="text-base text-foreground md:text-2xl">{address}</p>
               </div>
 
-              <div className="flex gap-4 pt-2 md:pt-4">
-                <a
-                  href="https://www.linkedin.com/company/the-pact/?originalSubdomain=in"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-b border-transparent  text-xs text-foreground/60 transition-all hover:border-foreground/60 hover:text-foreground/90"
-                >
-                  LinkedIn
-                </a>
-                <a
-                  href="https://www.facebook.com/thepactindia/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-b border-transparent  text-xs text-foreground/60 transition-all hover:border-foreground/60 hover:text-foreground/90"
-                >
-                  Facebook
-                </a>
-                <a
-                  href="https://www.instagram.com/pact_india/?hl=en"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-b border-transparent  text-xs text-foreground/60 transition-all hover:border-foreground/60 hover:text-foreground/90"
-                >
-                  Instagram
-                </a>
-                <a
-                  href="https://www.youtube.com/@MissionMediationbyPACT"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-b border-transparent  text-xs text-foreground/60 transition-all hover:border-foreground/60 hover:text-foreground/90"
-                >
-                  YouTube
-                </a>
+              <div className="flex flex-wrap gap-4 pt-2 md:pt-4">
+                {(settings?.socialLinks && settings.socialLinks.length > 0) ? (
+                  settings.socialLinks.filter((s:any) => s.enabled).map((social:any, idx:number) => (
+                    <a
+                      key={idx}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border-b border-transparent text-xs text-foreground/60 transition-all hover:border-foreground/60 hover:text-foreground/90 capitalize"
+                    >
+                      {social.platform}
+                    </a>
+                  ))
+                ) : (
+                  <>
+                    <a href="https://www.linkedin.com/company/the-pact/?originalSubdomain=in" target="_blank" rel="noopener noreferrer" className="border-b border-transparent text-xs text-foreground/60 transition-all hover:border-foreground/60 hover:text-foreground/90">LinkedIn</a>
+                    <a href="https://www.facebook.com/thepactindia/" target="_blank" rel="noopener noreferrer" className="border-b border-transparent text-xs text-foreground/60 transition-all hover:border-foreground/60 hover:text-foreground/90">Facebook</a>
+                    <a href="https://www.instagram.com/pact_india/?hl=en" target="_blank" rel="noopener noreferrer" className="border-b border-transparent text-xs text-foreground/60 transition-all hover:border-foreground/60 hover:text-foreground/90">Instagram</a>
+                    <a href="https://www.youtube.com/@MissionMediationbyPACT" target="_blank" rel="noopener noreferrer" className="border-b border-transparent text-xs text-foreground/60 transition-all hover:border-foreground/60 hover:text-foreground/90">YouTube</a>
+                  </>
+                )}
               </div>
             </div>
           </div>

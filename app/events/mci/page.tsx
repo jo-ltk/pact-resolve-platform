@@ -175,32 +175,35 @@ export default function MCIPage() {
               </span>
             </div>
             <h1 className="page-title text-[14vw] sm:text-[12vw] md:text-[8.5rem] font-extrabold text-white tracking-tighter leading-[0.8] mb-8 sm:mb-12 md:mb-16 select-none italic uppercase">
-              MEDIATION <br />
-              <span className="text-gold-500">CHAMPIONSHIP</span> <br />
-              INDIA
+              {(eventData?.title && eventData.title.length > 0 ? eventData.title : ["MEDIATION", "CHAMPIONSHIP", "INDIA"]).map((line, i) => (
+                <React.Fragment key={i}>
+                  {i === 1 ? <span className="text-gold-500">{line}</span> : line}
+                  {i < (eventData?.title?.length || 3) - 1 && <br />}
+                </React.Fragment>
+              ))}
             </h1>
             
             <div className="max-w-5xl space-y-6 sm:space-y-8 md:space-y-12">
               <div className="space-y-4 sm:space-y-6 md:space-y-8">
                 <p className="text-lg sm:text-2xl md:text-3xl lg:text-5xl text-white/95 font-light leading-[1.15] sm:leading-[1.1] tracking-tight">
-                  The fourth edition of India's Mediation Champions League will convene the country's top next-generation dispute resolution talent to compete and collaborate on the biggest stage.
+                  {eventData?.heroDescription?.[0] || "The fourth edition of India's Mediation Champions League will convene the country's top next-generation dispute resolution talent to compete and collaborate on the biggest stage."}
                 </p>
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 font-light max-w-3xl leading-relaxed">
-                  The flagship event also serves as a great space for mentoring, networking and branding for mediation.
+                  {eventData?.heroDescription?.[1] || "The flagship event also serves as a great space for mentoring, networking and branding for mediation."}
                 </p>
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12 pt-6 sm:pt-8 md:pt-12 border-t border-white/10">
                    {[
                      { label: "Dates", icon: Calendar, value: eventData?.eventDetails?.dates || "September 2026", color: "text-gold-500" },
                      { label: "Venue", icon: MapPin, value: eventData?.eventDetails?.venue || "New Delhi", color: "text-gold-500" },
-                     { label: "Hosts", icon: Users2, value: "Coming Soon", color: "text-white/40" },
-                     { label: "Sponsors", icon: Briefcase, value: "Coming Soon", color: "text-white/40" }
+                     { label: "Hosts", icon: Users2, value: eventData?.eventDetails?.hosts || "Coming Soon", color: eventData?.eventDetails?.hosts ? "text-gold-500" : "text-white/40" },
+                     { label: "Sponsors", icon: Briefcase, value: eventData?.eventDetails?.sponsors || "Coming Soon", color: eventData?.eventDetails?.sponsors ? "text-gold-500" : "text-white/40" }
                    ].map((item, i) => (
-                     <div key={i} className="flex flex-col gap-2 sm:gap-3 group/item">
-                        <span className="text-[9px] sm:text-xs  text-white/50 uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold">{item.label}</span>
+                     <div key={i} className="flex flex-col gap-2 sm:gap-3 group/item text-left">
+                        <span className="text-[9px] sm:text-xs text-white/50 uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold">{item.label}</span>
                         <div className={cn("flex items-center gap-2 sm:gap-3 transition-colors", item.color)}>
                           <item.icon className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
-                          <span className="text-sm sm:text-base md:text-lg font-medium tracking-tight">{item.value}</span>
+                          <span className="text-sm sm:text-base md:text-lg font-medium tracking-tight whitespace-nowrap">{item.value}</span>
                         </div>
                      </div>
                    ))}
@@ -264,23 +267,11 @@ export default function MCIPage() {
           <SectionHeader subtitle="Know Your Champions" title="National Mediation Champions" center light />
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            {[
-              {
-                year: "2023",
-                counsel: "Anshul Kumar Sarma, Ananya Dewan, Kessav Navaladi Shankar",
-                mediator: "Akshita Kothari"
-              },
-              {
-                year: "2024",
-                counsel: "Arundhati Venkarachalam, Sankalp Varma",
-                mediator: "Kashish Goel"
-              },
-              {
-                year: "2025",
-                counsel: "Ayush Khanna, Kartikey Tripathi",
-                mediator: "Navya Pandey"
-              }
-            ].map((item, i) => (
+            {(eventData?.champions && eventData.champions.length > 0 ? eventData.champions : [
+              { year: "2024", counselNames: "M. Nithin Krishna & M. Rishina", mediatorName: "S. Shravan Krishna" },
+              { year: "2023", counselNames: "P. Vignesh & R. Sharad", mediatorName: "Vikramaditya" },
+              { year: "2022", counselNames: "Coming Soon", mediatorName: "Coming Soon" }
+            ] as any[]).map((item, i) => (
               <FadeInUp key={item.year} className="group h-full">
                 <div className="relative h-full p-6 sm:p-8 md:p-10 rounded-3xl sm:rounded-4xl md:rounded-5xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-gold-500/30 transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(191,154,102,0.15)] overflow-hidden flex flex-col items-center text-center">
                   
@@ -299,7 +290,7 @@ export default function MCIPage() {
                   
                   <div className="relative z-10 w-full flex flex-col grow">
                     <div className="mb-4 sm:mb-6 md:mb-8">
-                      <span className="text-[9px] sm:text-xs  uppercase tracking-[0.3em] sm:tracking-[0.5em] text-white/60 group-hover:text-gold-500/80 font-bold transition-colors">Season Edition</span>
+                      <span className="text-[9px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.5em] text-white/60 group-hover:text-gold-500/80 font-bold transition-colors">Season Edition</span>
                       <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tighter italic group-hover:text-gold-500 transition-colors duration-500">
                         MCI {item.year}
                       </h3>
@@ -309,13 +300,13 @@ export default function MCIPage() {
 
                     <div className="space-y-4 sm:space-y-6 md:space-y-8 text-center grow">
                       <div className="space-y-1 sm:space-y-2">
-                        <span className="text-[9px] sm:text-xs  text-gold-500/80 uppercase tracking-wider sm:tracking-widest block font-bold">Mediation Counsel</span>
-                        <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-white/95 leading-tight tracking-tight">{item.counsel}</p>
+                        <span className="text-[9px] sm:text-xs text-gold-500/80 uppercase tracking-wider sm:tracking-widest block font-bold">Mediation Counsel</span>
+                        <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-white/95 leading-tight tracking-tight">{item.counselNames || (item as any).counsel}</p>
                       </div>
                       
                       <div className="space-y-1 sm:space-y-2">
-                        <span className="text-[9px] sm:text-xs  text-gold-500/80 uppercase tracking-wider sm:tracking-widest block font-bold">Mediator</span>
-                        <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-white/95 leading-tight tracking-tight">{item.mediator}</p>
+                        <span className="text-[9px] sm:text-xs text-gold-500/80 uppercase tracking-wider sm:tracking-widest block font-bold">Mediator</span>
+                        <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-white/95 leading-tight tracking-tight">{item.mediatorName || (item as any).mediator}</p>
                       </div>
                     </div>
                   </div>
@@ -386,23 +377,41 @@ export default function MCIPage() {
             <FadeInUp>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-20 items-start">
                 <div className="space-y-4 sm:space-y-6">
-                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-navy-950 font-light leading-snug tracking-tight">
-                    Mediation Championship India – <span className="text-gold-500 font-medium italic">"MCI"</span> – is a Mediation Champions League featuring skilled and smart young lawyers from across the country.
+                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-navy-950 font-light leading-snug tracking-tight text-left">
+                    {eventData?.vision?.description?.[0]?.split('MCI').map((part:string, idx:number, arr:any[]) => (
+                      <React.Fragment key={idx}>
+                        {part}
+                        {idx < arr.length - 1 && <span className="text-gold-500 font-medium italic">"MCI"</span>}
+                      </React.Fragment>
+                    )) || (
+                      <>
+                        Mediation Championship India – <span className="text-gold-500 font-medium italic">"MCI"</span> – is a Mediation Champions League featuring skilled and smart young lawyers from across the country.
+                      </>
+                    )}
                   </p>
                   <div className="h-px w-16 sm:w-20 bg-gold-500" />
                 </div>
                 
-                <div className="space-y-4 sm:space-y-6 md:space-y-8">
+                <div className="space-y-4 sm:space-y-6 md:space-y-8 text-left">
                   <p className="text-base sm:text-lg md:text-xl text-navy-950/60 font-light leading-relaxed">
-                    Challengers showcase their wits and wisdom in tackling <span className="text-navy-950 font-medium italic underline decoration-gold-500/30 underline-offset-4 sm:underline-offset-8">7 immersive challenges</span> from convening to concluding a typical Mediation, mentored by Law Firm partners, C-Suite Leaders, and members of the Judiciary.
+                    {eventData?.vision?.description?.[1] || (
+                      <>
+                        Challengers showcase their wits and wisdom in tackling <span className="text-navy-950 font-medium italic underline decoration-gold-500/30 underline-offset-4 sm:underline-offset-8">7 immersive challenges</span> from convening to concluding a typical Mediation, mentored by Law Firm partners, C-Suite Leaders, and members of the Judiciary.
+                      </>
+                    )}
                   </p>
                   
                   <div className="pt-2 sm:pt-4 flex flex-wrap gap-4">
                     <MagneticButton variant="primary" size="lg" className="group w-full sm:w-auto">
-                      <Link href="#" className="flex items-center justify-center gap-2">
+                      <a 
+                        href={eventData?.vision?.brochurePdfUrl || "#"} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="flex items-center justify-center gap-2"
+                      >
                          <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
                          View PDF Brochure
-                      </Link>
+                      </a>
                     </MagneticButton>
                   </div>
                 </div>
@@ -479,40 +488,43 @@ export default function MCIPage() {
                 <div className="absolute bottom-[10%] -right-12 w-24 h-px bg-gold-500/20 hidden md:block" />
 
                 <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                  {[
-                    { icon: Star, text: "INR 1,50,000", sub: "Cash Prizes", color: "bg-amber-50 text-amber-600" },
-                    { icon: GraduationCap, text: "Course", sub: "Online Mediation", color: "bg-blue-50 text-blue-600" },
-                    { icon: BookOpen, text: "Literature", sub: "Books & Resources", color: "bg-emerald-50 text-emerald-600" },
-                    { icon: Award, text: "Scholarship", sub: "Training Programs", color: "bg-purple-50 text-purple-600" },
-                    { icon: Ticket, text: "Gala Dinner", sub: "Black & Gold Night", color: "bg-rose-50 text-rose-600" },
-                    { icon: Users2, text: "Networking", sub: "Strategic Growth", color: "bg-indigo-50 text-indigo-600" },
-                    { icon: Zap, text: "Conclave", sub: "Mission Mediation", color: "bg-orange-50 text-orange-600" },
-                    { icon: Briefcase, text: "Internships", sub: "Tier-1 Law Firms", color: "bg-cyan-50 text-cyan-600" }
-                  ].map((benefit, i) => (
-                    <StaggerItem key={i}>
-                      <div className="group relative h-full p-6 sm:p-8 rounded-2xl sm:rounded-[2.5rem] bg-white border border-navy-100 hover:border-gold-500/50 transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] overflow-hidden">
-                        {/* Hover Background Accent */}
-                        <div className="absolute top-0 right-0 w-[100px] md:w-[120px] h-[100px] md:h-[120px] bg-gold-500/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 group-hover:bg-gold-500/10 transition-colors" />
-                        
-                        <div className="relative z-10 flex flex-col items-center text-center">
-                          <div className={cn(
-                            "w-12 h-12 sm:w-16 sm:h-16 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-sm group-hover:scale-110 group-hover:rotate-6 transition-all duration-500",
-                            benefit.color
-                          )}>
-                            <benefit.icon className="w-6 h-6 sm:w-8 sm:h-8" />
-                          </div>
+                  {(eventData?.rewards && eventData.rewards.length > 0 ? eventData.rewards.sort((a,b) => (a.order || 0) - (b.order || 0)) : [
+                    { icon: Star, text: "INR 1,50,000", subtext: "Cash Prizes", colorClass: "bg-amber-50 text-amber-600" },
+                    { icon: GraduationCap, text: "Course", subtext: "Online Mediation", colorClass: "bg-blue-50 text-blue-600" },
+                    { icon: BookOpen, text: "Literature", subtext: "Books & Resources", colorClass: "bg-emerald-50 text-emerald-600" },
+                    { icon: Award, text: "Scholarship", subtext: "Training Programs", colorClass: "bg-purple-50 text-purple-600" },
+                    { icon: Ticket, text: "Gala Dinner", subtext: "Black & Gold Night", colorClass: "bg-rose-50 text-rose-600" },
+                    { icon: Users2, text: "Networking", subtext: "Strategic Growth", colorClass: "bg-indigo-50 text-indigo-600" },
+                    { icon: Zap, text: "Conclave", subtext: "Mission Mediation", colorClass: "bg-orange-50 text-orange-600" },
+                    { icon: Briefcase, text: "Internships", subtext: "Tier-1 Law Firms", colorClass: "bg-cyan-50 text-cyan-600" }
+                  ]).map((benefit, i) => {
+                    const Icon = typeof benefit.icon === 'string' ? (benefit.icon.toLowerCase() === 'star' ? Star : benefit.icon.toLowerCase() === 'graduationcap' ? GraduationCap : benefit.icon.toLowerCase() === 'bookopen' ? BookOpen : benefit.icon.toLowerCase() === 'award' ? Award : benefit.icon.toLowerCase() === 'ticket' ? Ticket : benefit.icon.toLowerCase() === 'users2' ? Users2 : benefit.icon.toLowerCase() === 'zap' ? Zap : Briefcase) : benefit.icon;
+                    return (
+                      <StaggerItem key={i}>
+                        <div className="group relative h-full p-6 sm:p-8 rounded-2xl sm:rounded-[2.5rem] bg-white border border-navy-100 hover:border-gold-500/50 transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] overflow-hidden">
+                          {/* Hover Background Accent */}
+                          <div className="absolute top-0 right-0 w-[100px] md:w-[120px] h-[100px] md:h-[120px] bg-gold-500/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 group-hover:bg-gold-500/10 transition-colors" />
                           
-                          <div className="space-y-1">
-                            <h4 className="text-base sm:text-xl font-bold text-navy-950 tracking-tight leading-none group-hover:text-gold-500 transition-colors">{benefit.text}</h4>
-                            <p className="text-xs sm:text-xs uppercase tracking-[0.2em]  font-bold text-navy-950/40">{benefit.sub}</p>
+                          <div className="relative z-10 flex flex-col items-center text-center">
+                            <div className={cn(
+                              "w-12 h-12 sm:w-16 sm:h-16 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-sm group-hover:scale-110 group-hover:rotate-6 transition-all duration-500",
+                              benefit.colorClass || (benefit as any).color
+                            )}>
+                              <Icon className="w-6 h-6 sm:w-8 sm:h-8" />
+                            </div>
+                            
+                            <div className="space-y-1">
+                              <h4 className="text-base sm:text-xl font-bold text-navy-950 tracking-tight leading-none group-hover:text-gold-500 transition-colors">{benefit.text}</h4>
+                              <p className="text-xs sm:text-xs uppercase tracking-[0.2em]  font-bold text-navy-950/40">{benefit.subtext || (benefit as any).sub}</p>
+                            </div>
+                            
+                            {/* Progress/Detail Decorative Bar */}
+                            <div className="h-px w-8 sm:w-12 md:w-16 bg-navy-100 mt-4 sm:mt-6 group-hover:w-20 group-hover:bg-gold-500/30 transition-all duration-700" />
                           </div>
-                          
-                          {/* Progress/Detail Decorative Bar */}
-                          <div className="h-px w-8 sm:w-12 md:w-16 bg-navy-100 mt-4 sm:mt-6 group-hover:w-20 group-hover:bg-gold-500/30 transition-all duration-700" />
                         </div>
-                      </div>
-                    </StaggerItem>
-                  ))}
+                      </StaggerItem>
+                    );
+                  })}
                 </StaggerContainer>
              </div>
           </div>
@@ -525,19 +537,16 @@ export default function MCIPage() {
           <SectionHeader subtitle="History" title="Past Editions" center />
           
           <div className="flex flex-col gap-4 sm:gap-6 md:gap-8 relative">
-            {/* Central Timeline Line (Desktop Only) */}
-            <div className="absolute left-14 top-0 bottom-0 w-px bg-navy-950/5 hidden lg:block" />
-
-            {[
+            {(eventData?.pastEditions && eventData.pastEditions.length > 0 ? eventData.pastEditions : [
               {
                 year: "2025",
                 date: "November 7-9",
                 location: "New Delhi",
                 venue: "Venue TBD",
                 actions: [
-                  { label: "View Report", icon: FileText },
-                  { label: "MRU Movie", icon: Zap },
-                  { label: "Watch MCI Movie", icon: Trophy }
+                  { label: "View Report", icon: "report" },
+                  { label: "MRU Movie", icon: "movie" },
+                  { label: "Watch MCI Movie", icon: "movie" }
                 ]
               },
               {
@@ -546,9 +555,9 @@ export default function MCIPage() {
                 location: "Ahmedabad",
                 venue: "Gujarat International Maritime Arbitration Centre",
                 actions: [
-                  { label: "MCI Movie 2024", icon: Zap },
-                  { label: "Mentors Frame", icon: Users2 },
-                  { label: "Students Frame", icon: Star }
+                  { label: "MCI Movie 2024", icon: "movie" },
+                  { label: "Mentors Frame", icon: "mentors" },
+                  { label: "Students Frame", icon: "students" }
                 ]
               },
               {
@@ -557,12 +566,12 @@ export default function MCIPage() {
                 location: "Ahmedabad",
                 venue: "Gujarat National Law University",
                 actions: [
-                  { label: "Mentors Frame", icon: Users2 },
-                  { label: "Partners Picture", icon: Briefcase },
-                  { label: "Participants", icon: Users2 }
+                  { label: "Mentors Frame", icon: "mentors" },
+                  { label: "Partners Picture", icon: "partners" },
+                  { label: "Participants", icon: "participants" }
                 ]
               }
-            ].map((edition, i) => (
+            ]).map((edition, i) => (
               <FadeInUp key={edition.year} className="group relative">
                 <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-16 items-center">
                   
@@ -608,15 +617,26 @@ export default function MCIPage() {
                       </div>
 
                       <div className="md:col-span-6 flex flex-wrap gap-2 sm:gap-3 justify-center lg:justify-end">
-                        {edition.actions.map((action, j) => (
-                          <button 
-                            key={j} 
-                            className="group/btn flex items-center gap-2 px-5 py-3 sm:py-3.5 rounded-2xl border border-navy-100 bg-white text-xs sm:text-[11px] font-bold uppercase tracking-wider text-navy-950/60 hover:bg-navy-950 hover:text-white hover:border-navy-950 shadow-sm transition-all duration-300"
-                          >
-                            <action.icon className="w-3.5 h-3.5 text-gold-500 group-hover/btn:scale-110 transition-transform" />
-                            <span>{action.label}</span>
-                          </button>
-                        ))}
+                        {edition.actions.map((action: any, j: number) => {
+                          const Icon = typeof action.icon === 'string' 
+                            ? (action.icon === 'report' ? FileText 
+                              : action.icon === 'movie' ? Zap 
+                              : action.icon === 'mentors' ? Users2 
+                              : action.icon === 'students' ? Star 
+                              : action.icon === 'partners' ? Briefcase 
+                              : action.icon === 'participants' ? Users2 
+                              : Trophy) 
+                            : (action.icon as any);
+                          return (
+                            <button 
+                              key={j} 
+                              className="group/btn flex items-center gap-2 px-5 py-3 sm:py-3.5 rounded-2xl border border-navy-100 bg-white text-xs sm:text-[11px] font-bold uppercase tracking-wider text-navy-950/60 hover:bg-navy-950 hover:text-white hover:border-navy-950 shadow-sm transition-all duration-300"
+                            >
+                              <Icon className="w-3.5 h-3.5 text-gold-500 group-hover/btn:scale-110 transition-transform" />
+                              <span>{action.label}</span>
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>

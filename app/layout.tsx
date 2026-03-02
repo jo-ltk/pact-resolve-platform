@@ -9,28 +9,61 @@ import "./globals.css"
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
-  export const metadata: Metadata = {
-  title: "PACT | Professional Mediation Platform for Dispute Resolution",
-  description:
-    "PACT is a neutral, professional mediation platform helping individuals, businesses, and institutions resolve conflicts faster, fairly, and confidentially. 2500+ cases resolved with 98% success rate.",
-  keywords:
-    "mediation, dispute resolution, conflict resolution, business mediation, family mediation, workplace mediation",
-  generator: "v0.app",
-  icons: {
-    icon: "/images/pact-logo.png",
-    apple: "/images/pact-logo.png",
-  },
-  openGraph: {
-    title: "PACT | Professional Mediation Platform",
-    description: "Resolve disputes confidently and preserve relationships with PACT mediation services.",
-    url: "https://pact-mediation.com",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "PACT | Professional Mediation Platform",
-    description: "Resolve disputes confidently and preserve relationships with PACT.",
-  },
+import { getDb } from "@/lib/mongodb";
+import { COLLECTIONS, type GlobalSettings } from "@/lib/db/schemas";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const defaultMeta = {
+    title: "PACT | Professional Mediation Platform for Dispute Resolution",
+    description: "PACT is a neutral, professional mediation platform helping individuals, businesses, and institutions resolve conflicts faster, fairly, and confidentially.",
+    keywords: "mediation, dispute resolution, conflict resolution, business mediation, family mediation, workplace mediation",
+    favicon: "/images/pact-logo.png"
+  };
+
+  try {
+    const db = await getDb();
+    const settings = await db.collection<GlobalSettings>(COLLECTIONS.GLOBAL_SETTINGS).findOne({});
+    
+    if (!settings) return {
+      title: defaultMeta.title,
+      description: defaultMeta.description,
+      keywords: defaultMeta.keywords,
+      icons: { icon: defaultMeta.favicon, apple: defaultMeta.favicon },
+    };
+
+    const title = settings.seo?.title || defaultMeta.title;
+    const description = settings.seo?.description || defaultMeta.description;
+    const keywords = settings.seo?.keywords?.join(", ") || defaultMeta.keywords;
+    const favicon = settings.favicon?.url || settings.logo?.url || defaultMeta.favicon;
+
+    return {
+      title,
+      description,
+      keywords,
+      icons: {
+        icon: favicon,
+        apple: favicon,
+      },
+      openGraph: {
+        title: title,
+        description: description,
+        url: "https://thepact.in",
+        type: "website",
+        images: settings.seo?.ogImage?.url ? [{ url: settings.seo.ogImage.url }] : [],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: title,
+        description: description,
+      },
+    };
+  } catch (error) {
+    return {
+      title: defaultMeta.title,
+      description: defaultMeta.description,
+      icons: { icon: defaultMeta.favicon, apple: defaultMeta.favicon },
+    };
+  }
 }
 
 export default function RootLayout({

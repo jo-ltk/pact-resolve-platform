@@ -174,6 +174,28 @@ export interface GlobalSettings extends BaseDocument {
   companyName: string;
   /** Company logo */
   logo?: ImageData;
+  /** Site Favicon */
+  favicon?: ImageData;
+  /** Social media links (Site-wide) */
+  socialLinks?: SocialLink[];
+  /** SEO Settings */
+  seo: {
+    title: string;
+    description: string;
+    keywords: string[];
+    ogImage?: ImageData;
+  };
+}
+
+// ============================================================================
+// 6.5 LEGAL PAGES (Privacy, Terms, etc.)
+// ============================================================================
+
+export interface LegalPage extends BaseDocument {
+  slug: string;
+  title: string;
+  content: string;
+  isActive: boolean;
 }
 
 // ============================================================================
@@ -965,7 +987,10 @@ export const COLLECTIONS = {
   // Workbook Gallery
   WORKBOOK_GALLERY: "workbookGallery",
   WORKBOOK_FEATURES: "workbookFeatures",
+  // Workbook Chapters
   WORKBOOK_CHAPTERS: "workbookChapters",
+  // Legal Pages
+  LEGAL_PAGES: "legalPages",
 } as const;
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];

@@ -13,6 +13,8 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
   const [advocateMaximusHidden, setAdvocateMaximusHidden] = useState(false);
+  const [logoUrl, setLogoUrl] = useState("/images/pact-logo.png");
+  const [companyName, setCompanyName] = useState("PACT");
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith("/admin");
 
@@ -26,6 +28,21 @@ export function Navbar() {
       document.body.style.overflow = "unset";
     }
     
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch("/api/content/global-settings", { cache: 'no-store' });
+        if (res.ok) {
+          const result = await res.json();
+          if (result.success && result.data) {
+            if (result.data.logo?.url) setLogoUrl(result.data.logo.url);
+            if (result.data.companyName) setCompanyName(result.data.companyName);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch global settings", e);
+      }
+    };
+
     const checkMaximusStatus = async () => {
       try {
         const res = await fetch("/api/content/advocate-maximus-event?all=true", { cache: 'no-store' });
@@ -44,7 +61,10 @@ export function Navbar() {
         console.error("Failed to fetch Advocate Maximus status", e);
       }
     };
+    
+    fetchSettings();
     checkMaximusStatus();
+
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -133,8 +153,8 @@ export function Navbar() {
           >
             <div className="relative h-10 md:h-12 lg:h-14 w-auto transition-transform duration-300">
               <Image
-                src="/images/pact-logo.png"
-                alt="PACT"
+                src={logoUrl}
+                alt={companyName}
                 width={150}
                 height={60}
                 className="h-full w-auto object-contain"
@@ -143,7 +163,7 @@ export function Navbar() {
             </div>
             <div className="flex flex-col justify-center">
               <span className="font-sans text-lg md:text-xl lg:text-2xl font-black tracking-tighter text-white leading-none">
-                PACT
+                {companyName}
               </span>
               <span className="text-[8px] md:text-[9px] lg:text-xs font-medium text-white/70 tracking-wide leading-tight block mt-0.5">
                 Mediation Academy<br />&amp; Institutional Mediation Services
@@ -267,8 +287,8 @@ export function Navbar() {
                 <div className="flex items-center gap-3">
                   <div className="relative h-8 w-auto shrink-0">
                     <Image
-                      src="/images/pact-logo.png"
-                      alt="PACT"
+                      src={logoUrl}
+                      alt={companyName}
                       width={100}
                       height={40}
                       className="h-full w-auto object-contain"
@@ -277,7 +297,7 @@ export function Navbar() {
                   </div>
                   <div className="flex flex-col justify-center">
                     <span className="font-sans text-xl font-black tracking-tighter text-white uppercase leading-none">
-                      PACT
+                      {companyName}
                     </span>
                     <span className="text-xs font-medium text-white/70 tracking-wide leading-tight mt-1">
                       Mediation Academy<br />&amp; Institutional Mediation Services

@@ -19,11 +19,29 @@ export function WhatsAppButton({
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [dynamicPhone, setDynamicPhone] = useState(phoneNumber);
 
   const isAdmin = pathname?.startsWith("/admin");
 
   useEffect(() => {
     if (isAdmin) return;
+
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch("/api/content/global-settings", { cache: 'no-store' });
+        if (res.ok) {
+          const result = await res.json();
+          if (result.success && result.data?.whatsapp) {
+            // Remove + and spaces if any
+            setDynamicPhone(result.data.whatsapp.replace(/[+\s]/g, ""));
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch whatsapp settings", e);
+      }
+    };
+
+    fetchSettings();
 
     if (floating) {
       const timer = setTimeout(() => {
@@ -37,7 +55,7 @@ export function WhatsAppButton({
 
   if (isAdmin) return null;
 
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  const whatsappUrl = `https://wa.me/${dynamicPhone || phoneNumber}?text=${encodeURIComponent(message)}`;
 
   if (!floating) {
     return (

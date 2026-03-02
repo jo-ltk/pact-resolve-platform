@@ -323,6 +323,11 @@ export const globalSettingsSeed: Omit<GlobalSettings, "_id" | "createdAt" | "upd
   ],
   address: "Postal Address: PACT International Headquarters, ADR Tower, New Delhi, India.",
   companyName: "PACT",
+  seo: {
+    title: "PACT | Professional Mediation Platform",
+    description: "PACT is a neutral, professional mediation platform helping individuals and businesses resolve conflicts.",
+    keywords: ["mediation", "dispute resolution", "pact"],
+  },
 };
 
 // ============================================================================
@@ -450,14 +455,27 @@ export const mciEventSeed: Omit<MCIEvent, "_id" | "createdAt" | "updatedAt"> = {
     },
   ],
   mediaCoverage: [
-    { name: "Bar and Bench", fontStyle: "font-serif" },
-    { name: "Live Law", fontStyle: "font-sans font-bold" },
-    { name: "SCC Online", fontStyle: "font-serif italic" },
-    { name: "Lawctopus", fontStyle: "font-sans font-black tracking-tighter" },
-    { name: "Law Beat", fontStyle: "font-serif font-bold uppercase" },
-    { name: "Bar Bulletin", fontStyle: "font-sans tracking-tight" },
-    { name: "Law Bhoomi", fontStyle: "font-serif italic font-bold" },
-    { name: "Law Chakra", fontStyle: "font-sans font-medium" },
+    {
+      publication: "SCC Online",
+      logo: "/images/mci/press/SCC Times Logo.png",
+      headline: "Live: PACT, SAM & GNLU Mediation Championship India 2023",
+      url: "https://www.scconline.com/blog/post/2023/09/08/live-pact-sam-gnlu-mediation-championship-india-2023/",
+      order: 1
+    },
+    {
+      publication: "Bar & Bench",
+      logo: "/images/mci/press/brand_2x.png.jpeg",
+      headline: "Legal League Consulting joins The PACT in hosting India's League of Mediation Champions at GNLU",
+      url: "https://www.barandbench.com/news/corporate/legal-league-consulting-joins-the-pact-in-hosting-indias-league-of-mediation-champions-at-gnlu",
+      order: 2
+    },
+    {
+      publication: "SCC Blog",
+      logo: "/images/mci/press/SCC Times Logo.png",
+      headline: "SAM and GNLU join The PACT to further Mission Mediation in India",
+      url: "https://blog.scconline.gen.in/post/2023/09/04/sam-and-gnlu-join-the-pact-to-further-mission-mediation-in-india/",
+      order: 3
+    },
   ],
   rewards: [
     { icon: "star", text: "INR 1,50,000", subtext: "Cash Prizes", colorClass: "bg-amber-50 text-amber-600", order: 1 },
