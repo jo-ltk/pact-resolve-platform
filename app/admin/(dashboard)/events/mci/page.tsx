@@ -18,7 +18,9 @@ import {
   Sparkles,
   Info,
   Edit,
-  MoreVertical
+  MoreVertical,
+  FileText,
+  BookOpen
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -44,6 +46,8 @@ import { useAuth } from "@/lib/context/AuthContext";
 import { MCIEvent } from "@/lib/db/schemas";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { PastEditionsTab, type PastEdition } from "@/components/admin/mci/PastEditionsTab";
+import { ContentTab } from "@/components/admin/mci/ContentTab";
 
 export default function MCIManagementPage() {
   const { token } = useAuth();
@@ -51,9 +55,10 @@ export default function MCIManagementPage() {
   const [gallery, setGallery] = useState<Array<{ id: string; url: string; title: string; description: string; order: number }>>([]);
   const [partners, setPartners] = useState<Array<{ id: string; name: string; logo: string; order: number }>>([]);
   const [press, setPress] = useState<Array<{ id: string; publication: string; logo?: string; headline: string; url: string; order: number }>>([]);
+  const [pastEditions, setPastEditions] = useState<PastEdition[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<'gallery' | 'partners' | 'press'>('gallery');
+  const [activeTab, setActiveTab] = useState<'gallery' | 'partners' | 'press' | 'editions' | 'content'>('gallery');
   
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isPartnerDialogOpen, setIsPartnerDialogOpen] = useState(false);
@@ -184,6 +189,14 @@ export default function MCIManagementPage() {
               id: item.id || `press-${idx}-${Date.now()}`
             }));
           setPress(pressWithIds);
+
+          // Set Past Editions
+          const editionsWithIds = (activeEvent.pastEditions || [])
+            .map((item: any, idx: number) => ({
+              ...item,
+              id: item.id || `edition-${idx}-${Date.now()}`
+            }));
+          setPastEditions(editionsWithIds);
         } else {
           setGallery(fallbackGallery.map((item, idx) => ({ ...item, id: `fallback-${idx}` })));
           setPartners([]);
@@ -204,15 +217,17 @@ export default function MCIManagementPage() {
     finally { setIsLoading(false); }
   }
 
-  const handleSave = async (overrideGallery?: any[], overridePartners?: any[], overridePress?: any[]) => {
+  const handleSave = async (overrideGallery?: any[], overridePartners?: any[], overridePress?: any[], overrideEditions?: any[]) => {
     setIsSaving(true);
     try {
       const gList = overrideGallery || gallery;
       const pList = overridePartners || partners;
       const pressList = overridePress || press;
+      const editionsList = overrideEditions || pastEditions;
       const galleryToSave = gList.map(({ id, ...rest }) => rest);
       const partnersToSave = pList.map(({ id, ...rest }) => rest);
       const pressToSave = pressList.map(({ id, ...rest }) => rest);
+      const editionsToSave = editionsList.map(({ id, ...rest }) => rest);
 
       const method = (eventData && eventData._id) ? "PUT" : "POST";
       const payload = (eventData && eventData._id) 
@@ -221,7 +236,8 @@ export default function MCIManagementPage() {
             isActive: true, 
             gallery: galleryToSave,
             mentoringPartners: partnersToSave,
-            mediaCoverage: pressToSave
+            mediaCoverage: pressToSave,
+            pastEditions: editionsToSave
           }
         : {
             year: new Date().getFullYear(),
@@ -230,7 +246,8 @@ export default function MCIManagementPage() {
             isActive: true,
             gallery: galleryToSave,
             mentoringPartners: partnersToSave,
-            mediaCoverage: pressToSave
+            mediaCoverage: pressToSave,
+            pastEditions: editionsToSave
           };
 
       console.log(`[Admin] Saving MCI Event (${method})`, payload);
@@ -446,35 +463,75 @@ export default function MCIManagementPage() {
       </div>
 
       {/* Tabs Switcher */}
-      <div className="flex p-1 bg-white dark:bg-navy-900/50 border rounded-2xl w-full sm:w-fit mx-auto">
+      <div className="flex flex-wrap gap-1 p-1 bg-white dark:bg-navy-900/50 border rounded-2xl w-full sm:w-fit mx-auto">
+        <button 
+          onClick={() => setActiveTab('content')}
+          className={cn(
+            "flex items-center gap-2 px-5 py-3 rounded-xl font-bold transition-all text-sm",
+            activeTab === 'content' ? "bg-navy-950 text-white shadow-lg" : "text-navy-950/40 hover:text-navy-950"
+          )}
+        >
+          <BookOpen className="w-4 h-4" /> Page Content
+        </button>
         <button 
           onClick={() => setActiveTab('gallery')}
           className={cn(
-            "flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all",
+            "flex items-center gap-2 px-5 py-3 rounded-xl font-bold transition-all text-sm",
             activeTab === 'gallery' ? "bg-navy-950 text-white shadow-lg" : "text-navy-950/40 hover:text-navy-950"
           )}
         >
           <ImageIcon className="w-4 h-4" /> Gallery
         </button>
         <button 
+          onClick={() => setActiveTab('editions')}
+          className={cn(
+            "flex items-center gap-2 px-5 py-3 rounded-xl font-bold transition-all text-sm",
+            activeTab === 'editions' ? "bg-navy-950 text-white shadow-lg" : "text-navy-950/40 hover:text-navy-950"
+          )}
+        >
+          <FileText className="w-4 h-4" /> Past Editions
+        </button>
+        <button 
           onClick={() => setActiveTab('partners')}
           className={cn(
-            "flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all",
+            "flex items-center gap-2 px-5 py-3 rounded-xl font-bold transition-all text-sm",
             activeTab === 'partners' ? "bg-navy-950 text-white shadow-lg" : "text-navy-950/40 hover:text-navy-950"
           )}
         >
-          <LayoutGrid className="w-4 h-4" /> Mentoring Partners
+          <LayoutGrid className="w-4 h-4" /> Partners
         </button>
         <button 
           onClick={() => setActiveTab('press')}
           className={cn(
-            "flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all",
+            "flex items-center gap-2 px-5 py-3 rounded-xl font-bold transition-all text-sm",
             activeTab === 'press' ? "bg-navy-950 text-white shadow-lg" : "text-navy-950/40 hover:text-navy-950"
           )}
         >
           <Info className="w-4 h-4" /> Media Coverage
         </button>
       </div>
+
+      {/* Past Editions Tab */}
+      {activeTab === 'editions' && (
+        <PastEditionsTab
+          editions={pastEditions}
+          isSaving={isSaving}
+          onSave={async (newEditions) => {
+            setPastEditions(newEditions);
+            await handleSave(gallery, partners, press, newEditions);
+          }}
+        />
+      )}
+
+      {/* Page Content Tab */}
+      {activeTab === 'content' && (
+        <ContentTab
+          eventData={eventData}
+          isSaving={isSaving}
+          token={token}
+          onSaved={(updated) => setEventData(prev => prev ? { ...prev, ...updated } : prev)}
+        />
+      )}
 
       {activeTab === 'gallery' ? (
         <div className="space-y-6">

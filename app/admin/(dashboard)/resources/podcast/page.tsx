@@ -209,7 +209,7 @@ export default function PodcastAdminPage() {
             <div className="space-y-5 w-full max-w-2xl mx-auto xl:mx-0">
                <Label className="text-sm uppercase tracking-[0.2em] font-black text-navy-950/40 ml-1">Podcast Hero Image</Label>
                <ImageUpload 
-                  value={items.find(i => i.category === "hero-banner")?.image || "/assets/img/podcast-hero.png"}
+                  value={items.find(i => i.category === "hero-banner")?.image}
                   onChange={async (url) => {
                     setIsHeroSaving(true);
                     try {
@@ -326,7 +326,7 @@ export default function PodcastAdminPage() {
                   
                   <div className="relative group aspect-square rounded-2xl overflow-hidden bg-navy-50 border border-navy-100/50 shadow-inner">
                     <ImageUpload 
-                      value={episode?.image || `/podcast/season2-ep${pos}.png`}
+                      value={episode?.image}
                       onChange={async (url) => {
                         try {
                           setIsSaving(true);
@@ -404,7 +404,7 @@ export default function PodcastAdminPage() {
                 <Label className="text-sm uppercase tracking-[0.2em] font-black text-navy-950/40 ml-1">Host Profile Photo</Label>
                 <div className="mt-4">
                   <ImageUpload 
-                    value={items.find(i => i.category === "podcast-host")?.image || "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop"}
+                    value={items.find(i => i.category === "podcast-host")?.image}
                     onChange={async (url) => {
                       const hostItem = items.find(i => i.category === "podcast-host") || { 
                         title: "Jonathan Rodrigues", 
@@ -487,7 +487,7 @@ export default function PodcastAdminPage() {
                           title: "Jonathan Rodrigues", 
                           subtitle: "Hosted & Produced", 
                           description: "As an IMI Qualified Mediator and founder of PACT, Jonathan brings together global mediation practitioners for candid conversations about what makes mediation work",
-                          image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop",
+                          image: "",
                           type: "podcast", 
                           category: "podcast-host",
                           isActive: true,

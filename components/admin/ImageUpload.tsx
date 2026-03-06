@@ -116,16 +116,42 @@ export function ImageUpload({ value, onChange, label, description, className }: 
             alt="Upload preview" 
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
           />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-            <Button 
-              type="button" 
-              variant="destructive" 
-              size="icon" 
-              className="rounded-full shadow-lg"
-              onClick={removeImage}
-            >
-              <X className="w-4 h-4" />
-            </Button>
+          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
+            <div className="flex items-center gap-2">
+              <label className="cursor-pointer">
+                <Button 
+                  type="button" 
+                  variant="secondary" 
+                  size="sm" 
+                  className="rounded-full shadow-lg h-9 gap-2 pointer-events-none"
+                >
+                  <Upload className="w-4 h-4" />
+                  Change
+                </Button>
+                <input 
+                  type="file" 
+                  className="hidden" 
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  disabled={isUploading}
+                />
+              </label>
+              <Button 
+                type="button" 
+                variant="destructive" 
+                size="icon" 
+                className="rounded-full shadow-lg w-9 h-9"
+                onClick={removeImage}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+            {isUploading && (
+              <div className="flex items-center gap-2 text-white text-xs font-bold uppercase tracking-widest bg-navy-950/80 px-3 py-1.5 rounded-full backdrop-blur-md">
+                <Loader2 className="w-3 h-3 animate-spin" />
+                Uploading...
+              </div>
+            )}
           </div>
         </div>
       ) : (
