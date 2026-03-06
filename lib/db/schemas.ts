@@ -842,6 +842,8 @@ export interface ResourceItem extends BaseDocument {
   date?: string; // string for display flexibility
   /** Category or niche (optional) */
   category?: string;
+  /** Season (optional, used for podcasts) */
+  season?: string;
   /** Display order */
   order: number;
   /** Whether this item is visible */

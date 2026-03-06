@@ -84,10 +84,29 @@ export default function PodcastPage() {
     [episodes]
   );
 
-  const pastEpisodes = useMemo(() => {
-    return episodes
+  const groupedPastEpisodes = useMemo(() => {
+    const filtered = episodes
       .filter((e) => e.category !== "hero-banner" && e.category !== "podcast-host" && !upcomingEpisodes.some(u => (u._id as any).toString() === (e._id as any).toString()))
       .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    const groups: Record<string, ResourceItem[]> = {};
+    filtered.forEach(item => {
+      const s = item.season || "Other Episodes";
+      if (!groups[s]) groups[s] = [];
+      groups[s].push(item);
+    });
+
+    // Sort seasons descending (e.g. S2, S1, Other)
+    return Object.keys(groups)
+      .sort((a, b) => {
+        if (a === "Other Episodes") return 1;
+        if (b === "Other Episodes") return -1;
+        return b.localeCompare(a, undefined, { numeric: true });
+      })
+      .map(key => ({
+        season: key,
+        episodes: groups[key]
+      }));
   }, [episodes, upcomingEpisodes]);
 
   const hostData = useMemo(
@@ -341,70 +360,86 @@ export default function PodcastPage() {
               </h2>
             </FadeInUp>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-              {pastEpisodes.map((episode, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: (i % 6) * 0.05, duration: 0.6 }}
-                  className={cn(
-                    i === pastEpisodes.length - 1 && "lg:col-start-2"
-                  )}
-                >
-                  <Link
-                    href={episode.url || "#"}
-                    target="_blank"
-                    className="group flex flex-col h-full rounded-4xl bg-navy-50 border border-navy-100 overflow-hidden hover:border-gold-500/30 hover:shadow-2xl transition-all duration-500"
-                  >
-                    {/* Image Area - 100% Visible */}
-                    <div className="relative aspect-video w-full overflow-hidden">
-                      <Image
-                        src={episode.image || "/assets/img/podcast-thumb-dummy.png"}
-                        alt={episode.title}
-                        fill
-                        unoptimized={true}
-                        className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-navy-950/20 group-hover:bg-transparent transition-colors duration-500" />
-                      
-                      {/* Floating Identity */}
-                      <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                        <div className="px-3 py-1 rounded-full bg-navy-950/90 text-xs  font-bold text-gold-500 border border-gold-500/20 backdrop-blur-md">
-                          EP{String((episode.order || i + 1)).padStart(2, '0')}
-                        </div>
-                      </div>
+            <div className="space-y-24">
+              {groupedPastEpisodes.map(({ season, episodes: seasonEpisodes }) => (
+                <div key={season}>
+                  <div className="flex items-center gap-6 mb-12">
+                     <div className="px-4 py-1.5 rounded-full bg-navy-950 text-white text-xs font-black uppercase tracking-widest shadow-lg">
+                       {season}
+                     </div>
+                     <div className="h-px grow bg-navy-100/60" />
+                     <span className="text-navy-950/20 text-xs font-bold uppercase tracking-widest">
+                       {seasonEpisodes.length} {seasonEpisodes.length === 1 ? 'Episode' : 'Episodes'}
+                     </span>
+                  </div>
 
-                      {/* Play Button Overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-14 h-14 rounded-full bg-gold-500 text-navy-950 flex items-center justify-center shadow-xl translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                          <Play className="w-6 h-6 fill-navy-950 ml-1" />
-                        </div>
-                      </div>
-                    </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                    {seasonEpisodes.map((episode, i) => (
+                      <motion.div
+                        key={(episode._id as any)?.toString?.() || i}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: (i % 3) * 0.1, duration: 0.6 }}
+                        className={cn(
+                          season === groupedPastEpisodes[0].season && i === seasonEpisodes.length - 1 && seasonEpisodes.length % 3 === 1 && "lg:col-start-2"
+                        )}
+                      >
+                        <Link
+                          href={episode.url || "#"}
+                          target="_blank"
+                          className="group flex flex-col h-full rounded-4xl bg-navy-50 border border-navy-100 overflow-hidden hover:border-gold-500/30 hover:shadow-2xl transition-all duration-500"
+                        >
+                          {/* Image Area - 100% Visible */}
+                          <div className="relative aspect-video w-full overflow-hidden">
+                            <Image
+                              src={episode.image || "/assets/img/podcast-thumb-dummy.png"}
+                              alt={episode.title}
+                              fill
+                              unoptimized={true}
+                              className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-navy-950/20 group-hover:bg-transparent transition-colors duration-500" />
+                            
+                            {/* Floating Identity */}
+                            <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                              <div className="px-3 py-1 rounded-full bg-navy-950/90 text-[10px]  font-bold text-gold-500 border border-gold-500/20 backdrop-blur-md uppercase tracking-wider">
+                                {episode.season ? `${episode.season} · EP${String((episode.order || i + 1)).padStart(2, '0')}` : `EP${String((episode.order || i + 1)).padStart(2, '0')}`}
+                              </div>
+                            </div>
 
-                    {/* Content Area - Clean and Stable */}
-                    <div className="p-6 md:p-8 flex flex-col flex-1 bg-white">
-                      <div className="mb-4">
-                        <span className="text-xs  uppercase tracking-[0.2em] text-gold-600 font-bold">
-                          {episode.category || "Podcast"}
-                        </span>
-                      </div>
-                      
-                      <h3 className="text-xl font-medium text-navy-950 mb-3 group-hover:text-gold-500 transition-colors leading-snug">
-                        {episode.title}
-                      </h3>
-                      
-                      <div className="mt-auto pt-4 border-t border-navy-100 flex items-center justify-between">
-                        <p className="text-navy-950/50 text-xs font-light truncate max-w-[80%]">
-                          {episode.subtitle || episode.author || "Mission Mediation"}
-                        </p>
-                        <ArrowUpRight className="w-4 h-4 text-navy-950/20 group-hover:text-gold-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
+                            {/* Play Button Overlay */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="w-14 h-14 rounded-full bg-gold-500 text-navy-950 flex items-center justify-center shadow-xl translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                                <Play className="w-6 h-6 fill-navy-950 ml-1" />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Content Area - Clean and Stable */}
+                          <div className="p-6 md:p-8 flex flex-col flex-1 bg-white">
+                            <div className="mb-4">
+                              <span className="text-xs  uppercase tracking-[0.2em] text-gold-600 font-bold">
+                                {episode.category || "Podcast"}
+                              </span>
+                            </div>
+                            
+                            <h3 className="text-xl font-medium text-navy-950 mb-3 group-hover:text-gold-500 transition-colors leading-snug">
+                              {episode.title}
+                            </h3>
+                            
+                            <div className="mt-auto pt-4 border-t border-navy-100 flex items-center justify-between">
+                              <p className="text-navy-950/50 text-xs font-light truncate max-w-[80%]">
+                                {episode.subtitle || episode.author || "Mission Mediation"}
+                              </p>
+                              <ArrowUpRight className="w-4 h-4 text-navy-950/20 group-hover:text-gold-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                            </div>
+                          </div>
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>

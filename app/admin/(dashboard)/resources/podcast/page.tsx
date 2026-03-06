@@ -165,21 +165,21 @@ export default function PodcastAdminPage() {
   return (
     <div className="w-full max-w-[1600px] mx-auto space-y-8 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 group border-b border-navy-50 pb-8">
-        <div className="space-y-4">
+        <div className="space-y-4 flex-1 min-w-0">
           <Link href="/admin/resources" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
           </Link>
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-600 border border-rose-500/20">
+            <div className="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-600 border border-rose-500/20 shrink-0">
               <Mic className="w-6 h-6" />
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-navy-950 tracking-tight">Podcast Episodes</h1>
-              <p className="text-navy-950/40 text-sm font-medium uppercase tracking-widest mt-1">Manage Mission Mediation Podcast episodes</p>
+            <div className="min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-bold text-navy-950 tracking-tight truncate">Podcast Episodes</h1>
+              <p className="text-navy-950/40 text-xs sm:text-sm font-medium uppercase tracking-widest mt-1 truncate">Manage PACT Podcast episodes</p>
             </div>
           </div>
         </div>
-        <Button onClick={openCreateDialog} className="rounded-xl px-6 h-12 bg-navy-950 hover:bg-navy-900 text-white font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-navy-950/10">
+        <Button onClick={openCreateDialog} className="shrink-0 rounded-xl px-6 h-12 bg-navy-950 hover:bg-navy-900 text-white font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-navy-950/10">
           <Plus className="w-4 h-4 mr-2" /> Add Episode
         </Button>
       </div>
@@ -188,24 +188,24 @@ export default function PodcastAdminPage() {
       <Card className="rounded-3xl border-none shadow-xl shadow-navy-950/5 bg-white overflow-hidden">
         <CardContent className="p-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-gold-500/10 flex items-center justify-center text-gold-600 border border-gold-500/20">
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              <div className="w-12 h-12 rounded-2xl bg-gold-500/10 flex items-center justify-center text-gold-600 border border-gold-500/20 shrink-0">
                 <ImageIcon className="w-6 h-6" />
               </div>
-              <div>
-                <h2 className="text-xl font-bold text-navy-950 tracking-tight">Podcast Hero Banner</h2>
-                <p className="text-navy-950/40 text-xs font-black uppercase tracking-widest mt-1">Manage the background image for the podcast hero section</p>
+              <div className="min-w-0">
+                <h2 className="text-xl font-bold text-navy-950 tracking-tight truncate">Podcast Hero Banner</h2>
+                <p className="text-navy-950/40 text-xs font-black uppercase tracking-widest mt-1 truncate">Background image for the hero section</p>
               </div>
             </div>
             
             {items.find(i => i.category === "hero-banner") && (
-               <Badge className="bg-gold-500/10 text-gold-600 border-gold-500/20 px-3 py-1 rounded-full text-sm font-black uppercase tracking-widest">
+               <Badge className="shrink-0 bg-gold-500/10 text-gold-600 border-gold-500/20 px-3 py-1 rounded-full text-xs sm:text-sm font-black uppercase tracking-widest">
                  Live on Website
                </Badge>
             )}
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 items-start">
+          <div className="grid grid-cols-1 2xl:grid-cols-2 gap-12 items-start">
             <div className="space-y-5 w-full max-w-2xl mx-auto xl:mx-0">
                <Label className="text-sm uppercase tracking-[0.2em] font-black text-navy-950/40 ml-1">Podcast Hero Image</Label>
                <ImageUpload 
@@ -287,24 +287,24 @@ export default function PodcastAdminPage() {
       <Card className="rounded-3xl border-none shadow-xl shadow-navy-950/5 bg-white overflow-hidden">
         <CardContent className="p-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-600 border border-amber-500/20">
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-600 border border-amber-500/20 shrink-0">
                 <Sparkles className="w-6 h-6" />
               </div>
-              <div>
-                <h2 className="text-xl font-bold text-navy-950 tracking-tight">Upcoming Episodes (Season 2)</h2>
-                <p className="text-navy-950/40 text-xs font-black uppercase tracking-widest mt-1">Manage the 3 featured episodes displayed in the Season 2 section</p>
+              <div className="min-w-0">
+                <h2 className="text-xl font-bold text-navy-950 tracking-tight truncate">Upcoming Episodes</h2>
+                <p className="text-navy-950/40 text-xs font-black uppercase tracking-widest mt-1 truncate">Manage featured episodes for Season 2</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
-               <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 px-3 py-1 rounded-full text-sm font-black uppercase tracking-widest">
+            {items.find(i => i.isFeatured && i.category !== "hero-banner") && (
+               <Badge className="shrink-0 bg-amber-500/10 text-amber-600 border-amber-500/20 px-3 py-1 rounded-full text-xs sm:text-sm font-black uppercase tracking-widest">
                  Featured Section
                </Badge>
-            </div>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((pos) => {
               const episode = items
                 .filter(i => i.isFeatured && i.category !== "hero-banner")
@@ -388,13 +388,13 @@ export default function PodcastAdminPage() {
       <Card className="rounded-3xl border-none shadow-xl shadow-navy-950/5 bg-white overflow-hidden">
         <CardContent className="p-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-600 border border-indigo-500/20">
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-600 border border-indigo-500/20 shrink-0">
                 <Users className="w-6 h-6" />
               </div>
-              <div>
-                <h2 className="text-xl font-bold text-navy-950 tracking-tight">Podcast Host Details</h2>
-                <p className="text-navy-950/40 text-xs font-black uppercase tracking-widest mt-1">Manage the host/producer bio and profile photo</p>
+              <div className="min-w-0">
+                <h2 className="text-xl font-bold text-navy-950 tracking-tight truncate">Podcast Host Details</h2>
+                <p className="text-navy-950/40 text-xs font-black uppercase tracking-widest mt-1 truncate">Manage host bio and profile photo</p>
               </div>
             </div>
           </div>
@@ -603,11 +603,18 @@ export default function PodcastAdminPage() {
                             <Calendar className="w-3 h-3" /> {item.date}
                           </span>
                         )}
-                        {item.category && (
-                          <Badge variant="outline" className="w-fit text-sm uppercase font-bold tracking-widest">
-                            {item.category}
-                          </Badge>
-                        )}
+                        <div className="flex gap-1 items-center mt-1">
+                          {item.season && (
+                            <Badge className="bg-navy-950 text-white border-none px-2 py-0 h-5 text-[10px] font-black uppercase tracking-widest">
+                              {item.season}
+                            </Badge>
+                          )}
+                          {item.category && (
+                            <Badge variant="outline" className="w-fit text-[10px] uppercase font-bold tracking-widest h-5">
+                              {item.category}
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -707,6 +714,15 @@ export default function PodcastAdminPage() {
                     onChange={(e) => setEditingItem(prev => ({ ...prev!, category: e.target.value }))} 
                     className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
                     placeholder="e.g. Mediation Practice"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Season</Label>
+                  <Input 
+                    value={editingItem?.season || ""} 
+                    onChange={(e) => setEditingItem(prev => ({ ...prev!, season: e.target.value }))} 
+                    className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
+                    placeholder="e.g. Season 1"
                   />
                 </div>
               </div>
