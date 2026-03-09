@@ -251,7 +251,7 @@ export default function NIAAMPage() {
     { name: "Adv. Sadhana Ramachandran", city: "New Delhi", category: "Mediation Practice", year: "2023" },
     { name: "A J Jawad", city: "Hyderabad", category: "Mediation Education", year: "2023" },
     { name: "Adv. Sriram Panchu", city: "Chennai", category: "Mediation Practice", year: "2023" },
-    { name: "Adv. Niranjan Bhat (Post-humously)", city: "Ahmedabad", category: "Mediation Practice", year: "2023" }
+    { name: "Adv. Niranjan Bhat", city: "Ahmedabad", category: "Mediation Practice", year: "2023" }
   ];
 
   // Merge logic: Ensure unique awardees by filtering defaults by name
@@ -421,8 +421,7 @@ export default function NIAAMPage() {
                     <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
                   </div>
                   <div>
-                    <p className="text-[8px] sm:text-[9px] md:text-xs  uppercase tracking-[0.2em] sm:tracking-[0.3em] text-navy-950/40 font-bold mb-1">Benchmark</p>
-                    <p className="text-base sm:text-lg md:text-xl font-bold text-navy-950 tracking-tight leading-tight">Annual Conferment</p>
+                    <p className="text-base sm:text-lg md:text-xl font-bold text-navy-950 tracking-tight leading-tight">Annual Awards</p>
                   </div>
                 </div>
               </motion.div>

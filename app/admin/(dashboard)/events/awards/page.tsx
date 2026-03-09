@@ -59,23 +59,52 @@ export default function AwardsManagementPage() {
   const [eventData, setEventData] = useState<NationalImpactAward | null>(null);
   
   // State for different sections
-  const [heroSubtitle, setHeroSubtitle] = useState("");
+  const [heroSubtitle, setHeroSubtitle] = useState("Honouring Excellence");
   const [heroTitleLines, setHeroTitleLines] = useState<string[]>(["NATIONAL", "IMPACT", "AWARDS"]);
-  const [heroDescription, setHeroDescription] = useState("");
-  const [heroDescriptionExtra, setHeroDescriptionExtra] = useState("");
+  const [heroDescription, setHeroDescription] = useState("A prestigious platform built to honour individuals who have meaningfully strengthened the growth of mediation in India.");
+  const [heroDescriptionExtra, setHeroDescriptionExtra] = useState("Through advocacy, institution-building, education and practice leadership, these awardees define the standard of excellence.");
   
-  const [aboutSubtitle, setAboutSubtitle] = useState("");
-  const [aboutTitle, setAboutTitle] = useState("");
-  const [aboutDescription, setAboutDescription] = useState("");
+  const [aboutSubtitle, setAboutSubtitle] = useState("Recognition");
+  const [aboutTitle, setAboutTitle] = useState("About the ImPACT Awards");
+  const [aboutDescription, setAboutDescription] = useState("The National ImPACT Awards for Advancement of Mediation in India recognizes extraordinary contributions across four core pillars of the mediation ecosystem.");
   
-  const [upcomingTitle, setUpcomingTitle] = useState("");
-  const [upcomingSubtitle, setUpcomingSubtitle] = useState("");
-  const [upcomingDates, setUpcomingDates] = useState("");
-  const [upcomingVenue, setUpcomingVenue] = useState("");
-  const [upcomingAwardees, setUpcomingAwardees] = useState("");
+  const [upcomingTitle, setUpcomingTitle] = useState("NIAAM 2026");
+  const [upcomingSubtitle, setUpcomingSubtitle] = useState("Upcoming Edition");
+  const [upcomingDates, setUpcomingDates] = useState("To Be Announced");
+  const [upcomingVenue, setUpcomingVenue] = useState("To Be Announced");
+  const [upcomingAwardees, setUpcomingAwardees] = useState("To Be Announced");
+  
+  const [heroImageUrl, setHeroImageUrl] = useState("");
+  const [aboutImageUrl, setAboutImageUrl] = useState("");
 
-  const [recipients, setRecipients] = useState<AwardRecipient[]>([]);
-  const [gallery, setGallery] = useState<ConclaveHighlight[]>([]);
+  const [recipients, setRecipients] = useState<AwardRecipient[]>([
+    { name: "Adv Tanu Mehta", city: "Mumbai", category: "Mediation Education", year: "2025" },
+    { name: "Raj Panchmatia", city: "Mumbai", category: "Mediation Advocacy", year: "2025" },
+    { name: "Adv Veena Ralli", city: "New Delhi", category: "Mediation Practice", year: "2025" },
+    { name: "Justice Mohan Lal Mehta", city: "New Delhi", category: "Mediation Institution Building", year: "2025" },
+    { name: "Adv. Sudhanshu Batra", city: "New Delhi", category: "Mediation Practice", year: "2024" },
+    { name: "Adv. J P Sengh", city: "New Delhi", category: "Mediation Practice", year: "2024" },
+    { name: "Adv. Pusshp Gupta", city: "New Delhi", category: "Mediation Education", year: "2024" },
+    { name: "Justice A K Sikri", city: "New Delhi", category: "Mediation Advocacy", year: "2024" },
+    { name: "Justice Kurian Joseph", city: "New Delhi", category: "Mediation Advocacy", year: "2024" },
+    { name: "Justice Gita Mittal", city: "New Delhi", category: "Mediation Advocacy", year: "2023" },
+    { name: "Justice Tejas Karia", city: "New Delhi", category: "Mediation Advocacy", year: "2023" },
+    { name: "Adv. Prashant Popat", city: "Mumbai", category: "Mediation Practice", year: "2025" },
+    { name: "Laila Ollapally", city: "Bengaluru", category: "Mediation Practice", year: "2023" },
+    { name: "Adv. Chitra Narayan", city: "Chennai", category: "Mediation Education", year: "2023" },
+    { name: "Adv. Sadhana Ramachandran", city: "New Delhi", category: "Mediation Practice", year: "2023" },
+    { name: "A J Jawad", city: "Hyderabad", category: "Mediation Education", year: "2023" },
+    { name: "Adv. Sriram Panchu", city: "Chennai", category: "Mediation Practice", year: "2023" },
+    { name: "Adv. Niranjan Bhat", city: "Ahmedabad", category: "Mediation Practice", year: "2023" }
+  ]);
+  const [gallery, setGallery] = useState<ConclaveHighlight[]>([
+    { url: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80", title: "Ceremonial Moment 1", description: "Celebrating the advancement of mediation excellence in India." },
+    { url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80", title: "Ceremonial Moment 2", description: "Celebrating the advancement of mediation excellence in India." },
+    { url: "https://images.unsplash.com/photo-1523287562758-66c7fc58967f?auto=format&fit=crop&q=80", title: "Ceremonial Moment 3", description: "Celebrating the advancement of mediation excellence in India." },
+    { url: "https://images.unsplash.com/photo-1475721027187-4024733923f9?auto=format&fit=crop&q=80", title: "Ceremonial Moment 4", description: "Celebrating the advancement of mediation excellence in India." },
+    { url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80", title: "Ceremonial Moment 5", description: "Celebrating the advancement of mediation excellence in India." },
+    { url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80", title: "Ceremonial Moment 6", description: "Celebrating the advancement of mediation excellence in India." }
+  ]);
   
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -106,12 +135,12 @@ export default function AwardsManagementPage() {
           setEventData(activeEvent);
           setHeroSubtitle(activeEvent.heroSubtitle || "Honouring Excellence");
           setHeroTitleLines(activeEvent.heroTitleLines || ["NATIONAL", "IMPACT", "AWARDS"]);
-          setHeroDescription(activeEvent.heroDescription || "");
-          setHeroDescriptionExtra(activeEvent.heroDescriptionExtra || "");
+          setHeroDescription(activeEvent.heroDescription || "A prestigious platform built to honour individuals who have meaningfully strengthened the growth of mediation in India.");
+          setHeroDescriptionExtra(activeEvent.heroDescriptionExtra || "Through advocacy, institution-building, education and practice leadership, these awardees define the standard of excellence.");
           
-          setAboutSubtitle(activeEvent.aboutSubtitle || "The Benchmark");
+          setAboutSubtitle(activeEvent.aboutSubtitle || "Recognition");
           setAboutTitle(activeEvent.aboutTitle || "About the ImPACT Awards");
-          setAboutDescription(activeEvent.aboutDescription || "");
+          setAboutDescription(activeEvent.aboutDescription || "The National ImPACT Awards for Advancement of Mediation in India recognizes extraordinary contributions across four core pillars of the mediation ecosystem.");
           
           setUpcomingTitle(activeEvent.upcomingTitle || "NIAAM 2026");
           setUpcomingSubtitle(activeEvent.upcomingSubtitle || "Upcoming Edition");
@@ -119,8 +148,11 @@ export default function AwardsManagementPage() {
           setUpcomingVenue(activeEvent.upcomingVenue || "To Be Announced");
           setUpcomingAwardees(activeEvent.upcomingAwardees || "To Be Announced");
           
-          setRecipients(activeEvent.recipients || []);
-          setGallery(activeEvent.gallery || []);
+          setHeroImageUrl(activeEvent.heroImage?.url || "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80");
+          setAboutImageUrl(activeEvent.aboutImage?.url || "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&q=80");
+          
+          if (activeEvent.recipients?.length) setRecipients(activeEvent.recipients);
+          if (activeEvent.gallery?.length) setGallery(activeEvent.gallery);
         }
       }
     } catch { 
@@ -152,6 +184,8 @@ export default function AwardsManagementPage() {
         upcomingDates,
         upcomingVenue,
         upcomingAwardees,
+        heroImage: heroImageUrl ? { url: heroImageUrl, alt: "NIAAM Hero Image" } : undefined,
+        aboutImage: aboutImageUrl ? { url: aboutImageUrl, alt: "NIAAM About Image" } : undefined,
         recipients: overrides?.newRecipients || recipients,
         gallery: overrides?.newGallery || gallery,
       };
@@ -347,6 +381,13 @@ export default function AwardsManagementPage() {
                 <Label className="text-sm font-bold uppercase tracking-widest text-navy-950/60">Context Text (Hero Paragraph 2)</Label>
                 <Textarea value={heroDescriptionExtra} onChange={e => setHeroDescriptionExtra(e.target.value)} className="min-h-[100px] rounded-2xl bg-gray-50 border-gray-100" />
               </div>
+
+              <div className="border-t pt-8 space-y-4">
+                <Label className="text-sm font-bold uppercase tracking-widest text-navy-950/60">Hero Background Image</Label>
+                <div className="max-w-2xl">
+                  <ImageUpload value={heroImageUrl} onChange={setHeroImageUrl} />
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -371,6 +412,13 @@ export default function AwardsManagementPage() {
               <div className="space-y-4">
                 <Label className="text-sm font-bold uppercase tracking-widest text-navy-950/60">Core Description</Label>
                 <Textarea value={aboutDescription} onChange={e => setAboutDescription(e.target.value)} className="min-h-[120px] rounded-2xl bg-gray-50 border-gray-100" />
+              </div>
+
+              <div className="border-t pt-8 space-y-4">
+                <Label className="text-sm font-bold uppercase tracking-widest text-navy-950/60">Ceremony Highlight Image</Label>
+                <div className="max-w-2xl">
+                  <ImageUpload value={aboutImageUrl} onChange={setAboutImageUrl} />
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -427,7 +475,7 @@ export default function AwardsManagementPage() {
               {recipients.map((item, index) => (
                 <motion.div layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} key={`recipient-${index}`}>
                   <Card className="group relative h-full bg-white border shadow-sm hover:shadow-xl transition-all rounded-3xl overflow-hidden p-8">
-                      <div className="absolute -top-4 -right-4 text-7xl font-black text-navy-950/[0.03] leading-none italic select-none">{item.year}</div>
+                      <div className="absolute -top-4 -right-4 text-7xl font-black text-navy-950/3 leading-none italic select-none">{item.year}</div>
                       <div className="relative z-10 flex flex-col h-full justify-between">
                           <div>
                             <h3 className="text-2xl font-bold text-navy-950 leading-tight mb-2 italic uppercase">{item.name}</h3>
