@@ -268,9 +268,9 @@ export default function MCIPage() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {(eventData?.champions && eventData.champions.length > 0 ? eventData.champions : [
-              { year: "2024", counselNames: "M. Nithin Krishna & M. Rishina", mediatorName: "S. Shravan Krishna" },
-              { year: "2023", counselNames: "P. Vignesh & R. Sharad", mediatorName: "Vikramaditya" },
-              { year: "2022", counselNames: "Coming Soon", mediatorName: "Coming Soon" }
+              { year: "2025", counselNames: "Ayush Khanna, Kartikey Tripathi", mediatorName: "Navya Pandey" },
+              { year: "2024", counselNames: "Arundhati Venkarachalam, Sankalp Varma", mediatorName: "Kashish Goel" },
+              { year: "2023", counselNames: "Anshul Kumar Sarma, Ananya Dewan, Kessav Navaladi Shankar", mediatorName: "Akshita Kothari" },
             ] as any[]).map((item, i) => (
               <FadeInUp key={item.year} className="group h-full">
                 <div className="relative h-full p-6 sm:p-8 md:p-10 rounded-3xl sm:rounded-4xl md:rounded-5xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-gold-500/30 transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(191,154,102,0.15)] overflow-hidden flex flex-col items-center text-center">
