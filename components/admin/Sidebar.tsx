@@ -35,6 +35,7 @@ const menuItems = [
   { icon: Globe, label: "Ecosystem", href: "/admin/ecosystem", adminOnly: false },
   { icon: BookOpen, label: "Resources", href: "/admin/resources", adminOnly: false },
   { icon: ShieldCheck, label: "Legal Pages", href: "/admin/legal-pages", adminOnly: true },
+  { icon: LayoutDashboard, label: "Footer Settings", href: "/admin/footer-settings", adminOnly: true },
   { icon: Settings, label: "Global Settings", href: "/admin/global-settings", adminOnly: true },
   { icon: History, label: "Audit Logs", href: "/admin/audit-logs", adminOnly: true },
 ];

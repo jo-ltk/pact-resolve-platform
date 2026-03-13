@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -115,7 +116,7 @@ const WhyMediateHero = () => (
           </div>
           <div className="relative group hidden lg:block">
             <div className="absolute -inset-4 bg-white/5 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-            <div className="relative p-10 rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm">
+            <div className="relative p-10 rounded-3xl border border-white/10 bg-white/2 backdrop-blur-sm">
               <p className="text-xl text-white/70 font-light leading-relaxed">
                 With the support of an impartial mediator, parties can explore practical solutions, protect ongoing relationships, and achieve outcomes that work for everyone involved.
               </p>
@@ -247,10 +248,10 @@ const PactProvides = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               className={cn(
-                "group relative overflow-hidden rounded-3xl md:rounded-[2rem] border transition-all duration-500",
+                "group relative overflow-hidden rounded-3xl md:rounded-4xl border transition-all duration-500",
                 activeStep === i 
                   ? "bg-white/10 border-gold-500 shadow-[0_0_30px_-10px_rgba(191,154,102,0.1)]" 
-                  : "bg-white/[0.02] border-white/5 hover:bg-white/[0.04] hover:border-white/10"
+                  : "bg-white/2 border-white/5 hover:bg-white/4 hover:border-white/10"
               )}
             >
               <button
@@ -301,7 +302,7 @@ const PactProvides = () => {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <div className="px-4 md:px-6 pb-6 md:pb-8 pl-4 sm:pl-[3.5rem] md:pl-[6rem]">
+                    <div className="px-4 md:px-6 pb-6 md:pb-8 pl-4 sm:pl-14 md:pl-24">
                       <div className="h-px w-full bg-white/5 mb-4 md:mb-6" />
                       <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 md:gap-12">
                         <p className="text-base md:text-lg text-white/60 font-light leading-relaxed max-w-4xl">
@@ -393,165 +394,184 @@ const CHECKLIST_MODAL_DATA = [
 
 const Checklist = () => {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Body scroll lock
+  useEffect(() => {
+    if (selectedIdx !== null) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [selectedIdx]);
 
   return (
-    <section className="pt-16 pb-24 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24 text-center">
-        <SectionHeader 
-          subtitle="Try Mediation Today" 
-          title="Check If Mediation Makes Sense"
-          center
-        />
+    <>
+      <section className="pt-16 pb-24 bg-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24 text-center">
+          <SectionHeader 
+            subtitle="Try Mediation Today" 
+            title="Check If Mediation Makes Sense"
+            center
+          />
 
-        <div className="max-w-5xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            "First, check if your case is Legally Fit for Mediation?",
-            "Next, assess if mediation makes business sense for your dispute",
-            "Finally, Invite the other side to a Mediation orientation with PACT?"
-          ].map((item, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              onClick={() => setSelectedIdx(i)}
-              className="p-10 min-h-[300px] cursor-pointer rounded-[3rem] bg-navy-50/50 border border-navy-100 flex flex-col items-center justify-between gap-6 group hover:bg-white hover:border-gold-500 transition-all duration-700 hover:shadow-2xl hover:scale-[1.02]"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-navy-950 text-white flex items-center justify-center  font-bold group-hover:bg-gold-500 transition-all duration-500 group-hover:rotate-6 shadow-xl">
-                0{i+1}
-              </div>
-              <p className="text-xl md:text-2xl text-navy-950 font-light leading-snug tracking-tight">
-                {item}
-              </p>
-              <div className="flex items-center gap-2 text-xs  font-bold uppercase tracking-[0.2em] text-gold-600 opacity-60 group-hover:opacity-100 transition-opacity">
-                Explore Details <Plus className="w-3 h-3 group-hover:rotate-90 transition-transform" />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="mt-20">
-          <a 
-            href="mailto:mediation@thepact.in"
-            className="inline-flex items-center gap-4 bg-gold-500 text-navy-950 px-8 py-5 rounded-full font-bold uppercase tracking-widest hover:bg-navy-950 hover:text-white transition-all duration-300 shadow-xl group"
-          >
-            <span>Get in Touch</span>
-            <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </a>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {selectedIdx !== null && (
-          <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6 md:p-8">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedIdx(null)}
-              className="absolute inset-0 bg-navy-950/90 backdrop-blur-md"
-            />
-            
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-5xl bg-white text-navy-950 rounded-[3rem] shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden border border-white/20"
-            >
-              <button 
-                onClick={() => setSelectedIdx(null)}
-                className="absolute top-6 right-6 w-10 h-10 rounded-full bg-navy-950 text-white flex items-center justify-center hover:bg-gold-500 hover:text-navy-950 transition-all duration-300 z-50 shadow-xl"
+          <div className="max-w-5xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              "First, check if your case is Legally Fit for Mediation?",
+              "Next, assess if mediation makes business sense for your dispute",
+              "Finally, Invite the other side to a Mediation orientation with PACT?"
+            ].map((item, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                onClick={() => setSelectedIdx(i)}
+                className="p-10 min-h-[300px] cursor-pointer rounded-[3rem] bg-navy-50/50 border border-navy-100 flex flex-col items-center justify-between gap-6 group hover:bg-white hover:border-gold-500 transition-all duration-700 hover:shadow-2xl hover:scale-[1.02]"
               >
-                <Plus className="w-5 h-5 rotate-45" />
-              </button>
-
-              {/* Sidebar Branding */}
-              <div className="w-full md:w-[32%] bg-navy-950 p-10 md:p-14 text-white flex flex-col justify-between relative overflow-hidden shrink-0">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2" />
-                
-                <div className="relative z-10">
-                  <div className="w-16 h-16 rounded-2xl bg-gold-500 text-navy-950 flex items-center justify-center mb-8 shadow-2xl shadow-gold-500/20">
-                    {React.createElement(CHECKLIST_MODAL_DATA[selectedIdx].icon, { className: "w-8 h-8" })}
-                  </div>
-                  <h4 className="text-gold-500  text-xs tracking-widest uppercase mb-4 opacity-80 font-bold">
-                    Case Assessment 0{selectedIdx + 1}
-                  </h4>
-                  <h2 className="text-3xl md:text-5xl font-light tracking-tighter italic leading-[1.1] mb-6">
-                    {CHECKLIST_MODAL_DATA[selectedIdx].title.split(' ')[0]} <br />
-                    <span className="font-semibold">{CHECKLIST_MODAL_DATA[selectedIdx].title.split(' ').slice(1).join(' ')}</span>
-                  </h2>
+                <div className="w-16 h-16 rounded-2xl bg-navy-950 text-white flex items-center justify-center  font-bold group-hover:bg-gold-500 transition-all duration-500 group-hover:rotate-6 shadow-xl">
+                  0{i+1}
                 </div>
-
-                <div className="relative z-10 pt-10 border-t border-white/10">
-                   <p className="text-xs font-bold text-white/40 uppercase tracking-[0.2em] mb-4">Core Advantage</p>
-                   <div className="flex items-center gap-4">
-                      <div className="text-4xl font-light text-gold-500">{CHECKLIST_MODAL_DATA[selectedIdx].stat.value}</div>
-                      <div className="text-xs text-white/60 leading-tight uppercase tracking-widest font-bold">
-                        {CHECKLIST_MODAL_DATA[selectedIdx].stat.label}
-                      </div>
-                   </div>
+                <p className="text-xl md:text-2xl text-navy-950 font-light leading-snug tracking-tight">
+                  {item}
+                </p>
+                <div className="flex items-center gap-2 text-xs  font-bold uppercase tracking-[0.2em] text-gold-600 opacity-60 group-hover:opacity-100 transition-opacity">
+                  Explore Details <Plus className="w-3 h-3 group-hover:rotate-90 transition-transform" />
                 </div>
-              </div>
-
-              {/* Content Area */}
-              <div className="flex-1 overflow-y-auto p-10 md:p-16 custom-scrollbar">
-                <div className="max-w-2xl">
-                   <div className="mb-12">
-                      <p className="text-navy-950/40  text-xs tracking-widest uppercase mb-4">The Assessment</p>
-                      <h3 className="text-2xl md:text-3xl font-light text-navy-950 tracking-tight leading-snug mb-8 bg-navy-50/50 p-6 rounded-2xl border border-navy-100/50">
-                         {CHECKLIST_MODAL_DATA[selectedIdx].summary}
-                      </h3>
-                   </div>
-
-                   <section className="mb-12">
-                      <h4 className="text-xs font-bold text-navy-950/40 uppercase tracking-[.2em] mb-8 border-b border-navy-50 pb-4">
-                        {CHECKLIST_MODAL_DATA[selectedIdx].pointsTitle}
-                      </h4>
-                      <ul className="grid grid-cols-1 gap-5">
-                         {CHECKLIST_MODAL_DATA[selectedIdx].points.map((text, idx) => (
-                           <motion.li 
-                             key={idx}
-                             initial={{ opacity: 0, x: -10 }}
-                             animate={{ opacity: 1, x: 0 }}
-                             transition={{ delay: 0.1 * idx }}
-                             className="flex gap-5 text-navy-950/70 font-light text-lg leading-relaxed group/item"
-                           >
-                             <div className="w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0 mt-3 group-hover/item:scale-150 transition-transform" />
-                             {text}
-                           </motion.li>
-                         ))}
-                      </ul>
-                   </section>
-
-                   <section className="bg-gold-50 rounded-3xl p-8 md:p-10 border border-gold-500/20 relative overflow-hidden">
-                      <div className="relative z-10 flex gap-6 items-center">
-                        <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center text-gold-600 shadow-sm shrink-0">
-                           {React.createElement(CHECKLIST_MODAL_DATA[selectedIdx].benefitIcon, { className: "w-7 h-7" })}
-                        </div>
-                        <p className="text-lg md:text-xl font-medium text-navy-950 leading-relaxed">
-                           {CHECKLIST_MODAL_DATA[selectedIdx].highlight}
-                        </p>
-                      </div>
-                   </section>
-
-                   <div className="mt-16 flex justify-between items-center">
-                      <Link 
-                        href="/initiate-mediation"
-                        target="_blank"
-                        className="group flex items-center gap-3 text-navy-950 font-bold uppercase tracking-widest text-xs hover:text-gold-600 transition-colors"
-                      >
-                        Start Your Case <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                      <p className="text-xs text-navy-950/30 uppercase tracking-widest font-bold">PACT Confidentiality Guaranteed</p>
-                   </div>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            ))}
           </div>
-        )}
-      </AnimatePresence>
-    </section>
+
+          <div className="mt-20">
+            <a 
+              href="mailto:mediation@thepact.in"
+              className="inline-flex items-center gap-4 bg-gold-500 text-navy-950 px-8 py-5 rounded-full font-bold uppercase tracking-widest hover:bg-navy-950 hover:text-white transition-all duration-300 shadow-xl group"
+            >
+              <span>Get in Touch</span>
+              <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {mounted && typeof document !== 'undefined' && createPortal(
+        <AnimatePresence mode="wait">
+          {selectedIdx !== null && (
+            <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6 md:p-8">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedIdx(null)}
+                className="absolute inset-0 bg-navy-950/90 backdrop-blur-md"
+              />
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                className="relative w-full max-w-5xl bg-white text-navy-950 rounded-[3rem] shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden border border-white/20"
+              >
+                <button 
+                  onClick={() => setSelectedIdx(null)}
+                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-navy-950 text-white flex items-center justify-center hover:bg-gold-500 hover:text-navy-950 transition-all duration-300 z-50 shadow-xl"
+                >
+                  <Plus className="w-5 h-5 rotate-45" />
+                </button>
+
+                {/* Sidebar Branding */}
+                <div className="w-full md:w-[32%] bg-navy-950 p-10 md:p-14 text-white flex flex-col justify-between relative overflow-hidden shrink-0">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2" />
+                  
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 rounded-2xl bg-gold-500 text-navy-950 flex items-center justify-center mb-8 shadow-2xl shadow-gold-500/20">
+                      {React.createElement(CHECKLIST_MODAL_DATA[selectedIdx].icon, { className: "w-8 h-8" })}
+                    </div>
+                    <h4 className="text-gold-500  text-xs tracking-widest uppercase mb-4 opacity-80 font-bold">
+                      Case Assessment 0{selectedIdx + 1}
+                    </h4>
+                    <h2 className="text-3xl md:text-5xl font-light tracking-tighter italic leading-[1.1] mb-6">
+                      {CHECKLIST_MODAL_DATA[selectedIdx].title.split(' ')[0]} <br />
+                      <span className="font-semibold">{CHECKLIST_MODAL_DATA[selectedIdx].title.split(' ').slice(1).join(' ')}</span>
+                    </h2>
+                  </div>
+
+                  <div className="relative z-10 pt-10 border-t border-white/10">
+                     <p className="text-xs font-bold text-white/40 uppercase tracking-[0.2em] mb-4">Core Advantage</p>
+                     <div className="flex items-center gap-4">
+                        <div className="text-4xl font-light text-gold-500">{CHECKLIST_MODAL_DATA[selectedIdx].stat.value}</div>
+                        <div className="text-xs text-white/60 leading-tight uppercase tracking-widest font-bold">
+                          {CHECKLIST_MODAL_DATA[selectedIdx].stat.label}
+                        </div>
+                     </div>
+                  </div>
+                </div>
+
+                {/* Content Area */}
+                <div className="flex-1 overflow-y-auto p-10 md:p-16 custom-scrollbar">
+                  <div className="max-w-2xl">
+                     <div className="mb-12">
+                        <p className="text-navy-950/40  text-xs tracking-widest uppercase mb-4">The Assessment</p>
+                        <h3 className="text-2xl md:text-3xl font-light text-navy-950 tracking-tight leading-snug mb-8 bg-navy-50/50 p-6 rounded-2xl border border-navy-100/50">
+                           {CHECKLIST_MODAL_DATA[selectedIdx].summary}
+                        </h3>
+                     </div>
+
+                     <section className="mb-12">
+                        <h4 className="text-xs font-bold text-navy-950/40 uppercase tracking-[.2em] mb-8 border-b border-navy-50 pb-4">
+                          {CHECKLIST_MODAL_DATA[selectedIdx].pointsTitle}
+                        </h4>
+                        <ul className="grid grid-cols-1 gap-5">
+                           {CHECKLIST_MODAL_DATA[selectedIdx].points.map((text, idx) => (
+                             <motion.li 
+                               key={idx}
+                               initial={{ opacity: 0, x: -10 }}
+                               animate={{ opacity: 1, x: 0 }}
+                               transition={{ delay: 0.1 * idx }}
+                               className="flex gap-5 text-navy-950/70 font-light text-lg leading-relaxed group/item"
+                             >
+                               <div className="w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0 mt-3 group-hover/item:scale-150 transition-transform" />
+                               {text}
+                             </motion.li>
+                           ))}
+                        </ul>
+                     </section>
+
+                     <section className="bg-gold-50 rounded-3xl p-8 md:p-10 border border-gold-500/20 relative overflow-hidden">
+                        <div className="relative z-10 flex gap-6 items-center">
+                          <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center text-gold-600 shadow-sm shrink-0">
+                             {React.createElement(CHECKLIST_MODAL_DATA[selectedIdx].benefitIcon, { className: "w-7 h-7" })}
+                          </div>
+                          <p className="text-lg md:text-xl font-medium text-navy-950 leading-relaxed">
+                             {CHECKLIST_MODAL_DATA[selectedIdx].highlight}
+                          </p>
+                        </div>
+                     </section>
+
+                     <div className="mt-16 flex justify-between items-center">
+                        <Link 
+                          href="/initiate-mediation"
+                          target="_blank"
+                          className="group flex items-center gap-3 text-navy-950 font-bold uppercase tracking-widest text-xs hover:text-gold-600 transition-colors"
+                        >
+                          Start Your Case <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                        <p className="text-xs text-navy-950/30 uppercase tracking-widest font-bold">PACT Confidentiality Guaranteed</p>
+                     </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+    </>
   );
 };
 
