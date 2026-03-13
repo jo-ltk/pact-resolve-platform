@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { BookOpen, Search, Lightbulb, GraduationCap, Scale, Building2, Users, Mail, ArrowRight, Clock, Sparkles, User, Image as ImageIcon } from "lucide-react";
+import { BookOpen, Search, Lightbulb, GraduationCap, Scale, Building2, Users, Mail, ArrowRight, Clock, Sparkles, User, Image as ImageIcon, FileText } from "lucide-react";
 import { ResourceSubPageHero } from "@/components/sections/resources/resource-subpage-hero";
 import { Footer } from "@/components/footer";
 import { GrainOverlay } from "@/components/grain-overlay";
@@ -92,26 +92,103 @@ export default function NationalMediationReviewPage() {
       <GrainOverlay />
       
       <FadeIn className="relative z-10 w-full">
-        <ResourceSubPageHero
-          tag="Resources"
-          title={settings?.heroTitle ? <span className="text-gold-500">{settings.heroTitle}</span> : <><span className="text-gold-500">National Mediation</span> Review</>}
-          description={settings?.heroDescription || "Contemporary Trends and Themes on Mediation Practice & Profession in India"}
-          descriptionClassName="max-w-4xl"
-        >
-          {settings?.pdfUrl && (
-            <div className="pt-4">
-              <a 
-                href={settings.pdfUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gold-500 text-navy-950 rounded-full font-bold hover:bg-gold-400 transition-all shadow-xl shadow-gold-500/20 hover:scale-105 active:scale-95 group"
-              >
-                <BookOpen className="w-5 h-5 group-hover:animate-bounce" />
-                Read Full Review 2026
-              </a>
+        <div className="bg-navy-950 text-white relative overflow-hidden py-24 md:py-32">
+          {/* Background Ambience */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(191,154,102,0.1),transparent_60%)]" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-500/5 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+          
+          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+            <div className="grid md:grid-cols-[1.2fr,1fr] lg:grid-cols-[1.3fr,1fr] gap-12 md:gap-20 items-center">
+              <FadeInUp className="text-left">
+                <div className="inline-flex items-center gap-3 mb-8">
+                  <div className="h-px w-8 bg-gold-500" />
+                  <span className="text-gold-500 text-xs tracking-[0.4em] uppercase font-bold">Resources</span>
+                </div>
+                
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight mb-8 leading-[1.1]">
+                  {settings?.heroTitle ? <span className="text-gold-500">{settings.heroTitle}</span> : <><span className="text-gold-500 font-medium italic">National</span> <br /> Mediation Review</>}
+                </h1>
+                
+                <p className="text-lg md:text-xl text-white/60 font-light leading-relaxed max-w-2xl mb-12">
+                  {settings?.heroDescription || "Contemporary Trends and Themes on Mediation Practice & Profession in India. A curated collection of practitioner insights and academic excellence."}
+                </p>
+
+                {settings?.pdfUrl ? (
+                  <div className="flex flex-wrap gap-4">
+                    <a 
+                      href={settings.pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-3 px-8 py-4 bg-gold-500 text-navy-950 rounded-full font-bold hover:bg-gold-400 transition-all shadow-xl shadow-gold-500/20 hover:scale-[1.03] active:scale-95"
+                    >
+                      <BookOpen className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                      Read Full Edition 2026
+                    </a>
+                  </div>
+                ) : (
+                   <div className="flex items-center gap-4 text-white/40 italic text-sm">
+                     <Clock className="w-4 h-4" />
+                     Full PDF coming soon for download...
+                   </div>
+                )}
+              </FadeInUp>
+
+              {/* PDF Preview Card / Mockup */}
+              <FadeInUp delay={0.2} className="relative aspect-3/4 md:aspect-auto md:h-[500px] w-full max-w-sm mx-auto md:ml-auto group/pdf">
+                <div className="absolute inset-0 bg-gold-500/10 blur-3xl rounded-full scale-75 group-hover/pdf:scale-90 transition-transform duration-700 pointer-events-none" />
+                
+                <div className="relative h-full w-full rounded-4xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden shadow-2xl transition-all duration-500 group-hover/pdf:translate-y-[-10px] group-hover/pdf:shadow-gold-500/10 group-hover/pdf:border-gold-500/30">
+                  {settings?.pdfUrl ? (
+                    <div className="absolute inset-0 flex flex-col p-8">
+                       <div className="flex-1 rounded-xl bg-white/5 border border-white/5 overflow-hidden relative">
+                         <iframe src={`${settings.pdfUrl}#view=FitV&toolbar=0&navpanes=0`} className="w-full h-full border-0 pointer-events-none opacity-80" />
+                         <div className="absolute inset-0 bg-linear-to-b from-transparent to-navy-950/80" />
+                       </div>
+                    </div>
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col p-10">
+                      <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8">
+                        <FileText className="w-8 h-8 text-gold-500" />
+                      </div>
+                      <div className="space-y-4">
+                        <div className="h-2 w-3/4 bg-white/10 rounded-full" />
+                        <div className="h-2 w-1/2 bg-white/5 rounded-full" />
+                        <div className="h-2 w-2/3 bg-white/5 rounded-full" />
+                      </div>
+                      
+                      <div className="mt-auto pt-10 border-t border-white/10">
+                        <p className="text-3xl font-light text-white/20 leading-tight">National <br /> Mediation <br /> Review</p>
+                        <p className="text-[10px] uppercase tracking-[0.3em] font-black text-gold-500/40 mt-6">Limited Edition</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Hover Overlay for Download */}
+                  <a 
+                    href={settings?.pdfUrl || "#"} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "absolute inset-0 flex flex-col items-center justify-center bg-navy-950/60 backdrop-blur-[2px] opacity-0 transition-opacity duration-300",
+                      settings?.pdfUrl ? "group-hover/pdf:opacity-100 cursor-pointer" : "cursor-default"
+                    )}
+                  >
+                    {settings?.pdfUrl ? (
+                      <div className="flex flex-col items-center gap-4">
+                        <div className="w-16 h-16 rounded-full bg-gold-500 flex items-center justify-center shadow-2xl">
+                          <BookOpen className="w-8 h-8 text-navy-950" />
+                        </div>
+                        <span className="text-sm font-bold uppercase tracking-widest text-white">Open Document</span>
+                      </div>
+                    ) : (
+                      <span className="text-xs font-bold uppercase tracking-widest text-white/40">Publication Pending</span>
+                    )}
+                  </a>
+                </div>
+              </FadeInUp>
             </div>
-          )}
-        </ResourceSubPageHero>
+          </div>
+        </div>
 
         {/* Introduction Section */}
         <section className="py-20 md:py-32 bg-white">
