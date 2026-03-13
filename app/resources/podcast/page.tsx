@@ -22,7 +22,7 @@ import { GrainOverlay } from "@/components/grain-overlay";
 import { FadeIn, FadeInUp } from "@/components/motion-wrapper";
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useState } from "react";
-import { type ResourceItem } from "@/lib/db/schemas";
+import { type ResourceItem, type PodcastSettings } from "@/lib/db/schemas";
 
 const whySubscribe = [
   {
@@ -51,24 +51,34 @@ const whySubscribe = [
 
 export default function PodcastPage() {
   const [episodes, setEpisodes] = useState<ResourceItem[]>([]);
+  const [settings, setSettings] = useState<PodcastSettings | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchEpisodes() {
+    async function fetchData() {
       try {
-        const res = await fetch("/api/content/resources?all=false&type=podcast");
-        const data = await res.json();
-        if (data.success) {
-          setEpisodes(data.data || []);
+        const [episodesRes, settingsRes] = await Promise.all([
+          fetch("/api/content/resources?all=false&type=podcast"),
+          fetch("/api/content/resources/podcast-settings")
+        ]);
+        
+        const episodesData = await episodesRes.json();
+        const settingsData = await settingsRes.json();
+        
+        if (episodesData.success) {
+          setEpisodes(episodesData.data || []);
+        }
+        if (settingsData.success) {
+          setSettings(settingsData.data);
         }
       } catch (error) {
-        console.error("Failed to fetch podcast episodes", error);
+        console.error("Failed to fetch podcast data", error);
       } finally {
         setIsLoading(false);
       }
     }
 
-    fetchEpisodes();
+    fetchData();
   }, []);
 
   const upcomingEpisodes = useMemo(
@@ -302,7 +312,7 @@ export default function PodcastPage() {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-500/20 border border-gold-500/30 mb-6">
                 <Sparkles className="w-4 h-4 text-gold-500" />
                 <span className="text-gold-500  text-xs tracking-widest uppercase font-bold">
-                  Season 2
+                  {settings?.currentSeason || "Season 2"}
                 </span>
               </div>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1]">

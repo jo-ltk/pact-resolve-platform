@@ -14,7 +14,9 @@ import {
   ExternalLink,
   Calendar,
   Users,
-  Sparkles
+  Sparkles,
+  Settings,
+  Layers
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -50,7 +52,15 @@ import { Switch } from "@/components/ui/switch";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/context/AuthContext";
-import { type ResourceItem } from "@/lib/db/schemas";
+import { type ResourceItem, type PodcastSettings } from "@/lib/db/schemas";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 export default function PodcastAdminPage() {
   const { token } = useAuth();
@@ -62,8 +72,59 @@ export default function PodcastAdminPage() {
   const [isHeroSaving, setIsHeroSaving] = useState(false);
   const [isHostSaving, setIsHostSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [settings, setSettings] = useState<PodcastSettings>({
+    currentSeason: "Season 2",
+    seasons: ["Season 1", "Season 2"],
+    isActive: true
+  } as PodcastSettings);
+  const [isSettingsSaving, setIsSettingsSaving] = useState(false);
+  const [newSeason, setNewSeason] = useState("");
 
-  useEffect(() => { fetchItems(); }, []);
+  useEffect(() => { 
+    fetchItems();
+    fetchSettings(); 
+  }, []);
+
+  async function fetchSettings() {
+    try {
+      const response = await fetch(`/api/content/resources/podcast-settings?t=${Date.now()}`, {
+        headers: token ? { "Authorization": `Bearer ${token}` } : {},
+        cache: 'no-store'
+      });
+      const result = await response.json();
+      if (result.success) {
+        setSettings(result.data);
+      }
+    } catch (error) { console.error("Settings fetch error:", error); }
+  }
+
+  async function saveSettings(updatedSettings: Partial<PodcastSettings>, optimisticState?: PodcastSettings) {
+    if (optimisticState) {
+      setSettings(optimisticState);
+    }
+    setIsSettingsSaving(true);
+    try {
+      const response = await fetch(`/api/content/resources/podcast-settings?t=${Date.now()}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify(updatedSettings)
+      });
+      const result = await response.json();
+      if (result.success) {
+        toast.success("Settings updated");
+        if (result.data) {
+          setSettings(result.data);
+        }
+      } else {
+        toast.error(result.error || "Failed to update settings");
+        if (optimisticState) fetchSettings(); // Revert on failure
+      }
+    } catch (error) { 
+      toast.error("Update failed"); 
+      if (optimisticState) fetchSettings(); // Revert
+    }
+    finally { setIsSettingsSaving(false); }
+  }
 
   async function fetchItems() {
     setIsLoading(true);
@@ -141,7 +202,8 @@ export default function PodcastAdminPage() {
       author: "",
       publication: "",
       date: "",
-      category: "",
+      category: settings?.currentSeason || "Season 2",
+      season: settings?.currentSeason || "Season 2",
       order: items.length + 1, 
       isActive: true,
       isFeatured: false
@@ -183,6 +245,121 @@ export default function PodcastAdminPage() {
           <Plus className="w-4 h-4 mr-2" /> Add Episode
         </Button>
       </div>
+
+      {/* Seasons & Categories Settings */}
+      <Card className="rounded-3xl border-none shadow-xl shadow-navy-950/5 bg-white overflow-hidden">
+        <CardContent className="p-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 shrink-0">
+                <Settings className="w-6 h-6" />
+              </div>
+              <div className="min-w-0">
+                <h2 className="text-xl font-bold text-navy-950 tracking-tight truncate">Podcast Settings</h2>
+                <p className="text-navy-950/40 text-xs font-black uppercase tracking-widest mt-1 truncate">Manage seasons and display categories</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Current Active Season</Label>
+                <div className="flex gap-4">
+                  <Select 
+                    value={settings?.currentSeason || "Season 2"} 
+                    onValueChange={(val) => settings && saveSettings({ ...settings, currentSeason: val })}
+                  >
+                    <SelectTrigger className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20">
+                      <SelectValue placeholder="Select current season" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl border-navy-50 shadow-2xl">
+                      {settings?.seasons?.map(s => (
+                        <SelectItem key={s} value={s} className="rounded-lg cursor-pointer">{s}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gold-500/10 text-gold-600 text-[10px] font-black uppercase tracking-widest border border-gold-500/20 whitespace-nowrap">
+                    Active on Live Page
+                  </div>
+                </div>
+                <p className="text-[10px] text-navy-950/40 font-medium ml-1 italic mt-1">
+                  This season will be featured in the "Upcoming Episodes" section.
+                </p>
+              </div>
+
+              <div className="space-y-4 pt-4 border-t border-navy-50">
+                <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Add New Season / Category</Label>
+                <div className="flex gap-4">
+                  <Input 
+                    value={newSeason}
+                    onChange={(e) => setNewSeason(e.target.value)}
+                    placeholder="e.g. Season 3"
+                    className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
+                  />
+                  <Button 
+                    variant="outline"
+                    disabled={!newSeason || isSettingsSaving}
+                    onClick={() => {
+                      if (!settings) return;
+                      const trimmedSeason = newSeason.trim();
+                      if (!trimmedSeason) return;
+                      const updatedSeasons = Array.from(new Set([...settings.seasons, trimmedSeason])).sort();
+                      
+                      const optimisticState = { ...settings, seasons: updatedSeasons };
+                      saveSettings({ ...settings, seasons: updatedSeasons }, optimisticState);
+                      setNewSeason("");
+                    }}
+                    className="h-12 px-6 rounded-xl border-navy-200 hover:bg-navy-50 text-navy-950 font-bold"
+                  >
+                    Add Season
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1 flex items-center gap-2">
+                <Layers className="w-4 h-4" /> Available Seasons
+              </Label>
+              <div className="flex flex-wrap gap-2">
+                {settings?.seasons?.map(s => (
+                  <Badge 
+                    key={s} 
+                    className={cn(
+                      "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border-none transition-all",
+                      settings?.currentSeason === s 
+                        ? "bg-navy-950 text-white shadow-lg" 
+                        : "bg-navy-50 text-navy-950/40 hover:bg-navy-100"
+                    )}
+                  >
+                    {s}
+                    {settings?.currentSeason !== s && (
+                      <button 
+                          onClick={() => {
+                            if (confirm(`Remove ${s}? Episodes linked to this season will remain unchanged.`)) {
+                              const updatedSeasons = settings!.seasons.filter(x => x !== s);
+                              const optimisticState = { ...settings!, seasons: updatedSeasons };
+                              saveSettings({ ...settings!, seasons: updatedSeasons }, optimisticState);
+                            }
+                          }}
+                         className="ml-2 hover:text-red-500"
+                      >
+                         <Trash2 className="w-3 h-3" />
+                      </button>
+                    )}
+                  </Badge>
+                ))}
+              </div>
+              <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
+                <p className="text-[11px] text-navy-950/60 leading-relaxed font-medium">
+                  Adding a new season here will make it available in the <span className="text-navy-950 font-bold">"Season"</span> dropdown when creating or editing an episode.
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Hero Section Management */}
       <Card className="rounded-3xl border-none shadow-xl shadow-navy-950/5 bg-white overflow-hidden">
@@ -293,7 +470,7 @@ export default function PodcastAdminPage() {
               </div>
               <div className="min-w-0">
                 <h2 className="text-xl font-bold text-navy-950 tracking-tight truncate">Upcoming Episodes</h2>
-                <p className="text-navy-950/40 text-xs font-black uppercase tracking-widest mt-1 truncate">Manage featured episodes for Season 2</p>
+                <p className="text-navy-950/40 text-xs font-black uppercase tracking-widest mt-1 truncate">Manage featured episodes for {settings?.currentSeason || "Season 2"}</p>
               </div>
             </div>
             
@@ -336,8 +513,8 @@ export default function PodcastAdminPage() {
                             : { 
                                 title: `Upcoming Episode ${pos}`, 
                                 type: "podcast", 
-                                category: "Season 2", 
-                                image: url, 
+                                category: settings?.currentSeason || "Season 2", 
+                                season: settings?.currentSeason || "Season 2",                                image: url, 
                                 isActive: true, 
                                 isFeatured: true,
                                 order: pos 
@@ -367,7 +544,7 @@ export default function PodcastAdminPage() {
                   {episode && (
                     <div className="px-1">
                       <p className="text-sm font-bold text-navy-950 truncate">{episode.title}</p>
-                      <p className="text-sm text-navy-950/40 uppercase font-black tracking-widest mt-0.5">{episode.category || "Season 2"}</p>
+                      <p className="text-sm text-navy-950/40 uppercase font-black tracking-widest mt-0.5">{episode.season || settings?.currentSeason || "Season 2"}</p>
                     </div>
                   )}
                 </div>
@@ -718,12 +895,19 @@ export default function PodcastAdminPage() {
                 </div>
                 <div className="space-y-2">
                   <Label className="text-xs uppercase tracking-widest font-black text-navy-950/40 ml-1">Season</Label>
-                  <Input 
+                  <Select 
                     value={editingItem?.season || ""} 
-                    onChange={(e) => setEditingItem(prev => ({ ...prev!, season: e.target.value }))} 
-                    className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20"
-                    placeholder="e.g. Season 1"
-                  />
+                    onValueChange={(val) => setEditingItem(prev => ({ ...prev!, season: val }))}
+                  >
+                    <SelectTrigger className="h-12 rounded-xl bg-navy-50/50 border-none focus-visible:ring-primary/20">
+                      <SelectValue placeholder="Select Season" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl border-navy-50 shadow-2xl">
+                      {settings?.seasons?.map(s => (
+                        <SelectItem key={s} value={s} className="rounded-lg cursor-pointer">{s}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 

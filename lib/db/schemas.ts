@@ -1051,7 +1051,15 @@ export const COLLECTIONS = {
   LEGAL_PAGES: "legalPages",
   // Project Gallery
   PROJECT_GALLERY: "projectGallery",
+  // Podcast Settings
+  PODCAST_SETTINGS: "podcastSettings",
 } as const;
+
+export interface PodcastSettings extends BaseDocument {
+  currentSeason: string; // e.g., "Season 2" or "Season 3"
+  seasons: string[]; // List of all available seasons
+  isActive: boolean;
+}
 
 /** Image for the general Project & Events gallery */
 export interface ProjectGalleryImage extends BaseDocument {
