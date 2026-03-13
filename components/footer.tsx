@@ -46,7 +46,7 @@ export function Footer() {
             <div>
               <h2 className="text-3xl md:text-4xl font-light tracking-tighter mb-4">{companyName}</h2>
               <p className="text-white/60 max-w-sm text-xs md:text-sm leading-relaxed">
-                Professional Mediation Platform for International Dispute Resolution and Strategic Excellence.
+                Mediation Academy<br />& Institutional Mediation Services
               </p>
             </div>
             
