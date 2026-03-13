@@ -137,6 +137,11 @@ export default function NmrAdminPage() {
           >
             Restore Defaults
           </Button>
+          <Link href="/admin/resources/nmr/settings">
+            <Button variant="outline" className="rounded-xl px-6 border-navy-200 hover:bg-navy-50">
+              <Layout className="w-4 h-4 mr-2" /> Page Settings
+            </Button>
+          </Link>
           <Button onClick={() => openDialog()} className="rounded-xl px-6 bg-navy-950 hover:bg-navy-900 transition-all">
             <Plus className="w-4 h-4 mr-2" /> Add Item
           </Button>

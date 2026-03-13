@@ -909,6 +909,15 @@ export interface NmrContent extends BaseDocument {
   isActive: boolean;
 }
 
+export interface NmrSettings extends BaseDocument {
+  /** Hero section PDF URL */
+  pdfUrl: string;
+  /** Custom hero section title (optional) */
+  heroTitle?: string;
+  /** Custom hero section description (optional) */
+  heroDescription?: string;
+}
+
 export interface ProjectUpdate extends BaseDocument {
   /** Title of the event/project */
   title: string;
@@ -1023,6 +1032,7 @@ export const COLLECTIONS = {
   NETWORK_LOGOS: "networkLogos",
   // NMR Content
   NMR_CONTENT: "nmrContent",
+  NMR_SETTINGS: "nmrSettings",
   // Clauses & Toolkits
   CLAUSES_ESSENTIALS: "clausesEssentials",
   // Pledge Signatories
