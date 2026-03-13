@@ -15,7 +15,8 @@ import {
   Handshake,
   Globe,
   Sparkles,
-  Video
+  Video,
+  ExternalLink
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FadeIn, FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion-wrapper";
@@ -442,27 +443,63 @@ export default function MediationPage() {
             />
 
             <div className="flex flex-col gap-12 mb-24">
-              <div className="space-y-10">
-                <div className="flex items-baseline gap-6 border-b border-navy-100 pb-8">
-                  <p className="text-2xl md:text-4xl text-navy-950 font-light tracking-tight">{foundationalCourse.title}</p>
+              <div className="grid md:grid-cols-[1fr,250px] lg:grid-cols-[1fr,300px] xl:grid-cols-[1fr,350px] gap-8 md:gap-12 items-start">
+                <div className="space-y-10">
+                  <div className="flex items-baseline gap-6 border-b border-navy-100 pb-8">
+                    <p className="text-2xl md:text-4xl text-navy-950 font-light tracking-tight">{foundationalCourse.title}</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <span className="text-[9px]  text-navy-950/30 uppercase tracking-widest block font-bold">Mode</span>
+                      <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.mode}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-[9px]  text-navy-950/30 uppercase tracking-widest block font-bold">Live Session</span>
+                      <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.liveSession}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-[9px]  text-navy-950/30 uppercase tracking-widest block font-bold">Assessment</span>
+                      <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.assessment}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-[9px]  text-navy-950/30 uppercase tracking-widest block font-bold">Certification</span>
+                      <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.certification}</p>
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                  <div className="space-y-2">
-                    <span className="text-[9px]  text-navy-950/30 uppercase tracking-widest block font-bold">Mode</span>
-                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.mode}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <span className="text-[9px]  text-navy-950/30 uppercase tracking-widest block font-bold">Live Session</span>
-                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.liveSession}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <span className="text-[9px]  text-navy-950/30 uppercase tracking-widest block font-bold">Assessment</span>
-                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.assessment}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <span className="text-[9px]  text-navy-950/30 uppercase tracking-widest block font-bold">Certification</span>
-                    <p className="text-lg text-navy-950/70 font-light">{foundationalCourse.certification}</p>
+
+                <div className="space-y-6">
+                  <div className="relative h-40 md:h-48 w-full rounded-3xl overflow-hidden border border-navy-100 bg-white shadow-sm flex items-center justify-center group/cert">
+                      {(foundationalCourse as any).certificateImage ? (
+                        <>
+                          {(foundationalCourse as any).certificateImage.toLowerCase().includes('.pdf') ? (
+                             <iframe src={`${(foundationalCourse as any).certificateImage}#view=Fit`} className="w-full h-full border-0 overflow-hidden pointer-events-none" title="Certificate Preview" />
+                          ) : (
+                             <Image src={(foundationalCourse as any).certificateImage} alt="Certificate Preview" fill className="object-contain p-4 group-hover/cert:scale-105 transition-transform duration-500" />
+                          )}
+                          <div className="absolute inset-0 bg-navy-950/40 backdrop-blur-[2px] transition-all duration-300 flex items-center justify-center opacity-0 group-hover/cert:opacity-100">
+                            <a 
+                              href={(foundationalCourse as any).certificateImage} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 px-6 py-3 bg-white text-navy-950 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-xl pointer-events-auto"
+                            >
+                              <ExternalLink className="w-4 h-4" /> View / Download
+                            </a>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="absolute inset-0 bg-[linear-gradient(45deg,#f8f9fa_25%,transparent_25%,transparent_75%,#f8f9fa_75%,#f8f9fa),linear-gradient(45deg,#f8f9fa_25%,transparent_25%,transparent_75%,#f8f9fa_75%,#f8f9fa)] bg-size-[20px_20px] bg-position-[0_0,10px_10px] opacity-50" />
+                          <div className="text-center z-10 p-4 sm:p-6">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-navy-50 flex items-center justify-center mx-auto mb-3 group-hover/cert:scale-110 transition-transform duration-500">
+                              <Award className="w-5 h-5 sm:w-6 sm:h-6 text-gold-500" />
+                            </div>
+                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-navy-950/40 font-bold max-w-[150px] mx-auto leading-tight">{foundationalCourse.certification || 'Certificate'}</p>
+                          </div>
+                        </>
+                      )}
                   </div>
                 </div>
               </div>
@@ -577,27 +614,60 @@ export default function MediationPage() {
             />
 
             <div className="flex flex-col gap-12 mb-20">
-              <div className="space-y-10">
-                <div className="flex items-baseline gap-6 border-b border-white/5 pb-8">
-                  <p className="text-2xl md:text-4xl text-white font-light tracking-tight">{advancedCourse.title}</p>
+              <div className="grid md:grid-cols-[1fr,250px] lg:grid-cols-[1fr,300px] xl:grid-cols-[1fr,350px] gap-8 md:gap-12 items-start">
+                <div className="space-y-10">
+                  <div className="flex items-baseline gap-6 border-b border-white/5 pb-8">
+                    <p className="text-2xl md:text-4xl text-white font-light tracking-tight">{advancedCourse.title}</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <span className="text-[9px]  text-white/30 uppercase tracking-widest block font-bold">Mode</span>
+                      <p className="text-lg text-white/70 font-light">{advancedCourse.mode}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-[9px]  text-white/30 uppercase tracking-widest block font-bold">Live Session</span>
+                      <p className="text-lg text-white/70 font-light">{advancedCourse.liveSession}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-[9px]  text-white/30 uppercase tracking-widest block font-bold">Assessment</span>
+                      <p className="text-lg text-white/70 font-light">{advancedCourse.assessment}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-[9px]  text-white/30 uppercase tracking-widest block font-bold">Certification</span>
+                      <p className="text-lg text-white/70 font-light">{advancedCourse.certification}</p>
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                  <div className="space-y-2">
-                    <span className="text-[9px]  text-white/30 uppercase tracking-widest block font-bold">Mode</span>
-                    <p className="text-lg text-white/70 font-light">{advancedCourse.mode}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <span className="text-[9px]  text-white/30 uppercase tracking-widest block font-bold">Live Session</span>
-                    <p className="text-lg text-white/70 font-light">{advancedCourse.liveSession}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <span className="text-[9px]  text-white/30 uppercase tracking-widest block font-bold">Assessment</span>
-                    <p className="text-lg text-white/70 font-light">{advancedCourse.assessment}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <span className="text-[9px]  text-white/30 uppercase tracking-widest block font-bold">Certification</span>
-                    <p className="text-lg text-white/70 font-light">{advancedCourse.certification}</p>
+
+                <div className="space-y-6">
+                  <div className="relative h-40 md:h-48 w-full rounded-3xl overflow-hidden border border-white/10 bg-white/5 flex items-center justify-center group/cert">
+                      {(advancedCourse as any).certificateImage ? (
+                        <>
+                          {(advancedCourse as any).certificateImage.toLowerCase().includes('.pdf') ? (
+                             <iframe src={`${(advancedCourse as any).certificateImage}#view=Fit`} className="w-full h-full border-0 overflow-hidden pointer-events-none" title="Advanced Certificate Preview" />
+                          ) : (
+                             <Image src={(advancedCourse as any).certificateImage} alt="Advanced Certificate Preview" fill className="object-contain p-4 group-hover/cert:scale-105 transition-transform duration-500" />
+                          )}
+                          <div className="absolute inset-0 bg-navy-950/60 backdrop-blur-[2px] transition-all duration-300 flex items-center justify-center opacity-0 group-hover/cert:opacity-100">
+                            <a 
+                              href={(advancedCourse as any).certificateImage} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 px-6 py-3 bg-white text-navy-950 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-xl pointer-events-auto"
+                            >
+                              <ExternalLink className="w-4 h-4" /> View / Download
+                            </a>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-center z-10 p-4 sm:p-6">
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3 group-hover/cert:scale-110 transition-transform duration-500">
+                            <Award className="w-5 h-5 sm:w-6 sm:h-6 text-gold-500" />
+                          </div>
+                          <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-white/40 font-bold max-w-[150px] mx-auto leading-tight">{advancedCourse.certification || 'Advanced Certificate'}</p>
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>

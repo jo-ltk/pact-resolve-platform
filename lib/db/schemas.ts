@@ -523,6 +523,8 @@ export interface AcademyCourse extends BaseDocument {
   assessment: string;
   /** Certification info */
   certification: string;
+  /** Optional certificate preview image URL */
+  certificateImage?: string;
   /** Course fee amount (number) */
   feeAmount: number;
   /** Fee currency (e.g., "INR") */

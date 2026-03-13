@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/lib/context/AuthContext";
 import { AcademyCourse, AcademyCourseType } from "@/lib/db/schemas";
+import { FileUpload } from "@/components/admin/FileUpload";
 
 const PROGRAM = "negotiation";
 const BACK_LINK = "/admin/academy/negotiation";
@@ -162,6 +163,15 @@ export default function NegotiationCoursesPage() {
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2"><Label>Assessment</Label><Input value={editingItem?.assessment || ""} onChange={(e) => setEditingItem(prev => ({ ...prev!, assessment: e.target.value }))} placeholder="Quiz Based" /></div>
                 <div className="space-y-2"><Label>Certification</Label><Input value={editingItem?.certification || ""} onChange={(e) => setEditingItem(prev => ({ ...prev!, certification: e.target.value }))} placeholder="PACT Certificate" /></div>
+              </div>
+              <div className="space-y-2">
+                <FileUpload 
+                  label="Certificate PDF / Image"
+                  description="Upload the PACT Resolve Certificate PDF (or an image) to display in the certificate preview box."
+                  accept=".pdf,image/png,image/jpeg,image/webp"
+                  value={(editingItem as any)?.certificateImage || ""} 
+                  onChange={(url) => setEditingItem(prev => ({ ...prev!, certificateImage: url } as any))}
+                />
               </div>
               <div className="grid grid-cols-3 gap-6 bg-muted/30 p-6 rounded-2xl border border-dashed border-muted-foreground/20">
                 <div className="space-y-2"><Label className="text-xs uppercase font-bold text-muted-foreground">Fee Amount</Label><Input type="number" value={editingItem?.feeAmount || 0} onChange={(e) => setEditingItem(prev => ({ ...prev!, feeAmount: parseFloat(e.target.value) }))} /></div>

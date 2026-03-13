@@ -38,6 +38,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/lib/context/AuthContext";
 import { AcademyCourse, AcademyCourseType } from "@/lib/db/schemas";
+import { FileUpload } from "@/components/admin/FileUpload";
 
 const PROGRAM = "mediation";
 
@@ -399,6 +400,16 @@ export default function MediationCoursesPage() {
                     placeholder="e.g. PACT Resolve Certificate"
                   />
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <FileUpload 
+                  label="Certificate PDF / Image"
+                  description="Upload the PACT Resolve Certificate PDF (or an image) to display in the certificate preview box."
+                  accept=".pdf,image/png,image/jpeg,image/webp"
+                  value={(editingItem as any)?.certificateImage || ""} 
+                  onChange={(url) => setEditingItem(prev => ({ ...prev!, certificateImage: url } as any))}
+                />
               </div>
 
               <div className="grid grid-cols-3 gap-6 bg-muted/30 p-6 rounded-2xl border border-dashed border-muted-foreground/20">
