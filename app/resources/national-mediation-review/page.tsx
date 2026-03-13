@@ -61,30 +61,20 @@ const upcomingDetails = [
 
 export default function NationalMediationReviewPage() {
   const [details, setDetails] = useState(upcomingDetails);
-  const [settings, setSettings] = useState<any>(null);
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchNmrContent() {
       try {
-        const [contentRes, settingsRes] = await Promise.all([
-          fetch("/api/content/nmr-content"),
-          fetch("/api/content/nmr-settings")
-        ]);
-        
-        const contentResult = await contentRes.json();
-        if (contentResult.success && contentResult.data && contentResult.data.length > 0) {
-          setDetails(contentResult.data);
-        }
-
-        const settingsResult = await settingsRes.json();
-        if (settingsResult.success && settingsResult.data) {
-          setSettings(settingsResult.data);
+        const res = await fetch("/api/content/nmr-content");
+        const result = await res.json();
+        if (result.success && result.data && result.data.length > 0) {
+          setDetails(result.data);
         }
       } catch (err) {
-        console.error("Failed to fetch NMR data", err);
+        console.error("Failed to fetch NMR content", err);
       }
     }
-    fetchData();
+    fetchNmrContent();
   }, []);
 
   return (
@@ -94,24 +84,10 @@ export default function NationalMediationReviewPage() {
       <FadeIn className="relative z-10 w-full">
         <ResourceSubPageHero
           tag="Resources"
-          title={settings?.heroTitle ? <span className="text-gold-500">{settings.heroTitle}</span> : <><span className="text-gold-500">National Mediation</span> Review</>}
-          description={settings?.heroDescription || "Contemporary Trends and Themes on Mediation Practice & Profession in India"}
+          title={<><span className="text-gold-500">National Mediation</span> Review</>}
+          description="Contemporary Trends and Themes on Mediation Practice & Profession in India"
           descriptionClassName="max-w-4xl"
-        >
-          {settings?.pdfUrl && (
-            <div className="pt-4">
-              <a 
-                href={settings.pdfUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gold-500 text-navy-950 rounded-full font-bold hover:bg-gold-400 transition-all shadow-xl shadow-gold-500/20 hover:scale-105 active:scale-95 group"
-              >
-                <BookOpen className="w-5 h-5 group-hover:animate-bounce" />
-                Read Full Review 2026
-              </a>
-            </div>
-          )}
-        </ResourceSubPageHero>
+        />
 
         {/* Introduction Section */}
         <section className="py-20 md:py-32 bg-white">
