@@ -14,7 +14,9 @@ import {
   Lightbulb, 
   BookOpen,
   ArrowUpRight,
-  Sparkles
+  Sparkles,
+  Search,
+  X
 } from "lucide-react";
 import { ResourceSubPageHero } from "@/components/sections/resources/resource-subpage-hero";
 import { Footer } from "@/components/footer";
@@ -53,6 +55,7 @@ export default function PodcastPage() {
   const [episodes, setEpisodes] = useState<ResourceItem[]>([]);
   const [settings, setSettings] = useState<PodcastSettings | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -84,9 +87,14 @@ export default function PodcastPage() {
   const upcomingEpisodes = useMemo(
     () => episodes
       .filter((e) => e.isFeatured && e.category !== "hero-banner")
+      .filter((e) => {
+        if (!searchQuery) return true;
+        const searchStr = `${e.title} ${e.subtitle || ""} ${e.description || ""} ${e.author || ""} ${e.category || ""} ${e.season || ""}`.toLowerCase();
+        return searchStr.includes(searchQuery.toLowerCase());
+      })
       .sort((a, b) => (a.order || 0) - (b.order || 0))
       .slice(0, 3),
-    [episodes]
+    [episodes, searchQuery]
   );
 
   const heroBanner = useMemo(
@@ -95,7 +103,12 @@ export default function PodcastPage() {
   );
 
   const groupedPastEpisodes = useMemo(() => {
-    const filtered = episodes
+    const filteredBySearch = episodes.filter(e => {
+      const searchStr = `${e.title} ${e.subtitle || ""} ${e.description || ""} ${e.author || ""} ${e.category || ""} ${e.season || ""}`.toLowerCase();
+      return searchStr.includes(searchQuery.toLowerCase());
+    });
+
+    const filtered = filteredBySearch
       .filter((e) => e.category !== "hero-banner" && e.category !== "podcast-host" && !upcomingEpisodes.some(u => (u._id as any).toString() === (e._id as any).toString()))
       .sort((a, b) => (a.order || 0) - (b.order || 0));
 
@@ -117,7 +130,7 @@ export default function PodcastPage() {
         season: key,
         episodes: groups[key]
       }));
-  }, [episodes, upcomingEpisodes]);
+  }, [episodes, upcomingEpisodes, searchQuery]);
 
   const hostData = useMemo(
     () => episodes.find((e) => e.category === "podcast-host") || {
@@ -316,7 +329,7 @@ export default function PodcastPage() {
                 </span>
               </div>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1]">
-                Upcoming <span className="text-gold-500 italic font-medium">Episodes</span>
+                {searchQuery ? 'Matching' : 'Upcoming'} <span className="text-gold-500 italic font-medium">Episodes</span>
               </h2>
             </FadeInUp>
             
@@ -368,10 +381,50 @@ export default function PodcastPage() {
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-navy-950 tracking-tight leading-[1.1]">
                 Past <span className="text-gold-500 italic font-medium">Episodes</span>
               </h2>
+
+              <div className="mt-12 max-w-2xl mx-auto">
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gold-500/5 blur-2xl rounded-full group-focus-within:bg-gold-500/10 transition-colors" />
+                  <div className="relative flex items-center bg-white border border-navy-100 rounded-2xl p-2 shadow-sm focus-within:shadow-xl focus-within:border-gold-500/30 transition-all duration-300">
+                    <div className="flex items-center justify-center w-12 h-12 text-navy-950/20 group-focus-within:text-gold-500 transition-colors">
+                      <Search className="w-5 h-5" />
+                    </div>
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search episodes, speakers, or topics..."
+                      className="flex-1 bg-transparent border-none outline-none text-navy-950 placeholder:text-navy-950/20 text-lg font-light py-2"
+                    />
+                    {searchQuery && (
+                      <button 
+                        onClick={() => setSearchQuery("")}
+                        className="flex items-center justify-center w-12 h-12 text-navy-950/20 hover:text-navy-950 transition-colors"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
             </FadeInUp>
             
-            <div className="space-y-24">
-              {groupedPastEpisodes.map(({ season, episodes: seasonEpisodes }) => (
+            <div className="space-y-24 mt-20">
+              {groupedPastEpisodes.length === 0 ? (
+                <div className="text-center py-20">
+                  <div className="w-20 h-20 rounded-3xl bg-navy-50 flex items-center justify-center mx-auto mb-6 text-navy-950/20">
+                    <Search className="w-10 h-10" />
+                  </div>
+                  <h3 className="text-2xl font-light text-navy-950 mb-2">No episodes found</h3>
+                  <p className="text-navy-950/40 font-light">Try adjusting your search or filters</p>
+                  <button 
+                    onClick={() => setSearchQuery("")}
+                    className="mt-6 text-gold-600 font-bold uppercase tracking-widest text-xs hover:text-gold-500 transition-colors"
+                  >
+                    Clear Search
+                  </button>
+                </div>
+              ) : groupedPastEpisodes.map(({ season, episodes: seasonEpisodes }) => (
                 <div key={season}>
                   <div className="flex items-center gap-6 mb-12">
                      <div className="px-4 py-1.5 rounded-full bg-navy-950 text-white text-xs font-black uppercase tracking-widest shadow-lg">
