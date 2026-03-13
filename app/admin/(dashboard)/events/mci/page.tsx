@@ -43,11 +43,12 @@ import {
 } from "@/components/ui/card";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 import { useAuth } from "@/lib/context/AuthContext";
-import { MCIEvent } from "@/lib/db/schemas";
+import { MCIEvent, MCIChampion } from "@/lib/db/schemas";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { PastEditionsTab, type PastEdition } from "@/components/admin/mci/PastEditionsTab";
 import { ContentTab } from "@/components/admin/mci/ContentTab";
+import { ChampionsTab } from "@/components/admin/mci/ChampionsTab";
 
 export default function MCIManagementPage() {
   const { token } = useAuth();
@@ -59,7 +60,8 @@ export default function MCIManagementPage() {
   const [retrospective, setRetrospective] = useState<Array<{ id: string; year: number; image: string }>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<'gallery' | 'partners' | 'press' | 'editions' | 'content' | 'retrospective'>('gallery');
+  const [activeTab, setActiveTab] = useState<'gallery' | 'partners' | 'press' | 'editions' | 'content' | 'retrospective' | 'champions'>('gallery');
+  const [champions, setChampions] = useState<MCIChampion[]>([]);
   const [unsavedContent, setUnsavedContent] = useState<Partial<MCIEvent> | null>(null);
   
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -158,6 +160,12 @@ export default function MCIManagementPage() {
     { year: 2023, image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80" }
   ].map((p, i) => ({ ...p, id: `retro-${i}` }));
 
+  const fallbackChampions: MCIChampion[] = [
+    { year: "2025", counselNames: "Ayush Khanna, Kartikey Tripathi", mediatorName: "Navya Pandey" },
+    { year: "2024", counselNames: "Arundhati Venkarachalam, Sankalp Varma", mediatorName: "Kashish Goel" },
+    { year: "2023", counselNames: "Anshul Kumar Sarma, Ananya Dewan, Kessav Navaladi Shankar", mediatorName: "Akshita Kothari" },
+  ];
+
   useEffect(() => { fetchEvent(); }, []);
 
   async function fetchEvent() {
@@ -215,20 +223,26 @@ export default function MCIManagementPage() {
               id: item.id || `retro-${idx}-${Date.now()}`
             }));
           setRetrospective(retroWithIds);
+
+          // Set Champions
+          setChampions(activeEvent.champions && activeEvent.champions.length > 0 ? activeEvent.champions : fallbackChampions);
         } else {
           setGallery(fallbackGallery.map((item, idx) => ({ ...item, id: `fallback-${idx}` })));
           setPartners([]);
           setPress(fallbackPress.map((item, idx) => ({ ...item, id: `fallback-press-${idx}` })));
+          setChampions(fallbackChampions);
         }
       } else {
         setGallery(fallbackGallery.map((item, idx) => ({ ...item, id: `fallback-${idx}` })));
         setPartners([]);
         setPress(fallbackPress.map((item, idx) => ({ ...item, id: `fallback-press-${idx}` })));
+        setChampions(fallbackChampions);
       }
     } catch (e) { 
       setGallery(fallbackGallery.map((item, idx) => ({ ...item, id: `fallback-${idx}` })));
       setPartners([]);
       setPress(fallbackPress.map((item, idx) => ({ ...item, id: `fallback-press-${idx}` })));
+      setChampions(fallbackChampions);
 
       toast.error("Database connection issue. Showing default data."); 
     }
@@ -241,6 +255,7 @@ export default function MCIManagementPage() {
     press?: any[], 
     editions?: any[],
     retrospective?: any[],
+    champions?: MCIChampion[],
     eventData?: Partial<MCIEvent>
   } = {}) => {
     setIsSaving(true);
@@ -250,11 +265,14 @@ export default function MCIManagementPage() {
       const pressList = overrides.press || press;
       const editionsList = overrides.editions || pastEditions;
       const rList = overrides.retrospective || retrospective;
+      const cList = overrides.champions || champions;
+      
       const galleryToSave = gList.map(({ id, ...rest }: any) => rest);
       const partnersToSave = pList.map(({ id, ...rest }: any) => rest);
       const pressToSave = pressList.map(({ id, ...rest }: any) => rest);
       const editionsToSave = editionsList.map(({ id, ...rest }: any) => rest);
       const retrospectiveToSave = rList.map(({ id, ...rest }: any) => rest);
+      const championsToSave = [...cList];
 
       const method = (eventData && eventData._id) ? "PUT" : "POST";
       const payload = (eventData && eventData._id) 
@@ -267,7 +285,8 @@ export default function MCIManagementPage() {
             mentoringPartners: partnersToSave,
             mediaCoverage: pressToSave,
             pastEditions: editionsToSave,
-            retrospective: retrospectiveToSave
+            retrospective: retrospectiveToSave,
+            champions: championsToSave
           }
         : {
             year: new Date().getFullYear(),
@@ -279,6 +298,7 @@ export default function MCIManagementPage() {
             mediaCoverage: pressToSave,
             pastEditions: editionsToSave,
             retrospective: retrospectiveToSave,
+            champions: championsToSave,
             ...unsavedContent,
             ...overrides.eventData
           };
@@ -575,6 +595,15 @@ export default function MCIManagementPage() {
           <LayoutGrid className="w-4 h-4" /> Partners
         </button>
         <button 
+          onClick={() => setActiveTab('champions')}
+          className={cn(
+            "flex items-center gap-2 px-5 py-3 rounded-xl font-bold transition-all text-sm",
+            activeTab === 'champions' ? "bg-navy-950 text-white shadow-lg" : "text-navy-950/40 hover:text-navy-950"
+          )}
+        >
+          <Trophy className="w-4 h-4" /> Champions
+        </button>
+        <button 
           onClick={() => setActiveTab('press')}
           className={cn(
             "flex items-center gap-2 px-5 py-3 rounded-xl font-bold transition-all text-sm",
@@ -593,6 +622,18 @@ export default function MCIManagementPage() {
           <Sparkles className="w-4 h-4" /> Retrospective
         </button>
       </div>
+
+      {/* Champions Tab */}
+      {activeTab === 'champions' && (
+        <ChampionsTab
+          champions={champions}
+          isSaving={isSaving}
+          onSave={async (newChampions) => {
+            setChampions(newChampions);
+            await handleSave({ champions: newChampions });
+          }}
+        />
+      )}
 
       {/* Past Editions Tab */}
       {activeTab === 'editions' && (

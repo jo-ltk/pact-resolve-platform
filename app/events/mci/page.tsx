@@ -260,6 +260,62 @@ export default function MCIPage() {
         </div>
       </section>
 
+      {/* National Mediation Champions Section */}
+      <section className="py-12 sm:py-16 md:py-20 lg:py-32 bg-navy-950 relative overflow-hidden dark">
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[300px] sm:w-[400px] md:w-[600px] h-[300px] sm:h-[400px] md:h-[600px] bg-gold-500/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24">
+          <SectionHeader subtitle="Know Your Champions" title="National Mediation Champions" center light />
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+            {(eventData?.champions && eventData.champions.length > 0 ? eventData.champions : [
+              { year: "2025", counselNames: "Ayush Khanna, Kartikey Tripathi", mediatorName: "Navya Pandey" },
+              { year: "2024", counselNames: "Arundhati Venkarachalam, Sankalp Varma", mediatorName: "Kashish Goel" },
+              { year: "2023", counselNames: "Anshul Kumar Sarma, Ananya Dewan, Kessav Navaladi Shankar", mediatorName: "Akshita Kothari" },
+            ] as any[]).map((item, i) => (
+              <FadeInUp key={item.year} className="group h-full">
+                <div className="relative h-full p-6 sm:p-8 md:p-10 rounded-3xl sm:rounded-4xl md:rounded-5xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-gold-500/30 transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(191,154,102,0.15)] overflow-hidden flex flex-col items-center text-center">
+                  
+                  {/* Number Background Detail */}
+                  <div className="absolute -bottom-4 -right-2 sm:-bottom-6 sm:-right-4 text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] font-bold text-white/5 group-hover:text-gold-500/10 transition-all duration-1000 italic select-none pointer-events-none">
+                    {item.year.slice(-2)}
+                  </div>
+
+                  <div className="relative mb-6 sm:mb-8 md:mb-10">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gold-500/10 text-gold-500 flex items-center justify-center group-hover:bg-gold-500 group-hover:text-navy-950 transition-all duration-500 group-hover:rotate-12 border border-gold-500/20 shadow-lg">
+                      <Trophy className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
+                    </div>
+                    {/* Floating detail */}
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-gold-500 scale-0 group-hover:scale-100 transition-transform duration-500 border-2 sm:border-[3px] border-navy-950 shadow-sm" />
+                  </div>
+                  
+                  <div className="relative z-10 w-full flex flex-col grow">
+                    <div className="mb-4 sm:mb-6 md:mb-8">
+                      <span className="text-[9px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.5em] text-white/60 group-hover:text-gold-500/80 font-bold transition-colors">Season Edition</span>
+                      <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tighter italic group-hover:text-gold-500 transition-colors duration-500">
+                        MCI {item.year}
+                      </h3>
+                    </div>
+
+                    <div className="h-px w-10 sm:w-12 bg-white/10 group-hover:w-16 sm:group-hover:w-20 group-hover:bg-gold-500 transition-all duration-700 mx-auto mb-4 sm:mb-6 md:mb-8" />
+
+                    <div className="space-y-4 sm:space-y-6 md:space-y-8 text-center grow">
+                      <div className="space-y-1 sm:space-y-2">
+                        <span className="text-[9px] sm:text-xs text-gold-500/80 uppercase tracking-wider sm:tracking-widest block font-bold">Mediation Counsel</span>
+                        <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-white/95 leading-tight tracking-tight">{item.counselNames || (item as any).counsel}</p>
+                      </div>
+                      
+                      <div className="space-y-1 sm:space-y-2">
+                        <span className="text-[9px] sm:text-xs text-gold-500/80 uppercase tracking-wider sm:tracking-widest block font-bold">Mediator</span>
+                        <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-white/95 leading-tight tracking-tight">{item.mediatorName || (item as any).mediator}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeInUp>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Vision Section */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-32 bg-white relative overflow-hidden">
