@@ -75,7 +75,16 @@ export default function MediatorPanelAdminPage() {
   };
 
   const openDialog = (item: Partial<PanelMember> = {}) => {
-    setEditingItem({ name: "", role: "", order: data.length + 1, isActive: true, image: { url: "", alt: "" }, ...item });
+    setEditingItem({ 
+      name: "", 
+      role: "", 
+      status: "Certified Mediator & Facilitator", 
+      affiliation: "PACT Private Panel",
+      order: data.length + 1, 
+      isActive: true, 
+      image: { url: "", alt: "" }, 
+      ...item 
+    });
     setIsDialogOpen(true);
   };
 
@@ -104,7 +113,7 @@ export default function MediatorPanelAdminPage() {
                 <TableHead>Photo</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>Visibility</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -172,6 +181,26 @@ export default function MediatorPanelAdminPage() {
                 </div>
               </div>
               <div className="space-y-2"><Label>Profile URL (Optional)</Label><Input value={editingItem?.profileUrl || ""} onChange={e => setEditingItem({...editingItem!, profileUrl: e.target.value})} placeholder="https://linkedin.com/in/..." className="rounded-xl h-11" /></div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Status</Label>
+                  <Input 
+                    value={editingItem?.status || ""} 
+                    onChange={e => setEditingItem({...editingItem!, status: e.target.value})} 
+                    placeholder="e.g., Certified Mediator & Facilitator" 
+                    className="rounded-xl h-11" 
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Affiliation</Label>
+                  <Input 
+                    value={editingItem?.affiliation || ""} 
+                    onChange={e => setEditingItem({...editingItem!, affiliation: e.target.value})} 
+                    placeholder="e.g., PACT Private Panel" 
+                    className="rounded-xl h-11" 
+                  />
+                </div>
+              </div>
               <div className="space-y-2"><Label>Bio (Optional)</Label><Textarea value={editingItem?.bio || ""} onChange={e => setEditingItem({...editingItem!, bio: e.target.value})} className="rounded-xl min-h-[100px] resize-none" /></div>
               <ImageUpload label="Profile Photo" value={editingItem?.image?.url} onChange={url => setEditingItem({...editingItem!, image: {url, alt: editingItem?.name || "Member Photo"}})} />
             </div>

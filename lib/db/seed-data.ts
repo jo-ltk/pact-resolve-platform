@@ -181,6 +181,8 @@ export const panelMembersSeed: Omit<PanelMember, "_id" | "createdAt" | "updatedA
   {
     name: "Jonathan Rodrigues",
     role: "Lead Mediator & Founder",
+    status: "Certified Mediator & Facilitator",
+    affiliation: "PACT Private Panel",
     image: {
       url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80",
       alt: "Jonathan Rodrigues",
@@ -191,6 +193,8 @@ export const panelMembersSeed: Omit<PanelMember, "_id" | "createdAt" | "updatedA
   {
     name: "Kurian Joseph",
     role: "Retd. Judge, Supreme Court of India",
+    status: "Certified Mediator & Facilitator",
+    affiliation: "PACT Private Panel",
     image: {
       url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80",
       alt: "Kurian Joseph",
@@ -201,6 +205,8 @@ export const panelMembersSeed: Omit<PanelMember, "_id" | "createdAt" | "updatedA
   {
     name: "Gita Mittal",
     role: "Retd. Judge, Chief Justice (JKHC)",
+    status: "Certified Mediator & Facilitator",
+    affiliation: "PACT Private Panel",
     image: {
       url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80",
       alt: "Gita Mittal",
@@ -211,6 +217,8 @@ export const panelMembersSeed: Omit<PanelMember, "_id" | "createdAt" | "updatedA
   {
     name: "Ekta Bahl",
     role: "Senior Mediator",
+    status: "Certified Mediator & Facilitator",
+    affiliation: "PACT Private Panel",
     image: {
       url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80",
       alt: "Ekta Bahl",

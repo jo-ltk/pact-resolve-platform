@@ -98,6 +98,10 @@ export interface PanelMember extends BaseDocument {
   bio?: string;
   /** Optional LinkedIn or profile URL */
   profileUrl?: string;
+  /** Optional status, e.g., "Certified Mediator & Facilitator" */
+  status?: string;
+  /** Optional affiliation, e.g., "PACT Private Panel" */
+  affiliation?: string;
   /** Display order */
   order: number;
   /** Whether this member is visible */
