@@ -207,6 +207,7 @@ export interface MCIChampion {
   year: string;
   counselNames: string;
   mediatorName: string;
+  isActive?: boolean;
 }
 
 /** Retrospective frame (MCI Final Frames) */

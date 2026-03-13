@@ -154,7 +154,7 @@ export function TeamSection() {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const response = await fetch("/api/content/ecosystem/team?all=true");
+        const response = await fetch("/api/content/ecosystem/team");
         const result = await response.json();
         if (result.success && result.data && result.data.length > 0) {
           setTeam(result.data);
@@ -183,12 +183,21 @@ export function TeamSection() {
     setMounted(true);
   }, []);
 
-  const managingPartners = team.length > 0 ? team.filter(m => m.category === "managing-partner") : (teamData.managingPartners as any[]);
-  const mentors = team.length > 0 ? team.filter(m => m.category === "mentor") : (teamData.mentors as any[]);
-  const mediators = team.length > 0 ? team.filter(m => m.category === "expert") : (teamData.mediators as any[]);
-  const members = team.length > 0 ? team.filter(m => m.category === "staff") : (teamData.members as any[]);
-  const externs = team.length > 0 ? team.filter(m => m.category === "extern") : (teamData.externs as any[]);
+  // Filter for active items to display
+  const managingPartners = team.filter(m => (m.isActive !== false) && m.category === "managing-partner");
+  const mentors = team.filter(m => (m.isActive !== false) && m.category === "mentor");
+  const mediators = team.filter(m => (m.isActive !== false) && m.category === "expert");
+  const members = team.filter(m => (m.isActive !== false) && m.category === "staff");
+  const externs = team.filter(m => (m.isActive !== false) && m.category === "extern");
 
+  // If the database has ANY members (even if hidden), we don't use fallback data
+  const hasProfilesInDb = team.length > 0;
+  
+  const displayPartners = hasProfilesInDb ? managingPartners : (teamData.managingPartners as any[]);
+  const displayMentors = hasProfilesInDb ? mentors : (teamData.mentors as any[]);
+  const displayMediators = hasProfilesInDb ? mediators : (teamData.mediators as any[]);
+  const displayMembers = hasProfilesInDb ? members : (teamData.members as any[]);
+  const displayExterns = hasProfilesInDb ? externs : (teamData.externs as any[]);
   return (
     <section id="team" className="bg-white overflow-hidden">
 
@@ -201,331 +210,190 @@ export function TeamSection() {
       <div className="pt-16 pb-24 md:pt-24 md:pb-32 max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
 
         {/* Managing Partners - Mixed Layout */}
-        <div className="mb-32">
-          <div className="flex items-center gap-4 mb-20 justify-center md:justify-start">
-            <div className="h-px w-12 bg-gold-500" />
-            <h3 className="text-base uppercase tracking-[0.4em] text-navy-950/40">Managing Partners</h3>
-          </div>
-          
-          {/* Featured Managing Partner */}
-          {managingPartners.length > 0 && (
+        {displayPartners.length > 0 && (
+          <div className="mb-32">
+            <div className="flex items-center gap-4 mb-20 justify-center md:justify-start">
+              <div className="h-px w-12 bg-gold-500" />
+              <h3 className="text-base uppercase tracking-[0.4em] text-navy-950/40">Managing Partners</h3>
+            </div>
+            
             <div className="mb-32">
-              {(() => {
-                const partner = managingPartners[0];
-                return (
-                  <FadeInUp>
-                    <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
-                      {/* Featured Image */}
-                      <div className="w-full lg:w-[450px] shrink-0">
-                        <div className="relative aspect-3/4 rounded-[3rem] overflow-hidden border border-navy-100 shadow-2xl group cursor-pointer" onClick={() => setSelectedProfile(partner)}>
-                          <Image 
-                            src={partner.image} 
-                            alt={partner.name} 
-                            fill 
-                            className="object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
-                            sizes="(max-width: 1024px) 100vw, 450px"
-                          />
-                          <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
-                          
-                          <div className="absolute bottom-8 left-8 right-8 p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                             <p className="text-white text-sm uppercase font-bold tracking-widest text-center">Click to view full bio</p>
-                          </div>
+              <FadeInUp>
+                <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
+                  <div className="w-full lg:w-[450px] shrink-0">
+                    <div className="relative aspect-3/4 rounded-[3rem] overflow-hidden border border-navy-100 shadow-2xl group cursor-pointer" onClick={() => setSelectedProfile(displayPartners[0])}>
+                      <Image 
+                        src={displayPartners[0].image} 
+                        alt={displayPartners[0].name} 
+                        fill 
+                        className="object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
+                        sizes="(max-width: 1024px) 100vw, 450px"
+                      />
+                      <div className="absolute inset-0 bg-navy-950/10 group-hover:bg-transparent transition-colors duration-700" />
+                    </div>
+                  </div>
+                  
+                  <div className="flex-1 space-y-8 text-center md:text-left">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
+                        <span className="text-gold-500 text-xs uppercase tracking-[0.3em] font-bold">{displayPartners[0].role}</span>
+                        <div className="h-px w-8 bg-gold-500/20" />
+                      </div>
+                      <h4 className="text-[10vw] md:text-6xl font-light text-navy-950 tracking-tighter leading-none uppercase">
+                        {displayPartners[0].name.split(' ')[0]} <br className="hidden md:block" />
+                        <span className="text-gold-500 font-medium">{displayPartners[0].name.split(' ').slice(1).join(' ')}</span>
+                      </h4>
+                    </div>
+                    <p className="text-lg md:text-xl text-navy-950/60 font-light leading-relaxed tracking-tight max-w-3xl line-clamp-4">
+                      {displayPartners[0].bio}
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-8 pt-6">
+                      <div className="flex gap-4">
+                        {(displayPartners[0].linkedin || displayPartners[0].profileUrl) && (
+                          <a href={getLinkedInUrl(displayPartners[0].linkedin || displayPartners[0].profileUrl)} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-navy-100 flex items-center justify-center text-navy-950 hover:bg-navy-950 hover:text-white transition-all shadow-sm">
+                            <Linkedin className="w-5 h-5" />
+                          </a>
+                        )}
+                        <a href={displayPartners[0].email ? `mailto:${displayPartners[0].email}` : "mailto:official@thepact.in"} className="w-12 h-12 rounded-full border border-navy-100 flex items-center justify-center text-navy-950 hover:bg-navy-950 hover:text-white transition-all shadow-sm">
+                          <Mail className="w-5 h-5" />
+                        </a>
+                      </div>
+                      <button onClick={() => setSelectedProfile(displayPartners[0])} className="group/btn inline-flex items-center gap-3 text-xs uppercase font-bold tracking-[0.3em] text-gold-500 hover:text-navy-950 transition-colors">
+                        Access Full Profile <ArrowUpRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </FadeInUp>
+            </div>
+
+            {displayPartners.length > 1 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 pt-16 border-t border-navy-50">
+                {displayPartners.slice(1).map((partner, i) => (
+                  <FadeInUp key={i} delay={i * 0.1}>
+                    <div className="group relative p-8 md:p-10 rounded-4xl bg-white border border-navy-100 hover:border-gold-500/30 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] transition-all duration-700 h-full flex flex-col sm:flex-row gap-10 items-center">
+                      <div className="shrink-0 cursor-pointer" onClick={() => setSelectedProfile(partner)}>
+                        <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-3xl overflow-hidden border border-navy-50 shadow-sm transition-all duration-700">
+                          <Image src={partner.image} alt={partner.name} fill className="object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" />
                         </div>
                       </div>
-                      
-                      {/* Featured Content */}
-                      <div className="flex-1 space-y-8 text-center md:text-left">
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
-                            <span className="text-gold-500 text-xs uppercase tracking-[0.3em] font-bold">{partner.role}</span>
-                            <div className="h-px w-8 bg-gold-500/20" />
-                          </div>
-                          <h4 className="text-[10vw] md:text-6xl font-light text-navy-950 tracking-tighter leading-none uppercase">
-                            {partner.name.split(' ')[0]} <br className="hidden md:block" />
-                            <span className="text-gold-500 font-medium">{partner.name.split(' ').slice(1).join(' ')}</span>
+                      <div className="flex-1 space-y-4 text-center sm:text-left">
+                        <div className="space-y-1">
+                          <span className="text-gold-500 text-[9px] uppercase tracking-[0.3em] font-bold block">{partner.role}</span>
+                          <h4 className="text-2xl md:text-3xl font-light text-navy-950 tracking-tight leading-tight uppercase">
+                             {partner.name.split(' ')[0]} <span className="text-gold-500 font-medium">{partner.name.split(' ').slice(1).join(' ')}</span>
                           </h4>
                         </div>
-                        
-                        <p className="text-lg md:text-xl text-navy-950/60 font-light leading-relaxed tracking-tight max-w-3xl line-clamp-4">
-                          {partner.bio}
-                        </p>
-                        
-                        <div className="flex flex-wrap items-center justify-center md:justify-start gap-8 pt-6">
-                          <div className="flex gap-4">
-                            {partner.linkedin || partner.profileUrl ? (
-                              <a 
-                                href={getLinkedInUrl(partner.linkedin || partner.profileUrl)} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="w-12 h-12 rounded-full border border-navy-100 flex items-center justify-center text-navy-950 hover:bg-navy-950 hover:text-white transition-all shadow-sm"
-                              >
-                                <Linkedin className="w-5 h-5" />
-                              </a>
-                            ) : null}
-                            <a 
-                              href={partner.email ? `mailto:${partner.email}` : "mailto:official@thepact.in"} 
-                              className="w-12 h-12 rounded-full border border-navy-100 flex items-center justify-center text-navy-950 hover:bg-navy-950 hover:text-white transition-all shadow-sm"
-                            >
-                              <Mail className="w-5 h-5" />
-                            </a>
+                        <p className="text-[13px] md:text-sm text-navy-950/40 font-light leading-relaxed line-clamp-3">{partner.bio}</p>
+                        <div className="flex items-center justify-center sm:justify-start gap-6 pt-4 border-t border-navy-50/50 mt-2">
+                          <div className="flex gap-2">
+                             {(partner.linkedin || partner.profileUrl) && (
+                               <a href={getLinkedInUrl(partner.linkedin || partner.profileUrl)} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-navy-100 flex items-center justify-center text-navy-950/40 hover:bg-navy-950 hover:text-white hover:border-transparent transition-all"><Linkedin className="w-3.5 h-3.5" /></a>
+                             )}
+                             <a href={partner.email ? `mailto:${partner.email}` : "mailto:official@thepact.in"} className="w-8 h-8 rounded-full border border-navy-100 flex items-center justify-center text-navy-950/40 hover:bg-navy-950 hover:text-white hover:border-transparent transition-all"><Mail className="w-3.5 h-3.5" /></a>
                           </div>
-                          
-                          <div className="h-px w-12 bg-navy-100 hidden md:block" />
-                          
-                          <button 
-                            onClick={() => setSelectedProfile(partner)}
-                            className="group/btn inline-flex items-center gap-3 text-xs uppercase font-bold tracking-[0.3em] text-gold-500 hover:text-navy-950 transition-colors"
-                          >
-                            Access Full Profile <ArrowUpRight className="w-4 h-4 group-hover/btn:-translate-y-1 group-hover/btn:translate-x-1 transition-transform" />
-                          </button>
+                          <button onClick={() => setSelectedProfile(partner)} className="group/btn inline-flex items-center gap-2 text-[9px] uppercase font-bold tracking-[0.2em] text-gold-500 hover:text-navy-950 transition-colors">View Bio <ArrowUpRight className="w-3 h-3" /></button>
                         </div>
                       </div>
                     </div>
                   </FadeInUp>
-                );
-              })()}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
-          {/* Secondary Managing Partners Grid */}
-          {managingPartners.length > 1 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 pt-16 border-t border-navy-50">
-              {managingPartners.slice(1).map((partner, i) => (
-                <FadeInUp key={i} delay={i * 0.1}>
-                  <div className="group relative p-8 md:p-10 rounded-4xl bg-white border border-navy-100 hover:border-gold-500/30 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] transition-all duration-700 h-full flex flex-col sm:flex-row gap-10 items-center">
-                    {/* Compact Image - Circular/Soft Square */}
-                    <div className="shrink-0">
-                      <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-3xl overflow-hidden border border-navy-50 shadow-sm group-hover:shadow-gold-500/10 transition-all duration-700 cursor-pointer" onClick={() => setSelectedProfile(partner)}>
-                        <Image 
-                          src={partner.image} 
-                          alt={partner.name} 
-                          fill 
-                          className="object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
-                        />
-                        <div className="absolute inset-0 bg-navy-950/5 group-hover:bg-transparent transition-colors duration-700" />
+        {(displayMentors.length > 0 || displayMediators.length > 0) && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 pb-24 border-b border-navy-50">
+            {displayMentors.length > 0 && (
+              <div>
+                <h3 className="text-xl uppercase tracking-[0.3em] text-navy-950/30 mb-2 text-center md:text-left">Strategic Mentors</h3>
+                <p className="text-sm text-navy-950/20 uppercase tracking-widest font-black mb-10 text-center md:text-left">Click name to view profile</p>
+                <div className="space-y-2">
+                  {displayMentors.map((m: any, i: number) => (
+                    <div key={i} className="group flex items-center gap-6 py-5 border-b border-navy-50/50 hover:border-gold-500/30 transition-all duration-500 cursor-pointer" onClick={() => setSelectedProfile(m)}>
+                      <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm transition-transform duration-500"><Image src={m.image} alt={m.name} fill className="object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000" /></div>
+                      <div className="grow">
+                        <h4 className="text-xl font-light text-navy-950 group-hover:text-gold-500 transition-colors">{m.name}</h4>
+                        <p className="text-xs uppercase tracking-[0.2em] text-navy-950/40">{m.role}</p>
                       </div>
+                      <ArrowUpRight className="w-5 h-5 text-navy-950/10 group-hover:text-gold-500 transition-all" />
                     </div>
-                    
-                    {/* Content - Vertically Aligned */}
-                    <div className="flex-1 space-y-4 text-center sm:text-left">
-                      <div className="space-y-1">
-                        <span className="text-gold-500 text-[9px] uppercase tracking-[0.3em] font-bold block">{partner.role}</span>
-                        <h4 className="text-2xl md:text-3xl font-light text-navy-950 tracking-tight leading-tight uppercase">
-                           {partner.name.split(' ')[0]} <span className="text-gold-500 font-medium">{partner.name.split(' ').slice(1).join(' ')}</span>
-                        </h4>
-                      </div>
-                      
-                      <p className="text-[13px] md:text-sm text-navy-950/40 font-light leading-relaxed line-clamp-3">
-                        {partner.bio}
-                      </p>
-                      
-                      {/* Integrated Action Area */}
-                      <div className="flex items-center justify-center sm:justify-start gap-6 pt-4 border-t border-navy-50/50 mt-2">
-                        <div className="flex gap-2">
-                           {partner.linkedin || partner.profileUrl ? (
-                             <a 
-                               href={getLinkedInUrl(partner.linkedin || partner.profileUrl)} 
-                               target="_blank" 
-                               rel="noopener noreferrer"
-                               className="w-8 h-8 rounded-full border border-navy-100 flex items-center justify-center text-navy-950/40 hover:bg-navy-950 hover:text-white hover:border-transparent transition-all"
-                             >
-                               <Linkedin className="w-3.5 h-3.5" />
-                             </a>
-                           ) : null}
-                           <a 
-                             href={partner.email ? `mailto:${partner.email}` : "mailto:official@thepact.in"} 
-                             className="w-8 h-8 rounded-full border border-navy-100 flex items-center justify-center text-navy-950/40 hover:bg-navy-950 hover:text-white hover:border-transparent transition-all"
-                           >
-                             <Mail className="w-3.5 h-3.5" />
-                           </a>
-                        </div>
-                        
-                        <div className="h-4 w-px bg-navy-100" />
-                        
-                        <button 
-                          onClick={() => setSelectedProfile(partner)}
-                          className="group/btn inline-flex items-center gap-2 text-[9px] uppercase font-bold tracking-[0.2em] text-gold-500 hover:text-navy-950 transition-colors"
-                        >
-                          View Bio <ArrowUpRight className="w-3 h-3 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 transition-transform" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </FadeInUp>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Mentors & Neutrals */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 pb-24 border-b border-navy-50">
-          <div>
-             <h3 className="text-xl uppercase tracking-[0.3em] text-navy-950/30 mb-2 text-center md:text-left">Strategic Mentors</h3>
-             <p className="text-sm text-navy-950/20 uppercase tracking-widest font-black mb-10 text-center md:text-left">Click name to view profile</p>
-            <div className="space-y-2">
-              {mentors.map((m: any, i: number) => (
-                <div 
-                  key={i} 
-                  className="group flex items-center gap-6 py-5 border-b border-navy-50/50 hover:border-gold-500/30 transition-all duration-500 cursor-pointer"
-                  onClick={() => setSelectedProfile(m)}
-                >
-                  {/* Subtle Avatar */}
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm group-hover:scale-105 transition-transform duration-500">
-                    <Image 
-                      src={m.image} 
-                      alt={m.name} 
-                      fill 
-                      className="object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000" 
-                    />
-                    <div className="absolute inset-0 bg-navy-950/5 group-hover:bg-transparent transition-colors duration-700" />
-                  </div>
-                  
-                  <div className="grow">
-                    <h4 className="text-xl font-light text-navy-950 group-hover:text-gold-500 transition-colors">{m.name}</h4>
-                    <p className="text-xs uppercase tracking-[0.2em] text-navy-950/40">{m.role}</p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    {m.linkedin || m.profileUrl ? (
-                      <a href={getLinkedInUrl(m.linkedin || m.profileUrl)} target="_blank" rel="noopener noreferrer" className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-gold-500" onClick={e => e.stopPropagation()}>
-                        <Linkedin className="w-4 h-4" />
-                      </a>
-                    ) : null}
-                    <ArrowUpRight className="w-5 h-5 text-navy-950/10 group-hover:text-gold-500 group-hover:-translate-y-1 group-hover:translate-x-1 transition-all" />
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-          
-          <div>
-             <h3 className="text-xl uppercase tracking-[0.3em] text-navy-950/30 mb-2 text-center md:text-left">Featured Experts</h3>
-             <p className="text-sm text-navy-950/20 uppercase tracking-widest font-black mb-10 text-center md:text-left">Click name to view profile</p>
-             <div className="space-y-2">
-               {mediators.map((m: any, i: number) => (
-                 <div 
-                   key={i} 
-                   className="group flex items-center gap-6 py-5 border-b border-navy-50/50 hover:border-gold-500/30 transition-all duration-500 cursor-pointer"
-                   onClick={() => setSelectedProfile(m)}
-                 >
-                   {/* Subtle Avatar */}
-                   <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm group-hover:scale-105 transition-transform duration-500">
-                     <Image 
-                       src={m.image} 
-                       alt={m.name} 
-                       fill 
-                       className="object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000" 
-                     />
-                     <div className="absolute inset-0 bg-navy-950/5 group-hover:bg-transparent transition-colors duration-700" />
-                   </div>
-
-                   <div className="grow">
-                     <h4 className="text-xl font-light text-navy-950 group-hover:text-gold-500 transition-colors">{m.name}</h4>
-                     <p className="text-xs uppercase tracking-widest text-gold-500 font-bold">{m.niche}</p>
-                   </div>
-                   <div className="flex items-center gap-4">
-                    {m.linkedin || m.profileUrl ? (
-                      <a href={getLinkedInUrl(m.linkedin || m.profileUrl)} target="_blank" rel="noopener noreferrer" className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-gold-500" onClick={e => e.stopPropagation()}>
-                        <Linkedin className="w-4 h-4" />
-                      </a>
-                    ) : null}
-                    <ArrowUpRight className="w-5 h-5 text-navy-950/10 group-hover:text-gold-500 group-hover:-translate-y-1 group-hover:translate-x-1 transition-all" />
-                  </div>
-                 </div>
-               ))}
-             </div>
-          </div>
-        </div>
-
-        {/* Members & Externs */}
-        <div className="pt-20 grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-32">
-          <div>
-             <h3 className="text-xl uppercase tracking-[0.3em] text-navy-950/30 mb-10 text-center md:text-left">Team Members</h3>
-             <div className="space-y-2">
-               {members.map((m: any, i: number) => (
-                 <div 
-                   key={i} 
-                   className="group flex items-center gap-5 py-4 border-b border-navy-50 hover:border-gold-500/20 transition-all duration-300 cursor-pointer"
-                   onClick={() => setSelectedProfile(m)}
-                 >
-                   {/* Smaller Avatar for Members */}
-                   <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                     <Image 
-                       src={m.image} 
-                       alt={m.name} 
-                       fill 
-                       className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
-                     />
-                   </div>
-                   
-                   <span className="text-lg font-light text-navy-950/80 group-hover:text-gold-600 transition-colors grow">{m.name}</span>
-                   <div className="flex items-center gap-4">
-                    {m.linkedin || m.profileUrl ? (
-                      <a href={getLinkedInUrl(m.linkedin || m.profileUrl)} target="_blank" rel="noopener noreferrer" className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:text-gold-500" onClick={e => e.stopPropagation()}>
-                        <Linkedin className="w-3.5 h-3.5" />
-                      </a>
-                    ) : null}
-                    <div className="w-1.5 h-1.5 rounded-full bg-navy-100 group-hover:bg-gold-500 transition-colors" />
-                   </div>
-                 </div>
-               ))}
-             </div>
-          </div>
-          <div>
-             <h3 className="text-xl uppercase tracking-[0.3em] text-navy-950/30 mb-10 text-center md:text-left">Mediation Externs</h3>
-             <div className="space-y-2">
-                {externs.map((m: any, i: number) => (
-                  <div 
-                    key={i} 
-                    className="group flex items-center gap-5 py-4 border-b border-navy-50 hover:border-gold-500/20 transition-all duration-300 cursor-pointer"
-                    onClick={() => setSelectedProfile(m)}
-                  >
-                    {/* Smaller Avatar for Externs */}
-                   <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                     <Image 
-                       src={m.image} 
-                       alt={m.name} 
-                       fill 
-                       className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
-                     />
-                   </div>
-
-                    <div className="grow flex items-center justify-between">
-                      <span className="text-lg font-light text-navy-950/80 group-hover:text-gold-600 transition-colors">{m.name}</span>
-                      <div className="flex items-center gap-3">
-                        {m.linkedin || m.profileUrl ? (
-                          <a href={getLinkedInUrl(m.linkedin || m.profileUrl)} target="_blank" rel="noopener noreferrer" className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:text-gold-500" onClick={e => e.stopPropagation()}>
-                            <Linkedin className="w-3.5 h-3.5" />
-                          </a>
-                        ) : null}
-                        <span className="text-[9px] uppercase tracking-widest text-gold-500/60 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:block">Externship</span>
-                        <div className="w-1.5 h-1.5 rounded-full bg-navy-100 group-hover:bg-gold-500 transition-colors" />
+              </div>
+            )}
+            
+            {displayMediators.length > 0 && (
+              <div>
+                <h3 className="text-xl uppercase tracking-[0.3em] text-navy-950/30 mb-2 text-center md:text-left">Featured Experts</h3>
+                <p className="text-sm text-navy-950/20 uppercase tracking-widest font-black mb-10 text-center md:text-left">Click name to view profile</p>
+                <div className="space-y-2">
+                  {displayMediators.map((m: any, i: number) => (
+                    <div key={i} className="group flex items-center gap-6 py-5 border-b border-navy-50/50 hover:border-gold-500/30 transition-all duration-500 cursor-pointer" onClick={() => setSelectedProfile(m)}>
+                      <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm transition-transform duration-500"><Image src={m.image} alt={m.name} fill className="object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000" /></div>
+                      <div className="grow">
+                        <h4 className="text-xl font-light text-navy-950 group-hover:text-gold-500 transition-colors">{m.name}</h4>
+                        <p className="text-xs uppercase tracking-widest text-gold-500 font-bold">{m.niche}</p>
                       </div>
+                      <ArrowUpRight className="w-5 h-5 text-navy-950/10 group-hover:text-gold-500 transition-all" />
                     </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="pt-20 grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-32">
+          {displayMembers.length > 0 && (
+            <div>
+              <h3 className="text-xl uppercase tracking-[0.3em] text-navy-950/30 mb-10 text-center md:text-left">Team Members</h3>
+              <div className="space-y-2">
+                {displayMembers.map((m: any, i: number) => (
+                  <div key={i} className="group flex items-center gap-5 py-4 border-b border-navy-50 hover:border-gold-500/20 transition-all duration-300 cursor-pointer" onClick={() => setSelectedProfile(m)}>
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm transition-transform duration-300"><Image src={m.image} alt={m.name} fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500" /></div>
+                    <span className="text-lg font-light text-navy-950/80 group-hover:text-gold-600 transition-colors grow">{m.name}</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-navy-100 group-hover:bg-gold-500 transition-colors" />
                   </div>
                 ))}
-                
-                {/* Join the Mission CTA */}
-                <div className="pt-8">
-                  <button 
-                    onClick={() => setShowExternshipForm(true)}
-                    className="group/join w-full flex items-center justify-between p-6 rounded-3xl bg-navy-50/50 border border-navy-100/50 hover:bg-white hover:border-gold-500/30 hover:shadow-xl transition-all duration-500"
-                  >
-                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-navy-950 group-hover/join:bg-gold-500 group-hover/join:text-white transition-all duration-500 group-hover/join:rotate-12 shadow-sm border border-navy-100/50">
-                        <Plus className="w-6 h-6" />
-                      </div>
-                      <div className="text-left">
-                        <p className="text-sm font-bold text-navy-950 uppercase tracking-widest mb-1">Join the Mission</p>
-                        <p className="text-xs text-navy-950/40 uppercase tracking-widest">Apply for Externship</p>
-                      </div>
+              </div>
+            </div>
+          )}
+          
+          <div>
+            <h3 className="text-xl uppercase tracking-[0.3em] text-navy-950/30 mb-10 text-center md:text-left">Mediation Externs</h3>
+            <div className="space-y-2">
+              {displayExterns.map((m: any, i: number) => (
+                <div key={i} className="group flex items-center gap-5 py-4 border-b border-navy-50 hover:border-gold-500/20 transition-all duration-300 cursor-pointer" onClick={() => setSelectedProfile(m)}>
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-navy-50 shadow-sm transition-transform duration-300"><Image src={m.image} alt={m.name} fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500" /></div>
+                  <div className="grow flex items-center justify-between">
+                    <span className="text-lg font-light text-navy-950/80 group-hover:text-gold-600 transition-colors">{m.name}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[9px] uppercase tracking-widest text-gold-500/60 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:block">Externship</span>
+                      <div className="w-1.5 h-1.5 rounded-full bg-navy-100 group-hover:bg-gold-500 transition-colors" />
                     </div>
-                    <ArrowUpRight className="w-5 h-5 text-navy-950/20 group-hover/join:text-gold-500 transition-colors" />
-                  </button>
+                  </div>
                 </div>
+              ))}
+              
+              <div className="pt-8">
+                <button onClick={() => setShowExternshipForm(true)} className="group/join w-full flex items-center justify-between p-6 rounded-3xl bg-navy-50/50 border border-navy-100/50 hover:bg-white hover:border-gold-500/30 hover:shadow-xl transition-all duration-500">
+                  <div className="flex items-center gap-5">
+                    <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-navy-950 group-hover/join:bg-gold-500 group-hover/join:text-white transition-all duration-500 group-hover/join:rotate-12 shadow-sm border border-navy-100/50"><Plus className="w-6 h-6" /></div>
+                    <div className="text-left">
+                      <p className="text-sm font-bold text-navy-950 uppercase tracking-widest mb-1">Join the Mission</p>
+                      <p className="text-xs text-navy-950/40 uppercase tracking-widest">Apply for Externship</p>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="w-5 h-5 text-navy-950/20 group-hover/join:text-gold-500 transition-colors" />
+                </button>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
       {mounted && typeof document !== 'undefined' && createPortal(
         <AnimatePresence mode="wait">
           {selectedProfile && (
@@ -545,3 +413,4 @@ export function TeamSection() {
     </section>
   );
 }
+

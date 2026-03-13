@@ -15,6 +15,10 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { MCIChampion } from "@/lib/db/schemas";
+import { cn } from "@/lib/utils";
+
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 
 interface ChampionsTabProps {
   champions: MCIChampion[];
@@ -26,6 +30,7 @@ const EMPTY_CHAMPION: MCIChampion = {
   year: "",
   counselNames: "",
   mediatorName: "",
+  isActive: true,
 };
 
 export function ChampionsTab({ champions = [], isSaving, onSave }: ChampionsTabProps) {
@@ -41,7 +46,7 @@ export function ChampionsTab({ champions = [], isSaving, onSave }: ChampionsTabP
 
   const openEdit = (index: number) => {
     setEditingIndex(index);
-    setTempChampion({ ...champions[index] });
+    setTempChampion({ ...champions[index], isActive: champions[index].isActive ?? true });
     setIsDialogOpen(true);
   };
 
@@ -106,11 +111,21 @@ export function ChampionsTab({ champions = [], isSaving, onSave }: ChampionsTabP
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
             >
-              <Card className="group h-full flex flex-col bg-white dark:bg-navy-900 border shadow-sm hover:shadow-xl transition-all duration-300 rounded-3xl overflow-hidden">
+              <Card className={cn(
+                "group h-full flex flex-col bg-white dark:bg-navy-900 border shadow-sm hover:shadow-xl transition-all duration-300 rounded-3xl overflow-hidden",
+                champion.isActive === false ? "opacity-60 bg-gray-50/50" : ""
+              )}>
                 <CardContent className="p-6 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-6">
-                    <div className="w-16 h-16 rounded-2xl bg-gold-500/10 text-gold-500 flex items-center justify-center shadow-sm">
-                      <Trophy className="w-8 h-8" />
+                    <div className="relative">
+                      <div className="w-16 h-16 rounded-2xl bg-gold-500/10 text-gold-500 flex items-center justify-center shadow-sm">
+                        <Trophy className="w-8 h-8" />
+                      </div>
+                      {champion.isActive === false && (
+                        <div className="absolute -top-2 -left-2">
+                          <Badge variant="secondary" className="font-black uppercase tracking-tighter shadow-sm bg-navy-950 text-white border-none">HIDDEN</Badge>
+                        </div>
+                      )}
                     </div>
                     {/* Actions */}
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -188,6 +203,17 @@ export function ChampionsTab({ champions = [], isSaving, onSave }: ChampionsTabP
             <div className="space-y-2">
               <Label>Mediator (Name) *</Label>
               <Input value={tempChampion.mediatorName} onChange={e => setTempChampion(p => ({ ...p, mediatorName: e.target.value }))} placeholder="e.g. Vikramaditya" />
+            </div>
+
+            <div className="flex items-center justify-between gap-4 p-4 rounded-2xl bg-navy-50/50 mt-4">
+              <div className="space-y-0.5">
+                <Label className="text-xs font-black uppercase tracking-widest text-navy-950/60">Active Status</Label>
+                <p className="text-[10px] text-navy-950/40 font-medium">Toggle to show/hide on public website</p>
+              </div>
+              <Switch 
+                checked={tempChampion.isActive ?? true}
+                onCheckedChange={(val) => setTempChampion(p => ({ ...p, isActive: val }))}
+              />
             </div>
           </div>
 
