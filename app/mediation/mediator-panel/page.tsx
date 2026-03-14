@@ -225,13 +225,13 @@ const GallerySection = () => {
 
                 <div className="pt-12 border-t border-navy-50 flex flex-wrap gap-12">
                   <div>
-                    <p className="text-sm md:text-xs uppercase tracking-[0.2em] text-navy-950/30 mb-2 font-bold">Status</p>
+                    <p className="text-sm md:text-xs uppercase tracking-[0.2em] text-navy-950/30 mb-2 font-bold">Expertise</p>
                     <p className="text-navy-950 text-lg md:text-xl font-medium italic">
                       {selectedMember?.status || "Certified Mediator & Facilitator"}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm md:text-xs uppercase tracking-[0.2em] text-navy-950/30 mb-2 font-bold">Affiliation</p>
+                    <p className="text-sm md:text-xs uppercase tracking-[0.2em] text-navy-950/30 mb-2 font-bold">Certification</p>
                     <p className="text-navy-950 text-lg md:text-xl font-medium">
                       {selectedMember?.affiliation || "PACT Private Panel"}
                     </p>
